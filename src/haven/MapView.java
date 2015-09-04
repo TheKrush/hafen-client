@@ -53,6 +53,10 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public double shake = 0.0;
 	private static final Map<String, Class<? extends Camera>> camtypes = new HashMap<String, Class<? extends Camera>>();
 
+	private long lastMouseWalkTick = Long.MIN_VALUE;
+	private boolean mouseIsDown = false;
+	private Coord lastMousePos;
+
 	private GridOutline gridol;
 	private Coord lasttc = Coord.z;
 	private long lastGridUpdate = -1;
@@ -1101,7 +1105,14 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		}
 	}
 
+	@Override
 	public void tick(double dt) {
+		if (mouseIsDown) {
+			if (lastMouseWalkTick + 500 < System.currentTimeMillis()) {
+				lastMouseWalkTick = System.currentTimeMillis();
+				delay(new Click(lastMousePos, 1));
+			}
+		}
 		camload = null;
 		try {
 			camera.tick(dt);
@@ -1387,6 +1398,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public void grab(Grabber grab) {
 		this.grab = grab;
+		mouseIsDown = false;
 	}
 
 	public void release(Grabber grab) {
@@ -1407,12 +1419,18 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			}
 		} else if ((grab != null) && grab.mmousedown(c, button)) {
 		} else {
+			if (button == 1) {
+				lastMousePos = c;
+				togglemousefollow(false);
+			}
 			delay(new Click(c, button));
 		}
 		return (true);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
+		lastMousePos = c;
 		if (grab != null) {
 			grab.mmousemove(c);
 		}
@@ -1425,7 +1443,11 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		}
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
+		if (button == 1) {
+			mouseIsDown = false;
+		}
 		if (button == 2) {
 			if (camdrag != null) {
 				camera.release();
@@ -1602,6 +1624,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			return (false);
 		}
 
+		@Override
 		public void mmousemove(Coord mc) {
 			if (sc != null) {
 				Coord tc = mc.div(MCache.tilesz);
@@ -1694,6 +1717,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			}
 		});
 		cmdmap.put("whyload", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) throws Exception {
 				Loading l = lastload;
 				if (l == null) {
@@ -1704,6 +1728,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		});
 	}
 
+	@Override
 	public Map<String, Console.Command> findcmds() {
 		return (cmdmap);
 	}
@@ -1732,6 +1757,18 @@ public class MapView extends PView implements DTarget, Console.Directory {
 				lastGridUpdate = glob.map.lastMapUpdate;
 				gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
 			}
+		}
+	}
+
+	public void togglemousefollow(boolean now) {
+		mouseIsDown = !mouseIsDown;
+		if (!mouseIsDown) {
+			return;
+		}
+		if (now) {
+			delay(new Click(c, 1));
+		} else {
+			lastMouseWalkTick = System.currentTimeMillis();
 		}
 	}
 
