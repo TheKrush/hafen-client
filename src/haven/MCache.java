@@ -376,6 +376,9 @@ public class MCache {
 	} else if(type == 2) {
 	    trimall();
 	}
+	if(grids.size() == 0) {
+	    MapDumper.newsession();
+	}
     }
 
     private Grid cached = null;

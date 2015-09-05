@@ -19,23 +19,40 @@ public class MapDumper implements Defer.Callable<Object> {
     private final File file;
     private final MCache mCache;
     private final MCache.Grid grid;
+    public static final Object sync = new Object();
 
 
     public static void dump(MCache mCache, MCache.Grid grid) {
-	if(start == null || grid.gc.dist(start) > 10) {
-	    start = grid.gc;
-	    String date = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date(System.currentTimeMillis()));
-	    sess = new File(String.format("map/%s", date));
-	    sess.mkdirs();
-	    try {
-		Writer writer = new FileWriter(new File(sess.getParentFile(), "currentsession.js"));
-		writer.write(String.format("var currentSession = '%s';\n", date));
-		writer.close();
-	    } catch(IOException ignored) {
+	checksession(grid);
+	Coord offset;
+	synchronized(sync) {
+	    offset = grid.gc.sub(start);
+	}
+	Defer.later(new MapDumper(new File(sess, String.format("tile_%d_%d.png", offset.x, offset.y)), mCache, grid));
+    }
+
+    private static void checksession(MCache.Grid grid) {
+	synchronized(sync) {
+	    if(start == null) {
+		start = grid.gc;
+		String date = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(new Date(System.currentTimeMillis()));
+		sess = new File(String.format("map/%s", date));
+		//noinspection ResultOfMethodCallIgnored
+		sess.mkdirs();
+		try {
+		    Writer writer = new FileWriter(new File(sess.getParentFile(), "currentsession.js"));
+		    writer.write(String.format("var currentSession = '%s';\n", date));
+		    writer.close();
+		} catch(IOException ignored) {
+		}
 	    }
 	}
-	Coord offset = grid.gc.sub(start);
-	Defer.later(new MapDumper(new File(sess, String.format("tile_%d_%d.png", offset.x, offset.y)), mCache, grid));
+    }
+
+    public static void newsession() {
+	synchronized(sync) {
+	    start = null;
+	}
     }
 
     private MapDumper(File file, MCache mCache, MCache.Grid grid) {
@@ -125,10 +142,10 @@ public class MapDumper implements Defer.Callable<Object> {
 			buf.setRGB(c.x, c.y, Color.BLACK.getRGB());
 		    }
 		} catch(IndexOutOfBoundsException ignored) {
-		} catch (Loading ignored){}
+		} catch(Loading ignored) {
+		}
 	    }
 	}
 	return (buf);
     }
-
 }
