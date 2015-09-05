@@ -15,6 +15,7 @@ public enum CFG {
     FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", false)),
     STORE_MAP("general.storemap", Utils.getprefb("storemap", false)),
     SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
+		STUDY_LOCK("ui.studylock", Utils.getprefb("studylock", false)),
 
     Q_SHOW_ALL_MODS("ui.q.allmods", 7),
     Q_SHOW_SINGLE("ui.q.showsingle", true),
