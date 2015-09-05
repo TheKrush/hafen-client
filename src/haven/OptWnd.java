@@ -254,14 +254,18 @@ public class OptWnd extends Window {
 	audio.add(new PButton(200, "Back", 27, main), new Coord(0, 180));
 	audio.pack();
 
-	//display settings
-	y = 0;
+	initDisplayPanel();
+	chpanel(main);
+    }
+
+    private void initDisplayPanel() {
+	int y = 0;
 	display.add(new CFGBox("Allow day/night cycle", CFG.DISPLAY_DAYNIGHTCYCLE), new Coord(0, y));
 
 	y+=25;
 	display.add(new CFGBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(0, y));
 
-	y+=25;
+	y += 25;
 	display.add(new CFGBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(0, y));
 
 	y+=25;
@@ -273,7 +277,7 @@ public class OptWnd extends Window {
 	y+=25;
 	display.add(new CFGBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(0, y));
 
-	y+=25;
+	y += 25;
 	display.add(new CFGBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
 
 	y += 25;
@@ -284,7 +288,7 @@ public class OptWnd extends Window {
 		, "If checked will show single value quality as maximum of all qualities, instead of average")
 		, new Coord(0, y));
 
-	y+=25;
+	y += 25;
 	display.add(new CFGBox("Show all qualities on SHIFT", CFG.Q_SHOW_ALL_MODS) {
 	    @Override
 	    protected void defval() {
@@ -299,7 +303,7 @@ public class OptWnd extends Window {
 	    }
 	}, new Coord(0, y));
 
-	y+=25;
+	y += 25;
 	display.add(new CFGBox("Show all qualities on CTRL", CFG.Q_SHOW_ALL_MODS) {
 	    @Override
 	    protected void defval() {
@@ -314,7 +318,7 @@ public class OptWnd extends Window {
 	    }
 	}, new Coord(0, y));
 
-	y+=25;
+	y += 25;
 	display.add(new CFGBox("Show all qualities on ALT", CFG.Q_SHOW_ALL_MODS) {
 	    @Override
 	    protected void defval() {
@@ -329,10 +333,8 @@ public class OptWnd extends Window {
 	    }
 	}, new Coord(0, y));
 
-	display.add(new PButton(200, "Back", 27, main), new Coord(0, y+35));
+	display.add(new PButton(200, "Back", 27, main), new Coord(0, y + 35));
 	display.pack();
-
-	chpanel(main);
     }
 
     public OptWnd() {
