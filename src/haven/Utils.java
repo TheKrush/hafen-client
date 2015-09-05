@@ -1183,6 +1183,18 @@ public class Utils {
 	return s.hasNext() ? s.next() : "";
     }
 
+    public static boolean checkbit(int target, int index) {
+	return (target & (1 << index)) != 0;
+    }
+
+    public static int setbit(int target, int index, boolean value) {
+	if(value) {
+	    return target | (1 << index);
+	} else {
+	    return target & ~(1 << index);
+	}
+    }
+
     static {
 	Console.setscmd("die", new Console.Command() {
 		public void run(Console cons, String[] args) {
