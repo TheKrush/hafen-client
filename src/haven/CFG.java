@@ -79,7 +79,7 @@ public enum CFG {
     }
 
     public static int geti(CFG name) {
-	return (Integer) get(name);
+	return  ((Number)get(name)).intValue();
     }
 
     @SuppressWarnings("unchecked")
