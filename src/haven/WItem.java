@@ -275,7 +275,7 @@ public class WItem extends Widget implements DTarget {
 					item.wdgmsg("drop", c);
 					return (true);
 				}
-				return true;
+				break;
 			case 2: // middle
 				break;
 			case 3: // right
@@ -290,8 +290,9 @@ public class WItem extends Widget implements DTarget {
 						return (true);
 					}
 				}
+				break;
 		}
-		return false;
+		return (false);
 	}
 
 	public boolean drop(Coord cc, Coord ul) {
