@@ -26,12 +26,10 @@
 
 package haven;
 
-import java.util.*;
-import java.awt.font.TextAttribute;
-
 public class OptWnd extends Window {
+    public static final Coord PANEL_POS = new Coord(220, 30);
     public final Panel main, video, audio;
-    private final Panel display;
+    private final Panel display, general, camera;
     public Panel current;
 
     public void chpanel(Panel p) {
@@ -194,11 +192,13 @@ public class OptWnd extends Window {
 	video = add(new VideoPanel(main));
 	audio = add(new Panel());
 	display = add(new Panel());
+	general = add(new Panel());
+	camera = add(new Panel());
 	int y;
 
-	main.add(new PButton(200, "Video settings", 'v', video), new Coord(0, 0));
-	main.add(new PButton(200, "Audio settings", 'a', audio), new Coord(0, 30));
-	main.add(new PButton(200, "General settings", 'g', display), new Coord(0, 60));
+	addPanelButton("Video settings", 'v', video, 0, 0);
+	addPanelButton("Audio settings", 'a', audio, 0, 1);
+
 	if(gopts) {
 	    main.add(new Button(200, "Switch character") {
 		    public void click() {
@@ -216,7 +216,6 @@ public class OptWnd extends Window {
 		OptWnd.this.hide();
 	    }
 	}, new Coord(0, 180));
-	main.pack();
 
 	y = 0;
 	audio.add(new Label("Master audio volume"), new Coord(0, y));
@@ -251,22 +250,41 @@ public class OptWnd extends Window {
 		}
 	    }, new Coord(0, y));
 	y += 35;
-	audio.add(new PButton(200, "Back", 27, main), new Coord(0, 180));
+	audio.add(new PButton(200, "Back", 27, main), new Coord(0, y));
 	audio.pack();
 
 	initDisplayPanel();
+	initGeneralPanel();
+	main.pack();
 	chpanel(main);
     }
 
-    private void initDisplayPanel() {
-	int y = 0;
-	display.add(new CFGBox("Allow day/night cycle", CFG.DISPLAY_DAYNIGHTCYCLE), new Coord(0, y));
+    private void addPanelButton(String name, char key, Panel panel, int x, int y){
+	main.add(new PButton(200, name, key, panel), PANEL_POS.mul(x, y));
+    }
 
+    private void initGeneralPanel() {
+	addPanelButton("General settings", 'g', general, 1, 0);
+
+	int y = 0;
+	general.add(new CFGBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
+
+	general.add(new PButton(200, "Back", 27, main), new Coord(0, y + 35));
+	general.pack();
+    }
+
+    private void initDisplayPanel() {
+	addPanelButton("Display settings", 'd', display, 1, 1);
+
+	int x = 0;
+	int y = 0;
+	int my = 0;
+	display.add(new CFGBox("Allow day/night cycle", CFG.DISPLAY_DAYNIGHTCYCLE), new Coord(0, y));
 	y+=25;
-	display.add(new CFGBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(0, y));
+	display.add(new CFGBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
 
 	y += 25;
-	display.add(new CFGBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(0, y));
+	display.add(new CFGBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 
 	y+=25;
 	display.add(new CFGBox("Free camera rotation", CFG.FREE_CAMERA_ROTATION), new Coord(0, y));
@@ -277,18 +295,17 @@ public class OptWnd extends Window {
 	y+=25;
 	display.add(new CFGBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(0, y));
 
-	y += 25;
-	display.add(new CFGBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
-
-	y += 25;
-	display.add(new CFGBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(0, y));
+	x += 250;
+	y = 0;
+	my = Math.max(my, y);
+	display.add(new CFGBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(x, y));
 
 	y += 25;
 	display.add(new CFGBox("Show single quality as max", CFG.Q_MAX_SINGLE
 		, "If checked will show single value quality as maximum of all qualities, instead of average")
-		, new Coord(0, y));
+		, new Coord(x, y));
 
-	y += 25;
+	y += 30;
 	display.add(new CFGBox("Show all qualities on SHIFT", CFG.Q_SHOW_ALL_MODS) {
 	    @Override
 	    protected void defval() {
@@ -301,7 +318,7 @@ public class OptWnd extends Window {
 		cfg.set(Utils.setbit(cfg.vali(), 0, a));
 
 	    }
-	}, new Coord(0, y));
+	}, new Coord(x, y));
 
 	y += 25;
 	display.add(new CFGBox("Show all qualities on CTRL", CFG.Q_SHOW_ALL_MODS) {
@@ -316,7 +333,7 @@ public class OptWnd extends Window {
 		cfg.set(Utils.setbit(cfg.vali(), 1, a));
 
 	    }
-	}, new Coord(0, y));
+	}, new Coord(x, y));
 
 	y += 25;
 	display.add(new CFGBox("Show all qualities on ALT", CFG.Q_SHOW_ALL_MODS) {
@@ -331,9 +348,10 @@ public class OptWnd extends Window {
 		cfg.set(Utils.setbit(cfg.vali(), 2, a));
 
 	    }
-	}, new Coord(0, y));
+	}, new Coord(x, y));
+	my = Math.max(my, y);
 
-	display.add(new PButton(200, "Back", 27, main), new Coord(0, y + 35));
+	display.add(new PButton(200, "Back", 27, main), new Coord(0, my + 35));
 	display.pack();
     }
 
