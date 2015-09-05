@@ -265,6 +265,9 @@ public class OptWnd extends Window {
 	display.add(new CFGBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(0, y));
 
 	y+=25;
+	display.add(new CFGBox("Free camera rotation", CFG.FREE_CAMERA_ROTATION), new Coord(0, y));
+
+	y+=25;
 	display.add(new CFGBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
 
 	y += 25;
