@@ -17,6 +17,7 @@ public enum CFG {
     STORE_MAP("general.storemap", Utils.getprefb("storemap", false)),
     SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 
+    Q_SHOW_ALL_MODS("ui.q.allmods", 7),
     Q_SHOW_SINGLE("ui.q.showsingle", true),
     Q_MAX_SINGLE("ui.q.maxsingle", false);
 
@@ -55,6 +56,10 @@ public enum CFG {
 	return CFG.getb(this);
     }
 
+    public int vali() {
+	return CFG.geti(this);
+    }
+
     public void set(Object value){
 	CFG.set(this, value);
     }
@@ -71,6 +76,10 @@ public enum CFG {
 
     public static boolean getb(CFG name) {
 	return (Boolean) get(name);
+    }
+
+    public static int geti(CFG name) {
+	return (Integer) get(name);
     }
 
     @SuppressWarnings("unchecked")

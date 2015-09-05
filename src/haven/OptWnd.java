@@ -272,7 +272,52 @@ public class OptWnd extends Window {
 		, "If checked will show single value quality as maximum of all qualities, instead of average")
 		, new Coord(0, y));
 
-	display.add(new PButton(200, "Back", 27, main), new Coord(0, 180));
+	y+=25;
+	display.add(new CFGBox("Show all qualities on SHIFT", CFG.Q_SHOW_ALL_MODS) {
+	    @Override
+	    protected void defval() {
+		a = Utils.checkbit(cfg.vali(), 0);
+	    }
+
+	    @Override
+	    public void set(boolean a) {
+		this.a = a;
+		cfg.set(Utils.setbit(cfg.vali(), 0, a));
+
+	    }
+	}, new Coord(0, y));
+
+	y+=25;
+	display.add(new CFGBox("Show all qualities on CTRL", CFG.Q_SHOW_ALL_MODS) {
+	    @Override
+	    protected void defval() {
+		a = Utils.checkbit(cfg.vali(), 1);
+	    }
+
+	    @Override
+	    public void set(boolean a) {
+		this.a = a;
+		cfg.set(Utils.setbit(cfg.vali(), 1, a));
+
+	    }
+	}, new Coord(0, y));
+
+	y+=25;
+	display.add(new CFGBox("Show all qualities on ALT", CFG.Q_SHOW_ALL_MODS) {
+	    @Override
+	    protected void defval() {
+		a = Utils.checkbit(cfg.vali(), 2);
+	    }
+
+	    @Override
+	    public void set(boolean a) {
+		this.a = a;
+		cfg.set(Utils.setbit(cfg.vali(), 2, a));
+
+	    }
+	}, new Coord(0, y));
+
+	display.add(new PButton(200, "Back", 27, main), new Coord(0, y+35));
 	display.pack();
 
 	chpanel(main);
@@ -297,7 +342,7 @@ public class OptWnd extends Window {
 
     private static class CFGBox extends CheckBox {
 
-	private final CFG cfg;
+	protected final CFG cfg;
 
 	public CFGBox(String lbl, CFG cfg) {
 	    this(lbl, cfg, null);
@@ -307,10 +352,14 @@ public class OptWnd extends Window {
 	    super(lbl);
 
 	    this.cfg = cfg;
-	    a = cfg.valb();
+	    defval();
 	    if(tip != null) {
 		tooltip = Text.render(tip).tex();
 	    }
+	}
+
+	protected void defval() {
+	    a = cfg.valb();
 	}
 
 	@Override
