@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CFG {
+    DISPLAY_DAYNIGHTCYCLE("display.daynightcycle", Utils.getprefb("daynightcycle", true)),
     DISPLAY_KINNAMES("display.kinnames", Utils.getprefb("showkinnames", true)),
     DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", false)),
     FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", true)),

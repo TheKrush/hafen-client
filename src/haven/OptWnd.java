@@ -256,6 +256,9 @@ public class OptWnd extends Window {
 
 	//display settings
 	y = 0;
+	display.add(new CFGBox("Allow day/night cycle", CFG.DISPLAY_DAYNIGHTCYCLE), new Coord(0, y));
+
+	y+=25;
 	display.add(new CFGBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(0, y));
 
 	y+=25;
