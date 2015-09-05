@@ -26,16 +26,14 @@
 
 package haven;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.io.PrintStream;
 import java.util.Properties;
 
 import static haven.Utils.getprop;
 
 public class Config {
+    public static final File HOMEDIR = new File(".").getAbsoluteFile();
     public static String authuser = getprop("haven.authuser", null);
     public static String authserv = getprop("haven.authserv", null);
     public static String defserv = getprop("haven.defserv", "127.0.0.1");
@@ -84,7 +82,54 @@ public class Config {
     }
 
     public static File getFile(String name) {
-	return new File(name);
+	return new File(HOMEDIR, name);
+    }
+
+    public static String loadFile(String name){
+	InputStream inputStream = null;
+	File file = Config.getFile(name);
+	if(file.exists() && file.canRead()) {
+	    try {
+		inputStream = new FileInputStream(file);
+	    } catch (FileNotFoundException ignored) {
+	    }
+	} else {
+	    inputStream = Config.class.getResourceAsStream("/"+name);
+	}
+	if(inputStream != null) {
+	    try {
+		return Utils.stream2str(inputStream);
+	    } catch (Exception ignore){
+	    } finally {
+		try {inputStream.close();} catch (IOException ignored) {}
+	    }
+	}
+	return null;
+    }
+
+    public static void saveFile(String name, String data){
+	File file = Config.getFile(name);
+	boolean exists = file.exists();
+	if(!exists){
+	    try {
+		//noinspection ResultOfMethodCallIgnored
+		String parent = file.getParent();
+		new File(parent).mkdirs();
+		exists = file.createNewFile();
+	    } catch (IOException ignored) {}
+	}
+	if(exists && file.canWrite()){
+	    PrintWriter out = null;
+	    try {
+		out = new PrintWriter(file);
+		out.print(data);
+	    } catch (FileNotFoundException ignored) {
+	    } finally {
+		if (out != null) {
+		    out.close();
+		}
+	    }
+	}
     }
 
     private static int getint(String name, int def) {
