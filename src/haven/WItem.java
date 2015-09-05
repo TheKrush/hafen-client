@@ -266,26 +266,30 @@ public class WItem extends Widget implements DTarget {
 
 	private boolean checkXfer(int button) {
 		boolean inv = parent instanceof Inventory;
-		if (ui.modshift) {
-			if (ui.modmeta) {
-				if (inv) {
-					wdgmsg("transfer-same", item.resname(), button == 3);
-					return true;
+		switch (button) {
+			case 1: // left
+				if (ui.modshift) {
+					item.wdgmsg("transfer", c);
+					return (true);
+				} else if (ui.modctrl) {
+					item.wdgmsg("drop", c);
+					return (true);
 				}
-			} else if (button == 1) {
-				item.wdgmsg("transfer", c);
 				return true;
-			}
-		} else if (ui.modctrl) {
-			if (ui.modmeta) {
-				if (inv) {
-					wdgmsg("drop-same", item.resname(), button == 3);
-					return true;
+			case 2: // middle
+				break;
+			case 3: // right
+				if (ui.modshift) {
+					if (inv) {
+						wdgmsg("transfer-same", item.resname(), button == 3);
+						return (true);
+					}
+				} else if (ui.modctrl) {
+					if (inv) {
+						wdgmsg("drop-same", item.resname(), button == 3);
+						return (true);
+					}
 				}
-			} else if (button == 1) {
-				item.wdgmsg("drop", c);
-				return true;
-			}
 		}
 		return false;
 	}

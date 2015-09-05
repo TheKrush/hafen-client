@@ -125,16 +125,27 @@ public class ISBox extends Widget implements DTarget {
 				return take.mousedown(c.sub(cc), button);
 			}
 		}
-		if (button == 1) {
-			if (ui.modshift ^ ui.modctrl) {           //SHIFT or CTRL means pull
-				int dir = ui.modctrl ? -1 : 1;        //CTRL means pull out, SHIFT pull in
-				int all = (dir > 0) ? av - rem : rem; //count depends on direction
-				int k = ui.modmeta ? all : 1;         //ALT means pull all
-				transfer(dir, k);
-			} else {
-				wdgmsg("click");
-			}
-			return (true);
+		switch (button) {
+			case 1: // left
+				if (ui.modshift) {
+					transfer(1, 1);
+				} else if (ui.modctrl) {
+					transfer(-1, 1);
+				} else {
+					wdgmsg("click");
+				}
+				return (true);
+			case 2: // middle
+				break;
+			case 3: // right
+				if (ui.modshift) {
+					transfer(1, rem);
+					return (true);
+				} else if (ui.modctrl) {
+					transfer(-1, av - rem);
+					return (true);
+				}
+				break;
 		}
 		return (false);
 	}
