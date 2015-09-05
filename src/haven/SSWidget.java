@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Graphics;
@@ -32,27 +31,28 @@ import java.awt.Graphics;
  * This is old and should be deprecated.
  */
 public class SSWidget extends Widget {
-    private TexIM surf;
-	
-    public SSWidget(Coord sz) {
-	super(sz);
-	surf = new TexIM(sz);
-    }
-	
-    public void draw(GOut g) {
-	g.image(surf, Coord.z);
-    }
-	
-    public Graphics graphics() {
-	Graphics g = surf.graphics();
-	return(g);
-    }
-	
-    public void update() {
-	surf.update();
-    }
-	
-    public void clear() {
-	surf.clear();
-    }
+
+	private TexIM surf;
+
+	public SSWidget(Coord sz) {
+		super(sz);
+		surf = new TexIM(sz);
+	}
+
+	public void draw(GOut g) {
+		g.image(surf, Coord.z);
+	}
+
+	public Graphics graphics() {
+		Graphics g = surf.graphics();
+		return (g);
+	}
+
+	public void update() {
+		surf.update();
+	}
+
+	public void clear() {
+		surf.clear();
+	}
 }

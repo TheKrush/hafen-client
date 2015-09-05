@@ -23,42 +23,141 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import java.util.*;
 
 public abstract class BinOp extends Expression {
-    public final Expression lhs, rhs;
 
-    public BinOp(Expression lhs, Expression rhs) {
-	this.lhs = lhs;
-	this.rhs = rhs;
-    }
+	public final Expression lhs, rhs;
 
-    public void walk(Walker w) {
-	w.el(lhs);
-	w.el(rhs);
-    }
+	public BinOp(Expression lhs, Expression rhs) {
+		this.lhs = lhs;
+		this.rhs = rhs;
+	}
 
-    public abstract String form();
+	public void walk(Walker w) {
+		w.el(lhs);
+		w.el(rhs);
+	}
 
-    public void output(Output out) {
-	out.write("(");
-	lhs.output(out);
-	out.write(" " + form() + " ");
-	rhs.output(out);
-	out.write(")");
-    }
+	public abstract String form();
 
-    public static class Eq extends BinOp {public String form() {return("==");} public Eq(Expression l, Expression r) {super(l, r);}}
-    public static class Ne extends BinOp {public String form() {return("!=");} public Ne(Expression l, Expression r) {super(l, r);}}
-    public static class Lt extends BinOp {public String form() {return("<");}  public Lt(Expression l, Expression r) {super(l, r);}}
-    public static class Gt extends BinOp {public String form() {return(">");}  public Gt(Expression l, Expression r) {super(l, r);}}
-    public static class Le extends BinOp {public String form() {return("<=");} public Le(Expression l, Expression r) {super(l, r);}}
-    public static class Ge extends BinOp {public String form() {return(">=");} public Ge(Expression l, Expression r) {super(l, r);}}
-    public static class Or extends BinOp {public String form() {return("||");} public Or(Expression l, Expression r) {super(l, r);}}
-    public static class And extends BinOp {public String form() {return("&&");} public And(Expression l, Expression r) {super(l, r);}}
-    public static class Sub extends BinOp {public String form() {return("-");} public Sub(Expression l, Expression r) {super(l, r);}}
-    public static class Div extends BinOp {public String form() {return("/");} public Div(Expression l, Expression r) {super(l, r);}}
+	public void output(Output out) {
+		out.write("(");
+		lhs.output(out);
+		out.write(" " + form() + " ");
+		rhs.output(out);
+		out.write(")");
+	}
+
+	public static class Eq extends BinOp {
+
+		public String form() {
+			return ("==");
+		}
+
+		public Eq(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Ne extends BinOp {
+
+		public String form() {
+			return ("!=");
+		}
+
+		public Ne(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Lt extends BinOp {
+
+		public String form() {
+			return ("<");
+		}
+
+		public Lt(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Gt extends BinOp {
+
+		public String form() {
+			return (">");
+		}
+
+		public Gt(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Le extends BinOp {
+
+		public String form() {
+			return ("<=");
+		}
+
+		public Le(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Ge extends BinOp {
+
+		public String form() {
+			return (">=");
+		}
+
+		public Ge(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Or extends BinOp {
+
+		public String form() {
+			return ("||");
+		}
+
+		public Or(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class And extends BinOp {
+
+		public String form() {
+			return ("&&");
+		}
+
+		public And(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Sub extends BinOp {
+
+		public String form() {
+			return ("-");
+		}
+
+		public Sub(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
+
+	public static class Div extends BinOp {
+
+		public String form() {
+			return ("/");
+		}
+
+		public Div(Expression l, Expression r) {
+			super(l, r);
+		}
+	}
 }

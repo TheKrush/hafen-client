@@ -23,29 +23,29 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import java.util.*;
 
 public class FieldRef extends Expression {
-    public final Expression val;
-    public final String el;
 
-    public FieldRef(Expression val, String el) {
-	this.val = val;
-	this.el = el;
-    }
+	public final Expression val;
+	public final String el;
 
-    public void walk(Walker w) {
-	w.el(val);
-    }
+	public FieldRef(Expression val, String el) {
+		this.val = val;
+		this.el = el;
+	}
 
-    public void output(Output out) {
-	out.write("(");
-	val.output(out);
-	out.write(".");
-	out.write(el);
-	out.write(")");
-    }
+	public void walk(Walker w) {
+		w.el(val);
+	}
+
+	public void output(Output out) {
+		out.write("(");
+		val.output(out);
+		out.write(".");
+		out.write(el);
+		out.write(")");
+	}
 }

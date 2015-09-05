@@ -23,20 +23,20 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public abstract class Statement extends Element {
-    public static Statement expr(final Expression e) {
-	return(new Statement() {
-		public void walk(Walker w) {
-		    w.el(e);
-		}
 
-		public void output(Output out) {
-		    e.output(out);
-		    out.write(";");
-		}
-	    });
-    }
+	public static Statement expr(final Expression e) {
+		return (new Statement() {
+			public void walk(Walker w) {
+				w.el(e);
+			}
+
+			public void output(Output out) {
+				e.output(out);
+				out.write(";");
+			}
+		});
+	}
 }

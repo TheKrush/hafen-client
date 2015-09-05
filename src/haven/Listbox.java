@@ -23,76 +23,82 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
 
 public abstract class Listbox<T> extends ListWidget<T> {
-    public final int h;
-    public final Scrollbar sb;
 
-    public Listbox(int w, int h, int itemh) {
-	super(new Coord(w, h * itemh), itemh);
-	this.h = h;
-	this.sb = adda(new Scrollbar(sz.y, 0, 0), sz.x, 0, 1, 0);
-    }
+	public final int h;
+	public final Scrollbar sb;
 
-    protected void drawsel(GOut g) {
-	g.chcolor(255, 255, 0, 128);
-	g.frect(Coord.z, g.sz);
-	g.chcolor();
-    }
-
-    protected void drawbg(GOut g) {
-	g.chcolor(Color.BLACK);
-	g.frect(Coord.z, sz);
-	g.chcolor();
-    }
-
-    public void draw(GOut g) {
-	sb.max = listitems() - h;
-	drawbg(g);
-	int n = listitems();
-	for(int i = 0; i < h; i++) {
-	    int idx = i + sb.val;
-	    if(idx >= n)
-		break;
-	    T item = listitem(idx);
-	    int w = sz.x - (sb.vis()?sb.sz.x:0);
-	    GOut ig = g.reclip(new Coord(0, i * itemh), new Coord(w, itemh));
-	    if(item == sel)
-		drawsel(ig);
-	    drawitem(ig, item, idx);
+	public Listbox(int w, int h, int itemh) {
+		super(new Coord(w, h * itemh), itemh);
+		this.h = h;
+		this.sb = adda(new Scrollbar(sz.y, 0, 0), sz.x, 0, 1, 0);
 	}
-	super.draw(g);
-    }
 
-    public boolean mousewheel(Coord c, int amount) {
-	sb.ch(amount);
-	return(true);
-    }
+	protected void drawsel(GOut g) {
+		g.chcolor(255, 255, 0, 128);
+		g.frect(Coord.z, g.sz);
+		g.chcolor();
+	}
 
-    protected void itemclick(T item, int button) {
-	if(button == 1)
-	    change(item);
-    }
+	protected void drawbg(GOut g) {
+		g.chcolor(Color.BLACK);
+		g.frect(Coord.z, sz);
+		g.chcolor();
+	}
 
-    public T itemat(Coord c) {
-	int idx = (c.y / itemh) + sb.val;
-	if(idx >= listitems())
-	    return(null);
-	return(listitem(idx));
-    }
+	public void draw(GOut g) {
+		sb.max = listitems() - h;
+		drawbg(g);
+		int n = listitems();
+		for (int i = 0; i < h; i++) {
+			int idx = i + sb.val;
+			if (idx >= n) {
+				break;
+			}
+			T item = listitem(idx);
+			int w = sz.x - (sb.vis() ? sb.sz.x : 0);
+			GOut ig = g.reclip(new Coord(0, i * itemh), new Coord(w, itemh));
+			if (item == sel) {
+				drawsel(ig);
+			}
+			drawitem(ig, item, idx);
+		}
+		super.draw(g);
+	}
 
-    public boolean mousedown(Coord c, int button) {
-	if(super.mousedown(c, button))
-	    return(true);
-	T item = itemat(c);
-	if((item == null) && (button == 1))
-	    change(null);
-	else if(item != null)
-	    itemclick(item, button);
-	return(true);
-    }
+	public boolean mousewheel(Coord c, int amount) {
+		sb.ch(amount);
+		return (true);
+	}
+
+	protected void itemclick(T item, int button) {
+		if (button == 1) {
+			change(item);
+		}
+	}
+
+	public T itemat(Coord c) {
+		int idx = (c.y / itemh) + sb.val;
+		if (idx >= listitems()) {
+			return (null);
+		}
+		return (listitem(idx));
+	}
+
+	public boolean mousedown(Coord c, int button) {
+		if (super.mousedown(c, button)) {
+			return (true);
+		}
+		T item = itemat(c);
+		if ((item == null) && (button == 1)) {
+			change(null);
+		} else if (item != null) {
+			itemclick(item, button);
+		}
+		return (true);
+	}
 }

@@ -23,17 +23,17 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import javax.media.opengl.*;
 
 public class CurrentGL {
-    public final GL gl;
-    public final GLConfig cfg;
 
-    public CurrentGL(GL gl, GLConfig cfg) {
-	this.gl = gl;
-	this.cfg = cfg;
-    }
+	public final GL gl;
+	public final GLConfig cfg;
+
+	public CurrentGL(GL gl, GLConfig cfg) {
+		this.gl = gl;
+		this.cfg = cfg;
+	}
 }

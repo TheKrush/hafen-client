@@ -23,68 +23,71 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
 
 public class ResDrawable extends Drawable {
-    public final Indir<Resource> res;
-    public Sprite spr = null;
-    MessageBuf sdt;
-    private int delay = 0;
-	
-    public ResDrawable(Gob gob, Indir<Resource> res, Message sdt) {
-	super(gob);
-	this.res = res;
-	this.sdt = new MessageBuf(sdt);
-	try {
-	    init();
-	} catch(Loading e) {}
-    }
-	
-    public ResDrawable(Gob gob, Resource res) {
-	this(gob, res.indir(), MessageBuf.nil);
-    }
-	
-    public void init() {
-	if(spr != null)
-	    return;
-	spr = Sprite.create(gob, res.get(), sdt.clone());
-    }
-	
-    public void setup(RenderList rl) {
-	try {
-	    init();
-	} catch(Loading e) {
-	    return;
+
+	public final Indir<Resource> res;
+	public Sprite spr = null;
+	MessageBuf sdt;
+	private int delay = 0;
+
+	public ResDrawable(Gob gob, Indir<Resource> res, Message sdt) {
+		super(gob);
+		this.res = res;
+		this.sdt = new MessageBuf(sdt);
+		try {
+			init();
+		} catch (Loading e) {
+		}
 	}
-	spr.setup(rl);
-    }
-	
-    public void ctick(int dt) {
-	if(spr == null) {
-	    delay += dt;
-	} else {
-	    spr.tick(delay + dt);
-	    delay = 0;
+
+	public ResDrawable(Gob gob, Resource res) {
+		this(gob, res.indir(), MessageBuf.nil);
 	}
-    }
-    
-    public void dispose() {
-	if(spr != null)
-	    spr.dispose();
-    }
-    
-    public Resource getres() {
-	return(res.get());
-    }
-    
-    public Skeleton.Pose getpose() {
-	init();
-	if(spr instanceof SkelSprite) {
-	    return(((SkelSprite)spr).pose);
+
+	public void init() {
+		if (spr != null) {
+			return;
+		}
+		spr = Sprite.create(gob, res.get(), sdt.clone());
 	}
-	return(null);
-    }
+
+	public void setup(RenderList rl) {
+		try {
+			init();
+		} catch (Loading e) {
+			return;
+		}
+		spr.setup(rl);
+	}
+
+	public void ctick(int dt) {
+		if (spr == null) {
+			delay += dt;
+		} else {
+			spr.tick(delay + dt);
+			delay = 0;
+		}
+	}
+
+	public void dispose() {
+		if (spr != null) {
+			spr.dispose();
+		}
+	}
+
+	public Resource getres() {
+		return (res.get());
+	}
+
+	public Skeleton.Pose getpose() {
+		init();
+		if (spr instanceof SkelSprite) {
+			return (((SkelSprite) spr).pose);
+		}
+		return (null);
+	}
 }

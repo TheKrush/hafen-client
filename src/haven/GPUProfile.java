@@ -23,84 +23,86 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 import javax.media.opengl.*;
 
 public class GPUProfile extends Profile {
-    private Collection<Frame> waiting = new LinkedList<Frame>();
 
-    public GPUProfile(int hl) {
-	super(hl);
-    }
+	private Collection<Frame> waiting = new LinkedList<Frame>();
 
-    public class Frame extends Profile.Frame {
-	private List<String> nw = new LinkedList<String>();
-	private List<Integer> queries = new LinkedList<Integer>();
-	private GL3 gl;
-
-	public Frame(GL3 gl) {
-	    this.gl = gl;
-	    query();
+	public GPUProfile(int hl) {
+		super(hl);
 	}
 
-	private void query() {
-	    int[] buf = new int[1];
-	    gl.glGenQueries(1, buf, 0);
-	    gl.glQueryCounter(buf[0], GL3.GL_TIMESTAMP);
-	    GOut.checkerr(gl);
-	    queries.add(buf[0]);
-	}
+	public class Frame extends Profile.Frame {
 
-	public void tick(String nm) {
-	    query();
-	    nw.add(nm);
-	}
+		private List<String> nw = new LinkedList<String>();
+		private List<Integer> queries = new LinkedList<Integer>();
+		private GL3 gl;
 
-	public void fin() {
-	    query();
-	    waiting.add(this);
-	    check();
-	}
-
-	public void fin2() {
-	    long[] tms = new long[queries.size()];
-	    {
-		int i = 0;
-		for(Iterator<Integer> qi = queries.iterator(); qi.hasNext(); i++) {
-		    int[] qo = {qi.next()};
-		    gl.glGetQueryObjecti64v(qo[0], GL2.GL_QUERY_RESULT, tms, i);
-		    gl.glDeleteQueries(1, qo, 0);
+		public Frame(GL3 gl) {
+			this.gl = gl;
+			query();
 		}
-	    }
-	    int np = tms.length - 2;
-	    double total = (tms[tms.length - 1] - tms[0]) / 1000000000.0;
-	    String[] nm = new String[np];
-	    double[] prt = new double[np];
-	    for(int i = 0; i < prt.length; i++) {
-		nm[i] = nw.get(i);
-		prt[i] = (tms[i + 1] - tms[i]) / 1000000000.0;
-	    }
-	    fin(total, nm, prt);
-	    nw = null;
-	    queries = null;
-	}
-    }
 
-    public void check() {
-	int[] buf = new int[1];
-	int[] rb = new int[1];
-	for(Iterator<Frame> i = waiting.iterator(); i.hasNext();) {
-	    Frame f = i.next();
-	    for(int qo : f.queries) {
-		f.gl.glGetQueryObjectiv(qo, GL2.GL_QUERY_RESULT_AVAILABLE, rb, 0);
-		if(rb[0] == 0)
-		    return;
-	    }
-	    f.fin2();
-	    i.remove();
+		private void query() {
+			int[] buf = new int[1];
+			gl.glGenQueries(1, buf, 0);
+			gl.glQueryCounter(buf[0], GL3.GL_TIMESTAMP);
+			GOut.checkerr(gl);
+			queries.add(buf[0]);
+		}
+
+		public void tick(String nm) {
+			query();
+			nw.add(nm);
+		}
+
+		public void fin() {
+			query();
+			waiting.add(this);
+			check();
+		}
+
+		public void fin2() {
+			long[] tms = new long[queries.size()];
+			{
+				int i = 0;
+				for (Iterator<Integer> qi = queries.iterator(); qi.hasNext(); i++) {
+					int[] qo = {qi.next()};
+					gl.glGetQueryObjecti64v(qo[0], GL2.GL_QUERY_RESULT, tms, i);
+					gl.glDeleteQueries(1, qo, 0);
+				}
+			}
+			int np = tms.length - 2;
+			double total = (tms[tms.length - 1] - tms[0]) / 1000000000.0;
+			String[] nm = new String[np];
+			double[] prt = new double[np];
+			for (int i = 0; i < prt.length; i++) {
+				nm[i] = nw.get(i);
+				prt[i] = (tms[i + 1] - tms[i]) / 1000000000.0;
+			}
+			fin(total, nm, prt);
+			nw = null;
+			queries = null;
+		}
 	}
-    }
+
+	public void check() {
+		int[] buf = new int[1];
+		int[] rb = new int[1];
+		for (Iterator<Frame> i = waiting.iterator(); i.hasNext();) {
+			Frame f = i.next();
+			for (int qo : f.queries) {
+				f.gl.glGetQueryObjectiv(qo, GL2.GL_QUERY_RESULT_AVAILABLE, rb, 0);
+				if (rb[0] == 0) {
+					return;
+				}
+			}
+			f.fin2();
+			i.remove();
+		}
+	}
 }

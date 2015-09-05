@@ -23,15 +23,15 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public enum WrapMode {
-    ONCE(true), LOOP(false), PONG(true), PONGLOOP(false);
-    
-    public final boolean ends;
-    
-    WrapMode(boolean ends) {
-	this.ends = ends;
-    }
+
+	ONCE(true), LOOP(false), PONG(true), PONGLOOP(false);
+
+	public final boolean ends;
+
+	WrapMode(boolean ends) {
+		this.ends = ends;
+	}
 }

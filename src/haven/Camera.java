@@ -23,25 +23,25 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import javax.media.opengl.*;
 
 public class Camera extends Transform {
-    private Matrix4f bk;
-    
-    public Camera(Matrix4f xf) {
-	super(xf);
-    }
-    
-    public void apply(GOut g) {
-    }
-    
-    public void unapply(GOut g) {
-    }
-    
-    public void prep(Buffer b) {
-	b.put(PView.cam, this);
-    }
+
+	private Matrix4f bk;
+
+	public Camera(Matrix4f xf) {
+		super(xf);
+	}
+
+	public void apply(GOut g) {
+	}
+
+	public void unapply(GOut g) {
+	}
+
+	public void prep(Buffer b) {
+		b.put(PView.cam, this);
+	}
 }

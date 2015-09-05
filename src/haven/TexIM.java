@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.image.BufferedImage;
@@ -34,30 +33,32 @@ import java.awt.image.WritableRaster;
 import java.awt.Graphics2D;
 
 public class TexIM extends TexI {
-    WritableRaster buf;
-    Graphics2D cg = null;
-    Throwable cgc;
-	
-    public TexIM(Coord sz) {
-	super(sz);
-	clear();
-    }
-	
-    public Graphics2D graphics() {
-	if(cg != null)
-	    throw(new RuntimeException("Multiple TexIM Graphics created (" + Thread.currentThread().getName() + ")", cgc));
-	cgc = new Throwable("Current Graphics created (on " + Thread.currentThread().getName() + ")");
-	return(cg = back.createGraphics());
-    }
-	
-    public void update() {
-	cg.dispose();
-	cg = null;
-	dispose();
-    }
-	
-    public void clear() {
-	buf = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, tdim.x, tdim.y, 4, null);
-	back = new BufferedImage(glcm, buf, false, null);
-    }
+
+	WritableRaster buf;
+	Graphics2D cg = null;
+	Throwable cgc;
+
+	public TexIM(Coord sz) {
+		super(sz);
+		clear();
+	}
+
+	public Graphics2D graphics() {
+		if (cg != null) {
+			throw (new RuntimeException("Multiple TexIM Graphics created (" + Thread.currentThread().getName() + ")", cgc));
+		}
+		cgc = new Throwable("Current Graphics created (on " + Thread.currentThread().getName() + ")");
+		return (cg = back.createGraphics());
+	}
+
+	public void update() {
+		cg.dispose();
+		cg = null;
+		dispose();
+	}
+
+	public void clear() {
+		buf = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, tdim.x, tdim.y, 4, null);
+		back = new BufferedImage(glcm, buf, false, null);
+	}
 }

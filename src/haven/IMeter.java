@@ -23,72 +23,76 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
 import java.util.*;
 
 public class IMeter extends Widget {
-    static Coord off = new Coord(22, 7);
-    static Coord fsz = new Coord(101, 24);
-    static Coord msz = new Coord(75, 10);
-    Indir<Resource> bg;
-    List<Meter> meters;
-    
-    @RName("im")
-    public static class $_ implements Factory {
-	public Widget create(Widget parent, Object[] args) {
-	    Indir<Resource> bg = parent.ui.sess.getres((Integer)args[0]);
-	    List<Meter> meters = new LinkedList<Meter>();
-	    for(int i = 1; i < args.length; i += 2)
-		meters.add(new Meter((Color)args[i], (Integer)args[i + 1]));
-	    return(new IMeter(bg, meters));
+
+	static Coord off = new Coord(22, 7);
+	static Coord fsz = new Coord(101, 24);
+	static Coord msz = new Coord(75, 10);
+	Indir<Resource> bg;
+	List<Meter> meters;
+
+	@RName("im")
+	public static class $_ implements Factory {
+
+		public Widget create(Widget parent, Object[] args) {
+			Indir<Resource> bg = parent.ui.sess.getres((Integer) args[0]);
+			List<Meter> meters = new LinkedList<Meter>();
+			for (int i = 1; i < args.length; i += 2) {
+				meters.add(new Meter((Color) args[i], (Integer) args[i + 1]));
+			}
+			return (new IMeter(bg, meters));
+		}
 	}
-    }
-    
-    public IMeter(Indir<Resource> bg, List<Meter> meters) {
-	super(fsz);
-	this.bg = bg;
-	this.meters = meters;
-    }
-    
-    public static class Meter {
-	Color c;
-	int a;
-	
-	public Meter(Color c, int a) {
-	    this.c = c;
-	    this.a = a;
+
+	public IMeter(Indir<Resource> bg, List<Meter> meters) {
+		super(fsz);
+		this.bg = bg;
+		this.meters = meters;
 	}
-    }
-    
-    public void draw(GOut g) {
-	try {
-	    Tex bg = this.bg.get().layer(Resource.imgc).tex();
-	    g.chcolor(0, 0, 0, 255);
-	    g.frect(off, msz);
-	    g.chcolor();
-	    for(Meter m : meters) {
-		int w = msz.x;
-		w = (w * m.a) / 100;
-		g.chcolor(m.c);
-		g.frect(off, new Coord(w, msz.y));
-	    }
-	    g.chcolor();
-	    g.image(bg, Coord.z);
-	} catch(Loading l) {
+
+	public static class Meter {
+
+		Color c;
+		int a;
+
+		public Meter(Color c, int a) {
+			this.c = c;
+			this.a = a;
+		}
 	}
-    }
-    
-    public void uimsg(String msg, Object... args) {
-	if(msg == "set") {
-	    List<Meter> meters = new LinkedList<Meter>();
-	    for(int i = 0; i < args.length; i += 2)
-		meters.add(new Meter((Color)args[i], (Integer)args[i + 1]));
-	    this.meters = meters;
-	} else {
-	    super.uimsg(msg, args);
+
+	public void draw(GOut g) {
+		try {
+			Tex bg = this.bg.get().layer(Resource.imgc).tex();
+			g.chcolor(0, 0, 0, 255);
+			g.frect(off, msz);
+			g.chcolor();
+			for (Meter m : meters) {
+				int w = msz.x;
+				w = (w * m.a) / 100;
+				g.chcolor(m.c);
+				g.frect(off, new Coord(w, msz.y));
+			}
+			g.chcolor();
+			g.image(bg, Coord.z);
+		} catch (Loading l) {
+		}
 	}
-    }
+
+	public void uimsg(String msg, Object... args) {
+		if (msg == "set") {
+			List<Meter> meters = new LinkedList<Meter>();
+			for (int i = 0; i < args.length; i += 2) {
+				meters.add(new Meter((Color) args[i], (Integer) args[i + 1]));
+			}
+			this.meters = meters;
+		} else {
+			super.uimsg(msg, args);
+		}
+	}
 }

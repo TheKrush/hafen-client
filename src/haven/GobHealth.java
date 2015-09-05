@@ -23,28 +23,29 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
 
 public class GobHealth extends GAttrib {
-    int hp;
-    Material.Colors fx;
-    
-    public GobHealth(Gob g, int hp) {
-	super(g);
-	this.hp = hp;
-	this.fx = new Material.Colors(new Color(255, 0, 0, 128 - ((hp * 128) / 4)));
-    }
-    
-    public GLState getfx() {
-	if(hp >= 4)
-	    return(GLState.nullstate);
-	return(fx);
-    }
 
-    public double asfloat() {
-	return(((double)hp) / 4.0);
-    }
+	int hp;
+	Material.Colors fx;
+
+	public GobHealth(Gob g, int hp) {
+		super(g);
+		this.hp = hp;
+		this.fx = new Material.Colors(new Color(255, 0, 0, 128 - ((hp * 128) / 4)));
+	}
+
+	public GLState getfx() {
+		if (hp >= 4) {
+			return (GLState.nullstate);
+		}
+		return (fx);
+	}
+
+	public double asfloat() {
+		return (((double) hp) / 4.0);
+	}
 }

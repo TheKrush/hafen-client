@@ -23,60 +23,62 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
 
 public class VMeter extends Widget {
-    static Tex bg = Resource.loadtex("gfx/hud/vm-frame");
-    static Tex fg = Resource.loadtex("gfx/hud/vm-tex");
-    Color cl;
-    int amount;
-	
-    @RName("vm")
-    public static class $_ implements Factory {
-	public Widget create(Widget parent, Object[] args) {
-	    Color cl;
-	    if(args.length > 4) {
-		cl = new Color((Integer)args[1],
-			       (Integer)args[2],
-			       (Integer)args[3],
-			       (Integer)args[4]);
-	    } else if(args.length > 3) {
-		cl = new Color((Integer)args[1],
-			       (Integer)args[2],
-			       (Integer)args[3]);
-	    } else {
-		cl = (Color)args[1];
-	    }
-	    return(new VMeter((Integer)args[0], cl));
+
+	static Tex bg = Resource.loadtex("gfx/hud/vm-frame");
+	static Tex fg = Resource.loadtex("gfx/hud/vm-tex");
+	Color cl;
+	int amount;
+
+	@RName("vm")
+	public static class $_ implements Factory {
+
+		public Widget create(Widget parent, Object[] args) {
+			Color cl;
+			if (args.length > 4) {
+				cl = new Color((Integer) args[1],
+								(Integer) args[2],
+								(Integer) args[3],
+								(Integer) args[4]);
+			} else if (args.length > 3) {
+				cl = new Color((Integer) args[1],
+								(Integer) args[2],
+								(Integer) args[3]);
+			} else {
+				cl = (Color) args[1];
+			}
+			return (new VMeter((Integer) args[0], cl));
+		}
 	}
-    }
-	
-    public VMeter(int amount, Color cl) {
-	super(bg.sz());
-	this.amount = amount;
-	this.cl = cl;
-    }
-	
-    public void draw(GOut g) {
-	g.image(bg, Coord.z);
-	g.chcolor(cl);
-	int h = (sz.y - 6);
-	h = (h * amount) / 100;
-	g.image(fg, new Coord(0, 0), new Coord(0, sz.y - 3 - h), sz.add(0, h));
-    }
-	
-    public void uimsg(String msg, Object... args) {
-	if(msg == "set") {
-	    amount = (Integer)args[0];
-	    if(args.length > 1)
-		cl = (Color)args[1];
-	} else if(msg == "col") {
-	    cl = (Color)args[0];
-	} else {
-	    super.uimsg(msg, args);
+
+	public VMeter(int amount, Color cl) {
+		super(bg.sz());
+		this.amount = amount;
+		this.cl = cl;
 	}
-    }
+
+	public void draw(GOut g) {
+		g.image(bg, Coord.z);
+		g.chcolor(cl);
+		int h = (sz.y - 6);
+		h = (h * amount) / 100;
+		g.image(fg, new Coord(0, 0), new Coord(0, sz.y - 3 - h), sz.add(0, h));
+	}
+
+	public void uimsg(String msg, Object... args) {
+		if (msg == "set") {
+			amount = (Integer) args[0];
+			if (args.length > 1) {
+				cl = (Color) args[1];
+			}
+		} else if (msg == "col") {
+			cl = (Color) args[0];
+		} else {
+			super.uimsg(msg, args);
+		}
+	}
 }

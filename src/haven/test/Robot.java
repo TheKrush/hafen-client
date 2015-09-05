@@ -23,29 +23,29 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.test;
 
 import haven.*;
 
 public class Robot {
-    public TestClient c;
-    
-    public Robot(TestClient cl) {
-	this.c = cl;
-	cl.addbot(this);
-    }
-    
-    public void destroy() {
-	c.rembot(this);
-    }
-    
-    public void newwdg(int id, Widget w, Object... args) {
-    }
-    
-    public void dstwdg(int id, Widget w) {
-    }
-    
-    public void uimsg(int id, Widget w, String msg, Object... args) {
-    }
+
+	public TestClient c;
+
+	public Robot(TestClient cl) {
+		this.c = cl;
+		cl.addbot(this);
+	}
+
+	public void destroy() {
+		c.rembot(this);
+	}
+
+	public void newwdg(int id, Widget w, Object... args) {
+	}
+
+	public void dstwdg(int id, Widget w) {
+	}
+
+	public void uimsg(int id, Widget w, String msg, Object... args) {
+	}
 }

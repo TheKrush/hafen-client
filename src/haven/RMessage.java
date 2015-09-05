@@ -23,39 +23,43 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class RMessage extends PMessage {
-    public static final int RMSG_NEWWDG = 0;
-    public static final int RMSG_WDGMSG = 1;
-    public static final int RMSG_DSTWDG = 2;
-    public static final int RMSG_MAPIV = 3;
-    public static final int RMSG_GLOBLOB = 4;
-    public static final int RMSG_PAGINAE = 5;
-    public static final int RMSG_RESID = 6;
-    public static final int RMSG_PARTY = 7;
-    public static final int RMSG_SFX = 8;
-    public static final int RMSG_CATTR = 9;
-    public static final int RMSG_MUSIC = 10;
-    public static final int RMSG_TILES = 11;
-    public static final int RMSG_BUFF = 12; /* Deprecated */
-    public static final int RMSG_SESSKEY = 13;
 
-    public long last = 0;
-    public int retx = 0;
-    public int seq;
+	public static final int RMSG_NEWWDG = 0;
+	public static final int RMSG_WDGMSG = 1;
+	public static final int RMSG_DSTWDG = 2;
+	public static final int RMSG_MAPIV = 3;
+	public static final int RMSG_GLOBLOB = 4;
+	public static final int RMSG_PAGINAE = 5;
+	public static final int RMSG_RESID = 6;
+	public static final int RMSG_PARTY = 7;
+	public static final int RMSG_SFX = 8;
+	public static final int RMSG_CATTR = 9;
+	public static final int RMSG_MUSIC = 10;
+	public static final int RMSG_TILES = 11;
+	public static final int RMSG_BUFF = 12; /* Deprecated */
 
-    public RMessage(int type, byte[] blob, int off, int len) {
-	super(type, blob, off, len);
-    }
-    public RMessage(int type, byte[] blob) {
-	super(type, blob);
-    }
-    public RMessage(int type) {
-	super(type);
-    }
-    public RMessage(PMessage msg) {
-	super(msg);
-    }
+	public static final int RMSG_SESSKEY = 13;
+
+	public long last = 0;
+	public int retx = 0;
+	public int seq;
+
+	public RMessage(int type, byte[] blob, int off, int len) {
+		super(type, blob, off, len);
+	}
+
+	public RMessage(int type, byte[] blob) {
+		super(type, blob);
+	}
+
+	public RMessage(int type) {
+		super(type);
+	}
+
+	public RMessage(PMessage msg) {
+		super(msg);
+	}
 }

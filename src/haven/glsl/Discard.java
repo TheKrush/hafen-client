@@ -23,16 +23,17 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class Discard extends Statement {
-    public Discard() {
-    }
 
-    public void walk(Walker w) {}
+	public Discard() {
+	}
 
-    public void output(Output out) {
-	out.write("discard;");
-    }
+	public void walk(Walker w) {
+	}
+
+	public void output(Output out) {
+		out.write("discard;");
+	}
 }

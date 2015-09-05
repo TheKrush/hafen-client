@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.image.*;
@@ -33,41 +32,44 @@ import haven.TexGL.TexOb;
 import static haven.GOut.checkerr;
 
 public abstract class Tex3D {
-    protected TexOb t = null;
-    public final int w, h, d;
 
-    public Tex3D(int w, int h, int d) {
-	this.w = w;
-	this.h = h;
-	this.d = d;
-    }
+	protected TexOb t = null;
+	public final int w, h, d;
 
-    protected abstract void fill(GOut g);
-
-    private void create(GOut g) {
-	BGL gl = g.gl;
-	t = new TexOb(g);
-	gl.glBindTexture(GL2.GL_TEXTURE_3D, t);
-	fill(g);
-	checkerr(gl);
-    }
-
-    public TexOb glid(GOut g) {
-	synchronized(this) {
-	    if((t != null) && (t.cur != g.curgl))
-		dispose();
-	    if(t == null)
-		create(g);
-	    return(t);
+	public Tex3D(int w, int h, int d) {
+		this.w = w;
+		this.h = h;
+		this.d = d;
 	}
-    }
 
-    public void dispose() {
-	synchronized(this) {
-	    if(t != null) {
-		t.dispose();
-		t = null;
-	    }
+	protected abstract void fill(GOut g);
+
+	private void create(GOut g) {
+		BGL gl = g.gl;
+		t = new TexOb(g);
+		gl.glBindTexture(GL2.GL_TEXTURE_3D, t);
+		fill(g);
+		checkerr(gl);
 	}
-    }
+
+	public TexOb glid(GOut g) {
+		synchronized (this) {
+			if ((t != null) && (t.cur != g.curgl)) {
+				dispose();
+			}
+			if (t == null) {
+				create(g);
+			}
+			return (t);
+		}
+	}
+
+	public void dispose() {
+		synchronized (this) {
+			if (t != null) {
+				t.dispose();
+				t = null;
+			}
+		}
+	}
 }

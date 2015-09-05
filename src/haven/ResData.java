@@ -23,42 +23,45 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 
 public class ResData {
-    public Indir<Resource> res;
-    public MessageBuf sdt;
-    
-    public ResData(Indir<Resource> res, Message sdt) {
-	this.res = res;
-	this.sdt = new MessageBuf(sdt);
-    }
 
-    public ResData clone() {
-	return(new ResData(res, sdt));
-    }
+	public Indir<Resource> res;
+	public MessageBuf sdt;
 
-    public boolean equals(Object other) {
-	if(!(other instanceof ResData))
-	    return(false);
-	ResData o = (ResData)other;
-	return(res.equals(o.res) && sdt.equals(o.sdt));
-    }
+	public ResData(Indir<Resource> res, Message sdt) {
+		this.res = res;
+		this.sdt = new MessageBuf(sdt);
+	}
 
-    public static List<ResData> wrap(List<? extends Indir<Resource>> in) {
-	List<ResData> ret = new ArrayList<ResData>(in.size());
-	for(Indir<Resource> res : in)
-	    ret.add(new ResData(res, Message.nil));
-	return(ret);
-    }
+	public ResData clone() {
+		return (new ResData(res, sdt));
+	}
 
-    public static ResData[] wrap(Indir<Resource>[] in) {
-	ResData[] ret = new ResData[in.length];
-	for(int i = 0; i < in.length; i++)
-	    ret[i] = new ResData(in[i], Message.nil);
-	return(ret);
-    }
+	public boolean equals(Object other) {
+		if (!(other instanceof ResData)) {
+			return (false);
+		}
+		ResData o = (ResData) other;
+		return (res.equals(o.res) && sdt.equals(o.sdt));
+	}
+
+	public static List<ResData> wrap(List<? extends Indir<Resource>> in) {
+		List<ResData> ret = new ArrayList<ResData>(in.size());
+		for (Indir<Resource> res : in) {
+			ret.add(new ResData(res, Message.nil));
+		}
+		return (ret);
+	}
+
+	public static ResData[] wrap(Indir<Resource>[] in) {
+		ResData[] ret = new ResData[in.length];
+		for (int i = 0; i < in.length; i++) {
+			ret[i] = new ResData(in[i], Message.nil);
+		}
+		return (ret);
+	}
 }

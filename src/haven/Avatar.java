@@ -23,16 +23,16 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.List;
 
 public class Avatar extends GAttrib {
-    public Avatar(Gob gob) {
-	super(gob);
-    }
-	
-    void setlayers(List<Indir<Resource>> layers) {
-    }
+
+	public Avatar(Gob gob) {
+		super(gob);
+	}
+
+	void setlayers(List<Indir<Resource>> layers) {
+	}
 }

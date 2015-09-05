@@ -23,57 +23,59 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.zip.*;
 
 public class ZMessage extends Message {
-    private Inflater z = new Inflater();
-    private final Message bk;
 
-    public ZMessage(Message from) {
-	this.bk = from;
-    }
+	private Inflater z = new Inflater();
+	private final Message bk;
 
-    public boolean underflow(int hint) {
-	if(z == null)
-	    return(false);
-	boolean ret = false;
-	if(rbuf.length - rt < 1) {
-	    byte[] n = new byte[Math.max(1024, rt - rh) + rt - rh];
-	    System.arraycopy(rbuf, rh, n, 0, rt - rh);
-	    rt -= rh;
-	    rh = 0;
-	    rbuf = n;
+	public ZMessage(Message from) {
+		this.bk = from;
 	}
-	try {
-	    while(true) {
-		int rv = z.inflate(rbuf, rt, rbuf.length - rt);
-		if(rv == 0) {
-		    if(z.finished()) {
-			z.end();
-			z = null;
-			return(ret);
-		    }
-		    if(z.needsInput()) {
-			if(bk.rt - bk.rh < 1) {
-			    if(!bk.underflow(128))
-				throw(new EOF("Unterminated z-blob"));
-			}
-			z.setInput(bk.rbuf, bk.rh, bk.rt - bk.rh);
-		    }
-		} else {
-		    rt += rv;
-		    return(true);
+
+	public boolean underflow(int hint) {
+		if (z == null) {
+			return (false);
 		}
-	    }
-	} catch(DataFormatException e) {
-	    throw(new RuntimeException("Malformed z-blob", e));
+		boolean ret = false;
+		if (rbuf.length - rt < 1) {
+			byte[] n = new byte[Math.max(1024, rt - rh) + rt - rh];
+			System.arraycopy(rbuf, rh, n, 0, rt - rh);
+			rt -= rh;
+			rh = 0;
+			rbuf = n;
+		}
+		try {
+			while (true) {
+				int rv = z.inflate(rbuf, rt, rbuf.length - rt);
+				if (rv == 0) {
+					if (z.finished()) {
+						z.end();
+						z = null;
+						return (ret);
+					}
+					if (z.needsInput()) {
+						if (bk.rt - bk.rh < 1) {
+							if (!bk.underflow(128)) {
+								throw (new EOF("Unterminated z-blob"));
+							}
+						}
+						z.setInput(bk.rbuf, bk.rh, bk.rt - bk.rh);
+					}
+				} else {
+					rt += rv;
+					return (true);
+				}
+			}
+		} catch (DataFormatException e) {
+			throw (new RuntimeException("Malformed z-blob", e));
+		}
 	}
-    }
 
-    public void overflow(int min) {
-	throw(new RuntimeException("ZMessages are not writable yet"));
-    }
+	public void overflow(int min) {
+		throw (new RuntimeException("ZMessages are not writable yet"));
+	}
 }

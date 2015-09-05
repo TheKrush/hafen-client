@@ -23,47 +23,48 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class Homing extends Moving {
-    long tgt;
-    Coord tc;
-    int v;
-    double dist;
-    
-    public Homing(Gob gob, long tgt, Coord tc, int v) {
-	super(gob);
-	this.tgt = tgt;
-	this.tc = tc;
-	this.v = v;
-    }
-    
-    public Coord3f getc() {
-	Coord tc = this.tc;
-	Gob tgt = gob.glob.oc.getgob(this.tgt);
-	if(tgt != null)
-	    tc = tgt.rc;
-	Coord d = tc.add(gob.rc.inv());
-	double e = gob.rc.dist(tc);
-	float rx = gob.rc.x, ry = gob.rc.y;
-	if(e > 0.00001) {
-	    rx += (float)((d.x / e) * dist);
-	    ry += (float)((d.y / e) * dist);
+
+	long tgt;
+	Coord tc;
+	int v;
+	double dist;
+
+	public Homing(Gob gob, long tgt, Coord tc, int v) {
+		super(gob);
+		this.tgt = tgt;
+		this.tc = tc;
+		this.v = v;
 	}
-	return(new Coord3f(rx, ry, gob.glob.map.getcz(rx, ry)));
-    }
-    
-    public double getv() {
-	return((v / 100.0) / 0.06);
-    }
-    
-    public void move(Coord c) {
-	dist = 0;
-    }
-    
-    public void ctick(int dt) {
-	double da = ((double)dt / 1000) / 0.06;
-	dist += (da * 0.9) * ((double)v / 100);
-    }
+
+	public Coord3f getc() {
+		Coord tc = this.tc;
+		Gob tgt = gob.glob.oc.getgob(this.tgt);
+		if (tgt != null) {
+			tc = tgt.rc;
+		}
+		Coord d = tc.add(gob.rc.inv());
+		double e = gob.rc.dist(tc);
+		float rx = gob.rc.x, ry = gob.rc.y;
+		if (e > 0.00001) {
+			rx += (float) ((d.x / e) * dist);
+			ry += (float) ((d.y / e) * dist);
+		}
+		return (new Coord3f(rx, ry, gob.glob.map.getcz(rx, ry)));
+	}
+
+	public double getv() {
+		return ((v / 100.0) / 0.06);
+	}
+
+	public void move(Coord c) {
+		dist = 0;
+	}
+
+	public void ctick(int dt) {
+		double da = ((double) dt / 1000) / 0.06;
+		dist += (da * 0.9) * ((double) v / 100);
+	}
 }

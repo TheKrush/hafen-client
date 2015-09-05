@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import static haven.glsl.Cons.*;
@@ -32,17 +31,18 @@ import static haven.glsl.Type.*;
 import haven.glsl.ValBlock.Value;
 
 public class GLColorVary implements ShaderMacro {
-    public static final AutoVarying color = new AutoVarying(VEC4) {
-	    protected Expression root(VertexContext vctx) {
-		return(vctx.gl_Color.ref());
-	    }
+
+	public static final AutoVarying color = new AutoVarying(VEC4) {
+		protected Expression root(VertexContext vctx) {
+			return (vctx.gl_Color.ref());
+		}
 	};
 
-    public void modify(ProgramContext prog) {
-	prog.fctx.fragcol.mod(new Macro1<Expression>() {
-		public Expression expand(Expression in) {
-		    return(mul(in, color.ref()));
-		}
-	    }, 0);
-    }
+	public void modify(ProgramContext prog) {
+		prog.fctx.fragcol.mod(new Macro1<Expression>() {
+			public Expression expand(Expression in) {
+				return (mul(in, color.ref()));
+			}
+		}, 0);
+	}
 }

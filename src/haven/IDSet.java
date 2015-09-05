@@ -23,61 +23,64 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 import java.lang.ref.*;
 
 public class IDSet<T> {
-    private final HashMap<WRef<T>, WRef<T>> bk = new HashMap<WRef<T>, WRef<T>>();
-    private final ReferenceQueue<T> queue = new ReferenceQueue<T>();
 
-    private static class WRef<T> extends WeakReference<T> {
-	private final int hash;
+	private final HashMap<WRef<T>, WRef<T>> bk = new HashMap<WRef<T>, WRef<T>>();
+	private final ReferenceQueue<T> queue = new ReferenceQueue<T>();
 
-	private WRef(T ob, ReferenceQueue<T> queue) {
-	    super(ob, queue);
-	    hash = ob.hashCode();
+	private static class WRef<T> extends WeakReference<T> {
+
+		private final int hash;
+
+		private WRef(T ob, ReferenceQueue<T> queue) {
+			super(ob, queue);
+			hash = ob.hashCode();
+		}
+
+		public boolean equals(Object o) {
+			if (!(o instanceof WRef)) {
+				return (false);
+			}
+			WRef<?> r = (WRef<?>) o;
+			return (Utils.eq(get(), r.get()));
+		}
+
+		public int hashCode() {
+			return (hash);
+		}
 	}
 
-	public boolean equals(Object o) {
-	    if(!(o instanceof WRef))
-		return(false);
-	    WRef<?> r = (WRef<?>)o;
-	    return(Utils.eq(get(), r.get()));
+	private void clean() {
+		WRef<?> old;
+		while ((old = (WRef<?>) queue.poll()) != null) {
+			bk.remove(old);
+		}
 	}
 
-	public int hashCode() {
-	    return(hash);
+	public T intern(T ob) {
+		synchronized (bk) {
+			clean();
+			WRef<T> ref = new WRef<T>(ob, queue);
+			WRef<T> old = bk.get(ref);
+			if (old == null) {
+				bk.put(ref, ref);
+				return (ob);
+			} else {
+				/* Should never return null, since ob is referenced in
+				 * this frame during the entirety of the lookup. */
+				return (old.get());
+			}
+		}
 	}
-    }
 
-    private void clean() {
-	WRef<?> old;
-	while((old = (WRef<?>)queue.poll()) != null)
-	    bk.remove(old);
-    }
-
-    public T intern(T ob) {
-	synchronized(bk) {
-	    clean();
-	    WRef<T> ref = new WRef<T>(ob, queue);
-	    WRef<T> old = bk.get(ref);
-	    if(old == null) {
-		bk.put(ref, ref);
-		return(ob);
-	    } else {
-		/* Should never return null, since ob is referenced in
-		 * this frame during the entirety of the lookup. */
-		return(old.get());
-	    }
+	public int size() {
+		synchronized (bk) {
+			return (bk.size());
+		}
 	}
-    }
-
-    public int size() {
-	synchronized(bk) {
-	    return(bk.size());
-	}
-    }
 }

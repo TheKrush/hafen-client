@@ -23,38 +23,40 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Desktop;
 import java.net.*;
 
 public class DesktopBrowser extends WebBrowser {
-    private final Desktop desktop;
-    
-    private DesktopBrowser(Desktop desktop) {
-	this.desktop = desktop;
-    }
-    
-    public static DesktopBrowser create() {
-	try {
-	    Class.forName("java.awt.Desktop");
-	    if(!Desktop.isDesktopSupported())
-		return(null);
-	    Desktop desktop = Desktop.getDesktop();
-	    if(!desktop.isSupported(Desktop.Action.BROWSE))
-		return(null);
-	    return(new DesktopBrowser(desktop));
-	} catch(Exception e) {
-	    return(null);
+
+	private final Desktop desktop;
+
+	private DesktopBrowser(Desktop desktop) {
+		this.desktop = desktop;
 	}
-    }
-    
-    public void show(URL url) {
-	try {
-	    desktop.browse(url.toURI());
-	} catch(Exception e) {
-	    throw(new BrowserException(e));
+
+	public static DesktopBrowser create() {
+		try {
+			Class.forName("java.awt.Desktop");
+			if (!Desktop.isDesktopSupported()) {
+				return (null);
+			}
+			Desktop desktop = Desktop.getDesktop();
+			if (!desktop.isSupported(Desktop.Action.BROWSE)) {
+				return (null);
+			}
+			return (new DesktopBrowser(desktop));
+		} catch (Exception e) {
+			return (null);
+		}
 	}
-    }
+
+	public void show(URL url) {
+		try {
+			desktop.browse(url.toURI());
+		} catch (Exception e) {
+			throw (new BrowserException(e));
+		}
+	}
 }

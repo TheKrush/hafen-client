@@ -23,69 +23,71 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.rs;
 
 import haven.*;
 import javax.media.opengl.*;
 
 public class BufView {
-    public final GBuffer buf;
-    public RenderList rls;
-    public GLState basicstate;
-    private final RenderState rstate = new RenderState();
 
-    public BufView(GBuffer buf, GLState basic) {
-	this.buf = buf;
-	this.basicstate = basic;
-    }
+	public final GBuffer buf;
+	public RenderList rls;
+	public GLState basicstate;
+	private final RenderState rstate = new RenderState();
 
-    private class RenderState extends PView.RenderState {
-	public Coord ul() {
-	    return(Coord.z);
+	public BufView(GBuffer buf, GLState basic) {
+		this.buf = buf;
+		this.basicstate = basic;
 	}
 
-	public Coord sz() {
-	    return(buf.sz);
+	private class RenderState extends PView.RenderState {
+
+		public Coord ul() {
+			return (Coord.z);
+		}
+
+		public Coord sz() {
+			return (buf.sz);
+		}
 	}
-    }
 
-    protected GLState.Buffer basic(GOut g) {
-	GLState.Buffer buf = g.basicstate();
-	rstate.prep(buf);
-	if(basicstate != null)
-	    basicstate.prep(buf);
-	return(buf);
-    }
-
-    public void clear2d(GOut g, java.awt.Color cc) {
-	g.state2d();
-	g.apply();
-	g.gl.glClearColor((float)cc.getRed() / 255f, (float)cc.getGreen() / 255f, (float)cc.getBlue() / 255f, (float)cc.getAlpha() / 255f);
-	g.gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-    }
-
-    protected void clear(GOut g) {
-	g.gl.glClearColor(0, 0, 0, 0);
-	g.gl.glClear(GL.GL_DEPTH_BUFFER_BIT | GL.GL_COLOR_BUFFER_BIT);
-    }
-
-    public void render(Rendered root, GOut g) {
-	if((rls == null) || (rls.cfg != g.gc)) {
-	    rls = new RenderList(g.gc);
-	    rls.ignload = false;
+	protected GLState.Buffer basic(GOut g) {
+		GLState.Buffer buf = g.basicstate();
+		rstate.prep(buf);
+		if (basicstate != null) {
+			basicstate.prep(buf);
+		}
+		return (buf);
 	}
-	GLState.Buffer bk = g.st.copy();
-	try {
-	    GLState.Buffer def = basic(g);
-	    rls.setup(root, def);
-	    rls.fin();
-	    g.st.set(def);
-	    g.apply();
-	    clear(g);
-	    rls.render(g);
-	} finally {
-	    g.st.set(bk);
+
+	public void clear2d(GOut g, java.awt.Color cc) {
+		g.state2d();
+		g.apply();
+		g.gl.glClearColor((float) cc.getRed() / 255f, (float) cc.getGreen() / 255f, (float) cc.getBlue() / 255f, (float) cc.getAlpha() / 255f);
+		g.gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 	}
-    }
+
+	protected void clear(GOut g) {
+		g.gl.glClearColor(0, 0, 0, 0);
+		g.gl.glClear(GL.GL_DEPTH_BUFFER_BIT | GL.GL_COLOR_BUFFER_BIT);
+	}
+
+	public void render(Rendered root, GOut g) {
+		if ((rls == null) || (rls.cfg != g.gc)) {
+			rls = new RenderList(g.gc);
+			rls.ignload = false;
+		}
+		GLState.Buffer bk = g.st.copy();
+		try {
+			GLState.Buffer def = basic(g);
+			rls.setup(root, def);
+			rls.fin();
+			g.st.set(def);
+			g.apply();
+			clear(g);
+			rls.render(g);
+		} finally {
+			g.st.set(bk);
+		}
+	}
 }

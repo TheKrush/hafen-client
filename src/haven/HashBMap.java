@@ -23,120 +23,136 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 
 public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
-    private final Map<K, V> fmap;
-    private final Map<V, K> rmap;
-    private final BMap<V, K> rev;
 
-    private HashBMap(Map<K, V> f, Map<V, K> r, BMap<V, K> rev) {
-	fmap = f; rmap = r;
-	this.rev = rev;
-    }
+	private final Map<K, V> fmap;
+	private final Map<V, K> rmap;
+	private final BMap<V, K> rev;
 
-    public HashBMap() {
-	fmap = new HashMap<K, V>();
-	rmap = new HashMap<V, K>();
-	rev = new HashBMap<V, K>(rmap, fmap, this);
-    }
-
-    public boolean containsKey(Object k) {
-	return(fmap.containsKey(k));
-    }
-
-    private Set<Entry<K, V>> entries = null;
-    public Set<Entry<K, V>> entrySet() {
-	if(entries == null) {
-	    entries = new AbstractSet<Entry<K, V>>() {
-		public int size() {
-		    return(fmap.size());
-		}
-
-		public Iterator<Entry<K, V>> iterator() {
-		    return(new Iterator<Entry<K, V>>() {
-			    private final Iterator<Entry<K, V>> iter = fmap.entrySet().iterator();
-			    private Entry<K, V> next, last;
-
-			    class IteredEntry<K, V> implements Entry<K, V> {
-				private final K k;
-				private final V v;
-				
-				private IteredEntry(K k, V v) {
-				    this.k = k; this.v = v;
-				}
-				
-				public K getKey()   {return(k);}
-				public V getValue() {return(v);}
-				
-				public boolean equals(Object o) {
-				    return((o instanceof IteredEntry) && (((IteredEntry)o).k == k) && (((IteredEntry)o).v == v));
-				}
-				
-				public int hashCode() {
-				    return(k.hashCode() ^ v.hashCode());
-				}
-				
-				public V setValue(V nv) {throw(new UnsupportedOperationException());}
-			    }
-
-			    public boolean hasNext() {
-				if(next != null)
-				    return(true);
-				if(!iter.hasNext())
-				    return(false);
-				Entry<K, V> e = iter.next();
-				next = new IteredEntry<K, V>(e.getKey(), e.getValue());
-				return(true);
-			    }
-
-			    public Entry<K, V> next() {
-				if(!hasNext())
-				    throw(new NoSuchElementException());
-				Entry<K, V> ret = last = next;
-				next = null;
-				return(ret);
-			    }
-
-			    public void remove() {
-				iter.remove();
-				if(rmap.remove(last.getValue()) != last.getKey())
-				    throw(new ConcurrentModificationException("reverse-map invariant broken"));
-			    }
-			});
-		}
-
-		public void clear() {
-		    fmap.clear();
-		    rmap.clear();
-		}
-	    };
+	private HashBMap(Map<K, V> f, Map<V, K> r, BMap<V, K> rev) {
+		fmap = f;
+		rmap = r;
+		this.rev = rev;
 	}
-	return(entries);
-    }
 
-    public V get(Object k) {
-	return(fmap.get(k));
-    }
+	public HashBMap() {
+		fmap = new HashMap<K, V>();
+		rmap = new HashMap<V, K>();
+		rev = new HashBMap<V, K>(rmap, fmap, this);
+	}
 
-    public V put(K k, V v) {
-	if((k == null) || (v == null))
-	    throw(new NullPointerException());
-	V old = fmap.put(k, v);
-	rmap.put(v, k);
-	return(old);
-    }
+	public boolean containsKey(Object k) {
+		return (fmap.containsKey(k));
+	}
 
-    public V remove(Object k) {
-	V old = fmap.remove(k);
-	rmap.remove(old);
-	return(old);
-    }
+	private Set<Entry<K, V>> entries = null;
 
-    public BMap<V, K> reverse() {
-	return(rev);
-    }
+	public Set<Entry<K, V>> entrySet() {
+		if (entries == null) {
+			entries = new AbstractSet<Entry<K, V>>() {
+				public int size() {
+					return (fmap.size());
+				}
+
+				public Iterator<Entry<K, V>> iterator() {
+					return (new Iterator<Entry<K, V>>() {
+						private final Iterator<Entry<K, V>> iter = fmap.entrySet().iterator();
+						private Entry<K, V> next, last;
+
+						class IteredEntry<K, V> implements Entry<K, V> {
+
+							private final K k;
+							private final V v;
+
+							private IteredEntry(K k, V v) {
+								this.k = k;
+								this.v = v;
+							}
+
+							public K getKey() {
+								return (k);
+							}
+
+							public V getValue() {
+								return (v);
+							}
+
+							public boolean equals(Object o) {
+								return ((o instanceof IteredEntry) && (((IteredEntry) o).k == k) && (((IteredEntry) o).v == v));
+							}
+
+							public int hashCode() {
+								return (k.hashCode() ^ v.hashCode());
+							}
+
+							public V setValue(V nv) {
+								throw (new UnsupportedOperationException());
+							}
+						}
+
+						public boolean hasNext() {
+							if (next != null) {
+								return (true);
+							}
+							if (!iter.hasNext()) {
+								return (false);
+							}
+							Entry<K, V> e = iter.next();
+							next = new IteredEntry<K, V>(e.getKey(), e.getValue());
+							return (true);
+						}
+
+						public Entry<K, V> next() {
+							if (!hasNext()) {
+								throw (new NoSuchElementException());
+							}
+							Entry<K, V> ret = last = next;
+							next = null;
+							return (ret);
+						}
+
+						public void remove() {
+							iter.remove();
+							if (rmap.remove(last.getValue()) != last.getKey()) {
+								throw (new ConcurrentModificationException("reverse-map invariant broken"));
+							}
+						}
+					});
+				}
+
+				public void clear() {
+					fmap.clear();
+					rmap.clear();
+				}
+			};
+		}
+		return (entries);
+	}
+
+	public V get(Object k) {
+		return (fmap.get(k));
+	}
+
+	public V put(K k, V v) {
+		if ((k == null) || (v == null)) {
+			throw (new NullPointerException());
+		}
+		V old = fmap.put(k, v);
+		rmap.put(v, k);
+		return (old);
+	}
+
+	public V remove(Object k) {
+		V old = fmap.remove(k);
+		rmap.remove(old);
+		return (old);
+	}
+
+	public BMap<V, K> reverse() {
+		return (rev);
+	}
 }

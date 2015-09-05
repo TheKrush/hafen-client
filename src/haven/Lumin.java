@@ -23,17 +23,17 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class Lumin extends GAttrib {
-    Coord off;
-    int sz, str;
-	
-    public Lumin(Gob g, Coord off, int sz, int str) {
-	super(g);
-	this.off = off;
-	this.sz = sz;
-	this.str = str;
-    }
+
+	Coord off;
+	int sz, str;
+
+	public Lumin(Gob g, Coord off, int sz, int str) {
+		super(g);
+		this.off = off;
+		this.sz = sz;
+		this.str = str;
+	}
 }

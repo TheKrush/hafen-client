@@ -23,18 +23,19 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public abstract class Drawable extends GAttrib {
-    public Drawable(Gob gob) {
-	super(gob);
-    }
-	
-    public abstract void setup(RenderList rl);
-    public abstract Resource getres();
-    
-    public Skeleton.Pose getpose() {
-	return(null);
-    }
+
+	public Drawable(Gob gob) {
+		super(gob);
+	}
+
+	public abstract void setup(RenderList rl);
+
+	public abstract Resource getres();
+
+	public Skeleton.Pose getpose() {
+		return (null);
+	}
 }

@@ -23,23 +23,23 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class Return extends Statement {
-    public final Expression rv;
 
-    public Return(Expression rv) {
-	this.rv = rv;
-    }
+	public final Expression rv;
 
-    public void walk(Walker w) {
-	w.el(rv);
-    }
+	public Return(Expression rv) {
+		this.rv = rv;
+	}
 
-    public void output(Output out) {
-	out.write("return ");
-	rv.output(out);
-	out.write(";");
-    }
+	public void walk(Walker w) {
+		w.el(rv);
+	}
+
+	public void output(Output out) {
+		out.write("return ");
+		rv.output(out);
+		out.write(";");
+	}
 }

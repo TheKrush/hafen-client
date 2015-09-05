@@ -23,28 +23,30 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import javax.media.opengl.*;
 
 public class GLVertexArray extends GLObject implements BGL.ID {
-    private int id;
-    
-    public GLVertexArray(GOut g) {super(g);}
 
-    public void create(GL2 gl) {
-	int[] buf = new int[1];
-	gl.glGenVertexArrays(1, buf, 0);
-	this.id = buf[0];
-    }
+	private int id;
 
-    protected void delete(BGL gl) {
-	BGL.ID[] buf = {this};
-	gl.glDeleteVertexArrays(1, buf, 0);
-    }
+	public GLVertexArray(GOut g) {
+		super(g);
+	}
 
-    public int glid() {
-	return(id);
-    }
+	public void create(GL2 gl) {
+		int[] buf = new int[1];
+		gl.glGenVertexArrays(1, buf, 0);
+		this.id = buf[0];
+	}
+
+	protected void delete(BGL gl) {
+		BGL.ID[] buf = {this};
+		gl.glDeleteVertexArrays(1, buf, 0);
+	}
+
+	public int glid() {
+		return (id);
+	}
 }

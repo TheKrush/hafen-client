@@ -23,36 +23,37 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.image.*;
 
 public abstract class SIWidget extends Widget {
-    private Tex surf = null;
 
-    public SIWidget(Coord sz) {
-	super(sz);
-    }
+	private Tex surf = null;
 
-    protected abstract void draw(BufferedImage buf);
-
-    public BufferedImage draw() {
-	BufferedImage buf = TexI.mkbuf(sz);
-	draw(buf);
-	return(buf);
-    }
-
-    public void draw(GOut g) {
-	if(this.surf == null) {
-	    this.surf = new TexI(draw());
+	public SIWidget(Coord sz) {
+		super(sz);
 	}
-	g.image(surf, Coord.z);
-    }
 
-    public void redraw() {
-	if(surf != null)
-	    surf.dispose();
-	surf = null;
-    }
+	protected abstract void draw(BufferedImage buf);
+
+	public BufferedImage draw() {
+		BufferedImage buf = TexI.mkbuf(sz);
+		draw(buf);
+		return (buf);
+	}
+
+	public void draw(GOut g) {
+		if (this.surf == null) {
+			this.surf = new TexI(draw());
+		}
+		g.image(surf, Coord.z);
+	}
+
+	public void redraw() {
+		if (surf != null) {
+			surf.dispose();
+		}
+		surf = null;
+	}
 }
