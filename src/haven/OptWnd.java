@@ -259,6 +259,9 @@ public class OptWnd extends Window {
 	display.add(new CFGBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(0, y));
 
 	y+=25;
+	display.add(new CFGBox("Show players on minimap", CFG.DISPLAY_PLAYERS), new Coord(0, y));
+
+	y+=25;
 	display.add(new CFGBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(0, y));
 
 	y+=25;
