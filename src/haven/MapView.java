@@ -552,14 +552,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	    this.cc = new Coord(pl.getc());
 	synchronized(glob) {
 	    if(glob.lightamb != null) {
-				DirLight light;
-		if (CFG.DISPLAY_DAYNIGHTCYCLE.valb()) {
-				light = new DirLight(glob.lightamb, glob.lightdif, glob.lightspc, Coord3f.o.sadd((float) glob.lightelev, (float) glob.lightang, 1f));
-				System.out.println(glob.lightamb + " | " + glob.lightdif + " | " + glob.lightspc);
-		} else {
-				Color clWhite = new Color(255, 255, 255);
-				light = new DirLight(clWhite, clWhite, clWhite, Coord3f.o.sadd((float) glob.lightelev, (float) glob.lightang, 1f));
-		}
+		DirLight light = new DirLight(glob.blightamb, glob.blightdif, glob.blightspc, Coord3f.o.sadd((float)glob.lightelev, (float)glob.lightang, 1f));
 		rl.add(light, null);
 		updsmap(rl, light);
 		amb = light;

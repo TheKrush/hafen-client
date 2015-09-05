@@ -48,6 +48,8 @@ public class Glob {
     public Color lightamb = null, lightdif = null, lightspc = null;
     public Color olightamb = null, olightdif = null, olightspc = null;
     public Color tlightamb = null, tlightdif = null, tlightspc = null;
+    public Color blightamb = null, blightdif = null, blightspc = null;
+    private final Object brightsync = new Object();
     public double lightang = 0.0, lightelev = 0.0;
     public double olightang = 0.0, olightelev = 0.0;
     public double tlightang = 0.0, tlightelev = 0.0;
@@ -179,6 +181,21 @@ public class Glob {
 	}
     }
 
+    public void brighten(){
+	synchronized(brightsync) {
+	    float bright = CFG.CAMERA_BRIGHT.valf();
+	    if(lightamb != null) {
+		blightamb = Utils.blendcol(lightamb, Color.WHITE, bright);
+	    }
+	    if(lightdif != null) {
+		blightdif = Utils.blendcol(lightdif, Color.WHITE, bright);
+	    }
+	    if(lightspc != null) {
+		blightspc = Utils.blendcol(lightspc, Color.WHITE, bright);
+	    }
+	}
+    }
+
     private long lastctick = 0;
     public void ctick() {
 	long now = System.currentTimeMillis();
@@ -256,6 +273,7 @@ public class Glob {
 			lightang = tlightang;
 			lightelev = tlightelev;
 			lchange = -1;
+			brighten();
 		    }
 		}
 		break;

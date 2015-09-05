@@ -269,6 +269,18 @@ public class OptWnd extends Window {
 	int y = 0;
 	general.add(new CFGBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
 
+	y += 35;
+	general.add(new Label("Brighten view"), new Coord(0, y));
+	y += 15;
+	general.add(new HSlider(200, 0, 500, 0) {
+	    public void changed() {
+		CFG.CAMERA_BRIGHT.set(val / 1000.0f);
+		if(ui.sess != null && ui.sess.glob != null) {
+		    ui.sess.glob.brighten();
+		}
+	    }
+	}, new Coord(0, y)).val = (int) (1000 * CFG.CAMERA_BRIGHT.valf());
+
 	general.add(new PButton(200, "Back", 27, main), new Coord(0, y + 35));
 	general.pack();
     }

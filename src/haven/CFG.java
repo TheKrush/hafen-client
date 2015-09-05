@@ -20,6 +20,8 @@ public enum CFG {
 		STUDY_LOCK("ui.studylock", Utils.getprefb("studylock", false)),
 
     SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
+    CAMERA_BRIGHT("camera.bright", 0f),
+
     Q_SHOW_ALL_MODS("ui.q.allmods", 7),
     Q_SHOW_SINGLE("ui.q.showsingle", true),
     Q_MAX_SINGLE("ui.q.maxsingle", false);
@@ -61,6 +63,10 @@ public enum CFG {
 	return CFG.geti(this);
     }
 
+    public float valf() {
+	return CFG.getf(this);
+    }
+
     public void set(Object value){
 	CFG.set(this, value);
     }
@@ -81,6 +87,10 @@ public enum CFG {
 
     public static int geti(CFG name) {
 	return  ((Number)get(name)).intValue();
+    }
+
+    public static float getf(CFG name) {
+	return  ((Number)get(name)).floatValue();
     }
 
     @SuppressWarnings("unchecked")
