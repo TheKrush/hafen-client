@@ -11,7 +11,7 @@ import java.util.Map;
 public enum CFG {
     DISPLAY_KINNAMES("display.kinnames", Utils.getprefb("showkinnames", true)),
     DISPLAY_PLAYERS("display.players", Utils.getprefb("showplayers", true)),
-    DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", true)),
+    DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", false)),
     STORE_MAP("general.storemap", Utils.getprefb("storemap", false)),
     SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 
