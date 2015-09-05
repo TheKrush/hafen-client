@@ -146,18 +146,30 @@ public class LocalMiniMap extends Widget {
 			Coord gc = p2c(gob.rc);
 			Tex tex = icon.tex();
 			g.image(tex, gc.sub(tex.sz().div(2)));
-				} else if (CFG.DISPLAY_PLAYERS.valb()) {
-						Resource res = gob.getres();
-						if (res != null && "body".equals(res.basename()) && gob.id != mv.player().id) {
-								Coord pc = p2c(gob.rc);
-								g.chcolor(Color.BLACK);
-								g.fellipse(pc, new Coord(5, 5));
-								KinInfo kininfo = gob.getattr(KinInfo.class);
-								g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.WHITE);
-								g.fellipse(pc, new Coord(4, 4));
-								g.chcolor();
-						}
-				 }
+		    } else {
+				Resource res = gob.getres();
+				if (CFG.UI_MINIMAP_PLAYERS.valb()) {
+					if (res != null && "body".equals(res.basename()) && gob.id != mv.player().id) {
+						Coord pc = p2c(gob.rc);
+						g.chcolor(Color.BLACK);
+						g.fellipse(pc, new Coord(5, 5));
+						KinInfo kininfo = gob.getattr(KinInfo.class);
+						g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.WHITE);
+						g.fellipse(pc, new Coord(4, 4));
+						g.chcolor();
+					}
+				}
+				if (CFG.UI_MINIMAP_BOULDERS.valb()) {
+					if (res != null && res.name.contains("bumlings")) {
+						Coord pc = p2c(gob.rc);
+						g.chcolor(Color.BLACK);
+						g.frect(pc, new Coord(7, 7));
+						g.chcolor(Color.WHITE);
+						g.frect(pc.add(2, 2), new Coord(3, 3));
+						g.chcolor();
+					}
+				}
+			}
 		} catch(Loading l) {}
 	    }
 	}
@@ -217,7 +229,7 @@ public class LocalMiniMap extends Widget {
 	    try {
 		synchronized(ui.sess.glob.party.memb) {
 		    for(Party.Member m : ui.sess.glob.party.memb.values()) {
-			if (CFG.DISPLAY_PLAYERS.valb()) {
+			if (CFG.UI_MINIMAP_PLAYERS.valb()) {
 					Gob pl = mv.player();
 					if (pl != null && m.gobid != pl.id)
 							continue;

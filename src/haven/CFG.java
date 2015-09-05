@@ -10,13 +10,15 @@ import java.util.Map;
 
 public enum CFG {
     DISPLAY_KINNAMES("display.kinnames", Utils.getprefb("showkinnames", true)),
-    DISPLAY_PLAYERS("display.players", Utils.getprefb("showplayers", true)),
     DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", false)),
-    FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", false)),
+    FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", true)),
+    UI_MINIMAP_PLAYERS("ui.minimap.players", Utils.getprefb("showplayers", true)),
+		UI_MINIMAP_BOULDERS("ui.minimap.boulders", Utils.getprefb("showboulders", true)),
     STORE_MAP("general.storemap", Utils.getprefb("storemap", false)),
-    SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
+		
 		STUDY_LOCK("ui.studylock", Utils.getprefb("studylock", false)),
 
+    SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
     Q_SHOW_ALL_MODS("ui.q.allmods", 7),
     Q_SHOW_SINGLE("ui.q.showsingle", true),
     Q_MAX_SINGLE("ui.q.maxsingle", false);
