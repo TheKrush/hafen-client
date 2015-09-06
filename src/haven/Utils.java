@@ -249,6 +249,21 @@ public class Utils {
 		}
 	}
 
+	static float getpreff(String prefname, float def) {
+		try {
+			return (prefs().getFloat(prefname, def));
+		} catch (SecurityException e) {
+			return (def);
+		}
+	}
+
+	static void setpreff(String prefname, float val) {
+		try {
+			prefs().putFloat(prefname, val);
+		} catch (SecurityException e) {
+		}
+	}
+
 	static boolean getprefb(String prefname, boolean def) {
 		try {
 			return (prefs().getBoolean(prefname, def));
