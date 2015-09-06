@@ -179,6 +179,24 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 
 	public MainFrame(Coord isz) {
 		super(TITLE);
+		try {
+			File outFile = new File("_out.txt");
+			if (!outFile.exists()) {
+				outFile.createNewFile();
+			}
+			System.setOut(new PrintStream("_out.txt"));
+		} catch (FileNotFoundException ex) {
+		} catch (IOException ex) {
+		}
+		try {
+			File errFile = new File("_err.txt");
+			if (!errFile.exists()) {
+				errFile.createNewFile();
+			}
+			System.setErr(new PrintStream("_err.txt"));
+		} catch (FileNotFoundException ex) {
+		} catch (IOException ex) {
+		}
 		Coord sz;
 		if (isz == null) {
 			sz = Utils.getprefc("wndsz", new Coord(800, 600));
