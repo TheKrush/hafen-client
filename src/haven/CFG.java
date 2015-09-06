@@ -9,25 +9,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CFG {
+	
+	CONFIG_VERSION("config.version", 0),
 
-	CAMERA_BRIGHT("camera.bright", Utils.getpreff("brightness", 0f)),
-	DISPLAY_KINNAMES("display.kinnames", Utils.getprefb("showkinnames", true)),
-	DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", true)),
-	FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", false)),
-	STORE_MAP("general.storemap", Utils.getprefb("storemap", false)),
-	STUDY_LOCK("ui.studylock", Utils.getprefb("studylock", false)),
+	CAMERA_BRIGHT("camera.bright", 0f),
+	DISPLAY_KINNAMES("display.kinnames", true),
+	DISPLAY_FLAVOR("display.flavor", true),
+	FREE_CAMERA_ROTATION("general.freecamera", false),
+	STORE_MAP("general.storemap", false),
+	STUDY_LOCK("ui.studylock", false),
 	SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
-	UI_MINIMAP_PLAYERS("ui.minimap.players", Utils.getprefb("showplayers", true)),
-	UI_MINIMAP_BOULDERS("ui.minimap.boulders", Utils.getprefb("showboulders", true)),
-	UI_ITEM_METER_RED("ui.item.meter.red", Utils.getpreff("itemmeterred", 1f)),
-	UI_ITEM_METER_GREEN("ui.item.meter.green", Utils.getpreff("itemmetergreen", 1f)),
-	UI_ITEM_METER_BLUE("ui.item.meter.blue", Utils.getpreff("itemmeterblue", 1f)),
-	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", Utils.getpreff("itemmeteralpha", 0.25f)),
-	Q_SHOW_ALL_MODS("ui.q.allmods", 7),
-	Q_SHOW_SINGLE("ui.q.showsingle", true),
-	Q_MAX_SINGLE("ui.q.maxsingle", false);
+	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
+	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
+	UI_ITEM_METER_RED("ui.item.meter.red", 1f),
+	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
+	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
+	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
+	Q_SHOW_SINGLE("ui.q.showmods", true),
+	Q_MAX_SINGLE("ui.q.maxsingle", false),
+	Q_SHOW_ALL_MODS("ui.q.allmods", 7);
 
 	private static final String CONFIG_JSON = "config.json";
+	private static final int configVersion = 1;
 	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
@@ -45,7 +48,14 @@ public enum CFG {
 			}
 		} catch (Exception e) {
 		}
+		// check config version
+		int version = ((Number) CFG.get(CFG.CONFIG_VERSION, tmp)).intValue();
+		if (version != configVersion) {
+			System.out.println("Config version mismatch... reseting config");
+			tmp = new HashMap<String, Object>();
+		}
 		cfg = tmp;
+		CFG.CONFIG_VERSION.set(configVersion);
 	}
 
 	CFG(String path, Object def) {
@@ -74,10 +84,14 @@ public enum CFG {
 	}
 
 	public static synchronized Object get(CFG name) {
+		return get(name, cfg);
+	}
+	
+	private static synchronized Object get(CFG name, Object configMap) {
 		if (cache.containsKey(name.path)) {
 			return cache.get(name.path);
 		} else {
-			Object value = retrieve(name);
+			Object value = retrieve(name, configMap);
 			cache.put(name.path, value);
 			return value;
 		}
@@ -94,13 +108,17 @@ public enum CFG {
 	public static float getf(CFG name) {
 		return ((Number) get(name)).floatValue();
 	}
+	
+	public static synchronized void set(CFG name, Object value) {
+		set(name, value, cfg);
+	}
 
 	@SuppressWarnings("unchecked")
-	public static synchronized void set(CFG name, Object value) {
+	private static synchronized void set(CFG name, Object value, Object configMap) {
 		cache.put(name.path, value);
 		String[] parts = name.path.split("\\.");
 		int i;
-		Object cur = cfg;
+		Object cur = configMap;
 		for (i = 0; i < parts.length - 1; i++) {
 			String part = parts[i];
 			if (cur instanceof Map) {
@@ -127,10 +145,14 @@ public enum CFG {
 			System.out.println(e.getMessage());
 		}
 	}
-
+	
 	private static Object retrieve(CFG name) {
+		return retrieve(name, cfg);
+	}
+
+	private static Object retrieve(CFG name, Object configMap) {
 		String[] parts = name.path.split("\\.");
-		Object cur = cfg;
+		Object cur = configMap;
 		for (String part : parts) {
 			if (cur instanceof Map) {
 				Map map = (Map) cur;

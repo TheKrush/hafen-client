@@ -285,11 +285,14 @@ public class OptWnd extends Window {
 	private void initGeneralPanel() {
 		addPanelButton("General settings", 'g', general, 1, 0);
 
+		int x = 0;
 		int y = 0;
-		general.add(new CFGCheckBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
+		int my = 0;
+
+		general.add(new CFGCheckBox("Store minimap tiles", CFG.STORE_MAP), new Coord(x, y));
 
 		y += 35;
-		general.add(new Label("Brighten view"), new Coord(0, y));
+		general.add(new Label("Brighten view"), new Coord(x, y));
 		y += 15;
 		general.add(new CFGHSlider(null, CFG.CAMERA_BRIGHT) {
 			@Override
@@ -301,7 +304,9 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(0, y));
 
-		general.add(new PButton(200, "Back", 27, main), new Coord(0, y + 35));
+		my = Math.max(my, y);
+
+		general.add(new PButton(200, "Back", 27, main), new Coord(x, my + 35));
 		general.pack();
 	}
 
@@ -341,8 +346,7 @@ public class OptWnd extends Window {
 		x += 250;
 		y = 0;
 		display.add(new CFGCheckBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(x, y));
-		//display.add(new CFGBox("Show single quality", ))
-
+		
 		y += 25;
 		display.add(new CFGCheckBox("Show single quality as max", CFG.Q_MAX_SINGLE, "If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
 
@@ -433,12 +437,12 @@ public class OptWnd extends Window {
 		}
 
 		protected void defval() {
-			a = cfg.valb();
+			super.set(cfg.valb());
 		}
 
 		@Override
 		public void set(boolean a) {
-			this.a = a;
+			super.set(a);
 			cfg.set(a);
 		}
 	}
@@ -451,7 +455,7 @@ public class OptWnd extends Window {
 		public CFGHSlider(String lbl, CFG cfg) {
 			this(lbl, cfg, null);
 		}
-		
+
 		public CFGHSlider(String lbl, CFG cfg, String tip) {
 			this(lbl, cfg, tip, 200, 0, 1000, 0);
 		}
@@ -475,6 +479,7 @@ public class OptWnd extends Window {
 
 		@Override
 		public void changed() {
+			super.changed();
 			cfg.set(val / 1000.0f);
 		}
 
@@ -482,7 +487,7 @@ public class OptWnd extends Window {
 		public void draw(GOut g) {
 			if (lbl != null) {
 				g.image(lbl.tex(), new Coord());
-				
+
 				int offset = Math.max(10, lbl.tex().sz().x);
 				int szX = sz.x - offset;
 				int cy = (sflarp.sz().y - schain.sz().y) / 2;
