@@ -6,11 +6,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public enum CFG {
 
-	CAMERA_BRIGHT("camera.bright", 0f),
+	CAMERA_BRIGHT("camera.bright", Utils.getpreff("brightness", 0f)),
 	DISPLAY_KINNAMES("display.kinnames", Utils.getprefb("showkinnames", true)),
 	DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", false)),
 	FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", true)),
@@ -24,21 +25,22 @@ public enum CFG {
 	Q_MAX_SINGLE("ui.q.maxsingle", false);
 
 	private static final String CONFIG_JSON = "config.json";
-	private static final Map<Object, Object> cfg;
+	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
-	private static final Gson gson;
+	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
 	private final String path;
 	public final Object def;
 
 	static {
-		gson = (new GsonBuilder()).setPrettyPrinting().create();
-		Map<Object, Object> tmp;
+		Map<String, Object> tmp = new HashMap<String, Object>();
 		try {
 			Type type = new TypeToken<Map<Object, Object>>() {
 			}.getType();
-			tmp = gson.fromJson(Config.loadFile(CONFIG_JSON), type);
+			String json = Config.loadFile(CONFIG_JSON);
+			if (json != null) {
+				tmp = gson.fromJson(json, type);
+			}
 		} catch (Exception e) {
-			tmp = new HashMap<Object, Object>();
 		}
 		cfg = tmp;
 	}
@@ -116,7 +118,11 @@ public enum CFG {
 	}
 
 	private static synchronized void store() {
-		Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
+		try {
+			Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private static Object retrieve(CFG name) {
