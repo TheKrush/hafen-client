@@ -291,7 +291,7 @@ public class OptWnd extends Window {
 		y += 35;
 		general.add(new Label("Brighten view"), new Coord(0, y));
 		y += 15;
-		general.add(new HSlider(200, 0, 500, 0) {
+		general.add(new HSlider(200, 0, 1000, 0) {
 			public void changed() {
 				CFG.CAMERA_BRIGHT.set(val / 1000.0f);
 				if (ui.sess != null && ui.sess.glob != null) {
@@ -324,6 +324,33 @@ public class OptWnd extends Window {
 
 		y += 25;
 		display.add(new CFGBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(0, y));
+
+		y += 35;
+		display.add(new Label("Item Meter RGBA"), new Coord(0, y));
+		y += 15;
+		display.add(new HSlider(200, 0, 1000, 0) {
+			public void changed() {
+				CFG.UI_ITEM_METER_RED.set(val / 1000.0f);
+			}
+		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_RED.valf());
+		y += 15;
+		display.add(new HSlider(200, 0, 1000, 0) {
+			public void changed() {
+				CFG.UI_ITEM_METER_GREEN.set(val / 1000.0f);
+			}
+		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_GREEN.valf());
+		y += 15;
+		display.add(new HSlider(200, 0, 1000, 0) {
+			public void changed() {
+				CFG.UI_ITEM_METER_BLUE.set(val / 1000.0f);
+			}
+		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_BLUE.valf());
+		y += 15;
+		display.add(new HSlider(200, 0, 1000, 0) {
+			public void changed() {
+				CFG.UI_ITEM_METER_ALPHA.set(val / 1000.0f);
+			}
+		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_ALPHA.valf());
 
 		x += 250;
 		y = 0;
@@ -377,6 +404,7 @@ public class OptWnd extends Window {
 
 			}
 		}, new Coord(x, y));
+		
 		my = Math.max(my, y);
 
 		display.add(new PButton(200, "Back", 27, main), new Coord(0, my + 35));

@@ -19,6 +19,10 @@ public enum CFG {
 	SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_MINIMAP_PLAYERS("ui.minimap.players", Utils.getprefb("showplayers", true)),
 	UI_MINIMAP_BOULDERS("ui.minimap.boulders", Utils.getprefb("showboulders", true)),
+	UI_ITEM_METER_RED("ui.item.meter.red", Utils.getpreff("itemmeterred", 1f)),
+	UI_ITEM_METER_GREEN("ui.item.meter.green", Utils.getpreff("itemmetergreen", 1f)),
+	UI_ITEM_METER_BLUE("ui.item.meter.blue", Utils.getpreff("itemmeterblue", 1f)),
+	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", Utils.getpreff("itemmeteralpha", 0.25f)),
 	Q_SHOW_ALL_MODS("ui.q.allmods", 7),
 	Q_SHOW_SINGLE("ui.q.showsingle", true),
 	Q_MAX_SINGLE("ui.q.maxsingle", false);
