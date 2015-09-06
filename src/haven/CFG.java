@@ -12,8 +12,8 @@ public enum CFG {
 
 	CAMERA_BRIGHT("camera.bright", Utils.getpreff("brightness", 0f)),
 	DISPLAY_KINNAMES("display.kinnames", Utils.getprefb("showkinnames", true)),
-	DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", false)),
-	FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", true)),
+	DISPLAY_FLAVOR("display.flavor", Utils.getprefb("showflavor", true)),
+	FREE_CAMERA_ROTATION("general.freecamera", Utils.getprefb("freecamera", false)),
 	STORE_MAP("general.storemap", Utils.getprefb("storemap", false)),
 	STUDY_LOCK("ui.studylock", Utils.getprefb("studylock", false)),
 	SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
