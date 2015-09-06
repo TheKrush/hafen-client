@@ -317,7 +317,7 @@ public class OptWnd extends Window {
 		int y = 0;
 		int my = 0;
 
-		display.add(new CFGCheckBox("Free camera rotation", CFG.FREE_CAMERA_ROTATION), new Coord(0, y));
+		display.add(new CFGCheckBox("Free camera rotation", CFG.FREE_CAMERA_ROTATION), new Coord(x, y));
 
 		y += 25;
 		display.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
@@ -326,32 +326,28 @@ public class OptWnd extends Window {
 		display.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 
 		y += 25;
-		display.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(0, y));
+		display.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(x, y));
 
 		y += 25;
-		display.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(0, y));
+		display.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(x, y));
 
 		y += 35;
-		display.add(new Label("Item Meter"), new Coord(0, y));
+		display.add(new Label("Item Meter"), new Coord(x, y));
 		y += 15;
-		display.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(0, y));
+		display.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(x, y));
 		y += 15;
-		display.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN), new Coord(0, y));
+		display.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN), new Coord(x, y));
 		y += 15;
-		display.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(0, y));
+		display.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(x, y));
 		y += 15;
-		display.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(0, y));
+		display.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
 
 		my = Math.max(my, y);
 		x += 250;
 		y = 0;
-		display.add(new CFGCheckBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(x, y));
-		
-		y += 25;
-		display.add(new CFGCheckBox("Show single quality as max", CFG.Q_MAX_SINGLE, "If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
 
-		y += 30;
-		display.add(new CFGCheckBox("Show all qualities on SHIFT", CFG.Q_SHOW_ALL_MODS) {
+		final CFGCheckBox checkBoxSingleQualityMax = new CFGCheckBox("Show single quality as max", CFG.Q_MAX_SINGLE, "If checked will show single value quality as maximum of all qualities, instead of average");
+		final CFGCheckBox checkBoxShowModsOnKey1 = new CFGCheckBox("Show all qualities on SHIFT", CFG.Q_SHOW_MODS_ONKEY) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 0);
@@ -363,10 +359,8 @@ public class OptWnd extends Window {
 				cfg.set(Utils.setbit(cfg.vali(), 0, a));
 
 			}
-		}, new Coord(x, y));
-
-		y += 25;
-		display.add(new CFGCheckBox("Show all qualities on CTRL", CFG.Q_SHOW_ALL_MODS) {
+		};
+		final CFGCheckBox checkBoxShowModsOnKey2 = new CFGCheckBox("Show all qualities on CTRL", CFG.Q_SHOW_MODS_ONKEY) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 1);
@@ -378,10 +372,8 @@ public class OptWnd extends Window {
 				cfg.set(Utils.setbit(cfg.vali(), 1, a));
 
 			}
-		}, new Coord(x, y));
-
-		y += 25;
-		display.add(new CFGCheckBox("Show all qualities on ALT", CFG.Q_SHOW_ALL_MODS) {
+		};
+		final CFGCheckBox checkBoxShowModsOnKey3 = new CFGCheckBox("Show all qualities on ALT", CFG.Q_SHOW_MODS_ONKEY) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 2);
@@ -393,7 +385,50 @@ public class OptWnd extends Window {
 				cfg.set(Utils.setbit(cfg.vali(), 2, a));
 
 			}
-		}, new Coord(x, y));
+		};
+
+		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(display) {
+			@Override
+			public void changed(int btn, String lbl) {
+				super.changed(btn, lbl);
+				CFGRadioButton radioButton = (CFGRadioButton) btns.get(btn);
+				
+				checkBoxSingleQualityMax.visible = radioButton.cfgVal == 1;
+				checkBoxShowModsOnKey1.visible = radioButton.cfgVal != 2;
+				checkBoxShowModsOnKey2.visible = radioButton.cfgVal != 2;
+				checkBoxShowModsOnKey3.visible = radioButton.cfgVal != 2;
+			}
+		};
+		int qualityRadioGroupCheckedIndex = 0;
+		switch (CFG.Q_SHOW_MODS.vali()) {
+			case 0:
+				qualityRadioGroupCheckedIndex = 0;
+				break;
+			case 1:
+				qualityRadioGroupCheckedIndex = 1;
+				break;
+			case 2:
+				qualityRadioGroupCheckedIndex = 2;
+				break;
+		}
+		qualityRadioGroup.add("Do not show quality", CFG.Q_SHOW_MODS, 0, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Show single quality", CFG.Q_SHOW_MODS, 1, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Show all qualities", CFG.Q_SHOW_MODS, 2, new Coord(x, y));
+		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
+
+		y += 25;
+		display.add(checkBoxSingleQualityMax, new Coord(x, y));
+
+		y += 30;
+		display.add(checkBoxShowModsOnKey1, new Coord(x, y));
+
+		y += 25;
+		display.add(checkBoxShowModsOnKey2, new Coord(x, y));
+
+		y += 25;
+		display.add(checkBoxShowModsOnKey3, new Coord(x, y));
 
 		my = Math.max(my, y);
 
@@ -418,7 +453,7 @@ public class OptWnd extends Window {
 		super.show();
 	}
 
-	private static class CFGCheckBox extends CheckBox {
+	private class CFGCheckBox extends CheckBox {
 
 		protected final CFG cfg;
 
@@ -447,7 +482,7 @@ public class OptWnd extends Window {
 		}
 	}
 
-	private static class CFGHSlider extends HSlider {
+	private class CFGHSlider extends HSlider {
 
 		protected final CFG cfg;
 		Text lbl;
@@ -499,6 +534,56 @@ public class OptWnd extends Window {
 			} else {
 				super.draw(g);
 			}
+		}
+	}
+
+	private class CFGRadioGroup extends RadioGroup {
+
+		public CFGRadioGroup(Widget parent) {
+			super(parent);
+		}
+
+		public class CFGRadioButton extends RadioButton {
+
+			protected final CFG cfg;
+			protected final int cfgVal;
+
+			CFGRadioButton(String lbl, CFG cfg, int val) {
+				this(lbl, cfg, val, null);
+			}
+
+			CFGRadioButton(String lbl, CFG cfg, int val, String tip) {
+				super(lbl);
+
+				this.cfg = cfg;
+				this.cfgVal = val;
+				if (tip != null) {
+					tooltip = Text.render(tip).tex();
+				}
+			}
+		}
+
+		public CFGRadioButton add(String lbl, CFG cfg, int val, Coord c) {
+			return add(lbl, cfg, val, null, c);
+		}
+
+		public CFGRadioButton add(String lbl, CFG cfg, int val, String tip, Coord c) {
+			CFGRadioButton rb = new CFGRadioButton(lbl, cfg, val, tip);
+			parent.add(rb, c);
+			btns.add(rb);
+			map.put(lbl, rb);
+			rmap.put(rb, lbl);
+			if (checked == null) {
+				check(rb);
+			}
+			return (rb);
+		}
+
+		@Override
+		public void changed(int btn, String lbl) {
+			super.changed(btn, lbl);
+			CFGRadioButton radioButton = (CFGRadioButton) btns.get(btn);
+			radioButton.cfg.set(radioButton.cfgVal);
 		}
 	}
 }

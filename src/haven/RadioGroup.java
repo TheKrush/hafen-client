@@ -29,11 +29,11 @@ import java.util.*;
 
 public class RadioGroup {
 
-	private Widget parent;
-	private ArrayList<RadioButton> btns;
-	private HashMap<String, RadioButton> map;
-	private HashMap<RadioButton, String> rmap;
-	private RadioButton checked;
+	protected Widget parent;
+	protected ArrayList<RadioButton> btns;
+	protected HashMap<String, RadioButton> map;
+	protected HashMap<RadioButton, String> rmap;
+	protected RadioButton checked;
 
 	public RadioGroup(Widget parent) {
 		this.parent = parent;
@@ -49,11 +49,11 @@ public class RadioGroup {
 		}
 
 		public boolean mousedown(Coord c, int button) {
-			if (a || button != 1 || c.y < 16 || c.y > sz.y - 10) {
-				return (false);
+			boolean result = super.mousedown(c, button);
+			if (result) {
+				check(this);
 			}
-			check(this);
-			return (true);
+			return result;
 		}
 
 		public void changed(boolean val) {

@@ -25,12 +25,12 @@ public enum CFG {
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
-	Q_SHOW_SINGLE("ui.q.showmods", true),
+	Q_SHOW_MODS("ui.q.showmods", 1),
 	Q_MAX_SINGLE("ui.q.maxsingle", false),
-	Q_SHOW_ALL_MODS("ui.q.allmods", 7);
+	Q_SHOW_MODS_ONKEY("ui.q.allmods", 7);
 
 	private static final String CONFIG_JSON = "config.json";
-	private static final int configVersion = 1;
+	private static final int configVersion = 2;
 	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();

@@ -184,7 +184,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 			if (!outFile.exists()) {
 				outFile.createNewFile();
 			}
-			System.setOut(new PrintStream("_out.txt"));
+			System.setOut(new PrintStream(new FileOutputStream(outFile)));
 		} catch (FileNotFoundException ex) {
 		} catch (IOException ex) {
 		}
@@ -193,7 +193,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 			if (!errFile.exists()) {
 				errFile.createNewFile();
 			}
-			System.setErr(new PrintStream("_err.txt"));
+			System.setErr(new PrintStream(new FileOutputStream(errFile)));
 		} catch (FileNotFoundException ex) {
 		} catch (IOException ex) {
 		}
