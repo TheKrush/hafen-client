@@ -1,6 +1,5 @@
 package org.ender.updater;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main extends JFrame
 				implements IUpdaterListener {
@@ -19,17 +19,23 @@ public class Main extends JFrame
 	private static final long serialVersionUID = 1L;
 	private static Updater updater;
 	private FileOutputStream log;
-	private JTextArea logbox;
-	private JProgressBar progress;
+	private final JTextArea logbox;
+	private final JProgressBar progress;
+
+	public static boolean TESTING = false;
 
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			TESTING = true;
+		}
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception localException) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException localException) {
 		}
 		Main gui = new Main();
 		gui.setVisible(true);
-		gui.setSize(350, 450);
+		gui.setSize(500, 500);
 		gui.log(String.format("OS: '%s', arch: '%s'", new Object[]{System.getProperty("os.name"), System.getProperty("os.arch")}));
 		gui.log("Checking for updates...");
 
@@ -38,14 +44,13 @@ public class Main extends JFrame
 	}
 
 	public Main() {
-		super("HnH updater");
+		super("Haven & Hearth - Minion Client Updater");
 		try {
 			if (!UpdaterConfig.dir.exists()) {
 				UpdaterConfig.dir.mkdirs();
 			}
 			this.log = new FileOutputStream(new File(UpdaterConfig.dir, "updater.log"));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
 		setDefaultCloseOperation(3);
 		JPanel p;
@@ -62,6 +67,7 @@ public class Main extends JFrame
 		pack();
 	}
 
+	@Override
 	public void log(String message) {
 		message = message.concat("\n");
 		this.logbox.append(message);
@@ -70,11 +76,11 @@ public class Main extends JFrame
 				this.log.write(message.getBytes());
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
 	}
 
+	@Override
 	public void finished() {
 		log("Starting client...");
 		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%s.", new Object[]{File.pathSeparator});
@@ -84,7 +90,6 @@ public class Main extends JFrame
 		try {
 			pb.start();
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		try {
 			if (this.log != null) {
@@ -92,11 +97,11 @@ public class Main extends JFrame
 				this.log.close();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		System.exit(0);
 	}
 
+	@Override
 	public void progress(long position, long size) {
 		this.progress.setValue((int) (1024.0F * ((float) position / (float) size)));
 	}

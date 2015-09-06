@@ -1,5 +1,11 @@
-xcopy ".\build\hafen.jar" ".\updater\build\hafen.jar" /R /Y
+xcopy ".\dist\hafen.jar" ".\updater\dist\hafen.jar" /R /Y
 
-cd ".\updater\build\"
+cd ".\updater\dist\"
 
-run-debug.bat
+@echo off
+
+java -Xms512m -Xmx1024m -jar hafen-minion.jar TESTING
+
+pause
+
+cd ".\..\..\"

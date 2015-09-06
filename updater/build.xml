@@ -1,54 +1,5 @@
-<?xml version="1.0" ?>
-
-<project name="hafen-updater" default="deftgt">
-    <import file="nbproject/build-impl.xml"/>
-	
-	<target name="build-env">
-		<mkdir dir="build" />
-		<mkdir dir="build/classes" />
-		<available property="has-res-jar" file="build/hafen-updater-res.jar" />
-		<available property="has-buildinfo" file="build/classes/buildinfo" />
-		<available property="unpacked-lib" file="build/classes-lib" />
-	</target>
-
-	<target name="hafen-updater-client" depends="build-env">
-		<copy todir="build/classes">
-			<fileset dir="src" excludes="**/*.java" />
-		</copy>
-	</target>
-
-	<target name="lib-classes" depends="build-env" unless="unpacked-lib">
-		<mkdir dir="build/classes-lib" />
-	</target>
-
-	<target name="jar" depends="hafen-updater-client,lib-classes">
-		<jar destfile="build/hafen-updater.jar" update="true">
-			<fileset dir="build/classes" />
-			<fileset dir="build/classes-lib" />
-			<manifest>
-				<attribute name="Main-Class" value="haven.MainFrame" />
-				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar builtin-res.jar hafen-updater-res.jar" />
-			</manifest>
-		</jar>
-		<chmod file="build/hafen-updater.jar" perm="a+x" />
-	</target>
-
-	<target name="run">
-		<java jar="build/hafen-updater.jar" fork="true" />
-	</target>
-  
-	<target name="clean">
-		<delete dir="build" />
-	</target>
-  
-	<target name="profile">
-		<nbprofiledirect>
-		</nbprofiledirect>
-		<java fork="true" jar="build/hafen-updater.jar">
-			<jvmarg value="${profiler.info.jvmargs.agent}" />
-			<sysproperty key="haven.dbtext" value="on" />
-			<sysproperty key="haven.defserv" value="sh.seatribe.se" />
-			<sysproperty key="haven.resdir" value="/home/fredrik/src/hafen-updater/res" />
-		</java>
-	</target>
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hafen-minion" default="default" basedir=".">
+	<description>Builds, tests, and runs the project hafen-minion.</description>
+	<import file="nbproject/build-impl.xml"/>
 </project>
