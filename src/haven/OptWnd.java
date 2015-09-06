@@ -352,9 +352,9 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_ALPHA.valf());
 
+		my = Math.max(my, y);
 		x += 250;
 		y = 0;
-		my = Math.max(my, y);
 		display.add(new CFGBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(x, y));
 
 		y += 25;
