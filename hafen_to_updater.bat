@@ -6,6 +6,4 @@ cd ".\updater\dist\"
 
 java -Xms512m -Xmx1024m -jar hafen-minion.jar TESTING
 
-pause
-
 cd ".\..\..\"
