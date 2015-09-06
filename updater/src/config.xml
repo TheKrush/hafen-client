@@ -1,4 +1,6 @@
 <config jar="hafen.jar" mem="1024m" res="http://www.havenandhearth.com/hres/" server="game.havenandhearth.com">
+	<item link="http://TheKrush.github.io/hafen-client-minion/files/hafen-minion.jar" />
+	
 	<!-- WINDOWS -->
 	<item link="http://www.havenandhearth.com/java/jogl2/jar/jogl-all-natives-windows-i586.jar" file="jogl-natives-windows-i586.jar" os="Windows" arch="x86" />
 	<item link="http://www.havenandhearth.com/java/jogl2/jar/gluegen-rt-natives-windows-i586.jar" os="Windows" arch="x86" />

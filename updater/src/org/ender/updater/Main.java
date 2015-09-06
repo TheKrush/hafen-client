@@ -23,6 +23,7 @@ public class Main extends JFrame
 	private final JProgressBar progress;
 
 	public static boolean TESTING = false;
+	public static String JarName = "";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -36,7 +37,12 @@ public class Main extends JFrame
 		Main gui = new Main();
 		gui.setVisible(true);
 		gui.setSize(500, 500);
-		gui.log(String.format("OS: '%s', arch: '%s'", new Object[]{System.getProperty("os.name"), System.getProperty("os.arch")}));
+
+		try {
+			JarName = new java.io.File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
+		} catch (Exception ex) {
+		}
+		gui.log(String.format("OS: '%s', arch: '%s', jar: '%s'", new Object[]{System.getProperty("os.name"), System.getProperty("os.arch"), JarName}));
 
 		updater = new Updater(gui);
 		updater.update();
@@ -97,7 +103,7 @@ public class Main extends JFrame
 			}
 		} catch (IOException e) {
 		}
-		
+
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {

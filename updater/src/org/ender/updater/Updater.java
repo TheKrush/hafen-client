@@ -29,6 +29,8 @@ public class Updater {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				boolean success = true;
+
 				Updater.this.listener.log("Checking for updates...");
 				List<UpdaterConfig.Item> update = new ArrayList<>();
 				for (UpdaterConfig.Item item : Updater.this.cfg.items) {
@@ -36,6 +38,12 @@ public class Updater {
 						Updater.this.init(item);
 						if (Updater.this.has_update(item)) {
 							Updater.this.listener.log(String.format("Updates found for '%s'", new Object[]{item.file.getName()}));
+							if (item.file.getName().equals(Main.JarName)) {
+								success = false;
+								Updater.this.listener.log(String.format("Please manually download this file"));
+								Updater.this.listener.log(String.format("%s", new Object[]{item.link}));
+								break;
+							}
 							update.add(item);
 						} else {
 							Updater.this.listener.log(String.format("No updates for '%s'", new Object[]{item.file.getName()}));
@@ -43,7 +51,7 @@ public class Updater {
 					}
 				}
 
-				if (!update.isEmpty()) {
+				if (success && !update.isEmpty()) {
 					Updater.this.listener.log("Downloading updates...");
 					for (UpdaterConfig.Item item : update) {
 						Updater.this.download(item);
@@ -53,7 +61,9 @@ public class Updater {
 					}
 				}
 
-				Updater.this.listener.finished();
+				if (success) {
+					Updater.this.listener.finished();
+				}
 			}
 		});
 		t.setDaemon(true);
