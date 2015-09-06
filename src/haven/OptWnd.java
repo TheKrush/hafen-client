@@ -286,19 +286,20 @@ public class OptWnd extends Window {
 		addPanelButton("General settings", 'g', general, 1, 0);
 
 		int y = 0;
-		general.add(new CFGBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
+		general.add(new CFGCheckBox("Store minimap tiles", CFG.STORE_MAP), new Coord(0, y));
 
 		y += 35;
 		general.add(new Label("Brighten view"), new Coord(0, y));
 		y += 15;
-		general.add(new HSlider(200, 0, 1000, 0) {
+		general.add(new CFGHSlider(null, CFG.CAMERA_BRIGHT) {
+			@Override
 			public void changed() {
-				CFG.CAMERA_BRIGHT.set(val / 1000.0f);
+				super.changed();
 				if (ui.sess != null && ui.sess.glob != null) {
 					ui.sess.glob.brighten();
 				}
 			}
-		}, new Coord(0, y)).val = (int) (1000 * CFG.CAMERA_BRIGHT.valf());
+		}, new Coord(0, y));
 
 		general.add(new PButton(200, "Back", 27, main), new Coord(0, y + 35));
 		general.pack();
@@ -311,57 +312,42 @@ public class OptWnd extends Window {
 		int y = 0;
 		int my = 0;
 
-		display.add(new CFGBox("Free camera rotation", CFG.FREE_CAMERA_ROTATION), new Coord(0, y));
+		display.add(new CFGCheckBox("Free camera rotation", CFG.FREE_CAMERA_ROTATION), new Coord(0, y));
 
 		y += 25;
-		display.add(new CFGBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
+		display.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
 
 		y += 25;
-		display.add(new CFGBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
+		display.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 
 		y += 25;
-		display.add(new CFGBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(0, y));
+		display.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(0, y));
 
 		y += 25;
-		display.add(new CFGBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(0, y));
+		display.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(0, y));
 
 		y += 35;
-		display.add(new Label("Item Meter RGBA"), new Coord(0, y));
+		display.add(new Label("Item Meter"), new Coord(0, y));
 		y += 15;
-		display.add(new HSlider(200, 0, 1000, 0) {
-			public void changed() {
-				CFG.UI_ITEM_METER_RED.set(val / 1000.0f);
-			}
-		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_RED.valf());
+		display.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(0, y));
 		y += 15;
-		display.add(new HSlider(200, 0, 1000, 0) {
-			public void changed() {
-				CFG.UI_ITEM_METER_GREEN.set(val / 1000.0f);
-			}
-		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_GREEN.valf());
+		display.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN), new Coord(0, y));
 		y += 15;
-		display.add(new HSlider(200, 0, 1000, 0) {
-			public void changed() {
-				CFG.UI_ITEM_METER_BLUE.set(val / 1000.0f);
-			}
-		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_BLUE.valf());
+		display.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(0, y));
 		y += 15;
-		display.add(new HSlider(200, 0, 1000, 0) {
-			public void changed() {
-				CFG.UI_ITEM_METER_ALPHA.set(val / 1000.0f);
-			}
-		}, new Coord(0, y)).val = (int) (1000 * CFG.UI_ITEM_METER_ALPHA.valf());
+		display.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(0, y));
 
 		my = Math.max(my, y);
 		x += 250;
 		y = 0;
-		display.add(new CFGBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(x, y));
+		display.add(new CFGCheckBox("Show single quality", CFG.Q_SHOW_SINGLE), new Coord(x, y));
+		//display.add(new CFGBox("Show single quality", ))
 
 		y += 25;
-		display.add(new CFGBox("Show single quality as max", CFG.Q_MAX_SINGLE, "If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
+		display.add(new CFGCheckBox("Show single quality as max", CFG.Q_MAX_SINGLE, "If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
 
 		y += 30;
-		display.add(new CFGBox("Show all qualities on SHIFT", CFG.Q_SHOW_ALL_MODS) {
+		display.add(new CFGCheckBox("Show all qualities on SHIFT", CFG.Q_SHOW_ALL_MODS) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 0);
@@ -376,7 +362,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 
 		y += 25;
-		display.add(new CFGBox("Show all qualities on CTRL", CFG.Q_SHOW_ALL_MODS) {
+		display.add(new CFGCheckBox("Show all qualities on CTRL", CFG.Q_SHOW_ALL_MODS) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 1);
@@ -391,7 +377,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 
 		y += 25;
-		display.add(new CFGBox("Show all qualities on ALT", CFG.Q_SHOW_ALL_MODS) {
+		display.add(new CFGCheckBox("Show all qualities on ALT", CFG.Q_SHOW_ALL_MODS) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 2);
@@ -428,15 +414,15 @@ public class OptWnd extends Window {
 		super.show();
 	}
 
-	private static class CFGBox extends CheckBox {
+	private static class CFGCheckBox extends CheckBox {
 
 		protected final CFG cfg;
 
-		public CFGBox(String lbl, CFG cfg) {
+		public CFGCheckBox(String lbl, CFG cfg) {
 			this(lbl, cfg, null);
 		}
 
-		public CFGBox(String lbl, CFG cfg, String tip) {
+		public CFGCheckBox(String lbl, CFG cfg, String tip) {
 			super(lbl);
 
 			this.cfg = cfg;
@@ -454,6 +440,60 @@ public class OptWnd extends Window {
 		public void set(boolean a) {
 			this.a = a;
 			cfg.set(a);
+		}
+	}
+
+	private static class CFGHSlider extends HSlider {
+
+		protected final CFG cfg;
+		Text lbl;
+
+		public CFGHSlider(String lbl, CFG cfg) {
+			this(lbl, cfg, null);
+		}
+		
+		public CFGHSlider(String lbl, CFG cfg, String tip) {
+			this(lbl, cfg, tip, 200, 0, 1000, 0);
+		}
+
+		public CFGHSlider(String lbl, CFG cfg, String tip, int w, int min, int max, int val) {
+			super(w, min, max, val);
+
+			this.cfg = cfg;
+			defval();
+			if (lbl != null) {
+				this.lbl = Text.std.render(lbl, java.awt.Color.WHITE);
+			}
+			if (tip != null) {
+				tooltip = Text.render(tip).tex();
+			}
+		}
+
+		protected void defval() {
+			val = (int) (1000 * cfg.valf());
+		}
+
+		@Override
+		public void changed() {
+			cfg.set(val / 1000.0f);
+		}
+
+		@Override
+		public void draw(GOut g) {
+			if (lbl != null) {
+				g.image(lbl.tex(), new Coord());
+				
+				int offset = Math.max(10, lbl.tex().sz().x);
+				int szX = sz.x - offset;
+				int cy = (sflarp.sz().y - schain.sz().y) / 2;
+				for (int x = offset; x < szX; x += schain.sz().x) {
+					g.image(schain, new Coord(x, cy));
+				}
+				int fx = ((szX - sflarp.sz().x) * (val - min)) / (max - min);
+				g.image(sflarp, new Coord(offset + fx, 0));
+			} else {
+				super.draw(g);
+			}
 		}
 	}
 }
