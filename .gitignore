@@ -4,3 +4,7 @@
 *~
 out
 /nbproject/private/
+/updater/nbproject/private/
+/updater/build/
+/updater/dist/
+*.log

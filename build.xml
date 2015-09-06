@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 
 <project name="hafen" default="deftgt">
+    <import file="nbproject/build-impl.xml"/>
+	
 	<target name="build-env">
 		<mkdir dir="build" />
 		<mkdir dir="build/classes" />
@@ -109,12 +111,6 @@
   
 	<target name="clean">
 		<delete dir="build" />
-	</target>
-  
-	<target name="-post-compile">   
-		<exec dir="." executable="cmd">
-			<arg line="/c DatabaseInitializer.bat"/>
-		</exec>
 	</target>
   
 	<target name="profile" depends="jars">
