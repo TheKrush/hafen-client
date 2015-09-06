@@ -29,6 +29,7 @@ public class Updater {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				Updater.this.listener.log("Checking for updates...");
 				List<UpdaterConfig.Item> update = new ArrayList<>();
 				for (UpdaterConfig.Item item : Updater.this.cfg.items) {
 					if (Updater.this.correct_platform(item)) {
@@ -42,17 +43,14 @@ public class Updater {
 					}
 				}
 
-				Updater.this.listener.log("");
-				for (UpdaterConfig.Item item : update) {
-					Updater.this.download(item);
-					if (item.extract != null) {
-						Updater.this.extract(item);
+				if (!update.isEmpty()) {
+					Updater.this.listener.log("Downloading updates...");
+					for (UpdaterConfig.Item item : update) {
+						Updater.this.download(item);
+						if (item.extract != null) {
+							Updater.this.extract(item);
+						}
 					}
-				}
-
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
 				}
 
 				Updater.this.listener.finished();

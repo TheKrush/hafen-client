@@ -37,7 +37,6 @@ public class Main extends JFrame
 		gui.setVisible(true);
 		gui.setSize(500, 500);
 		gui.log(String.format("OS: '%s', arch: '%s'", new Object[]{System.getProperty("os.name"), System.getProperty("os.arch")}));
-		gui.log("Checking for updates...");
 
 		updater = new Updater(gui);
 		updater.update();
@@ -97,6 +96,11 @@ public class Main extends JFrame
 				this.log.close();
 			}
 		} catch (IOException e) {
+		}
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
 		}
 		System.exit(0);
 	}
