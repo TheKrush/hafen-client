@@ -404,7 +404,7 @@ public class OptWnd extends Window {
 
 			}
 		}, new Coord(x, y));
-		
+
 		my = Math.max(my, y);
 
 		display.add(new PButton(200, "Back", 27, main), new Coord(0, my + 35));

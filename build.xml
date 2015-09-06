@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <project name="hafen" default="deftgt">
-    <import file="nbproject/build-impl.xml"/>
+	<import file="nbproject/build-impl.xml"/>
 	
 	<target name="build-env">
 		<mkdir dir="build" />
@@ -16,7 +16,7 @@
 			<arg line="rev-parse HEAD" />
 		</exec>
 		<tstamp>
-			<format property="version" pattern="dd.MM.yyyy HH:mm" />
+			<format property="version" pattern="yyyy.MM.dd HH:mm" />
 		</tstamp>
 		<echo file="build/classes/buildinfo">
 			git-rev = ${gitrev}
@@ -80,6 +80,15 @@
 			</manifest>
 		</jar>
 		<chmod file="build/hafen.jar" perm="a+x" />
+		<jar destfile="dist/hafen.jar" update="true">
+			<fileset dir="build/classes" />
+			<fileset dir="build/classes-lib" />
+			<manifest>
+				<attribute name="Main-Class" value="haven.MainFrame" />
+				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar builtin-res.jar hafen-res.jar" />
+			</manifest>
+		</jar>
+		<chmod file="dist/hafen.jar" perm="a+x" />
 	</target>
   
 	<target name="res-jar" depends="build-env" unless="has-res-jar">

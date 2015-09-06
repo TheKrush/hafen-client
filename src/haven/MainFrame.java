@@ -33,7 +33,7 @@ import java.lang.reflect.*;
 
 public class MainFrame extends java.awt.Frame implements Runnable, Console.Directory {
 
-	private static final String TITLE = String.format("Hafen (modified by Ender/Krush v%s)", Config.version);
+	private static final String TITLE = String.format("Haven & Hearth - Minion Client [%s] by Ender & Krush", Config.version);
 	HavenPanel p;
 	private final ThreadGroup g;
 	public final Thread mt;

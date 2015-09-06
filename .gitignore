@@ -8,3 +8,4 @@ out
 /updater/build/
 /updater/dist/
 *.log
+/dist/

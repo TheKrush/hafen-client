@@ -225,10 +225,10 @@ public class WItem extends Widget implements DTarget {
 			if (item.meter > 0) {
 				double a = ((double) item.meter) / 100.0;
 				g.chcolor(
-								Math.round(255*CFG.UI_ITEM_METER_RED.valf()),
-								Math.round(255*CFG.UI_ITEM_METER_GREEN.valf()),
-								Math.round(255*CFG.UI_ITEM_METER_BLUE.valf()),
-								Math.round(255*CFG.UI_ITEM_METER_ALPHA.valf()));
+								Math.round(255 * CFG.UI_ITEM_METER_RED.valf()),
+								Math.round(255 * CFG.UI_ITEM_METER_GREEN.valf()),
+								Math.round(255 * CFG.UI_ITEM_METER_BLUE.valf()),
+								Math.round(255 * CFG.UI_ITEM_METER_ALPHA.valf()));
 				Coord half = sz.div(2);
 				g.prect(half, half.inv(), half, a * Math.PI * 2);
 				g.chcolor();
