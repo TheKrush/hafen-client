@@ -37,7 +37,6 @@ public class Updater {
 					if (Updater.this.correct_platform(item)) {
 						Updater.this.init(item);
 						if (Updater.this.has_update(item)) {
-							Updater.this.listener.log(String.format("Updates found for '%s'", new Object[]{item.file.getName()}));
 							if (item.file.getName().equals(Main.JarName)) {
 								success = false;
 								Updater.this.listener.log(String.format("Please manually download this file"));
