@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="hafen-minion" default="default" basedir=".">
 	<description>Builds, tests, and runs the project hafen-minion.</description>
+	<target name="build-env">
+		<mkdir dir="build" />
+		<mkdir dir="build/classes" />
+		<available property="has-buildinfo" file="build/classes/buildinfo" />
+		<available property="unpacked-lib" file="build/classes-lib" />
+	</target>
+	<target name="buildinfo" depends="build-env">
+		<exec executable="git" outputproperty="gitrev" failifexecutionfails="false">
+			<arg line="rev-parse HEAD" />
+		</exec>
+		<tstamp>
+			<format property="version" pattern="yyyy.MM.dd HH:mm" />
+		</tstamp>
+		<echo file="build/classes/buildinfo">
+			git-rev = ${gitrev}
+			version = ${version}
+		</echo>
+	</target>
 	<import file="nbproject/build-impl.xml"/>
 </project>

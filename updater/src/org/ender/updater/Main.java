@@ -1,30 +1,22 @@
 package org.ender.updater;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import javax.swing.BoxLayout;
+import java.io.InputStream;
+import java.util.Properties;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import org.krush.gui.MainGui;
 
-public class Main extends JFrame
-				implements IUpdaterListener {
+public class Main extends JFrame {
 
-	private static final int PROGRESS_MAX = 1024;
 	private static final long serialVersionUID = 1L;
-	private static Updater updater;
-	private FileOutputStream log;
-	private final JTextArea logbox;
-	private final JProgressBar progress;
+	public static Updater updater;
 
-	private static final Main gui = new Main();
+	private static final MainGui gui;
 	public static boolean TESTING = false;
 	public static String JarName = "";
+
+	public static String VERSION;
+	public static final String TITLE = "Haven & Hearth - Minion Client Updater by Ender & Krush";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -32,87 +24,43 @@ public class Main extends JFrame
 		}
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException localException) {
-		}
-		gui.setVisible(true);
-		gui.setSize(500, 500);
-
-		try {
 			JarName = new java.io.File(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
 		} catch (Exception ex) {
 		}
-		gui.log(String.format("OS: '%s', arch: '%s', jar: '%s'", new Object[]{System.getProperty("os.name"), System.getProperty("os.arch"), JarName}));
+
+		gui.show();
+
+		gui.log(TITLE);
+		gui.log(String.format("Jar: '%s' | Version: %s", new Object[]{JarName, VERSION}));
+		gui.log(String.format("OS: '%s' | Arch: '%s'", new Object[]{System.getProperty("os.name"), System.getProperty("os.arch")}));
+		gui.log();
 
 		updater = new Updater(gui);
 		updater.update();
 	}
 
-	public Main() {
-		super("Haven & Hearth - Minion Client Updater");
-		try {
-			if (!UpdaterConfig.dir.exists()) {
-				UpdaterConfig.dir.mkdirs();
-			}
-			this.log = new FileOutputStream(new File(UpdaterConfig.dir, "updater.log"));
-		} catch (FileNotFoundException e) {
-		}
-		setDefaultCloseOperation(3);
-		JPanel p;
-		add(p = new JPanel());
-		p.setLayout(new BoxLayout(p, 3));
-
-		p.add(this.logbox = new JTextArea());
-		this.logbox.setEditable(false);
-		this.logbox.setFont(this.logbox.getFont().deriveFont(10.0F));
-
-		p.add(this.progress = new JProgressBar());
-		this.progress.setMinimum(0);
-		this.progress.setMaximum(1024);
-		pack();
+	static {
+		loadBuildVersion();
+		gui = new MainGui();
 	}
 
-	@Override
-	public void log(String message) {
-		message = message.concat("\n");
-		this.logbox.append(message);
+	private static void loadBuildVersion() {
+		InputStream in = Main.class.getResourceAsStream("/buildinfo");
 		try {
-			if (this.log != null) {
-				this.log.write(message.getBytes());
+			try {
+				if (in != null) {
+					Properties info = new Properties();
+					info.load(in);
+
+					VERSION = info.getProperty("version");
+				}
+			} finally {
+				if (in != null) {
+					in.close();
+				}
 			}
 		} catch (IOException e) {
+			throw (new Error(e));
 		}
-
-	}
-
-	@Override
-	public void finished() {
-		log("Starting client...");
-		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%s.", new Object[]{File.pathSeparator});
-		UpdaterConfig cfg = updater.cfg;
-		ProcessBuilder pb = new ProcessBuilder(new String[]{"java", "-XX:ErrorFile=" + cfg.errorFile, "-Xms" + cfg.smem, "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server});
-		pb.directory(UpdaterConfig.dir.getAbsoluteFile());
-		try {
-			pb.start();
-		} catch (IOException e) {
-		}
-		try {
-			if (this.log != null) {
-				this.log.flush();
-				this.log.close();
-			}
-		} catch (IOException e) {
-		}
-
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-		}
-		System.exit(0);
-	}
-
-	@Override
-	public void progress(long position, long size) {
-		this.progress.setValue((int) (1024.0F * ((float) position / (float) size)));
 	}
 }

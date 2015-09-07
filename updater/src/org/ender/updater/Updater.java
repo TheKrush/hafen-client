@@ -8,12 +8,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import org.krush.helper.Helper;
 
 public class Updater {
 
@@ -44,19 +44,13 @@ public class Updater {
 								Updater.this.listener.log(String.format("%s", new Object[]{item.link}));
 								break;
 							}
-							update.add(item);
+
+							Updater.this.download(item);
+							if (item.extract != null) {
+								Updater.this.extract(item);
+							}
 						} else {
 							Updater.this.listener.log(String.format("No updates for '%s'", new Object[]{item.file.getName()}));
-						}
-					}
-				}
-
-				if (success && !update.isEmpty()) {
-					Updater.this.listener.log("Downloading updates...");
-					for (UpdaterConfig.Item item : update) {
-						Updater.this.download(item);
-						if (item.extract != null) {
-							Updater.this.extract(item);
 						}
 					}
 				}
@@ -111,7 +105,7 @@ public class Updater {
 	}
 
 	private void download(UpdaterConfig.Item item) {
-		this.listener.log(String.format("Downloading '%s' [%s]", new Object[]{item.file.getName(), readableFileSize(item.size)}));
+		this.listener.log(String.format("Downloading '%s' [%s]", new Object[]{item.file.getName(), Helper.readableFileSize(item.size)}));
 		try {
 			URL link = new URL(item.link);
 			ReadableByteChannel rbc = Channels.newChannel(link.openStream());
@@ -123,7 +117,7 @@ public class Updater {
 					position += fos.getChannel().transferFrom(rbc, position, step);
 					this.listener.progress(position, item.size);
 				}
-				this.listener.progress(0L, item.size);
+				this.listener.progressFinished();
 			}
 		} catch (MalformedURLException e) {
 		} catch (IOException e) {
@@ -154,14 +148,5 @@ public class Updater {
 		} catch (IOException e) {
 		}
 
-	}
-
-	private static String readableFileSize(long size) {
-		if (size <= 0) {
-			return "0";
-		}
-		final String[] units = new String[]{"B", "kB", "MB", "GB", "TB"};
-		int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
-		return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
 	}
 }

@@ -49,10 +49,10 @@ public class UpdaterConfig {
 
 			NamedNodeMap attrs = doc.getDocumentElement().getAttributes();
 			Node node;
-			
+
 			node = attrs.getNamedItem("smem");
 			this.smem = (node != null ? node.getNodeValue() : "");
-			
+
 			node = attrs.getNamedItem("mem");
 			this.mem = (node != null ? node.getNodeValue() : "");
 
