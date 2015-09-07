@@ -332,7 +332,9 @@ public class OptWnd extends Window {
 		display.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(x, y));
 
 		y += 35;
-		display.add(new Label("Item Meter"), new Coord(x, y));
+		display.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
+		y += 25;
+		display.add(new Label("Item meter"), new Coord(x, y));
 		y += 15;
 		display.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(x, y));
 		y += 15;

@@ -21,6 +21,7 @@ public enum CFG {
 	SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
+	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
 	UI_ITEM_METER_RED("ui.item.meter.red", 1f),
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),

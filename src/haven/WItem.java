@@ -224,6 +224,9 @@ public class WItem extends Widget implements DTarget {
 			}
 			if (item.meter > 0) {
 				double a = ((double) item.meter) / 100.0;
+				if (CFG.UI_ITEM_METER_COUNTDOWN.valb()) {
+					a = 1 - a;
+				}
 				g.chcolor(
 								Math.round(255 * CFG.UI_ITEM_METER_RED.valf()),
 								Math.round(255 * CFG.UI_ITEM_METER_GREEN.valf()),
