@@ -90,11 +90,7 @@ public class Main extends JFrame
 		log("Starting client...");
 		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%s.", new Object[]{File.pathSeparator});
 		UpdaterConfig cfg = updater.cfg;
-		String[] processStrings = new String[]{"java", "-XX:ErrorFile=" + cfg.errorFile, "-Xms" + cfg.smem, "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server};
-		for (String s : processStrings) {
-		gui.log(s);
-		}
-		ProcessBuilder pb = new ProcessBuilder(processStrings);
+		ProcessBuilder pb = new ProcessBuilder(new String[]{"java", "-XX:ErrorFile=" + cfg.errorFile, "-Xms" + cfg.smem, "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server});
 		pb.directory(UpdaterConfig.dir.getAbsoluteFile());
 		try {
 			pb.start();
