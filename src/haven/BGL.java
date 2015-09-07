@@ -86,6 +86,9 @@ public class BGL {
 				{
 					list[i].run(gl);
 				}
+			} catch (IndexOutOfBoundsException ex) {
+				// TODO: find a better fix for this
+				// https://github.com/TheKrush/hafen-client-minion/issues/12
 			} catch (Exception exc) {
 				throw (new BGLException(this, list[i], exc));
 			}
