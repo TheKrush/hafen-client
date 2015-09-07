@@ -10,3 +10,4 @@ out
 *.log
 /dist/
 *.jar
+hafen-client-minion.bat
