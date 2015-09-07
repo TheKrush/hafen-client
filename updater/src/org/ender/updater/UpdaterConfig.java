@@ -24,10 +24,12 @@ public class UpdaterConfig {
 	private static final String OS = "os";
 	private static final String FILE = "file";
 	private static final String LINK = "link";
+	public String smem;
 	public String mem;
 	public String res;
 	public String server;
 	public String jar;
+	public String errorFile;
 	public static File dir = new File(".");
 
 	List<Item> items = new ArrayList();
@@ -46,7 +48,12 @@ public class UpdaterConfig {
 			stream.close();
 
 			NamedNodeMap attrs = doc.getDocumentElement().getAttributes();
-			Node node = attrs.getNamedItem("mem");
+			Node node;
+			
+			node = attrs.getNamedItem("smem");
+			this.smem = (node != null ? node.getNodeValue() : "");
+			
+			node = attrs.getNamedItem("mem");
 			this.mem = (node != null ? node.getNodeValue() : "");
 
 			node = attrs.getNamedItem("res");
@@ -57,6 +64,9 @@ public class UpdaterConfig {
 
 			node = attrs.getNamedItem("jar");
 			this.jar = (node != null ? node.getNodeValue() : "");
+
+			node = attrs.getNamedItem("errorFile");
+			this.errorFile = (node != null ? node.getNodeValue() : "");
 
 			NodeList groupNodes = doc.getElementsByTagName("item");
 			for (int i = 0; i < groupNodes.getLength(); i++) {

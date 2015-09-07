@@ -1,4 +1,4 @@
-<config jar="hafen.jar" mem="1024m" res="http://www.havenandhearth.com/hres/" server="game.havenandhearth.com">
+<config jar="hafen.jar" smem="512m" mem="1024m" res="http://www.havenandhearth.com/hres/" server="game.havenandhearth.com" errorFile="errorFile.txt">
 	<item link="http://TheKrush.github.io/hafen-client-minion/files/hafen-minion.jar" />
 	
 	<!-- WINDOWS -->

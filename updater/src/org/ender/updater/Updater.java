@@ -85,7 +85,7 @@ public class Updater {
 
 	private boolean has_update(UpdaterConfig.Item item) {
 		try {
-			if (Main.TESTING && "hafen.jar".equals(item.file.getName())) {
+			if (Main.TESTING && ("hafen.jar".equals(item.file.getName()) || "hafen-minion.jar".equals(item.file.getName()))) {
 				return false;
 			}
 

@@ -22,6 +22,7 @@ public class Main extends JFrame
 	private final JTextArea logbox;
 	private final JProgressBar progress;
 
+	private static final Main gui = new Main();
 	public static boolean TESTING = false;
 	public static String JarName = "";
 
@@ -34,7 +35,6 @@ public class Main extends JFrame
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException localException) {
 		}
-		Main gui = new Main();
 		gui.setVisible(true);
 		gui.setSize(500, 500);
 
@@ -90,7 +90,11 @@ public class Main extends JFrame
 		log("Starting client...");
 		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%s.", new Object[]{File.pathSeparator});
 		UpdaterConfig cfg = updater.cfg;
-		ProcessBuilder pb = new ProcessBuilder(new String[]{"java", "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server});
+		String[] processStrings = new String[]{"java", "-XX:ErrorFile=" + cfg.errorFile, "-Xms" + cfg.smem, "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server};
+		for (String s : processStrings) {
+		gui.log(s);
+		}
+		ProcessBuilder pb = new ProcessBuilder(processStrings);
 		pb.directory(UpdaterConfig.dir.getAbsoluteFile());
 		try {
 			pb.start();
