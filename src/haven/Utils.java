@@ -1305,7 +1305,7 @@ public class Utils {
 	}
 
 	public static String timestamp() {
-		return new SimpleDateFormat("HH:mm").format(new Date());
+		return new SimpleDateFormat("HH:mm:ss").format(new Date());
 	}
 
 	public static String timestamp(String text) {
