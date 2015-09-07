@@ -87,6 +87,12 @@ public class BGL {
 				}
 				list[i].run(gl);
 			} catch (Exception exc) {
+				BGLException bglException = new BGLException(this, list[i], exc);
+				System.err.println("=========== BGL ERROR ===========");
+				exc.printStackTrace(System.err);
+				System.err.println("=========== DUMP ================");
+				System.err.println(bglException.dump.toString());
+				System.err.println("=================================");
 				throw (new BGLException(this, list[i], exc));
 			}
 		}
