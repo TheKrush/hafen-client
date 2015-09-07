@@ -591,6 +591,13 @@ public class CharWnd extends Window {
 			updcost();
 		}
 
+		public void reset() {
+			tbv = attr.base;
+			tcv = attr.comp;
+			cbv = ccv = 0;
+			updcost();
+		}
+
 		public boolean mousewheel(Coord c, int a) {
 			adj(-a);
 			return (true);
@@ -1278,6 +1285,13 @@ public class CharWnd extends Window {
 					CharWnd.this.wdgmsg("sattr", args.toArray(new Object[0]));
 				}
 			}, new Coord(rx - 75, y + 55));
+			sattr.add(new Button(75, "Reset") {
+				public void click() {
+					for (SAttr attr : skill) {
+						attr.reset();
+					}
+				}
+			}, new Coord(rx - 160, y + 55));
 		}
 
 		Tabs.Tab skills;
