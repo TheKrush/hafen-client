@@ -275,7 +275,7 @@ public class WItem extends Widget implements DTarget {
 		boolean inv = parent instanceof Inventory;
 		switch (button) {
 			case 1: // left
-				if (ui.modshift) {
+				if (ui.modmeta) {
 					item.wdgmsg("transfer", c);
 					return (true);
 				} else if (ui.modctrl) {
@@ -286,7 +286,7 @@ public class WItem extends Widget implements DTarget {
 			case 2: // middle
 				break;
 			case 3: // right
-				if (ui.modshift) {
+				if (ui.modmeta) {
 					if (inv) {
 						wdgmsg("transfer-same", item.resname(), button == 3);
 						return (true);

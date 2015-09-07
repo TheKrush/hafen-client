@@ -127,7 +127,7 @@ public class ISBox extends Widget implements DTarget {
 		}
 		switch (button) {
 			case 1: // left
-				if (ui.modshift) {
+				if (ui.modmeta) {
 					transfer(1, 1);
 				} else if (ui.modctrl) {
 					transfer(-1, 1);
@@ -138,7 +138,7 @@ public class ISBox extends Widget implements DTarget {
 			case 2: // middle
 				break;
 			case 3: // right
-				if (ui.modshift) {
+				if (ui.modmeta) {
 					transfer(1, rem);
 					return (true);
 				} else if (ui.modctrl) {
