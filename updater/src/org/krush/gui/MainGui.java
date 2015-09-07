@@ -205,7 +205,7 @@ public class MainGui extends javax.swing.JFrame implements IUpdaterListener {
 		}
 
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 		}
 		System.exit(0);
