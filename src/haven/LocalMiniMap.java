@@ -147,31 +147,31 @@ public class LocalMiniMap extends Widget {
 			for (Gob gob : oc) {
 				try {
 					GobIcon icon = gob.getattr(GobIcon.class);
+					Coord gc = p2c(gob.rc);
 					if (icon != null) {
-						Coord gc = p2c(gob.rc);
 						Tex tex = icon.tex();
 						g.image(tex, gc.sub(tex.sz().div(2)));
 					} else {
 						Resource res = gob.getres();
-						if (CFG.UI_MINIMAP_PLAYERS.valb()) {
-							if (res != null && "body".equals(res.basename()) && gob.id != mv.player().id) {
-								Coord pc = p2c(gob.rc);
-								g.chcolor(Color.BLACK);
-								g.fellipse(pc, new Coord(5, 5));
-								KinInfo kininfo = gob.getattr(KinInfo.class);
-								g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.WHITE);
-								g.fellipse(pc, new Coord(4, 4));
-								g.chcolor();
+						if (res != null) {
+							if (CFG.UI_MINIMAP_PLAYERS.valb()) {
+								if ("body".equals(res.basename()) && gob.id != mv.player().id) {
+									g.chcolor(Color.BLACK);
+									g.fellipse(gc, new Coord(6, 6));
+									KinInfo kininfo = gob.getattr(KinInfo.class);
+									g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.WHITE);
+									g.fellipse(gc, new Coord(5, 5));
+									g.chcolor();
+								}
 							}
-						}
-						if (CFG.UI_MINIMAP_BOULDERS.valb()) {
-							if (res != null && res.name.contains("bumlings")) {
-								Coord pc = p2c(gob.rc);
-								g.chcolor(Color.BLACK);
-								g.frect(pc, new Coord(7, 7));
-								g.chcolor(Color.WHITE);
-								g.frect(pc.add(2, 2), new Coord(3, 3));
-								g.chcolor();
+							if (CFG.UI_MINIMAP_BOULDERS.valb()) {
+								if (res.name.contains("bumlings")) {
+									g.chcolor(Color.BLACK);
+									g.fellipse(gc, new Coord(4, 4));
+									g.chcolor(Color.LIGHT_GRAY);
+									g.fellipse(gc, new Coord(3, 3));
+									g.chcolor();
+								}
 							}
 						}
 					}
