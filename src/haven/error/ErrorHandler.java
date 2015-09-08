@@ -97,6 +97,10 @@ public class ErrorHandler extends ThreadGroup {
 			if (!status.goterror(r.t)) {
 				return;
 			}
+			if (errordest == null) {
+				status.done(null, null);
+				return;
+			}
 			URLConnection c = errordest.openConnection();
 			status.connecting();
 			c.setDoOutput(true);
