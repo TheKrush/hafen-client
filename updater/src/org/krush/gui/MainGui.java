@@ -197,7 +197,6 @@ public class MainGui extends javax.swing.JFrame implements IUpdaterListener {
 		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%slib", new Object[]{File.pathSeparator});
 		UpdaterConfig cfg = Main.updater.cfg;
 		ProcessBuilder pb = new ProcessBuilder(new String[]{"java", "-XX:ErrorFile=" + cfg.errorFile, "-Xms" + cfg.smem, "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server});
-		System.out.println(pb.command().toString());
 		pb.directory(UpdaterConfig.dir.getAbsoluteFile());
 		try {
 			pb.start();
