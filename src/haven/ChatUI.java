@@ -38,6 +38,10 @@ import java.net.URL;
 import java.util.regex.*;
 import java.io.IOException;
 import java.awt.datatransfer.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class ChatUI extends Widget {
 
@@ -152,6 +156,7 @@ public class ChatUI extends Widget {
 		private final Scrollbar sb;
 		private final IButton cb;
 		public int urgency = 0;
+		private PrintWriter log;
 
 		public static abstract class Message {
 
@@ -201,6 +206,46 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		protected void createLog() {
+			closeLog();
+			if (name() == null) {
+				return;
+			}
+			BufferedWriter bw;
+			FileWriter fw;
+			try {
+				log = new PrintWriter(new BufferedWriter(new FileWriter(Globals.ChatFile(String.format("%s.txt", name())), true)));
+				log.println(String.format("----- NEW SESSION (%s) -----", Utils.timestamp(true)));
+				log.flush();
+			} catch (IOException ignored) {
+			}
+		}
+
+		protected void log(Message msg) {
+			if (log == null) {
+				createLog();
+			}
+			if (log != null) {
+				String text = msg.text().text;
+				log.println(text);
+				log.flush();
+			}
+		}
+
+		protected void closeLog() {
+			if (log != null) {
+				log.flush();
+				log.close();
+			}
+			log = null;
+		}
+
+		@Override
+		public void destroy() {
+			super.destroy();
+			closeLog();
+		}
+
 		public void append(Message msg) {
 			synchronized (msgs) {
 				msgs.add(msg);
@@ -213,6 +258,9 @@ public class ChatUI extends Widget {
 				if (b) {
 					sb.val = sb.max;
 				}
+			}
+			if (CFG.UI_CHAT_LOGS.valb()) {
+				log(msg);
 			}
 		}
 
@@ -886,14 +934,14 @@ public class ChatUI extends Widget {
 		public class InMessage extends SimpleMessage {
 
 			public InMessage(String text, int w) {
-				super(text, new Color(255, 128, 128, 255), w);
+				super(">> " + text, new Color(255, 128, 128, 255), w);
 			}
 		}
 
 		public class OutMessage extends SimpleMessage {
 
 			public OutMessage(String text, int w) {
-				super(text, new Color(128, 128, 255, 255), w);
+				super("<< " + text, new Color(128, 128, 255, 255), w);
 			}
 		}
 

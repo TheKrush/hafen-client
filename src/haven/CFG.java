@@ -19,6 +19,7 @@ public enum CFG {
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1),
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4),
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2),
+	UI_CHAT_LOGS("ui.chat.logs", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
 	UI_ITEM_METER_RED("ui.item.meter.red", 1f),

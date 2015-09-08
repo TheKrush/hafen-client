@@ -525,6 +525,8 @@ public class OptWnd extends Window {
 
 		panelUI.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
 		y += 25;
+		panelUI.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
+		y += 25;
 		panelUI.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
 		y += 25;
 		panelUI.add(new Label("Item meter"), new Coord(x, y));
