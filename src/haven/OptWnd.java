@@ -26,8 +26,9 @@
  */
 package haven;
 
-import haven.MapView.SOrthoCam;
+import haven.CheckListbox.CheckListboxItem;
 import static haven.UI.mapSaver;
+import java.util.Map;
 
 public class OptWnd extends Window {
 
@@ -445,7 +446,7 @@ public class OptWnd extends Window {
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
 		panel.add(new CFGLabel("Show all qualities",
-						"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
+				"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
@@ -490,7 +491,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Transfer items / Stockpile transfer items in",
-						"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
@@ -535,7 +536,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Drop items / Stockpile transfer items out",
-						"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override
@@ -625,8 +626,6 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(x, y));
-		y += 25;
 		panel.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(x, y));
 		//y += 25;
 		//panel.add(new CFGCheckBox("Study lock", CFG.UI_STUDYLOCK), new Coord(x, y));
@@ -643,7 +642,13 @@ public class OptWnd extends Window {
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 		y += 25;
 		panel.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
-						"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
+				"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
+		y += 25;
+		panel.add(new Label("Show boulders:"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BOULDERS, 130, 5);
+		bouldersCheckListbox.additems(CFG.boulders);
+		panel.add(bouldersCheckListbox, new Coord(x, y));
 
 		my = Math.max(my, y);
 		x += 200;
@@ -682,6 +687,7 @@ public class OptWnd extends Window {
 		this(true);
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if ((sender == this) && (msg == "close")) {
 			hide();
@@ -690,6 +696,7 @@ public class OptWnd extends Window {
 		}
 	}
 
+	@Override
 	public void show() {
 		chpanel(panelMain);
 		super.show();
@@ -790,6 +797,46 @@ public class OptWnd extends Window {
 
 			if (tip != null) {
 				tooltip = Text.render(tip).tex();
+			}
+		}
+	}
+
+	private class CFGCheckListbox extends CheckListbox {
+
+		protected final CFG cfg;
+
+		public CFGCheckListbox(CFG cfg, int w, int h) {
+			super(w, h);
+			this.cfg = cfg;
+		}
+
+		private boolean cfgVal(String name) {
+			Map<String, Boolean> mapVal = cfg.valo();
+			return mapVal.containsKey(name) ? mapVal.get(name) : false;
+		}
+
+		private void cfgVal(String name, boolean val) {
+			Map<String, Boolean> mapVal = cfg.valo();
+			mapVal.put(name, val);
+			cfg.set(mapVal);
+		}
+
+		public class CFGCheckListboxItem extends CheckListboxItem {
+
+			public CFGCheckListboxItem(String name, boolean selected) {
+				super(name, selected);
+			}
+		}
+
+		@Override
+		protected void itemclick(CheckListboxItem itm, int button) {
+			super.itemclick(itm, button);
+			cfgVal(itm.name, itm.selected);
+		}
+
+		public void additems(String[] keys) {
+			for (String key : keys) {
+				items.add(new CheckListbox.CheckListboxItem(key, cfgVal(key)));
 			}
 		}
 	}

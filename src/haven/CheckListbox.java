@@ -22,29 +22,38 @@ public class CheckListbox extends Listbox<CheckListboxItem> {
 			this.name = name;
 			this.selected = selected;
 		}
+
+		public void setselected(boolean selected) {
+			this.selected = selected;
+		}
 	}
 
+	@Override
 	protected void itemclick(CheckListboxItem itm, int button) {
 		if (button == 1) {
-			itm.selected = !itm.selected;
+			itm.setselected(!itm.selected);
 			super.itemclick(itm, button);
 		}
 	}
 
+	@Override
 	protected CheckListboxItem listitem(int idx) {
 		return (items.get(idx));
 	}
 
+	@Override
 	protected int listitems() {
 		return items.size();
 	}
 
+	@Override
 	public void drawbg(GOut g) {
 		g.chcolor(0, 0, 0, 128);
 		g.frect(Coord.z, sz);
 		g.chcolor();
 	}
 
+	@Override
 	protected void drawitem(GOut g, CheckListboxItem itm, int idx) {
 		if (itm.selected) {
 			g.image(chk, new Coord(sz.x - sb.sz.x - chk.sz().x - 3, -1), new Coord(itemh, itemh));
