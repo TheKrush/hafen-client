@@ -33,6 +33,7 @@ import static haven.Utils.el;
 
 public class UI {
 
+	private final HavenPanel panel;
 	public RootWidget root;
 	final private LinkedList<Grab> keygrab = new LinkedList<Grab>(), mousegrab = new LinkedList<Grab>();
 	public Map<Integer, Widget> widgets = new TreeMap<Integer, Widget>();
@@ -116,7 +117,8 @@ public class UI {
 		}
 	}
 
-	public UI(Coord sz, Session sess) {
+	public UI(Coord sz, Session sess, HavenPanel panel) {
+		this.panel = panel;
 		root = new RootWidget(this, sz);
 		widgets.put(0, root);
 		rwidgets.put(root, 0);
@@ -334,6 +336,10 @@ public class UI {
 			}
 		}
 		return (false);
+	}
+
+	public void mousedown(Coord c, int button) {
+		mousedown(new MouseEvent(panel, 0, 0, 0, c.x, c.y, 1, false, button), c, button);
 	}
 
 	public void mousedown(MouseEvent ev, Coord c, int button) {

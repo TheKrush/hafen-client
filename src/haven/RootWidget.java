@@ -26,6 +26,7 @@
 package haven;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class RootWidget extends ConsoleHost {
 
@@ -41,6 +42,8 @@ public class RootWidget extends ConsoleHost {
 
 	public boolean globtype(char key, KeyEvent ev) {
 		if (!super.globtype(key, ev)) {
+			int code = ev.getKeyCode();
+			boolean CTRL = ui.modctrl;
 			if (key == '`') {
 				GameUI gi = findchild(GameUI.class);
 				if (Config.profile) {
@@ -53,6 +56,14 @@ public class RootWidget extends ConsoleHost {
 				if (Config.profilegpu) {
 					add(new Profwnd(ggprof, "GPU profile"), new Coord(450, 250));
 				}
+			} else if (CTRL && code == KeyEvent.VK_1) {
+				if (ui.gui != null) {
+					ui.gui.eqproxy.activate(0);
+				}
+			} else if (CTRL && code == KeyEvent.VK_2) {
+				if (ui.gui != null) {
+					ui.gui.eqproxy.activate(1);
+				}
 			} else if (key == ':') {
 				entercmd();
 			} else if (key != 0) {
@@ -60,6 +71,11 @@ public class RootWidget extends ConsoleHost {
 			}
 		}
 		return (true);
+	}
+
+	@Override
+	public boolean mousedown(Coord c, int button) {
+		return super.mousedown(c, button);
 	}
 
 	public void draw(GOut g) {

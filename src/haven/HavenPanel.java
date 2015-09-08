@@ -268,7 +268,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 		if (ui != null) {
 			ui.destroy();
 		}
-		ui = new UI(new Coord(w, h), sess);
+		ui = new UI(new Coord(w, h), sess, this);
 		ui.root.guprof = uprof;
 		ui.root.grprof = rprof;
 		ui.root.ggprof = gprof;

@@ -89,7 +89,7 @@ public class TestClient implements Runnable {
 	public class TestUI extends UI {
 
 		public TestUI(Coord sz, Session sess) {
-			super(sz, sess);
+			super(sz, sess, null);
 		}
 
 		public void newwidget(int id, String type, int parent, Object[] pargs, Object... cargs) throws InterruptedException {

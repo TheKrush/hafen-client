@@ -99,4 +99,11 @@ public class EquipProxy extends Widget implements DTarget {
 		}
 		return false;
 	}
+
+	public void activate(int i) {
+		ui.modctrl = false;
+		Coord c = sqoff(new Coord(i, 0)).add(rootpos());
+		ui.mousedown(c, 1);
+		ui.modctrl = true;
+	}
 }
