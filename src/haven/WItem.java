@@ -246,9 +246,9 @@ public class WItem extends Widget implements DTarget {
 		QualityList quality = itemq.get();
 		if (quality != null) {
 			Tex tex = null;
-			if ((ui.modflags() & CFG.Q_SHOW_MODS_ONKEY.vali()) != 0 || CFG.Q_SHOW_MODS.vali() == 2) {
+			if ((ui.modflags() & CFG.HOTKEY_ITEM_QUALITY.vali()) != 0 || CFG.UI_ITEM_QUALITY_SHOW.vali() == 2) {
 				tex = quality.tex();
-			} else if (!quality.isEmpty() && CFG.Q_SHOW_MODS.vali() == 1) {
+			} else if (!quality.isEmpty() && CFG.UI_ITEM_QUALITY_SHOW.vali() == 1) {
 				tex = quality.single().tex();
 			}
 
@@ -275,10 +275,10 @@ public class WItem extends Widget implements DTarget {
 		boolean inv = parent instanceof Inventory;
 		switch (button) {
 			case 1: // left
-				if (ui.modmeta) {
+				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
 					item.wdgmsg("transfer", c);
 					return (true);
-				} else if (ui.modctrl) {
+				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
 					item.wdgmsg("drop", c);
 					return (true);
 				}
@@ -286,12 +286,12 @@ public class WItem extends Widget implements DTarget {
 			case 2: // middle
 				break;
 			case 3: // right
-				if (ui.modmeta) {
+				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
 					if (inv) {
 						wdgmsg("transfer-same", item.resname(), button == 3);
 						return (true);
 					}
-				} else if (ui.modctrl) {
+				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
 					if (inv) {
 						wdgmsg("drop-same", item.resname(), button == 3);
 						return (true);

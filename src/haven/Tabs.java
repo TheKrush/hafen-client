@@ -68,7 +68,7 @@ public class Tabs {
 		return (parent.add(new Tab() {
 			@Override
 			public boolean mousedown(Coord c, int button) {
-				if (CFG.STUDY_LOCK.valb() && c.x > 265 && c.x < 265 + 133 && c.y > 40 && c.y < 40 + 133) {
+				if (CFG.UI_STUDYLOCK.valb() && c.x > 265 && c.x < 265 + 133 && c.y > 40 && c.y < 40 + 133) {
 					return false;
 				}
 				return super.mousedown(c, button);
@@ -76,7 +76,7 @@ public class Tabs {
 
 			@Override
 			public void wdgmsg(Widget sender, String msg, Object... args) {
-				if (CFG.STUDY_LOCK.valb() && msg.equals("invxf")) {
+				if (CFG.UI_STUDYLOCK.valb() && msg.equals("invxf")) {
 					return;
 				} else {
 					super.wdgmsg(sender, msg, args);

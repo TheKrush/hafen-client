@@ -62,7 +62,7 @@ public class QualityList {
 	}
 
 	public Quality single() {
-		return CFG.Q_MAX_SINGLE.valb() ? max : average;
+		return CFG.UI_ITEM_QUALITY_SINGLEASMAX.valb() ? max : average;
 	}
 
 	public Tex tex() {

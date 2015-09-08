@@ -9,29 +9,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CFG {
-	
-	CONFIG_VERSION("config.version", 0),
 
 	CAMERA_BRIGHT("camera.bright", 0f),
-	DISPLAY_KINNAMES("display.kinnames", true),
+	CAMERA_FREEROTATION("camera.freerotation", false),
+	CONFIG_VERSION("config.version", 0),
 	DISPLAY_FLAVOR("display.flavor", true),
-	FREE_CAMERA_ROTATION("general.freecamera", false),
-	STORE_MAP("general.storemap", false),
-	STUDY_LOCK("ui.studylock", false),
-	SHOW_CHAT_TIMESTAMP("ui.chat.timestamp", true),
-	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
-	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
+	DISPLAY_KINNAMES("display.kinnames", true),
+	GENERAL_STOREMAP("general.storemap", false),
+	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1),
+	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4),
+	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2),
+	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
 	UI_ITEM_METER_RED("ui.item.meter.red", 1f),
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
-	Q_SHOW_MODS("ui.q.showmods", 1),
-	Q_MAX_SINGLE("ui.q.maxsingle", false),
-	Q_SHOW_MODS_ONKEY("ui.q.allmods", 7);
+	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1),
+	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
+	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
+	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
+	UI_STUDYLOCK("ui.studylock", false);
 
 	private static final String CONFIG_JSON = MainFrame.SETTINGS_FOLDER + "config.json";
-	private static final int configVersion = 2;
+	private static final int configVersion = 3;
 	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
@@ -87,7 +88,7 @@ public enum CFG {
 	public static synchronized Object get(CFG name) {
 		return get(name, cfg);
 	}
-	
+
 	private static synchronized Object get(CFG name, Object configMap) {
 		if (cache.containsKey(name.path)) {
 			return cache.get(name.path);
@@ -109,7 +110,7 @@ public enum CFG {
 	public static float getf(CFG name) {
 		return ((Number) get(name)).floatValue();
 	}
-	
+
 	public static synchronized void set(CFG name, Object value) {
 		set(name, value, cfg);
 	}
@@ -146,7 +147,7 @@ public enum CFG {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	private static Object retrieve(CFG name) {
 		return retrieve(name, cfg);
 	}

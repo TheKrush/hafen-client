@@ -127,9 +127,9 @@ public class ISBox extends Widget implements DTarget {
 		}
 		switch (button) {
 			case 1: // left
-				if (ui.modmeta) {
+				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
 					transfer(1, 1);
-				} else if (ui.modctrl) {
+				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
 					transfer(-1, 1);
 				} else {
 					wdgmsg("click");
@@ -138,10 +138,10 @@ public class ISBox extends Widget implements DTarget {
 			case 2: // middle
 				break;
 			case 3: // right
-				if (ui.modmeta) {
+				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
 					transfer(1, rem);
 					return (true);
-				} else if (ui.modctrl) {
+				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
 					transfer(-1, av - rem);
 					return (true);
 				}

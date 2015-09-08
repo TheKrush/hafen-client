@@ -1468,12 +1468,12 @@ public class CharWnd extends Window {
 			Widget inf = sattr.add(new StudyInfo(new Coord(attrw - 150, child.sz.y), child), new Coord(260 + 150, child.c.y).add(wbox.btloff().x, 0));
 			sattr.add(new CheckBox("Lock") {
 				{
-					a = CFG.STUDY_LOCK.valb();
+					a = CFG.UI_STUDYLOCK.valb();
 				}
 
 				public void set(boolean val) {
 					Utils.setprefb("studylock", val);
-					CFG.STUDY_LOCK.set(val);
+					CFG.UI_STUDYLOCK.set(val);
 					a = val;
 				}
 			}, new Coord(415, 10));
