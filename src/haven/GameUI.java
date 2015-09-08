@@ -77,10 +77,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			if (map != null) {
 				Coord mvc = map.rootxlate(ui.mc);
 				if (mvc.isect(Coord.z, map.sz)) {
-					map.delay(map.new Hittest( 
-						 
-						 
-						mvc) {
+					map.delay(map.new Hittest(mvc) {
 			    protected void hit(Coord pc, Coord mc, MapView.ClickInfo inf) {
 							if (inf == null) {
 								GameUI.this.wdgmsg("belt", slot, 1, ui.modflags(), mc);
@@ -541,6 +538,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 
 	public void addchild(Widget child, Object... args) {
 		String place = ((String) args[0]).intern();
+		Coord center = new Coord(c.x + (sz.x / 2), c.y + (sz.y / 2));
 		if (place == "mapview") {
 			child.resize(sz);
 			map = add((MapView) child, Coord.z);
@@ -569,14 +567,15 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			equwnd.add(child, Coord.z);
 			equwnd.pack();
 			equwnd.hide();
-			add(equwnd, new Coord(400, 10));
+			add(equwnd, new Coord(sz.x - child.sz.x, 0)); // upper right
 		} else if (place == "hand") {
 			GItem g = add((GItem) child);
 			Coord lc = (Coord) args[1];
 			hand.add(new DraggedItem(g, lc));
 			updhand();
 		} else if (place == "chr") {
-			chrwdg = add((CharWnd) child, new Coord(300, 50));
+			Coord childcenter = new Coord(child.sz.x / 2, child.sz.y / 2);
+			chrwdg = add((CharWnd) child, new Coord(center.x - childcenter.x, 0/*center.y - childcenter.y*/)); // upper center
 			chrwdg.hide();
 		} else if (place == "craft") {
 			final Widget mkwdg = child;
@@ -598,7 +597,8 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			};
 			makewnd.add(mkwdg, Coord.z);
 			makewnd.pack();
-			add(makewnd, new Coord(400, 200));
+			Coord childcenter = new Coord(makewnd.sz.x / 2, makewnd.sz.y / 2);
+			add(makewnd, new Coord(center.x - childcenter.x, 0/*center.y - childcenter.y*/)); // upper center
 		} else if (place == "buddy") {
 			zerg.ntab(buddies = (BuddyWnd) child, zerg.kin);
 		} else if (place == "pol") {
