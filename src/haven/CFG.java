@@ -30,7 +30,7 @@ public enum CFG {
 	Q_MAX_SINGLE("ui.q.maxsingle", false),
 	Q_SHOW_MODS_ONKEY("ui.q.allmods", 7);
 
-	private static final String CONFIG_JSON = "config.json";
+	private static final String CONFIG_JSON = MainFrame.SETTINGS_FOLDER + "config.json";
 	private static final int configVersion = 2;
 	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();

@@ -30,10 +30,13 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.lang.reflect.*;
+import java.text.SimpleDateFormat;
 
 public class MainFrame extends java.awt.Frame implements Runnable, Console.Directory {
 
-	private static final String TITLE = String.format("Haven & Hearth - Minion Client [%s] by Ender & Krush", Config.version);
+	public static final String TITLE = String.format("Haven & Hearth - Minion Client [%s] by Ender & Krush", Config.version);
+	public static final String LOG_FOLDER = "./logs/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";
+	public static final String SETTINGS_FOLDER = "./settings/";
 	HavenPanel p;
 	private final ThreadGroup g;
 	public final Thread mt;
@@ -180,20 +183,26 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 	public MainFrame(Coord isz) {
 		super(TITLE);
 		try {
-			File outFile = new File("_out.txt");
+			File outFile = new File(LOG_FOLDER + "_out.txt");
+			if (!outFile.getParentFile().exists()) {
+				outFile.getParentFile().mkdirs();
+			}
 			if (!outFile.exists()) {
 				outFile.createNewFile();
 			}
-			System.setOut(new PrintStream(new FileOutputStream(outFile)));
+			System.setOut(new PrintStream(new FileOutputStream(outFile, true)));
 		} catch (FileNotFoundException ex) {
 		} catch (IOException ex) {
 		}
 		try {
-			File errFile = new File("_err.txt");
+			File errFile = new File(LOG_FOLDER + "_err.txt");
+			if (!errFile.getParentFile().exists()) {
+				errFile.getParentFile().mkdirs();
+			}
 			if (!errFile.exists()) {
 				errFile.createNewFile();
 			}
-			System.setErr(new PrintStream(new FileOutputStream(errFile)));
+			System.setErr(new PrintStream(new FileOutputStream(errFile, true)));
 		} catch (FileNotFoundException ex) {
 		} catch (IOException ex) {
 		}

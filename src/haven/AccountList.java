@@ -11,7 +11,7 @@ import static haven.Utils.setpref;
 
 public class AccountList extends Widget {
 
-	public static final String ACCOUNTS_JSON = "accounts.json";
+	public static final String ACCOUNTS_JSON = MainFrame.SETTINGS_FOLDER + "accounts.json";
 	public static final Map<String, String> accountmap = new HashMap<String, String>();
 	private static final Coord SZ = new Coord(230, 30);
 	private static final Comparator<Account> accountComparator = new Comparator<Account>() {
