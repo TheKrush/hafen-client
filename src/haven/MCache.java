@@ -408,9 +408,6 @@ public class MCache {
 		} else if (type == 2) {
 			trimall();
 		}
-		if (grids.size() == 0) {
-			MapDumper.newsession();
-		}
 	}
 
 	private Grid cached = null;
@@ -489,13 +486,13 @@ public class MCache {
 						grids.put(c, g = new Grid(c));
 					}
 					g.fill(msg);
+					if (CFG.GENERAL_STOREMAP.valb()) {
+						UI.mapSaver.recordMapTile(this, g, c);
+					}
 					req.remove(c);
 					olseq++;
 				}
 			}
-		}
-		if (CFG.GENERAL_STOREMAP.valb() && g != null) {
-			MapDumper.dump(this, g);
 		}
 	}
 
@@ -579,6 +576,9 @@ public class MCache {
 	public void trimall() {
 		synchronized (grids) {
 			synchronized (req) {
+				if (CFG.GENERAL_STOREMAP.valb()) {
+					UI.mapSaver.newSession();
+				}
 				for (Grid g : grids.values()) {
 					g.dispose();
 				}
