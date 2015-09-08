@@ -121,7 +121,9 @@ public class UI {
 		widgets.put(0, root);
 		rwidgets.put(root, 0);
 		this.sess = sess;
-		mapSaver = new MapSaver(this);
+		if (CFG.GENERAL_STOREMAP.valb()) {
+			mapSaver = new MapSaver(this);
+		}
 	}
 
 	public void setreceiver(Receiver rcvr) {

@@ -34,6 +34,7 @@ public class Updater {
 				Updater.this.listener.log("Checking for updates...");
 				List<UpdaterConfig.Item> update = new ArrayList<>();
 				for (UpdaterConfig.Item item : Updater.this.cfg.items) {
+					item.folder.mkdirs();
 					if (Updater.this.correct_platform(item)) {
 						Updater.this.init(item);
 						if (Updater.this.has_update(item)) {

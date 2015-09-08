@@ -26,6 +26,8 @@
  */
 package haven;
 
+import static haven.UI.mapSaver;
+
 public class OptWnd extends Window {
 
 	public static final Coord PANEL_POS = new Coord(220, 30);
@@ -37,7 +39,7 @@ public class OptWnd extends Window {
 		if (current != null) {
 			current.hide();
 		}
-		
+
 		(current = p).show();
 
 		pack();
@@ -356,7 +358,15 @@ public class OptWnd extends Window {
 		int x = 0, y = 0, mx = 0, my = 0;
 		addPanelButton("General Settings", 'g', panelGeneral, buttonX, buttonY);
 
-		panelGeneral.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP), new Coord(x, y));
+		panelGeneral.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP) {
+			@Override
+			public void changed(boolean val) {
+				super.changed(val);
+				if (val && UI.mapSaver == null) {
+					mapSaver = new MapSaver(ui);
+				}
+			}
+		}, new Coord(x, y));
 
 		my = Math.max(my, y);
 

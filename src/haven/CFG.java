@@ -15,7 +15,7 @@ public enum CFG {
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_FLAVOR("display.flavor", true),
 	DISPLAY_KINNAMES("display.kinnames", true),
-	GENERAL_STOREMAP("general.storemap", false),
+	GENERAL_STOREMAP("general.storemap", true),
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1),
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4),
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2),

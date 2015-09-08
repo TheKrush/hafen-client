@@ -183,7 +183,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 	public MainFrame(Coord isz) {
 		super(TITLE);
 		try {
-			File outFile = new File(LOG_FOLDER + "_out.txt");
+			File outFile = new File(LOG_FOLDER + "output.log");
 			if (!outFile.getParentFile().exists()) {
 				outFile.getParentFile().mkdirs();
 			}
@@ -195,7 +195,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		} catch (IOException ex) {
 		}
 		try {
-			File errFile = new File(LOG_FOLDER + "_err.txt");
+			File errFile = new File(LOG_FOLDER + "error.log");
 			if (!errFile.getParentFile().exists()) {
 				errFile.getParentFile().mkdirs();
 			}

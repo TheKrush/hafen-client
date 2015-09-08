@@ -76,7 +76,7 @@
 			<fileset dir="build/classes-lib" />
 			<manifest>
 				<attribute name="Main-Class" value="haven.MainFrame" />
-				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar builtin-res.jar hafen-res.jar" />
+				<attribute name="Class-Path" value="lib/jogl.jar lib/gluegen-rt.jar lib/builtin-res.jar lib/hafen-res.jar" />
 			</manifest>
 		</jar>
 		<chmod file="build/hafen.jar" perm="a+x" />
@@ -85,7 +85,7 @@
 			<fileset dir="build/classes-lib" />
 			<manifest>
 				<attribute name="Main-Class" value="haven.MainFrame" />
-				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar builtin-res.jar hafen-res.jar" />
+				<attribute name="Class-Path" value="lib/jogl.jar lib/gluegen-rt.jar lib/builtin-res.jar lib/hafen-res.jar" />
 			</manifest>
 		</jar>
 		<chmod file="dist/hafen.jar" perm="a+x" />
@@ -102,13 +102,14 @@
 	</target>
   
 	<target name="jars" depends="build-env, jar, res-jar">
-		<copy todir="build">
+		<copy todir="build/lib">
 			<fileset dir="lib">
 				<include name="jogl.jar" />
 				<include name="gluegen-rt.jar" />
 				<include name="hafen-res.jar" />
 				<include name="builtin-res.jar" />
 			</fileset>
+			<fileset dir="lib/jogl-natives" includes="*.jar" />
 		</copy>
 	</target>
   

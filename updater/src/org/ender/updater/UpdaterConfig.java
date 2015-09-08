@@ -83,11 +83,17 @@ public class UpdaterConfig {
 		Element el = (Element) node;
 
 		itm.link = el.getAttribute("link");
-		if (el.hasAttribute("file")) {
-			itm.file = new File(dir, el.getAttribute("file"));
+		if (el.hasAttribute("folder")) {
+			itm.folder = new File(dir, el.getAttribute("folder"));
 		} else {
 			int i = itm.link.lastIndexOf("/");
-			itm.file = new File(dir, itm.link.substring(i + 1));
+			itm.folder = dir;
+		}
+		if (el.hasAttribute("file")) {
+			itm.file = new File(itm.folder, el.getAttribute("file"));
+		} else {
+			int i = itm.link.lastIndexOf("/");
+			itm.file = new File(itm.folder, itm.link.substring(i + 1));
 		}
 		itm.os = el.getAttribute("os");
 		itm.arch = el.getAttribute("arch");
@@ -103,6 +109,7 @@ public class UpdaterConfig {
 		public String arch;
 		public String os;
 		public File file;
+		public File folder;
 		public String link;
 		public long date = 0L;
 		public long size = 0L;

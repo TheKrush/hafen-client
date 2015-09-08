@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.plaf.ProgressBarUI;
@@ -31,6 +32,11 @@ public class MainGui extends javax.swing.JFrame implements IUpdaterListener {
 	 */
 	public MainGui() {
 		super(Main.TITLE);
+		try {
+			new File(Main.LOG_FOLDER).mkdirs();
+			this.log = new FileOutputStream(new File(Main.LOG_FOLDER + "updater.log"), true);
+		} catch (FileNotFoundException e) {
+		}
 
 		initComponents();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -188,9 +194,10 @@ public class MainGui extends javax.swing.JFrame implements IUpdaterListener {
 	@Override
 	public void finished() {
 		log("Starting client...");
-		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%s.", new Object[]{File.pathSeparator});
+		String libs = String.format("-Djava.library.path=\"%%PATH%%\"%slib", new Object[]{File.pathSeparator});
 		UpdaterConfig cfg = Main.updater.cfg;
 		ProcessBuilder pb = new ProcessBuilder(new String[]{"java", "-XX:ErrorFile=" + cfg.errorFile, "-Xms" + cfg.smem, "-Xmx" + cfg.mem, libs, "-jar", cfg.jar, "-U", cfg.res, cfg.server});
+		System.out.println(pb.command().toString());
 		pb.directory(UpdaterConfig.dir.getAbsoluteFile());
 		try {
 			pb.start();
