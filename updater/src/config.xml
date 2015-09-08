@@ -55,4 +55,5 @@
 	<item link="http://www.havenandhearth.com/java/hafen-res.jar" folder="lib" />
 	<item link="http://www.havenandhearth.com/java/builtin-res.jar" folder="lib" />
 	<item link="http://TheKrush.github.io/hafen-client-minion/files/hafen.jar" />
+	<item link="http://TheKrush.github.io/hafen-client-minion/files/combiner.jar" />
 </config>
