@@ -157,10 +157,10 @@ public class LocalMiniMap extends Widget {
 							if (CFG.UI_MINIMAP_PLAYERS.valb()) {
 								if ("body".equals(res.basename()) && gob.id != mv.player().id) {
 									g.chcolor(Color.BLACK);
-									g.fellipse(gc, new Coord(6, 6));
+									g.fellipse(gc, new Coord(5, 5));
 									KinInfo kininfo = gob.getattr(KinInfo.class);
 									g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.WHITE);
-									g.fellipse(gc, new Coord(5, 5));
+									g.fellipse(gc, new Coord(4, 4));
 									g.chcolor();
 								}
 							}
