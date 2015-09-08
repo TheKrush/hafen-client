@@ -33,6 +33,8 @@ public enum CFG {
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
 	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
 	UI_MINIMAP_BOULDERS("ui.minimap.boulders", new HashMap<String, Boolean>()),
+	UI_MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
+	UI_MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
 	UI_MINIMAP_FLOATING("ui.minimap.floating", false),
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
@@ -58,6 +60,77 @@ public enum CFG {
 		"ras",
 		"sandstone",
 		"schist",};
+	public final static String[] bushes = new String[]{
+		"arrowwood",
+		"blackberrybush",
+		"blackcurrant",
+		"blackthorn",
+		"bogmyrtle",
+		"boxwood",
+		"bsnightshade",
+		"caprifole",
+		"crampbark",
+		"dogrose",
+		"elderberrybush",
+		"gooseberrybush",
+		"hawthorn",
+		"holly",
+		"raspberrybush",
+		"redcurrant",
+		"sandthorn",
+		"spindlebush",
+		"teabush",
+		"tibast",
+		"tundrarose",
+		"woodbine",};
+	public final static String[] trees = new String[]{
+		"alder",
+		"alderfall",
+		"juniper",
+		"appletree",
+		"ash",
+		"aspen",
+		"baywillow",
+		"beech",
+		"beechfall",
+		"birch",
+		"birchfall",
+		"birdcherrytree",
+		"buckthorn",
+		"cedar",
+		"cherry",
+		"chestnuttree",
+		"conkertree",
+		"corkoak",
+		"crabappletree",
+		"cypress",
+		"elm",
+		"fir",
+		"goldenchain",
+		"hazel",
+		"hornbeam",
+		"kingsoak",
+		"larch",
+		"laurel",
+		"linden",
+		"maple",
+		"mirkwood",
+		"mulberry",
+		"oak",
+		"oakfall",
+		"olivetree",
+		"peartree",
+		"pine",
+		"plumtree",
+		"poplar",
+		"rowan",
+		"sallow",
+		"spruce",
+		"sweetgum",
+		"walnuttree",
+		"whitebeam",
+		"willow",
+		"yew",};
 
 	private static String CONFIG_JSON;
 	private static final int configVersion = 5;
@@ -70,6 +143,8 @@ public enum CFG {
 
 	static {
 		Arrays.sort(boulders);
+		Arrays.sort(bushes);
+		Arrays.sort(trees);
 		loadConfig();
 	}
 

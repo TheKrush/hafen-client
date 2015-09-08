@@ -176,26 +176,69 @@ public class LocalMiniMap extends Widget {
 							boolean recognized = false;
 							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_BOULDERS.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
+								boolean drawobj = false;
 								for (String boulderName : CFG.boulders) {
 									if (res.basename().startsWith(boulderName)) {
 										recognized = true;
 										if (mapVal.containsKey(boulderName) && mapVal.get(boulderName)) {
-											g.chcolor(Color.BLACK);
-											g.fellipse(gc, new Coord(4, 4));
-											g.chcolor(Color.LIGHT_GRAY);
-											g.fellipse(gc, new Coord(3, 3));
-											g.chcolor();
+											drawobj = true;
 										}
 										break;
 									}
 								}
+								Color color = Color.LIGHT_GRAY;
 								if (!recognized) {
 									System.out.println("Unrecognized boulder: " + res.name);
-									g.chcolor(Color.BLACK);
-									g.fellipse(gc, new Coord(4, 4));
-									g.chcolor(Color.RED);
-									g.fellipse(gc, new Coord(3, 3));
-									g.chcolor();
+									color = Color.RED;
+								}
+								if (drawobj || !recognized) {
+									g.atextstroked("\u25C6", gc, color, Color.BLACK);
+								}
+							}
+						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
+							boolean recognized = false;
+							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_BUSHES.valo();
+							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
+								boolean drawobj = false;
+								for (String bushName : CFG.bushes) {
+									if (res.basename().startsWith(bushName)) {
+										recognized = true;
+										if (mapVal.containsKey(bushName) && mapVal.get(bushName)) {
+											drawobj = true;
+										}
+										break;
+									}
+								}
+								Color color = new Color(0x777777);
+								if (!recognized) {
+									System.out.println("Unrecognized bush: " + res.name);
+									color = Color.RED;
+								}
+								if (drawobj || !recognized) {
+									g.atextstroked("\u2605", gc, color, Color.BLACK);
+								}
+							}
+						} else if (res.name.startsWith("gfx/terobjs/trees")) {
+							boolean recognized = false;
+							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_TREES.valo();
+							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
+								boolean drawobj = false;
+								for (String treeName : CFG.trees) {
+									if (res.basename().startsWith(treeName)) {
+										recognized = true;
+										if (mapVal.containsKey(treeName) && mapVal.get(treeName)) {
+											drawobj = true;
+										}
+										break;
+									}
+								}
+								Color color = new Color(0x777777);
+								if (!recognized) {
+									System.out.println("Unrecognized tree: " + res.name);
+									color = Color.RED;
+								}
+								if (drawobj || !recognized) {
+									g.atextstroked("\u25B2", gc, color, Color.BLACK);
 								}
 							}
 						}

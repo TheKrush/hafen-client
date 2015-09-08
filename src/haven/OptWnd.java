@@ -649,6 +649,19 @@ public class OptWnd extends Window {
 		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BOULDERS, 130, 5);
 		bouldersCheckListbox.additems(CFG.boulders);
 		panel.add(bouldersCheckListbox, new Coord(x, y));
+		y += bouldersCheckListbox.sz.y + 5;
+		panel.add(new Label("Show bushes:"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BUSHES, 130, 5);
+		bushesCheckListbox.additems(CFG.bushes);
+		panel.add(bushesCheckListbox, new Coord(x, y));
+		y += bushesCheckListbox.sz.y + 5;
+		panel.add(new Label("Show trees:"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_TREES, 130, 5);
+		treesCheckListbox.additems(CFG.trees);
+		panel.add(treesCheckListbox, new Coord(x, y));
+		y += treesCheckListbox.sz.y + 5;
 
 		my = Math.max(my, y);
 		x += 200;

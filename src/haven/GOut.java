@@ -83,8 +83,8 @@ public class GOut {
 			String ret = null;
 			for (java.lang.reflect.Field f : cl.getFields()) {
 				if (((f.getModifiers() & java.lang.reflect.Modifier.STATIC) != 0)
-								&& ((f.getModifiers() & java.lang.reflect.Modifier.PUBLIC) != 0)
-								&& (f.getType() == Integer.TYPE)) {
+						&& ((f.getModifiers() & java.lang.reflect.Modifier.PUBLIC) != 0)
+						&& (f.getType() == Integer.TYPE)) {
 					int v;
 					try {
 						v = f.getInt(null);
@@ -321,6 +321,30 @@ public class GOut {
 		Tex T = t.tex();
 		Coord sz = t.sz();
 		image(T, c.add((int) ((double) sz.x * -ax), (int) ((double) sz.y * -ay)));
+		T.dispose();
+		checkerr();
+	}
+
+	public void atextstroked(String text, Coord c, Color color, Color stroke) {
+		Text t = Text.renderstroked(text, color, stroke);
+		Tex T = t.tex();
+		image(T, c);
+		T.dispose();
+		checkerr();
+	}
+
+	public void atextstroked(String text, Coord c, Color color, Color stroke, Text.Foundry foundry) {
+		Text t = Text.renderstroked(text, color, stroke, foundry);
+		Tex T = t.tex();
+		image(T, c);
+		T.dispose();
+		checkerr();
+	}
+
+	public void atextstroked(String text, int y, Color color, Color stroke, Text.Foundry foundry) {
+		Text t = Text.renderstroked(text, color, stroke, foundry);
+		Tex T = t.tex();
+		image(T, new Coord(sz.x / 2 - t.sz().x / 2, y));
 		T.dispose();
 		checkerr();
 	}
