@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.image.WritableRaster;
 import static haven.Inventory.invsq;
+import java.awt.image.BufferedImage;
 
 public class GameUI extends ConsoleHost implements Console.Directory {
 
@@ -654,7 +655,13 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			WritableRaster buf = PUtils.imgraster(progt.f[fr][0].sz);
 			PUtils.blit(buf, progt.f[fr][0].img.getRaster(), Coord.z);
 			PUtils.blendblit(buf, progt.f[fr + 1][0].img.getRaster(), Coord.z, bf);
-			curprog = new TexI(PUtils.rasterimg(buf));
+			BufferedImage img = PUtils.rasterimg(buf);
+
+			BufferedImage txt = Text.render(String.format("%d%%", (int) (100 * prog))).img;
+			txt = Utils.outline2(txt, Utils.contrast(Color.WHITE), true);
+			img.getGraphics().drawImage(txt, 24 - txt.getWidth() / 2, 9 - txt.getHeight() / 2, null);
+
+			curprog = new TexI(img);
 			curprogf = fr;
 			curprogb = bf;
 		}
