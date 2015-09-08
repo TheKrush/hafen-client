@@ -35,8 +35,8 @@ import java.text.SimpleDateFormat;
 public class MainFrame extends java.awt.Frame implements Runnable, Console.Directory {
 
 	public static final String TITLE = String.format("Haven & Hearth - Minion Client [%s] by Ender & Krush", Config.version);
-	public static final String LOG_FOLDER = "./logs/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";
-	public static final String SETTINGS_FOLDER = "./settings/";
+	public static final String LOG_FOLDER = "./log/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";
+	public static final String SETTINGS_FOLDER = "./setting/";
 	HavenPanel p;
 	private final ThreadGroup g;
 	public final Thread mt;

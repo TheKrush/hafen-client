@@ -39,7 +39,7 @@ import java.util.Date;
 
 public class MapSaver {
 
-	public static final String MAP_FOLDER = "./maps/";
+	public static final String MAP_FOLDER = "./map/";
 
 	private UI ui;
 	private Coord lastCoord;
