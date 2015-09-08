@@ -186,7 +186,7 @@ public class LocalMiniMap extends Widget {
 										break;
 									}
 								}
-								Color color = Color.LIGHT_GRAY;
+								Color color = Color.CYAN;
 								if (!recognized) {
 									System.out.println("Unrecognized boulder: " + res.name);
 									color = Color.RED;
@@ -209,7 +209,7 @@ public class LocalMiniMap extends Widget {
 										break;
 									}
 								}
-								Color color = new Color(0x777777);
+								Color color = Color.CYAN;
 								if (!recognized) {
 									System.out.println("Unrecognized bush: " + res.name);
 									color = Color.RED;
@@ -240,7 +240,7 @@ public class LocalMiniMap extends Widget {
 										break;
 									}
 								}
-								Color color = new Color(0x777777);
+								Color color = Color.CYAN;
 								if (!recognized) {
 									System.out.println("Unrecognized tree: " + res.name);
 									color = Color.RED;
