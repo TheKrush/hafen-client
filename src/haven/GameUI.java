@@ -144,7 +144,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			}
 		}, new Coord(10, 10));
 		buffs = ulpanel.add(new Bufflist(), new Coord(95, 65));
-		eqproxy = ulpanel.add(new EquipProxy(new int[]{6, 7}), new Coord(200, 35));
+		eqproxy = ulpanel.add(new EquipProxy(new int[]{6, 7}), new Coord(95, 62));
 		syslog = chat.add(new ChatUI.Log("System"));
 		opts = add(new OptWnd());
 		opts.hide();

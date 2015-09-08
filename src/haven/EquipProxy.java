@@ -2,11 +2,12 @@ package haven;
 
 import static haven.Inventory.*;
 import static haven.Inventory.sqoff;
+import java.awt.Color;
 
 public class EquipProxy extends Widget implements DTarget {
 
+	public static final Color BG_COLOR = new Color(91, 128, 51, 202);
 	private int[] slots;
-	private Coord slotsz;
 
 	public EquipProxy(int[] slots) {
 		super();
@@ -15,8 +16,7 @@ public class EquipProxy extends Widget implements DTarget {
 
 	public void setSlots(int[] slots) {
 		this.slots = slots;
-		slotsz = new Coord(slots.length, 1);
-		sz = invsz(slotsz);
+		sz = invsz(new Coord(slots.length, 1));
 	}
 
 	private int slot(Coord c) {
@@ -49,6 +49,9 @@ public class EquipProxy extends Widget implements DTarget {
 		Equipory e = ui.gui.getEquipory();
 		if (e != null) {
 			int k = 0;
+			g.chcolor(BG_COLOR);
+			g.frect(Coord.z, sz);
+			g.chcolor();
 			Coord c0 = new Coord(0, 0);
 			for (int slot : slots) {
 				c0.x = k;
