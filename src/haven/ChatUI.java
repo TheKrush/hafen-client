@@ -169,9 +169,6 @@ public class ChatUI extends Widget {
 			private final Text t;
 
 			public SimpleMessage(String text, Color col, int w) {
-				if (CFG.UI_CHAT_TIMESTAMP.valb()) {
-					text = Utils.timestamp(text);
-				}
 				if (col == null) {
 					this.t = fnd.render(RichText.Parser.quote(text), w);
 				} else {
@@ -774,7 +771,11 @@ public class ChatUI extends Widget {
 				BuddyWnd.Buddy b = getparent(GameUI.class).buddies.find(from);
 				String nm = (b == null) ? "???" : (b.name);
 				if ((r == null) || !nm.equals(cn)) {
-					r = fnd.render(RichText.Parser.quote(String.format("%s: %s", nm, text)), w, TextAttribute.FOREGROUND, col);
+					String line = RichText.Parser.quote(String.format("%s: %s", nm, text));
+					if (CFG.UI_CHAT_TIMESTAMP.valb()) {
+						line = Utils.timestamp(line);
+					}
+					r = fnd.render(line, w, TextAttribute.FOREGROUND, col);
 					cn = nm;
 				}
 				return (r);
