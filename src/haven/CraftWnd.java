@@ -44,7 +44,8 @@ public class CraftWnd extends Window{
     private void init() {
 	box = new RecipeListBox(200, (WND_SZ.y-PANEL_H)/SZ){
 	    @Override
-	    protected void itemclick(Pagina item, int button) {
+	    protected void itemclick(Recipe recipe, int button) {
+		Pagina item = recipe.p;
 		if(button == 1){
 		    if(item == MenuGrid.bk){
 			item = current;
@@ -225,33 +226,78 @@ public class CraftWnd extends Window{
 	return ui.sess.glob.paginafor(res);
     }
 
-    private static class RecipeListBox extends Listbox<Pagina> {
+    private static class Recipe {
+	public final Pagina p;
+	private Tex tex = null;
+
+	public Recipe (Pagina p){
+	    this.p = p;
+	}
+
+	public Tex tex(){
+	    if(tex == null){
+		Resource res = p.res();
+		if(res != null) {
+		    BufferedImage icon = PUtils.convolvedown(res.layer(Resource.imgc).img, ICON_SZ, CharWnd.iconfilter);
+
+		    Resource.AButton act = p.act();
+		    String name = "...";
+		    if(act != null){
+			name = act.name;
+		    } else if(p == MenuGrid.bk){
+			name = "Back";
+		    }
+		    BufferedImage text = Text.render(name).img;
+
+		    tex = new TexI(ItemInfo.catimgsh(3, icon, text));
+		}
+
+	    }
+	    return tex;
+	}
+    }
+
+    private static class RecipeListBox extends Listbox<Recipe> {
 	private static final Color BGCOLOR = new Color(0, 0, 0, 75);
 	private List<Pagina> list;
+	private List<Recipe> recipes;
 	public RecipeListBox(int w, int h) {
 	    super(w, h, SZ);
 	    bgcolor = BGCOLOR;
 	}
 
 	@Override
-	protected Pagina listitem(int i) {
+	protected Recipe listitem(int i) {
 	    if(list == null){
 		return null;
 	    }
-	    return list.get(i);
+	    return recipes.get(i);
 	}
 
 	public void setitems(List<Pagina> list){
 	    if(list.equals(this.list)){return;}
 	    this.list = list;
+	    recipes = new LinkedList<Recipe>();
+	    for(Pagina p : list){
+		recipes.add(new Recipe(p));
+	    }
 	    sb.max = listitems() - h;
 	    sb.val = 0;
 	}
 
+	public void change(Pagina p) {
+	    for(Recipe r : recipes) {
+		if(r.p == p) {
+		    change(r);
+		    return;
+		}
+	    }
+	}
+
 	@Override
-	public void change(Pagina item) {
+	public void change(Recipe item) {
 	    super.change(item);
-	    int k = list.indexOf(item);
+	    int k = recipes.indexOf(item);
 	    if(k>=0){
 		if(k < sb.val){
 		    sb.val = k;
@@ -271,19 +317,14 @@ public class CraftWnd extends Window{
 	}
 
 	@Override
-	protected void drawitem(GOut g, Pagina item, int i) {
+	protected void drawitem(GOut g, Recipe item, int i) {
 	    if(item == null){
 		return;
 	    }
-	    g.image(item.img.tex(), Coord.z, ICON_SZ);
-	    Resource.AButton act = item.act();
-	    String name = "...";
-	    if(act != null){
-		name = act.name;
-	    } else if(item == MenuGrid.bk){
-		name = "Back";
+	    Tex tex = item.tex();
+	    if(tex != null) {
+		g.image(tex, Coord.z);
 	    }
-	    g.atext(name, TEXT_POS, 0, 0.5);
 	}
     }
 }
