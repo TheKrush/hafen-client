@@ -48,6 +48,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	private Text lasterr;
 	private long errtime;
 	private Window invwnd, equwnd, makewnd;
+	public CraftWnd craftwnd;
 	public Inventory maininv;
 	public CharWnd chrwdg;
 	public BuddyWnd buddies;
@@ -185,6 +186,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	protected void attach(UI ui) {
 		super.attach(ui);
 		ui.gui = this;
+		super.attach(ui);
 	}
 
 	@Override
@@ -339,6 +341,20 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		});
 		Debug.log = ui.cons.out;
 		opts.c = sz.sub(opts.sz).div(2);
+	}
+
+	public void showCraftWnd() {
+		if (craftwnd == null) {
+			craftwnd = add(new CraftWnd());
+		}
+	}
+
+	public void toggleCraftWnd() {
+		if (craftwnd == null) {
+			showCraftWnd();
+		} else {
+			craftwnd.wdgmsg(craftwnd, "close");
+		}
 	}
 
 	public class Hidepanel extends Widget {

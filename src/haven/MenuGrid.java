@@ -40,7 +40,10 @@ public class MenuGrid extends Widget {
 	public final static Pagina bk = new Glob.Pagina(Resource.local().loadwait("gfx/hud/sc-back").indir());
 	public final static RichText.Foundry ttfnd = new RichText.Foundry(TextAttribute.FAMILY, "SansSerif", TextAttribute.SIZE, 10);
 	private static Coord gsz = new Coord(4, 4);
-	private Pagina cur, pressed, dragging, layout[][] = new Pagina[gsz.x][gsz.y];
+	public Pagina cur;
+	private Pagina pressed;
+	private Pagina dragging;
+	private Pagina layout[][] = new Pagina[gsz.x][gsz.y];
 	private UI.Grab grab;
 	private int curoff = 0;
 	private int pagseq = 0;
@@ -65,7 +68,7 @@ public class MenuGrid extends Widget {
 		}
 	}
 
-	private boolean cons(Pagina p, Collection<Pagina> buf) {
+	public boolean cons(Pagina p, Collection<Pagina> buf) {
 		Pagina[] cp = new Pagina[0];
 		Collection<Pagina> open, close = new HashSet<Pagina>();
 		synchronized (ui.sess.glob.paginae) {
@@ -116,7 +119,7 @@ public class MenuGrid extends Widget {
 		super(bgsz.mul(gsz).add(1, 1));
 	}
 
-	private static Comparator<Pagina> sorter = new Comparator<Pagina>() {
+	public static Comparator<Pagina> sorter = new Comparator<Pagina>() {
 		public int compare(Pagina a, Pagina b) {
 			AButton aa = a.act(), ab = b.act();
 			if ((aa.ad.length == 0) && (ab.ad.length > 0)) {
@@ -157,7 +160,11 @@ public class MenuGrid extends Widget {
 		}
 	}
 
-	private static Text rendertt(Resource res, boolean withpg) {
+	public static Text rendertt(Resource res, boolean withpg) {
+		return rendertt(res, withpg, true);
+	}
+
+	public static Text rendertt(Resource res, boolean withpg, boolean hotkey) {
 		Resource.AButton ad = res.layer(Resource.action);
 		Resource.Pagina pg = res.layer(Resource.pagina);
 		String tt = ad.name;
@@ -295,17 +302,19 @@ public class MenuGrid extends Widget {
 		return (ui.sess.glob.paginafor(res));
 	}
 
-	private void use(Pagina r, boolean reset) {
+	public void use(Pagina r, boolean reset) {
 		Collection<Pagina> sub = new LinkedList<Pagina>(),
 						cur = new LinkedList<Pagina>();
 		cons(r, sub);
 		cons(this.cur, cur);
+		selectCraft(r);
 		if (sub.size() > 0) {
 			this.cur = r;
 			curoff = 0;
 		} else if (r == bk) {
 			this.cur = paginafor(this.cur.act().parent);
 			curoff = 0;
+			selectCraft(this.cur);
 		} else if (r == next) {
 			if ((curoff + 14) >= cur.size()) {
 				curoff = 0;
@@ -314,6 +323,7 @@ public class MenuGrid extends Widget {
 			}
 		} else {
 			r.newp = 0;
+			senduse(r);
 			wdgmsg("act", (Object[]) r.act().ad);
 			if (reset) {
 				this.cur = null;
@@ -321,6 +331,19 @@ public class MenuGrid extends Widget {
 			curoff = 0;
 		}
 		updlayout();
+	}
+
+	public boolean senduse(Pagina r) {
+		String[] ad = r.act().ad;
+		if ((ad == null) || ad.length < 1) {
+			return (false);
+		}
+		if (ad[0].equals("@")) {
+			//usecustom(ad);
+		} else {
+			wdgmsg("act", (Object[]) ad);
+		}
+		return (true);
 	}
 
 	public void tick(double dt) {
@@ -380,6 +403,50 @@ public class MenuGrid extends Widget {
 		if (r != null) {
 			use(r, true);
 			return (true);
+		}
+		return (false);
+	}
+
+	private void selectCraft(Pagina r) {
+		if (r == null) {
+			return;
+		}
+		if (ui.gui.craftwnd != null) {
+			ui.gui.craftwnd.select(r, true);
+		}
+	}
+
+	public boolean isCrafting(Pagina p) {
+		return (p != null) && (isCrafting(p.res()) || isCrafting(getParent(p)));
+	}
+
+	public boolean isCrafting(Resource res) {
+		return res.name.contains("paginae/act/craft");
+	}
+
+	public Pagina getParent(Pagina p) {
+		if (p == null) {
+			return null;
+		}
+		try {
+			Resource res = p.res();
+			Resource.AButton ad = res.layer(Resource.action);
+			if (ad == null) {
+				return null;
+			}
+			return paginafor(ad.parent);
+		} catch (Loading e) {
+			return null;
+		}
+	}
+
+	public boolean isChildOf(Pagina item, Pagina parent) {
+		Pagina p;
+		while ((p = getParent(item)) != null) {
+			if (p == parent) {
+				return (true);
+			}
+			item = p;
 		}
 		return (false);
 	}

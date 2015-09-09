@@ -44,6 +44,7 @@ public class RootWidget extends ConsoleHost {
 		if (!super.globtype(key, ev)) {
 			int code = ev.getKeyCode();
 			boolean CTRL = ui.modctrl;
+			boolean ALT = ui.modmeta;
 			if (key == '`') {
 				GameUI gi = findchild(GameUI.class);
 				if (Config.profile) {
@@ -63,6 +64,10 @@ public class RootWidget extends ConsoleHost {
 			} else if (CTRL && code == KeyEvent.VK_2) {
 				if (ui.gui != null) {
 					ui.gui.eqproxy.activate(1);
+				}
+			} else if (ALT && code == KeyEvent.VK_C) {
+				if (ui.gui != null) {
+					ui.gui.toggleCraftWnd();
 				}
 			} else if (key == ':') {
 				entercmd();
