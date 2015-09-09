@@ -213,7 +213,7 @@ public class CraftWnd extends Window{
     }
 
     public void setMakewindow(Widget widget) {
-	makewnd = widget;
+	makewnd = add(widget, new Coord(215, 250));
     }
 
     private Pagina paginafor(String name){
