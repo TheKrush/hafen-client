@@ -323,7 +323,7 @@ public class OptWnd extends Window {
 
 		panelCamera.add(new Label("Brighten view"), new Coord(x, y));
 		y += 15;
-		panelCamera.add(new CFGHSlider(null, CFG.CAMERA_BRIGHT) {
+		panelCamera.add(new CFGHSlider(null, CFG.CAMERA_BRIGHTNESS) {
 			@Override
 			public void changed() {
 				super.changed();

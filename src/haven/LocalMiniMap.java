@@ -147,15 +147,21 @@ public class LocalMiniMap extends Widget {
 			for (Gob gob : oc) {
 				try {
 					GobIcon icon = gob.getattr(GobIcon.class);
+					Resource res = gob.getres();
 					Coord gc = p2c(gob.rc);
 					if (icon != null) {
 						Tex tex = icon.tex();
 						g.image(tex, gc.sub(tex.sz().div(2)));
-					} else {
-						Resource res = gob.getres();
-						if (res != null) {
-							if (CFG.UI_MINIMAP_PLAYERS.valb()) {
-								if ("body".equals(res.basename()) && gob.id != mv.player().id) {
+					} else if (res != null) {
+						if (CFG.UI_MINIMAP_PLAYERS.valb()) {
+							if ("body".equals(res.basename())) {
+								if (gob.id == mv.player().id) {
+									g.chcolor(Color.BLACK);
+									g.fellipse(gc, new Coord(5, 5));
+									g.chcolor(Color.DARK_GRAY);
+									g.fellipse(gc, new Coord(4, 4));
+									g.chcolor();
+								} else {
 									g.chcolor(Color.BLACK);
 									g.fellipse(gc, new Coord(5, 5));
 									KinInfo kininfo = gob.getattr(KinInfo.class);
@@ -164,14 +170,14 @@ public class LocalMiniMap extends Widget {
 									g.chcolor();
 								}
 							}
-							if (CFG.UI_MINIMAP_BOULDERS.valb()) {
-								if (res.name.contains("bumlings")) {
-									g.chcolor(Color.BLACK);
-									g.fellipse(gc, new Coord(4, 4));
-									g.chcolor(Color.LIGHT_GRAY);
-									g.fellipse(gc, new Coord(3, 3));
-									g.chcolor();
-								}
+						}
+						if (CFG.UI_MINIMAP_BOULDERS.valb()) {
+							if (res.name.contains("bumlings")) {
+								g.chcolor(Color.BLACK);
+								g.fellipse(gc, new Coord(4, 4));
+								g.chcolor(Color.LIGHT_GRAY);
+								g.fellipse(gc, new Coord(3, 3));
+								g.chcolor();
 							}
 						}
 					}

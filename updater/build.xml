@@ -20,4 +20,5 @@
 		</echo>
 	</target>
 	<import file="nbproject/build-impl.xml"/>
+    <target depends="init,compile,-pre-jar,-do-jar,-post-jar,buildinfo" description="Build JAR." name="jar"/>
 </project>

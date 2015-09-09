@@ -10,7 +10,7 @@ import java.util.Map;
 
 public enum CFG {
 
-	CAMERA_BRIGHT("camera.bright", 0f),
+	CAMERA_BRIGHTNESS("camera.brightness", 0f),
 	CAMERA_TYPE("camera.type", 0), // default
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_FLAVOR("display.flavor", true),

@@ -11,6 +11,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import org.krush.helper.Helper;
@@ -32,7 +33,6 @@ public class Updater {
 				boolean success = true;
 
 				Updater.this.listener.log("Checking for updates...");
-				List<UpdaterConfig.Item> update = new ArrayList<>();
 				for (UpdaterConfig.Item item : Updater.this.cfg.items) {
 					item.folder.mkdirs();
 					if (Updater.this.correct_platform(item)) {
@@ -79,10 +79,7 @@ public class Updater {
 
 	private boolean has_update(UpdaterConfig.Item item) {
 		try {
-			if (Main.TESTING && ("hafen.jar".equals(item.file.getName()) || "hafen-minion.jar".equals(item.file.getName()))) {
-				return false;
-			}
-
+			boolean testing = (Main.TESTING && ("hafen.jar".equals(item.file.getName()) || "hafen-minion.jar".equals(item.file.getName())));
 			URL url = new URL(item.link);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("HEAD");
@@ -93,7 +90,14 @@ public class Updater {
 					Long size = conn.getContentLengthLong();
 					Long date = conn.getLastModified();
 					item.size = size;
-					return oldSize != item.size || oldDate < date;
+					if (oldDate < date) {
+						//Updater.this.listener.log(String.format("%d < %d", oldDate, date));
+						return !testing;
+					}
+					if (!Objects.equals(oldSize, size)) {
+						//Updater.this.listener.log(String.format("%d != %d", oldSize, size));
+						return !testing;
+					}
 				}
 			} catch (NumberFormatException localNumberFormatException) {
 				conn.disconnect();
