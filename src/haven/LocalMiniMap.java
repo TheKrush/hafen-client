@@ -156,11 +156,13 @@ public class LocalMiniMap extends Widget {
 						if (CFG.UI_MINIMAP_PLAYERS.valb()) {
 							if ("body".equals(res.basename())) {
 								if (gob.id == mv.player().id) {
+									/*
 									g.chcolor(Color.BLACK);
 									g.fellipse(gc, new Coord(5, 5));
 									g.chcolor(Color.DARK_GRAY);
 									g.fellipse(gc, new Coord(4, 4));
 									g.chcolor();
+									*/
 								} else {
 									g.chcolor(Color.BLACK);
 									g.fellipse(gc, new Coord(5, 5));
