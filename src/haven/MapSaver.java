@@ -147,8 +147,8 @@ public class MapSaver {
 				}
 			}
 		}
-		for (c.y = 0; c.y < sz.y; c.y++) {
-			for (c.x = 0; c.x < sz.x; c.x++) {
+		for (c.y = 1; c.y < sz.y - 1; c.y++) {
+			for (c.x = 1; c.x < sz.x - 1; c.x++) {
 				int t = g.gettile(c);
 				if (((c.x > 0) && (g.gettile(c.add(-1, 0)) > t))
 								|| ((c.x < sz.x - 1) && (g.gettile(c.add(1, 0)) > t))
