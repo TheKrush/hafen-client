@@ -29,8 +29,12 @@ import java.awt.Color;
 
 public abstract class Listbox<T> extends ListWidget<T> {
 
+	public static final Color selc = new Color(114, 179, 82, 128);
+	public static final Color overc = new Color(189, 239, 137, 53);
+	public Color bgcolor = Color.BLACK;
 	public final int h;
 	public final Scrollbar sb;
+	private T over;
 
 	public Listbox(int w, int h, int itemh) {
 		super(new Coord(w, h * itemh), itemh);
@@ -39,15 +43,21 @@ public abstract class Listbox<T> extends ListWidget<T> {
 	}
 
 	protected void drawsel(GOut g) {
-		g.chcolor(255, 255, 0, 128);
+		drawsel(g, selc);
+	}
+
+	protected void drawsel(GOut g, Color color) {
+		g.chcolor(color);
 		g.frect(Coord.z, g.sz);
 		g.chcolor();
 	}
 
 	protected void drawbg(GOut g) {
-		g.chcolor(Color.BLACK);
-		g.frect(Coord.z, sz);
-		g.chcolor();
+		if (bgcolor != null) {
+			g.chcolor(bgcolor);
+			g.frect(Coord.z, sz);
+			g.chcolor();
+		}
 	}
 
 	public void draw(GOut g) {
@@ -64,6 +74,8 @@ public abstract class Listbox<T> extends ListWidget<T> {
 			GOut ig = g.reclip(new Coord(0, i * itemh), new Coord(w, itemh));
 			if (item == sel) {
 				drawsel(ig);
+			} else if (item == over) {
+				drawsel(ig, overc);
 			}
 			drawitem(ig, item, idx);
 		}
@@ -100,5 +112,14 @@ public abstract class Listbox<T> extends ListWidget<T> {
 			itemclick(item, button);
 		}
 		return (true);
+	}
+
+	@Override
+	public void mousemove(Coord c) {
+		if (c.isect(Coord.z, sz)) {
+			over = itemat(c);
+		} else {
+			over = null;
+		}
 	}
 }
