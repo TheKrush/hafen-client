@@ -26,6 +26,7 @@
  */
 package haven;
 
+import haven.MapView.SOrthoCam;
 import static haven.UI.mapSaver;
 
 public class OptWnd extends Window {
@@ -332,7 +333,45 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panelCamera.add(new CFGCheckBox("Free camera rotation", CFG.CAMERA_FREEROTATION), new Coord(x, y));
+		panelCamera.add(new CFGLabel("Camera type"), new Coord(x, y));
+		y += 15;
+		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panelCamera) {
+			@Override
+			public void changed(int btn, String lbl) {
+				super.changed(btn, lbl);
+				CFGRadioGroup.CFGRadioButton radioButton = (CFGRadioGroup.CFGRadioButton) btns.get(btn);
+				String oldCam = Utils.getpref("defcam", null);
+				String newCam = "";
+				switch (radioButton.cfgVal) {
+					case 0:
+					case 1:
+					case 2:
+						newCam = "ortho";
+						break;
+					case 3:
+						newCam = "follow";
+						break;
+				}
+				try {
+					if (!newCam.equals(oldCam)) {
+						Utils.setpref("defcam", newCam);
+						ui.gui.map.changecamera(newCam, null);
+					}
+					ui.gui.map.camera.release();
+				} catch (Exception ex) {
+					// usually throws when initially setting up menu
+				}
+			}
+		};
+		int qualityRadioGroupCheckedIndex = CFG.CAMERA_TYPE.vali();
+		qualityRadioGroup.add("Default (snap to 45, 135, 225, 315)", CFG.CAMERA_TYPE, 0, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Default (snap to 0, 90, 180, 270)", CFG.CAMERA_TYPE, 1, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Default (no snapping)", CFG.CAMERA_TYPE, 2, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 3, new Coord(x, y));
+		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 
 		my = Math.max(my, y);
 
@@ -529,7 +568,7 @@ public class OptWnd extends Window {
 		y += 25;
 		panelUI.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
 		y += 25;
-		panelUI.add(new Label("Item meter"), new Coord(x, y));
+		panelUI.add(new CFGLabel("Item meter"), new Coord(x, y));
 		y += 15;
 		panelUI.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(x, y));
 		y += 15;
@@ -545,19 +584,10 @@ public class OptWnd extends Window {
 		//y += 25;
 		//panelUI.add(new CFGCheckBox("Study lock", CFG.UI_STUDYLOCK), new Coord(x, y));
 		y += 25;
+		panelUI.add(new CFGLabel("Item qualities"), new Coord(x, y));
+		y += 15;
 		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panelUI);
-		int qualityRadioGroupCheckedIndex = 0;
-		switch (CFG.UI_ITEM_QUALITY_SHOW.vali()) {
-			case 0:
-				qualityRadioGroupCheckedIndex = 0;
-				break;
-			case 1:
-				qualityRadioGroupCheckedIndex = 1;
-				break;
-			case 2:
-				qualityRadioGroupCheckedIndex = 2;
-				break;
-		}
+		int qualityRadioGroupCheckedIndex = CFG.UI_ITEM_QUALITY_SHOW.vali();
 		qualityRadioGroup.add("Do not show quality", CFG.UI_ITEM_QUALITY_SHOW, 0, new Coord(x, y));
 		y += 15;
 		qualityRadioGroup.add("Show single quality", CFG.UI_ITEM_QUALITY_SHOW, 1, new Coord(x, y));

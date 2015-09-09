@@ -11,14 +11,14 @@ import java.util.Map;
 public enum CFG {
 
 	CAMERA_BRIGHT("camera.bright", 0f),
-	CAMERA_FREEROTATION("camera.freerotation", false),
+	CAMERA_TYPE("camera.type", 0), // default
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_FLAVOR("display.flavor", true),
 	DISPLAY_KINNAMES("display.kinnames", true),
 	GENERAL_STOREMAP("general.storemap", true),
-	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1),
-	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4),
-	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2),
+	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
+	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
+	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
 	UI_CHAT_LOGS("ui.chat.logs", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
@@ -26,14 +26,14 @@ public enum CFG {
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
-	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1),
+	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
 	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
 	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
 	private static final String CONFIG_JSON;
-	private static final int configVersion = 3;
+	private static final int configVersion = 4;
 	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();

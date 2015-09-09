@@ -290,8 +290,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		protected float elev = (float) Math.PI / 6.0f;
 		protected float angl = -(float) Math.PI / 4.0f;
 		protected float field = (float) (100 * Math.sqrt(2));
-		private Coord dragorig = null;
-		private float anglorig;
+		protected Coord dragorig = null;
+		protected float anglorig;
 		protected Coord3f cc, jc;
 
 		public OrthoCam(boolean exact) {
@@ -350,14 +350,16 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public class SOrthoCam extends OrthoCam {
 
-		private Coord dragorig = null;
-		private float anglorig;
 		private float tangl = angl;
 		private float tfield = field;
 		private final float pi2 = (float) (Math.PI * 2);
 
 		public SOrthoCam(boolean exact) {
 			super(exact);
+
+			if (CFG.CAMERA_TYPE.vali() == 1) {
+				angl = tangl = -(float) Math.PI / 2.0f;
+			}
 		}
 
 		public SOrthoCam(String... args) {
@@ -405,19 +407,21 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			}
 		}
 
-		public boolean click(Coord c) {
-			anglorig = angl;
-			dragorig = c;
-			return (true);
-		}
-
 		public void drag(Coord c) {
 			tangl = anglorig + ((float) (c.x - dragorig.x) / 100.0f);
 		}
 
 		public void release() {
-			if (!CFG.CAMERA_FREEROTATION.valb() && tfield > 100) {
-				tangl = (float) (Math.PI * 0.5 * (Math.floor(tangl / (Math.PI * 0.5)) + 0.5));
+			if (tfield > 100) {
+				switch (CFG.CAMERA_TYPE.vali()) {
+					case 0: // default
+						tangl = (float) (Math.PI * 0.5 * (Math.floor(tangl / (Math.PI * 0.5)) + 0.5));
+						break;
+					case 1: // cardinal
+						tangl = (float) (Math.PI * 0.5 * Math.floor(tangl / (Math.PI * 0.5)));
+					case 2: // no snap
+						break;
+				}
 			}
 		}
 
@@ -1622,12 +1626,20 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		throw (new RuntimeException("No valid constructor found for camera " + ct.getName()));
 	}
 
+	public void changecamera(String defcam, byte[] camargs) {
+		camera = restorecam(defcam, camargs);
+	}
+
 	private Camera restorecam() {
-		Class<? extends Camera> ct = camtypes.get(Utils.getpref("defcam", null));
+		return restorecam(Utils.getpref("defcam", null), Utils.getprefb("camargs", null));
+	}
+
+	private Camera restorecam(String defcam, byte[] camargs) {
+		Class<? extends Camera> ct = camtypes.get(defcam);
 		if (ct == null) {
 			return (new SOrthoCam(true));
 		}
-		String[] args = (String[]) Utils.deserialize(Utils.getprefb("camargs", null));
+		String[] args = (String[]) Utils.deserialize(camargs);
 		if (args == null) {
 			args = new String[0];
 		}
