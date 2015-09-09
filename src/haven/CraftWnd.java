@@ -2,6 +2,7 @@ package haven;
 
 import haven.Glob.Pagina;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -56,7 +57,6 @@ public class CraftWnd extends Window{
 		}
 	    }
 	};
-	//box.bgcolor = null;
 	add(box, new Coord(0, PANEL_H));
 	CRAFT = paginafor("paginae/act/craft");
 	menu = ui.gui.menu;
@@ -226,9 +226,11 @@ public class CraftWnd extends Window{
     }
 
     private static class RecipeListBox extends Listbox<Pagina> {
+	private static final Color BGCOLOR = new Color(0, 0, 0, 75);
 	private List<Pagina> list;
 	public RecipeListBox(int w, int h) {
 	    super(w, h, SZ);
+	    bgcolor = BGCOLOR;
 	}
 
 	@Override

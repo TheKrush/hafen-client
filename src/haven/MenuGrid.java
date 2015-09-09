@@ -168,11 +168,13 @@ public class MenuGrid extends Widget {
 		Resource.AButton ad = res.layer(Resource.action);
 		Resource.Pagina pg = res.layer(Resource.pagina);
 		String tt = ad.name;
-		int pos = tt.toUpperCase().indexOf(Character.toUpperCase(ad.hk));
-		if (pos >= 0) {
-			tt = tt.substring(0, pos) + "$b{$col[255,128,0]{" + tt.charAt(pos) + "}}" + tt.substring(pos + 1);
-		} else if (ad.hk != 0) {
-			tt += " [" + ad.hk + "]";
+		if (hotkey) {
+			int pos = tt.toUpperCase().indexOf(Character.toUpperCase(ad.hk));
+			if (pos >= 0) {
+				tt = tt.substring(0, pos) + "$b{$col[255,128,0]{" + tt.charAt(pos) + "}}" + tt.substring(pos + 1);
+			} else if (ad.hk != 0) {
+				tt += " [" + ad.hk + "]";
+			}
 		}
 		if (withpg && (pg != null)) {
 			tt += "\n\n" + pg.text;
