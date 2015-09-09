@@ -142,6 +142,7 @@ public class GLSettings implements java.io.Serializable {
 
 		MEM, DLIST, VAO;
 	}
+
 	public final EnumSetting<MeshMode> meshmode = new EnumSetting<MeshMode>("meshmode", MeshMode.class) {
 		public MeshMode defval() {
 			if (cfg.exts.contains("GL_ARB_vertex_array_object")) {
@@ -161,6 +162,18 @@ public class GLSettings implements java.io.Serializable {
 		}
 	};
 
+	public final BoolSetting instancing = new BoolSetting("instance") {
+		public Boolean defval() {
+			return (cfg.exts.contains("GL_ARB_instanced_arrays"));
+		}
+
+		public void validate(Boolean val) {
+			if (!cfg.exts.contains("GL_ARB_instanced_arrays")) {
+				throw (new SettingException("Video card does not support instancing."));
+			}
+		}
+	};
+
 	public final BoolSetting fsaa = new BoolSetting("fsaa") {
 		public Boolean defval() {
 			return (false);
@@ -172,6 +185,7 @@ public class GLSettings implements java.io.Serializable {
 			}
 		}
 	};
+
 	public final BoolSetting alphacov = new BoolSetting("alphacov") {
 		public Boolean defval() {
 			return (false);
@@ -225,6 +239,7 @@ public class GLSettings implements java.io.Serializable {
 			}
 		}
 	};
+
 	public final BoolSetting outline = new BoolSetting("outl") {
 		public Boolean defval() {
 			return (true);
