@@ -845,7 +845,7 @@ public class ChatUI extends Widget {
 		public class MyMessage extends SimpleMessage {
 
 			public MyMessage(String text, int w) {
-				super(text, new Color(192, 192, 255), w);
+				super(RichText.Parser.quote(String.format("%s: %s", getparent(GameUI.class).chrid, text)), new Color(192, 192, 255), w);
 			}
 		}
 
