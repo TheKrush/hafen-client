@@ -566,6 +566,8 @@ public class OptWnd extends Window {
 		y += 25;
 		panelUI.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
 		y += 25;
+		panelUI.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon."), new Coord(x, y));
+		y += 25;
 		panelUI.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
 		y += 25;
 		panelUI.add(new CFGLabel("Item meter"), new Coord(x, y));
