@@ -69,6 +69,10 @@ public class RootWidget extends ConsoleHost {
 				if (ui.gui != null) {
 					ui.gui.toggleCraftWnd();
 				}
+			} else if (CTRL && code == KeyEvent.VK_G) {
+				if (ui.gui != null) {
+					ui.gui.map.togglegrid();
+				}
 			} else if (key == ':') {
 				entercmd();
 			} else if (key != 0) {
