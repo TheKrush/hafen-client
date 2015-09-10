@@ -119,6 +119,14 @@ public class MenuGrid extends Widget {
 		super(bgsz.mul(gsz).add(1, 1));
 	}
 
+	@Override
+	protected void attach(UI ui) {
+		super.attach(ui);
+		Glob glob = ui.sess.glob;
+		Collection<Pagina> p = glob.paginae;
+		p.add(glob.paginafor(Resource.local().load("paginae/add/timer")));
+	}
+
 	public static Comparator<Pagina> sorter = new Comparator<Pagina>() {
 		public int compare(Pagina a, Pagina b) {
 			AButton aa = a.act(), ab = b.act();
@@ -344,11 +352,19 @@ public class MenuGrid extends Widget {
 			return (false);
 		}
 		if (ad[0].equals("@")) {
-			//usecustom(ad);
+			usecustom(ad);
 		} else {
 			wdgmsg("act", (Object[]) ad);
 		}
 		return (true);
+	}
+
+	private void usecustom(String[] ad) {
+		if (ad[1].equals("timers")) {
+			if (ui != null && ui.gui != null) {
+				ui.gui.timers.toggle();
+			}
+		}
 	}
 
 	public void tick(double dt) {

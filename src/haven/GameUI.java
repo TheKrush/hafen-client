@@ -49,6 +49,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	private long errtime;
 	private Window invwnd, equwnd, makewnd;
 	public CraftWnd craftwnd;
+	public TimerPanel timers;
 	public Inventory maininv;
 	public CharWnd chrwdg;
 	public BuddyWnd buddies;
@@ -187,6 +188,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		super.attach(ui);
 		ui.gui = this;
 		super.attach(ui);
+		timers = add(new TimerPanel(), 250, 100);
 	}
 
 	@Override
