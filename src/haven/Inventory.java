@@ -31,6 +31,7 @@ public class Inventory extends Widget implements DTarget {
 
 	public static final Tex invsq = Resource.loadtex("gfx/hud/invsq");
 	public static final Coord sqsz = new Coord(33, 33);
+	public boolean locked = false;
 	Coord isz;
 	Map<GItem, WItem> wmap = new HashMap<GItem, WItem>();
 
@@ -58,6 +59,9 @@ public class Inventory extends Widget implements DTarget {
 	}
 
 	public boolean mousewheel(Coord c, int amount) {
+		if (locked) {
+			return (false);
+		}
 		if (ui.modshift) {
 			Inventory minv = getparent(GameUI.class).maininv;
 			if (minv != this) {
@@ -69,6 +73,11 @@ public class Inventory extends Widget implements DTarget {
 			}
 		}
 		return (true);
+	}
+
+	@Override
+	public boolean mousedown(Coord c, int button) {
+		return !locked && super.mousedown(c, button);
 	}
 
 	public void addchild(Widget child, Object... args) {
@@ -89,7 +98,9 @@ public class Inventory extends Widget implements DTarget {
 	}
 
 	public boolean drop(Coord cc, Coord ul) {
-		wdgmsg("drop", ul.add(sqsz.div(2)).div(invsq.sz()));
+		if (!locked) {
+			wdgmsg("drop", ul.add(sqsz.div(2)).div(invsq.sz()));
+		}
 		return (true);
 	}
 
