@@ -161,7 +161,7 @@ public class CraftWnd extends Window {
 		} catch (Resource.Loading ignored) {
 		}
 	    } else {
-		description = MenuGrid.rendertt(resd, true, false).tex();
+		description = MenuGrid.rendertt(resd, true, false, true).tex();
 	    }
 	}
 	if(description != null) {

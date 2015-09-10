@@ -161,10 +161,10 @@ public class MenuGrid extends Widget {
 	}
 
 	public static Text rendertt(Resource res, boolean withpg) {
-		return rendertt(res, withpg, true);
+		return rendertt(res, withpg, true, false);
 	}
 
-	public static Text rendertt(Resource res, boolean withpg, boolean hotkey) {
+	public static Text rendertt(Resource res, boolean withpg, boolean hotkey, boolean caption) {
 		Resource.AButton ad = res.layer(Resource.action);
 		Resource.Pagina pg = res.layer(Resource.pagina);
 		String tt = ad.name;
@@ -175,6 +175,9 @@ public class MenuGrid extends Widget {
 			} else if (ad.hk != 0) {
 				tt += " [" + ad.hk + "]";
 			}
+		}
+		if (caption) {
+			tt = String.format("$b{$size[14]{%s}}", tt);
 		}
 		if (withpg && (pg != null)) {
 			tt += "\n\n" + pg.text;
