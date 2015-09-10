@@ -8,12 +8,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CraftWnd extends Window{
+public class CraftWnd extends Window {
     private static final int SZ = 20;
     private static final int PANEL_H = 24;
-    private static final Coord WND_SZ = new Coord(635, 360+PANEL_H);
+    private static final Coord WND_SZ = new Coord(635, 360 + PANEL_H);
     private static final Coord ICON_SZ = new Coord(SZ, SZ);
-    private static final Coord TEXT_POS = new Coord(SZ+2, SZ/2);
     private RecipeListBox box;
     private Tex description;
     private Widget makewnd;
@@ -42,14 +41,14 @@ public class CraftWnd extends Window{
     }
 
     private void init() {
-	box = new RecipeListBox(200, (WND_SZ.y-PANEL_H)/SZ){
+	box = new RecipeListBox(200, (WND_SZ.y - PANEL_H) / SZ) {
 	    @Override
 	    protected void itemclick(Recipe recipe, int button) {
 		Pagina item = recipe.p;
-		if(button == 1){
-		    if(item == MenuGrid.bk){
+		if(button == 1) {
+		    if(item == MenuGrid.bk) {
 			item = current;
-			if(getPaginaChildren(current, null).size()==0){
+			if(getPaginaChildren(current, null).size() == 0) {
 			    item = menu.getParent(item);
 			}
 			item = menu.getParent(item);
@@ -58,7 +57,7 @@ public class CraftWnd extends Window{
 		}
 	    }
 	};
-	add(box, new Coord(0, PANEL_H));
+	add(box, new Coord(0, PANEL_H + 5));
 	CRAFT = paginafor("paginae/act/craft");
 	menu = ui.gui.menu;
 	breadcrumbs = add(new Breadcrumbs<Pagina>(new Coord(WND_SZ.x, SZ)) {
@@ -71,7 +70,7 @@ public class CraftWnd extends Window{
 	Pagina selected = current;
 	if(selected == null) {
 	    selected = menu.cur;
-	    if (selected == null || !menu.isCrafting(selected)) {
+	    if(selected == null || !menu.isCrafting(selected)) {
 		selected = CRAFT;
 	    }
 	}
@@ -80,7 +79,7 @@ public class CraftWnd extends Window{
 
     @Override
     public void cdestroy(Widget w) {
-	if(w == makewnd){
+	if(w == makewnd) {
 	    makewnd = null;
 	}
 	super.cdestroy(w);
@@ -88,8 +87,8 @@ public class CraftWnd extends Window{
 
     @Override
     public void wdgmsg(Widget sender, String msg, Object... args) {
-	if ((sender == this) && msg.equals("close")) {
-	    if(makewnd != null){
+	if((sender == this) && msg.equals("close")) {
+	    if(makewnd != null) {
 		makewnd.wdgmsg("close");
 		makewnd = null;
 	    }
@@ -101,40 +100,39 @@ public class CraftWnd extends Window{
     }
 
     private List<Pagina> getPaginaChildren(Pagina parent, List<Pagina> buf) {
-	if(buf == null){buf = new LinkedList<Pagina>();}
+	if(buf == null) {
+	    buf = new LinkedList<Pagina>();
+	}
 	menu.cons(parent, buf);
 	return buf;
     }
 
-
-    public void select(Resource.Named resource, boolean senduse) {
-	select(paginafor(resource), senduse);
-    }
-
     public void select(Pagina p, boolean senduse) {
-	if (!menu.isCrafting(p)){return;}
-	if(box != null){
+	if(!menu.isCrafting(p)) {
+	    return;
+	}
+	if(box != null) {
 	    List<Pagina> children = getPaginaChildren(p, null);
-	    if(children.size() == 0){
+	    if(children.size() == 0) {
 		children = getPaginaChildren(menu.getParent(p), null);
 	    } else {
 		closemake();
 	    }
 	    Collections.sort(children, MenuGrid.sorter);
-	    if(p != CRAFT){
+	    if(p != CRAFT) {
 		children.add(0, MenuGrid.bk);
 	    }
 	    box.setitems(children);
 	    box.change(p);
 	    setCurrent(p);
 	}
-	if(senduse){
+	if(senduse) {
 	    this.senduse = p;
 	}
     }
 
     private void closemake() {
-	if(makewnd != null){
+	if(makewnd != null) {
 	    makewnd.wdgmsg("close");
 	}
 	senduse = null;
@@ -144,7 +142,7 @@ public class CraftWnd extends Window{
     public void cdraw(GOut g) {
 	super.cdraw(g);
 
-	if(senduse != null){
+	if(senduse != null) {
 	    Pagina p = senduse;
 	    closemake();
 	    menu.senduse(p);
@@ -153,18 +151,21 @@ public class CraftWnd extends Window{
     }
 
     public void drawDescription(GOut g) {
-	if(resd == null){return;}
+	if(resd == null) {
+	    return;
+	}
 	if(description == null) {
-	    if (data != null) {
+	    if(data != null) {
 		try {
 		    description = data.longtip(resd);
-		}catch (Resource.Loading ignored){}
+		} catch (Resource.Loading ignored) {
+		}
 	    } else {
 		description = MenuGrid.rendertt(resd, true, false).tex();
 	    }
 	}
-	if(description != null){
-	    g.image(description, new Coord(215, PANEL_H));
+	if(description != null) {
+	    g.image(description, new Coord(box.c.x + box.sz.x + 10, PANEL_H + 5));
 	}
     }
 
@@ -178,25 +179,25 @@ public class CraftWnd extends Window{
 	List<Breadcrumbs.Crumb<Pagina>> crumbs = new LinkedList<Breadcrumbs.Crumb<Pagina>>();
 	List<Pagina> parents = getParents(p);
 	Collections.reverse(parents);
-	for(Pagina item : parents){
+	for (Pagina item : parents) {
 	    BufferedImage img = item.res().layer(Resource.imgc).img;
 	    Resource.AButton act = item.act();
 	    String name = "...";
-	    if(act != null){
+	    if(act != null) {
 		name = act.name;
 	    }
-	    crumbs.add(new Breadcrumbs.Crumb<Pagina>(img,name, item));
+	    crumbs.add(new Breadcrumbs.Crumb<Pagina>(img, name, item));
 	}
 	breadcrumbs.setCrumbs(crumbs);
     }
 
     private List<Pagina> getParents(Pagina p) {
 	List<Pagina> list = new LinkedList<Pagina>();
-	if(getPaginaChildren(p, null).size() > 0){
+	if(getPaginaChildren(p, null).size() > 0) {
 	    list.add(p);
 	}
 	Pagina parent;
-	while((parent = menu.getParent(p)) != null){
+	while ((parent = menu.getParent(p)) != null) {
 	    list.add(parent);
 	    p = parent;
 	}
@@ -204,7 +205,7 @@ public class CraftWnd extends Window{
     }
 
     private void updateDescription(Pagina p) {
-	if(description != null){
+	if(description != null) {
 	    description.dispose();
 	    description = null;
 	}
@@ -214,15 +215,15 @@ public class CraftWnd extends Window{
     }
 
     public void setMakewindow(Widget widget) {
-	makewnd = add(widget, new Coord(215, 250));
+	makewnd = add(widget, new Coord(box.c.x + box.sz.x + 10, box.c.y + box.sz.y - widget.sz.y));
     }
 
-    private Pagina paginafor(String name){
+    private Pagina paginafor(String name) {
 	Resource.Named res = Resource.local().load(name);
 	return paginafor(res);
     }
 
-    private Pagina paginafor(Resource.Named res){
+    private Pagina paginafor(Resource.Named res) {
 	return ui.sess.glob.paginafor(res);
     }
 
@@ -230,21 +231,21 @@ public class CraftWnd extends Window{
 	public final Pagina p;
 	private Tex tex = null;
 
-	public Recipe (Pagina p){
+	public Recipe(Pagina p) {
 	    this.p = p;
 	}
 
-	public Tex tex(){
-	    if(tex == null){
+	public Tex tex() {
+	    if(tex == null) {
 		Resource res = p.res();
 		if(res != null) {
 		    BufferedImage icon = PUtils.convolvedown(res.layer(Resource.imgc).img, ICON_SZ, CharWnd.iconfilter);
 
 		    Resource.AButton act = p.act();
 		    String name = "...";
-		    if(act != null){
+		    if(act != null) {
 			name = act.name;
-		    } else if(p == MenuGrid.bk){
+		    } else if(p == MenuGrid.bk) {
 			name = "Back";
 		    }
 		    BufferedImage text = Text.render(name).img;
@@ -258,9 +259,10 @@ public class CraftWnd extends Window{
     }
 
     private static class RecipeListBox extends Listbox<Recipe> {
-	private static final Color BGCOLOR = new Color(0, 0, 0, 75);
+	private static final Color BGCOLOR = new Color(0, 0, 0, 113);
 	private List<Pagina> list;
 	private List<Recipe> recipes;
+
 	public RecipeListBox(int w, int h) {
 	    super(w, h, SZ);
 	    bgcolor = BGCOLOR;
@@ -268,17 +270,19 @@ public class CraftWnd extends Window{
 
 	@Override
 	protected Recipe listitem(int i) {
-	    if(list == null){
+	    if(list == null) {
 		return null;
 	    }
 	    return recipes.get(i);
 	}
 
-	public void setitems(List<Pagina> list){
-	    if(list.equals(this.list)){return;}
+	public void setitems(List<Pagina> list) {
+	    if(list.equals(this.list)) {
+		return;
+	    }
 	    this.list = list;
 	    recipes = new LinkedList<Recipe>();
-	    for(Pagina p : list){
+	    for (Pagina p : list) {
 		recipes.add(new Recipe(p));
 	    }
 	    sb.max = listitems() - h;
@@ -286,7 +290,7 @@ public class CraftWnd extends Window{
 	}
 
 	public void change(Pagina p) {
-	    for(Recipe r : recipes) {
+	    for (Recipe r : recipes) {
 		if(r.p == p) {
 		    change(r);
 		    return;
@@ -298,19 +302,19 @@ public class CraftWnd extends Window{
 	public void change(Recipe item) {
 	    super.change(item);
 	    int k = recipes.indexOf(item);
-	    if(k>=0){
-		if(k < sb.val){
+	    if(k >= 0) {
+		if(k < sb.val) {
 		    sb.val = k;
 		}
-		if(k >= sb.val+h){
-		    sb.val = Math.min(sb.max, k-h+1);
+		if(k >= sb.val + h) {
+		    sb.val = Math.min(sb.max, k - h + 1);
 		}
 	    }
 	}
 
 	@Override
 	protected int listitems() {
-	    if(list == null){
+	    if(list == null) {
 		return 0;
 	    }
 	    return list.size();
@@ -318,7 +322,7 @@ public class CraftWnd extends Window{
 
 	@Override
 	protected void drawitem(GOut g, Recipe item, int i) {
-	    if(item == null){
+	    if(item == null) {
 		return;
 	    }
 	    Tex tex = item.tex();
