@@ -25,10 +25,18 @@
  */
 package haven;
 
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static haven.PUtils.*;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class Window extends Widget implements DTarget {
 
@@ -86,6 +94,7 @@ public class Window extends Widget implements DTarget {
 	public int cmw;
 	private UI.Grab dm = null;
 	private Coord doff;
+	private WindowCFG cfg = null;
 
 	@RName("wnd")
 	public static class $_ implements Factory {
@@ -118,6 +127,24 @@ public class Window extends Widget implements DTarget {
 
 	protected void added() {
 		parent.setfocus(this);
+
+		initCfg();
+	}
+
+	private void initCfg() {
+		if (cfg != null) {
+			c = cfg.c;
+		} else {
+			updateCfg();
+		}
+	}
+
+	private void updateCfg() {
+		if (cfg == null) {
+			cfg = new WindowCFG();
+		}
+		cfg.c = c;
+		WindowCFG.set(caption(), cfg);
 	}
 
 	public void chcap(String cap) {
@@ -126,6 +153,7 @@ public class Window extends Widget implements DTarget {
 		} else {
 			this.cap = cf.render(cap);
 		}
+		cfg = WindowCFG.get(cap);
 	}
 
 	public String caption() {
@@ -294,6 +322,7 @@ public class Window extends Widget implements DTarget {
 		if (dm != null) {
 			dm.remove();
 			dm = null;
+			updateCfg();
 		} else {
 			super.mouseup(c, button);
 		}
@@ -345,6 +374,54 @@ public class Window extends Widget implements DTarget {
 			return (ret);
 		} else {
 			return ("");
+		}
+	}
+
+	public static class WindowCFG {
+
+		private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+		private static String CONFIG_JSON;
+		public static Map<String, WindowCFG> cfg = new HashMap<String, WindowCFG>();
+		public Coord c;
+
+		public static void loadConfig() {
+			String configJson = Globals.SettingFileString(Globals.USERNAME + "/windows.json", true);
+			Map<String, WindowCFG> tmp = new HashMap<String, WindowCFG>();
+			try {
+				Type type = new TypeToken<Map<String, WindowCFG>>() {
+				}.getType();
+				// first check if we have username windows
+				String json = Config.loadFile(configJson);
+				if (json != null) {
+					tmp = gson.fromJson(json, type);
+				} else {
+					// now check for default windows
+					configJson = Globals.SettingFileString("/windows.json", true);
+					json = Config.loadFile(configJson);
+					if (json != null) {
+						tmp = gson.fromJson(json, type);
+					}
+				}
+			} catch (Exception e) {
+			}
+			CONFIG_JSON = configJson;
+			cfg = tmp;
+		}
+
+		public static synchronized WindowCFG get(String name) {
+			return name != null ? cfg.get(name) : null;
+		}
+
+		public static synchronized void set(String name, WindowCFG cfg) {
+			if (name == null || cfg == null) {
+				return;
+			}
+			WindowCFG.cfg.put(name, cfg);
+			store();
+		}
+
+		private static synchronized void store() {
+			Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
 		}
 	}
 }
