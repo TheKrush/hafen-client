@@ -70,13 +70,23 @@
 		</unjar>
 	</target>
 
-	<target name="jar" depends="hafen-client,buildinfo,lib-classes">
+	<target name="resources">
+		<exec executable="java" failifexecutionfails="false">
+			<arg line="-jar resources/LayerUtil.jar -re resources/src resources/compiled/res" />
+		</exec>
+		<jar destfile="build/client-res.jar" update="true">
+			<fileset dir="resources/compiled" />
+		</jar>
+	</target>
+
+	<target name="jar" depends="hafen-client,buildinfo,lib-classes,resources">
 		<jar destfile="build/hafen.jar" update="true">
 			<fileset dir="build/classes" />
 			<fileset dir="build/classes-lib" />
+			<fileset file="changelog.txt" />
 			<manifest>
 				<attribute name="Main-Class" value="haven.MainFrame" />
-				<attribute name="Class-Path" value="lib/jogl.jar lib/gluegen-rt.jar lib/builtin-res.jar lib/hafen-res.jar" />
+				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar client-res.jar builtin-res.jar hafen-res.jar" />
 			</manifest>
 		</jar>
 		<chmod file="build/hafen.jar" perm="a+x" />

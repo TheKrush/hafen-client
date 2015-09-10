@@ -1,12 +1,10 @@
-*.jar
-*.log
-*.txt
 *~
 /.classpath
 /.project
 /build
 /dist/
 /nbproject/private/
+/resources/compiled
 /updater/build/
 /updater/dist/
 /updater/nbproject/private/
