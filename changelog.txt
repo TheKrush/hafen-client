@@ -3,6 +3,7 @@ $size[14]{$u{Update for 10.09.15:}
   * Added button to lock study window
   * Added Craft window that is shown on ALT+C
   * Added displaying of tile grid, toggle by CTRL+G. Copied from k-t client.
+  * Added timers. Access through new menu action X->T.
  
 $size[14]{$u{Update for 09.09.15:}
   * fixed timestamp in named chats
