@@ -934,14 +934,15 @@ public class ChatUI extends Widget {
 		public class InMessage extends SimpleMessage {
 
 			public InMessage(String text, int w) {
-				super(">> " + text, new Color(255, 128, 128, 255), w);
+				super(RichText.Parser.quote(String.format(">> %s: %s", name(), text)), new Color(255, 128, 128, 255), w);
+				
 			}
 		}
 
 		public class OutMessage extends SimpleMessage {
 
 			public OutMessage(String text, int w) {
-				super("<< " + text, new Color(128, 128, 255, 255), w);
+				super(RichText.Parser.quote(String.format("<< %s: %s", getparent(GameUI.class).chrid, text)), new Color(128, 128, 255, 255), w);
 			}
 		}
 
