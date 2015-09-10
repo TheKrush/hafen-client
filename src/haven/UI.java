@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.InputEvent;
 import static haven.Utils.el;
+import java.awt.Color;
 
 public class UI {
 
@@ -379,6 +380,18 @@ public class UI {
 			}
 		}
 		root.mousewheel(c, amount);
+	}
+
+	public void message(String str, GameUI.MsgType type) {
+		if ((cons != null) && (gui != null)) {
+			gui.message(str, type);
+		}
+	}
+
+	public void message(String str, Color msgColor) {
+		if ((cons != null) && (gui != null)) {
+			gui.message(str, msgColor);
+		}
 	}
 
 	public int modflags() {

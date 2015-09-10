@@ -370,7 +370,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				return (base.get());
 			}
 			return (new Coord((g.x > 0) ? parent.sz.x : 0,
-					(g.y > 0) ? parent.sz.y : 0));
+							(g.y > 0) ? parent.sz.y : 0));
 		}
 
 		public void move(double a) {
@@ -964,10 +964,29 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	private static final Resource errsfx = Resource.local().loadwait("sfx/error");
 
 	public void error(String msg) {
+		message(msg, MsgType.ERROR);
+	}
+
+	public void message(String msg, MsgType type) {
+		message(msg, type.color);
+	}
+
+	public void message(String msg, Color msgColor) {
 		errtime = System.currentTimeMillis();
-		lasterr = errfoundry.render(msg);
-		syslog.append(msg, Color.RED);
+		lasterr = errfoundry.render(msg, msgColor);
+		syslog.append(msg, msgColor);
 		Audio.play(errsfx);
+	}
+
+	public static enum MsgType {
+
+		INFO(Color.CYAN), GOOD(Color.GREEN), BAD(Color.RED), ERROR(Color.RED);
+
+		public final Color color;
+
+		MsgType(Color color) {
+			this.color = color;
+		}
 	}
 
 	public void act(String... args) {
