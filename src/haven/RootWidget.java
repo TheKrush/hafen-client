@@ -26,13 +26,11 @@
 package haven;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 public class RootWidget extends ConsoleHost {
 
 	public static final Resource defcurs = Resource.local().loadwait("gfx/hud/curs/arw");
 	Profile guprof, grprof, ggprof;
-	boolean afk = false;
 
 	public RootWidget(UI ui, Coord sz) {
 		super(ui, new Coord(0, 0), sz);
