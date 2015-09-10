@@ -10,6 +10,7 @@ import java.util.Map;
 
 public enum CFG {
 
+	VERSION("version", ""),
 	CAMERA_BRIGHTNESS("camera.brightness", 0f),
 	CAMERA_TYPE("camera.type", 0), // default
 	CONFIG_VERSION("config.version", 0),

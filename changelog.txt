@@ -1,0 +1,33 @@
+$size[14]{$u{Update for 10.09.15:}
+  * Added displaying of messages in System log when kins go online/offline
+  * Added button to lock study window
+  * Added Craft window that is shown on ALT+C
+  * Added displaying of tile grid, toggle by CTRL+G. Copied from k-t client.
+ 
+$size[14]{$u{Update for 09.09.15:}
+  * fixed timestamp in named chats
+  * added option to save chat logs on disk
+  * added displaying of percentage to hourglass
+  * added CTRL+1 and CTRL+2 to simulate left clicks on quick access hand slots
+  * client now should show error window in case of crash
+  * you can now put custom resources into 'res' folder to replace any default ones.
+ 
+$size[14]{$u{Update for 06.09.15:}
+  * Added slider to brighten view
+ 
+$size[14]{$u{Update for 05.09.15:}
+  * Added account storing. Accounts are stored in accounts.json as account name and cookie. No actual password is stored. You can move accounts.json to new PC and login in 1 click. If ypu suspect someone got hold of your cookies you can press forget and login again manually to generate new cookie and invalidate all others.
+ 
+$size[14]{$u{Update for 10.09.15:}
+  * Added displaying of quality and 2 options to control it. Quality by default will be displayed as single value in top-right corner. It can be hidden in options. This value is average of all values. It can be toggled to show maximum of all qualities. It will be bluish if all qualities are equal and color of the maximum quality if not. If modifier keys are pressed (CTRL or ALT or SHIFT) single value will be replaced by color coded 3 values.
+  * Added options to select which modifier keys show all quality values. You can turn them all off, or leave just one active.
+ 
+$size[14]{$u{Update for 01.09.15:}
+  * Added option to always show kin names
+  * Added option to hide flavor objects
+  * Changed title font to more readable one
+  * Added mass transfer for inventories (CTRL+ALT+Click drops all similar items, SHIFT+ALT+Click transfers all similar items)
+  * Added mass transfer for stockpiles (SHIFT+Click or CTRL+Click to put/remove single item, hold ALT to move all)
+  * Added zoom in/out camera with numpad +/-
+  * Added quick access for hand slots near portrait
+  * Added increased chat font size and added timestamps to chat messages, can be turned off in options

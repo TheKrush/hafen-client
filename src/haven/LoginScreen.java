@@ -26,6 +26,7 @@
 package haven;
 
 import java.awt.event.KeyEvent;
+import java.io.*;
 
 public class LoginScreen extends Widget {
 
@@ -38,6 +39,7 @@ public class LoginScreen extends Widget {
 	static Text.Foundry textf, textfs;
 	static Tex bg = Resource.loadtex("gfx/loginscr");
 	Text progress = null;
+	private Window log;
 
 	static {
 		textf = new Text.Foundry(Text.sans, 16).aa(true);
@@ -50,6 +52,36 @@ public class LoginScreen extends Widget {
 		add(new Img(bg), Coord.z);
 		optbtn = adda(new Button(100, "Options"), 10, sz.y - 10, 0, 1);
 		accounts = add(new AccountList(10));
+	}
+
+	private void showChangeLog() {
+		log = ui.root.add(new Window(new Coord(50, 50), "Changelog"), new Coord(100, 50));
+		log.justclose = true;
+		Textlog txt = log.add(new Textlog(new Coord(450, 500)));
+		txt.quote = false;
+		int maxlines = txt.maxLines = 200;
+		log.pack();
+		try {
+			InputStream in = LoginScreen.class.getResourceAsStream("/changelog.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+			File f = Config.getFile("changelog.txt");
+			FileOutputStream out = new FileOutputStream(f);
+			String strLine;
+			int count = 0;
+			while ((count < maxlines) && (strLine = br.readLine()) != null) {
+				txt.append(strLine);
+				out.write((strLine + "\n").getBytes());
+				count++;
+			}
+			br.close();
+			out.close();
+			in.close();
+		} catch (FileNotFoundException ignored) {
+		} catch (IOException ignored) {
+		}
+		txt.setprog(0);
+
+		//WikiBrowser.toggle();
 	}
 
 	private static abstract class Login extends Widget {
@@ -270,6 +302,9 @@ public class LoginScreen extends Widget {
 	protected void added() {
 		presize();
 		parent.setfocus(this);
+		if (Config.isUpdate) {
+			showChangeLog();
+		}
 	}
 
 	public void draw(GOut g) {
@@ -290,5 +325,14 @@ public class LoginScreen extends Widget {
 			return (true);
 		}
 		return (super.type(k, ev));
+	}
+
+	@Override
+	public void destroy() {
+		if (log != null) {
+			ui.destroy(log);
+			log = null;
+		}
+		super.destroy();
 	}
 }
