@@ -79,7 +79,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				Coord mvc = map.rootxlate(ui.mc);
 				if (mvc.isect(Coord.z, map.sz)) {
 					map.delay(map.new Hittest(mvc) {
-			    protected void hit(Coord pc, Coord mc, MapView.ClickInfo inf) {
+						protected void hit(Coord pc, Coord mc, MapView.ClickInfo inf) {
 							if (inf == null) {
 								GameUI.this.wdgmsg("belt", slot, 1, ui.modflags(), mc);
 							} else {
@@ -370,7 +370,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				return (base.get());
 			}
 			return (new Coord((g.x > 0) ? parent.sz.x : 0,
-							(g.y > 0) ? parent.sz.y : 0));
+					(g.y > 0) ? parent.sz.y : 0));
 		}
 
 		public void move(double a) {
@@ -661,13 +661,15 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			WritableRaster buf = PUtils.imgraster(progt.f[fr][0].sz);
 			PUtils.blit(buf, progt.f[fr][0].img.getRaster(), Coord.z);
 			PUtils.blendblit(buf, progt.f[fr + 1][0].img.getRaster(), Coord.z, bf);
-			BufferedImage img = PUtils.rasterimg(buf);
+			if (CFG.UI_ACTION_PROGRESS_PERCENTAGE.valb()) {
+				BufferedImage img = PUtils.rasterimg(buf);
 
-			BufferedImage txt = Text.render(String.format("%d%%", (int) (100 * prog))).img;
-			txt = Utils.outline2(txt, Utils.contrast(Color.WHITE), true);
-			img.getGraphics().drawImage(txt, 24 - txt.getWidth() / 2, 9 - txt.getHeight() / 2, null);
+				BufferedImage txt = Text.render(String.format("%d%%", (int) (100 * prog))).img;
+				txt = Utils.outline2(txt, Utils.contrast(Color.WHITE), true);
+				img.getGraphics().drawImage(txt, 24 - txt.getWidth() / 2, 9 - txt.getHeight() / 2, null);
 
-			curprog = new TexI(img);
+				curprog = new TexI(img);
+			}
 			curprogf = fr;
 			curprogb = bf;
 		}

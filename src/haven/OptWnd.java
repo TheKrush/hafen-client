@@ -31,19 +31,33 @@ import static haven.UI.mapSaver;
 
 public class OptWnd extends Window {
 
+	private static final int BUTTON_WIDTH = 200;
 	public static final Coord PANEL_POS = new Coord(220, 30);
 	public final Panel panelMain;
 	public final Panel panelAudio, panelCamera, panelDisplay, panelGeneral, panelHotkey, panelUI, panelVideo;
 	public Panel current;
 
-	public void chpanel(Panel p) {
+	private void chpanel(Panel p, boolean center) {
+		int cx = 0, cy = 0;
 		if (current != null) {
 			current.hide();
+		} else {
+			center = false;
 		}
-
+		if (center) {
+			cx = c.x + (sz.x / 2); // center x
+			cy = c.y + (sz.y / 2); // center y
+		}
 		(current = p).show();
-
 		pack();
+		if (center) {
+			c.x = cx - (sz.x / 2);
+			c.y = cy - (sz.y / 2);
+		}
+	}
+
+	private void chpanel(Panel p) {
+		chpanel(p, true);
 	}
 
 	public class PButton extends Button {
@@ -257,7 +271,7 @@ public class OptWnd extends Window {
 		}, getPanelButtonCoord(.5, y));
 
 		panelMain.pack();
-		chpanel(panelMain);
+		chpanel(panelMain, false);
 	}
 
 	private Coord getPanelButtonCoord(double x, double y) {
@@ -265,25 +279,26 @@ public class OptWnd extends Window {
 	}
 
 	private void addPanelButton(String name, char key, Panel panel, double x, double y) {
-		panelMain.add(new PButton(200, name, key, panel), getPanelButtonCoord(x, y));
+		panelMain.add(new PButton(BUTTON_WIDTH, name, key, panel), getPanelButtonCoord(x, y));
 	}
 
 	private void initAudioPanel(double buttonX, double buttonY) {
+		Panel panel = panelAudio;
 		int x = 0, y = 0, mx = 0, my = 0;
-		addPanelButton("Audio Settings", 'a', panelAudio, buttonX, buttonY);
+		addPanelButton("Audio Settings", 'a', panel, buttonX, buttonY);
 
-		panelAudio.add(new Label("Master audio volume"), new Coord(x, y));
+		panel.add(new Label("Master audio volume"), new Coord(x, y));
 		y += 15;
-		panelAudio.add(new HSlider(200, 0, 1000, (int) (Audio.volume * 1000)) {
+		panel.add(new HSlider(200, 0, 1000, (int) (Audio.volume * 1000)) {
 			@Override
 			public void changed() {
 				Audio.setvolume(val / 1000.0);
 			}
 		}, new Coord(0, y));
 		y += 30;
-		panelAudio.add(new Label("In-game event volume"), new Coord(x, y));
+		panel.add(new Label("In-game event volume"), new Coord(x, y));
 		y += 15;
-		panelAudio.add(new HSlider(200, 0, 1000, 0) {
+		panel.add(new HSlider(200, 0, 1000, 0) {
 			@Override
 			protected void attach(UI ui) {
 				super.attach(ui);
@@ -296,9 +311,9 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 20;
-		panelAudio.add(new Label("Ambient volume"), new Coord(x, y));
+		panel.add(new Label("Ambient volume"), new Coord(x, y));
 		y += 15;
-		panelAudio.add(new HSlider(200, 0, 1000, 0) {
+		panel.add(new HSlider(200, 0, 1000, 0) {
 			@Override
 			protected void attach(UI ui) {
 				super.attach(ui);
@@ -313,17 +328,20 @@ public class OptWnd extends Window {
 
 		my = Math.max(my, y);
 
-		panelAudio.add(new PButton(200, "Back", 27, panelMain), new Coord(x, my + 35));
-		panelAudio.pack();
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		panel.pack();
 	}
 
 	private void initCameraPanel(double buttonX, double buttonY) {
+		Panel panel = panelCamera;
 		int x = 0, y = 0, mx = 0, my = 0;
-		addPanelButton("Camera Settings", 'c', panelCamera, buttonX, buttonY);
+		addPanelButton("Camera Settings", 'c', panel, buttonX, buttonY);
 
-		panelCamera.add(new Label("Brighten view"), new Coord(x, y));
+		panel.add(new Label("Brighten view"), new Coord(x, y));
 		y += 15;
-		panelCamera.add(new CFGHSlider(null, CFG.CAMERA_BRIGHTNESS) {
+		panel.add(new CFGHSlider(null, CFG.CAMERA_BRIGHTNESS) {
 			@Override
 			public void changed() {
 				super.changed();
@@ -333,9 +351,9 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panelCamera.add(new CFGLabel("Camera type"), new Coord(x, y));
+		panel.add(new CFGLabel("Camera type"), new Coord(x, y));
 		y += 15;
-		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panelCamera) {
+		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panel) {
 			@Override
 			public void changed(int btn, String lbl) {
 				super.changed(btn, lbl);
@@ -375,29 +393,35 @@ public class OptWnd extends Window {
 
 		my = Math.max(my, y);
 
-		panelCamera.add(new PButton(200, "Back", 27, panelMain), new Coord(x, my + 35));
-		panelCamera.pack();
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		panel.pack();
 	}
 
 	private void initDisplayPanel(double buttonX, double buttonY) {
+		Panel panel = panelDisplay;
 		int x = 0, y = 0, mx = 0, my = 0;
-		addPanelButton("Display Settings", 'd', panelDisplay, buttonX, buttonY);
+		addPanelButton("Display Settings", 'd', panel, buttonX, buttonY);
 
-		panelDisplay.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 		y += 25;
-		panelDisplay.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
+		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
 
 		my = Math.max(my, y);
 
-		panelDisplay.add(new PButton(200, "Back", 27, panelMain), new Coord(x, my + 35));
-		panelDisplay.pack();
+		panel.pack();
+		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		panel.pack();
 	}
 
 	private void initGeneralPanel(double buttonX, double buttonY) {
+		Panel panel = panelGeneral;
 		int x = 0, y = 0, mx = 0, my = 0;
-		addPanelButton("General Settings", 'g', panelGeneral, buttonX, buttonY);
+		addPanelButton("General Settings", 'g', panel, buttonX, buttonY);
 
-		panelGeneral.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP) {
+		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP) {
 			@Override
 			public void changed(boolean val) {
 				super.changed(val);
@@ -409,18 +433,21 @@ public class OptWnd extends Window {
 
 		my = Math.max(my, y);
 
-		panelGeneral.add(new PButton(200, "Back", 27, panelMain), new Coord(x, my + 35));
-		panelGeneral.pack();
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		panel.pack();
 	}
 
 	private void initHotkeyPanel(double buttonX, double buttonY) {
+		Panel panel = panelHotkey;
 		int x = 0, y = 0, mx = 0, my = 0;
-		addPanelButton("Hotkey Settings", 'h', panelHotkey, buttonX, buttonY);
+		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
-		panelHotkey.add(new CFGLabel("Show all qualities",
-						"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
+		panel.add(new CFGLabel("Show all qualities",
+				"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_QUALITY) {
+		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 0);
@@ -434,7 +461,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("CTRL", CFG.HOTKEY_ITEM_QUALITY) {
+		panel.add(new CFGCheckBox("CTRL", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 1);
@@ -448,7 +475,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("ALT", CFG.HOTKEY_ITEM_QUALITY) {
+		panel.add(new CFGCheckBox("ALT", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 2);
@@ -462,10 +489,10 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panelHotkey.add(new CFGLabel("Transfer items / Stockpile transfer items in",
-						"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+		panel.add(new CFGLabel("Transfer items / Stockpile transfer items in",
+				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
+		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 0);
@@ -479,7 +506,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("CTRL", CFG.HOTKEY_ITEM_TRANSFER_IN) {
+		panel.add(new CFGCheckBox("CTRL", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 1);
@@ -493,7 +520,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("ALT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
+		panel.add(new CFGCheckBox("ALT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 2);
@@ -507,10 +534,10 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panelHotkey.add(new CFGLabel("Drop items / Stockpile transfer items out",
-						"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+		panel.add(new CFGLabel("Drop items / Stockpile transfer items out",
+				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
+		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 0);
@@ -524,7 +551,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("CTRL", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
+		panel.add(new CFGCheckBox("CTRL", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 1);
@@ -538,7 +565,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 15;
-		panelHotkey.add(new CFGCheckBox("ALT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
+		panel.add(new CFGCheckBox("ALT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override
 			protected void defval() {
 				a = Utils.checkbit(cfg.vali(), 2);
@@ -554,41 +581,30 @@ public class OptWnd extends Window {
 
 		my = Math.max(my, y);
 
-		panelHotkey.add(new PButton(200, "Back", 27, panelMain), new Coord(x, my + 35));
-		panelHotkey.pack();
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		panel.pack();
 	}
 
 	private void initUIPanel(double buttonX, double buttonY) {
+		Panel panel = panelUI;
 		int x = 0, y = 0, mx = 0, my = 0;
-		addPanelButton("UI Settings", 'u', panelUI, buttonX, buttonY);
+		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
 
-		panelUI.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
 		y += 25;
-		panelUI.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
+		panel.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
 		y += 25;
-		panelUI.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon."), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(x, y));
 		y += 25;
-		panelUI.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
-		y += 25;
-		panelUI.add(new CFGLabel("Item meter"), new Coord(x, y));
-		y += 15;
-		panelUI.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(x, y));
-		y += 15;
-		panelUI.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN), new Coord(x, y));
-		y += 15;
-		panelUI.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(x, y));
-		y += 15;
-		panelUI.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
-		y += 25;
-		panelUI.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(x, y));
-		y += 25;
-		panelUI.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(x, y));
 		//y += 25;
-		//panelUI.add(new CFGCheckBox("Study lock", CFG.UI_STUDYLOCK), new Coord(x, y));
+		//panel.add(new CFGCheckBox("Study lock", CFG.UI_STUDYLOCK), new Coord(x, y));
 		y += 25;
-		panelUI.add(new CFGLabel("Item qualities"), new Coord(x, y));
+		panel.add(new CFGLabel("Item qualities"), new Coord(x, y));
 		y += 15;
-		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panelUI);
+		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panel);
 		int qualityRadioGroupCheckedIndex = CFG.UI_ITEM_QUALITY_SHOW.vali();
 		qualityRadioGroup.add("Do not show quality", CFG.UI_ITEM_QUALITY_SHOW, 0, new Coord(x, y));
 		y += 15;
@@ -597,13 +613,36 @@ public class OptWnd extends Window {
 		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 2, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 		y += 25;
-		panelUI.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
-						"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
+				"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
+
+		my = Math.max(my, y);
+		x += 200;
+		y = 0;
+
+		panel.add(new CFGCheckBox("Show above hourglass", CFG.UI_ACTION_PROGRESS_PERCENTAGE), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon."), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGLabel("Item meter"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
+		y += 25;
 
 		my = Math.max(my, y);
 
-		panelUI.add(new PButton(200, "Back", 27, panelMain), new Coord(x, my + 35));
-		panelUI.pack();
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		panel.pack();
 	}
 
 	private void initVideoPanel(double buttonX, double buttonY) {

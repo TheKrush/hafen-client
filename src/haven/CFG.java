@@ -19,6 +19,7 @@ public enum CFG {
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
+	UI_ACTION_PROGRESS_PERCENTAGE("ui.action.progress.percentage", true),
 	UI_CHAT_LOGS("ui.chat.logs", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
