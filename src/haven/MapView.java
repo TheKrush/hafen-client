@@ -27,7 +27,7 @@ package haven;
 
 import static haven.MCache.tilesz;
 import haven.GLProgram.VarID;
-import me.kt.TileOutline;
+import me.kt.GridOutline;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.*;
@@ -52,7 +52,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public double shake = 0.0;
 	private static final Map<String, Class<? extends Camera>> camtypes = new HashMap<String, Class<? extends Camera>>();
 	private boolean showgrid;
-	private TileOutline gridol;
+	private GridOutline gridol;
 	private Coord lasttc = Coord.z;
 
 	public interface Delayed {
@@ -484,7 +484,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		this.glob = glob;
 		this.cc = cc;
 		this.plgob = plgob;
-		this.gridol = new TileOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
+		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
 		setcanfocus(true);
 	}
 
