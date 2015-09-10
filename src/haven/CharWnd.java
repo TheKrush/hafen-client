@@ -659,7 +659,7 @@ public class CharWnd extends Window {
 
 	public class StudyInfo extends Widget {
 
-		public Widget study;
+		public Inventory study;
 		public int texp, tw, tenc;
 		private final Text.UText<?> texpt = new Text.UText<Integer>(Text.std) {
 			public Integer value() {
@@ -685,12 +685,21 @@ public class CharWnd extends Window {
 			}
 		};
 
-		private StudyInfo(Coord sz, Widget study) {
+		private StudyInfo(Coord sz, final Inventory study) {
 			super(sz);
 			this.study = study;
+			study.locked = CFG.UI_STUDYLOCK.valb();
 			add(new Label("Attention:"), 2, 2);
 			add(new Label("Experience cost:"), 2, 32);
 			add(new Label("Learning points:"), 2, sz.y - 32);
+			add(new Button(82, study.locked ? "Unlock study" : "Lock study") {
+				@Override
+				public void click() {
+					study.locked = !study.locked;
+					change(study.locked ? "Unlock study" : "Lock study");
+					CFG.UI_STUDYLOCK.set(study.locked);
+				}
+			}, 2, 70);
 		}
 
 		private void upd() {
@@ -1219,7 +1228,7 @@ public class CharWnd extends Window {
 		{
 			int x = 5, y = 0;
 
-			sattr = tabs.addStudy();
+			sattr = tabs.add();
 			sattr.add(new Img(catf.render("Abilities").tex()), new Coord(x - 5, y));
 			y += 35;
 			skill = new ArrayList<SAttr>();
@@ -1484,18 +1493,7 @@ public class CharWnd extends Window {
 		if (place == "study") {
 			sattr.add(child, new Coord(260, 35).add(wbox.btloff()));
 			Frame.around(sattr, Collections.singletonList(child));
-			Widget inf = sattr.add(new StudyInfo(new Coord(attrw - 150, child.sz.y), child), new Coord(260 + 150, child.c.y).add(wbox.btloff().x, 0));
-			sattr.add(new CheckBox("Lock") {
-				{
-					a = CFG.UI_STUDYLOCK.valb();
-				}
-
-				public void set(boolean val) {
-					Utils.setprefb("studylock", val);
-					CFG.UI_STUDYLOCK.set(val);
-					a = val;
-				}
-			}, new Coord(415, 10));
+			Widget inf = sattr.add(new StudyInfo(new Coord(attrw - 150, child.sz.y), (Inventory) child), new Coord(260 + 150, child.c.y).add(wbox.btloff().x, 0));
 			Frame.around(sattr, Collections.singletonList(inf));
 		} else if (place == "fmg") {
 			fgt.add(child, 0, 0);
