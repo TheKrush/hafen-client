@@ -1,6 +1,6 @@
 <config jar="hafen.jar" smem="512m" mem="1024m" res="http://www.havenandhearth.com/hres/" server="game.havenandhearth.com" errorFile="errorFile.txt">
-	<item link="http://TheKrush.github.io/hafen-client-minion/files/hafen-minion.jar" />
-	
+	<!--<item link="http://TheKrush.github.io/hafen-client-minion/files/hafen-minion.jar" />-->
+
 	<!-- WINDOWS -->
 	<item link="http://www.havenandhearth.com/java/jogl2/jar/jogl-all-natives-windows-i586.jar" file="jogl-natives-windows-i586.jar" folder="lib" os="Windows" arch="x86" />
 	<item link="http://www.havenandhearth.com/java/jogl2/jar/gluegen-rt-natives-windows-i586.jar" folder="lib" os="Windows" arch="x86" />
@@ -55,7 +55,7 @@
 	<item link="http://www.havenandhearth.com/java/hafen-res.jar" folder="lib" />
 	<item link="http://www.havenandhearth.com/java/builtin-res.jar" folder="lib" />
 	<item link="http://TheKrush.github.io/hafen-client-minion/files/hafen.jar" />
-	
+
 	<item link="http://TheKrush.github.io/hafen-client-minion/files/scala-library-2.11.7.jar" folder="lib" />
 	<item link="http://TheKrush.github.io/hafen-client-minion/files/combiner.jar" />
 </config>
