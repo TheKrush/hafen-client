@@ -42,15 +42,9 @@ public class MapSaver {
 	public static String SESSION_TIMESTAMP = "";
 	private UI ui;
 	private Coord lastCoord;
-	private FileWriter fpWriter;
 
 	public MapSaver(UI ui) {
 		this.ui = ui;
-		try {
-			fpWriter = new FileWriter(Globals.MapFile("fingerprints.txt", true), true);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	public void newSession() {
@@ -179,6 +173,7 @@ public class MapSaver {
 				File file = Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true);
 				ImageIO.write(res.im, "png", file);
 				if (res.fp != 0L) {
+					FileWriter fpWriter = new FileWriter(Globals.MapFile(SESSION_TIMESTAMP + "/fingerprints.txt", true), true);
 					fpWriter.write(String.format("%s/%s:%s\n", SESSION_TIMESTAMP, fileName, Long.toHexString(res.fp)));
 					fpWriter.flush();
 				} else {
