@@ -161,7 +161,7 @@ public class MapSaver {
 		}
 	}
 
-	public void recordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
+	public void doRecordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
 		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
 			newSession();
 		}
@@ -192,10 +192,24 @@ public class MapSaver {
 				@Override
 				public Void call() throws InterruptedException {
 					Thread.sleep(500);
-					recordMapTile(m, g, c);
+					doRecordMapTile(m, g, c);
 					return null;
 				}
 			});
 		}
+	}
+
+	public void recordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
+		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
+			newSession();
+		}
+		lastCoord = c;
+		Defer.later(new Defer.Callable<Void>() {
+			@Override
+			public Void call() throws InterruptedException {
+				doRecordMapTile(m, g, c);
+				return null;
+			}
+		});
 	}
 }
