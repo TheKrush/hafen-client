@@ -983,31 +983,37 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		resize(parent.sz);
 	}
 
-	private static final Resource errsfx = Resource.local().loadwait("sfx/error");
-
 	public void error(String msg) {
 		message(msg, MsgType.ERROR);
 	}
 
 	public void message(String msg, MsgType type) {
 		message(msg, type.color);
+		if (type.sfx != null) {
+			Audio.play(type.sfx);
+		}
 	}
 
 	public void message(String msg, Color msgColor) {
 		errtime = System.currentTimeMillis();
 		lasterr = errfoundry.render(msg, msgColor);
 		syslog.append(msg, msgColor);
-		Audio.play(errsfx);
 	}
 
 	public static enum MsgType {
 
-		INFO(Color.CYAN), GOOD(Color.GREEN), BAD(Color.RED), ERROR(Color.RED);
+		INFO(Color.CYAN), GOOD(Color.GREEN), BAD(Color.RED), ERROR(Color.RED, "sfx/error");
 
 		public final Color color;
+		public final Resource sfx;
 
 		MsgType(Color color) {
+			this(color, null);
+		}
+
+		MsgType(Color color, String sfx) {
 			this.color = color;
+			this.sfx = (sfx != null) ? Resource.local().loadwait(sfx) : null;
 		}
 	}
 
