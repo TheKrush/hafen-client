@@ -571,7 +571,9 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			if (mmap != null) {
 				ui.destroy(mmap);
 			}
-			mmap = blpanel.add(new LocalMiniMap(new Coord(133, 133), map), 4, 34 + 9);
+			//mmap = blpanel.add(new LocalMiniMap(new Coord(133, 133), map), 4, 34 + 9);
+			MiniMapPanel wnd = add(new MiniMapPanel(new Coord(75, 75)));
+			mmap = wnd.setmap(new LocalMiniMap(new Coord(75, 75), map));
 			mmap.lower();
 		} else if (place == "fight") {
 			fv = urpanel.add((Fightview) child, 0, 0);

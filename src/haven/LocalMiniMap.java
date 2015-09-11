@@ -27,6 +27,7 @@ package haven;
 
 import static haven.MCache.cmaps;
 import static haven.MCache.tilesz;
+import static haven.MiniMap.bg;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -37,10 +38,9 @@ public class LocalMiniMap extends Widget {
 
 	public final MapView mv;
 	private Coord cc = null;
-	private MapTile cur = null;
 	private final Map<Coord, Defer.Future<MapTile>> cache = new LinkedHashMap<Coord, Defer.Future<MapTile>>(5, 0.75f, true) {
 		protected boolean removeEldestEntry(Map.Entry<Coord, Defer.Future<MapTile>> eldest) {
-			if (size() > 5) {
+			if (size() > 100) {
 				try {
 					MapTile t = eldest.getValue().get();
 					t.img.dispose();
@@ -51,6 +51,8 @@ public class LocalMiniMap extends Widget {
 			return (false);
 		}
 	};
+	private Coord off = new Coord(0, 0);
+	private Coord doff = null;
 
 	public static class MapTile {
 
@@ -90,7 +92,7 @@ public class LocalMiniMap extends Widget {
 			for (c.x = 0; c.x < sz.x; c.x++) {
 				int t = m.gettile(ul.add(c));
 				BufferedImage tex = tileimg(t, texes);
-				int rgb = 0;
+				int rgb = 0xffffffff;
 				if (tex != null) {
 					rgb = tex.getRGB(Utils.floormod(c.x + ul.x, tex.getWidth()),
 									Utils.floormod(c.y + ul.y, tex.getHeight()));
@@ -114,8 +116,8 @@ public class LocalMiniMap extends Widget {
 				}
 			}
 		}
-		for (c.y = 0; c.y < sz.y; c.y++) {
-			for (c.x = 0; c.x < sz.x; c.x++) {
+		for (c.y = 1; c.y < sz.y - 1; c.y++) {
+			for (c.x = 1; c.x < sz.x - 1; c.x++) {
 				int t = m.gettile(ul.add(c));
 				if ((m.gettile(ul.add(c).add(-1, 0)) > t)
 								|| (m.gettile(ul.add(c).add(1, 0)) > t)
@@ -134,11 +136,11 @@ public class LocalMiniMap extends Widget {
 	}
 
 	public Coord p2c(Coord pc) {
-		return (pc.div(tilesz).sub(cc).add(sz.div(2)));
+		return (pc.div(tilesz).sub(cc.add(off)).add(sz.div(2)));
 	}
 
 	public Coord c2p(Coord c) {
-		return (c.sub(sz.div(2)).add(cc).mul(tilesz).add(tilesz.div(2)));
+		return (c.sub(sz.div(2)).add(cc.add(off)).mul(tilesz).add(tilesz.div(2)));
 	}
 
 	public void drawicons(GOut g) {
@@ -157,12 +159,12 @@ public class LocalMiniMap extends Widget {
 							if ("body".equals(res.basename())) {
 								if (gob.id == mv.player().id) {
 									/*
-									g.chcolor(Color.BLACK);
-									g.fellipse(gc, new Coord(5, 5));
-									g.chcolor(Color.DARK_GRAY);
-									g.fellipse(gc, new Coord(4, 4));
-									g.chcolor();
-									*/
+									 g.chcolor(Color.BLACK);
+									 g.fellipse(gc, new Coord(5, 5));
+									 g.chcolor(Color.DARK_GRAY);
+									 g.fellipse(gc, new Coord(4, 4));
+									 g.chcolor();
+									 */
 								} else {
 									g.chcolor(Color.BLACK);
 									g.fellipse(gc, new Coord(5, 5));
@@ -222,56 +224,61 @@ public class LocalMiniMap extends Widget {
 		if (cc == null) {
 			return;
 		}
-		final Coord plg = cc.div(cmaps);
-		if ((cur == null) || !plg.equals(cur.c)) {
-			Defer.Future<MapTile> f;
-			synchronized (cache) {
-				f = cache.get(plg);
-				if (f == null) {
-					f = Defer.later(new Defer.Callable<MapTile>() {
-						public MapTile call() {
-							Coord ul = plg.mul(cmaps).sub(cmaps).add(1, 1);
-							return (new MapTile(new TexI(drawmap(ul, cmaps.mul(3).sub(2, 2))), ul, plg));
-						}
-					});
-					cache.put(plg, f);
-				}
-			}
-			if (f.done()) {
-				cur = f.get();
-			}
-		}
-		if (cur != null) {
-			g.image(MiniMap.bg, Coord.z);
-			g.image(cur.img, cur.ul.sub(cc).add(sz.div(2)));
-			try {
-				synchronized (ui.sess.glob.party.memb) {
-					for (Party.Member m : ui.sess.glob.party.memb.values()) {
-						if (CFG.UI_MINIMAP_PLAYERS.valb()) {
-							Gob pl = mv.player();
-							if (pl != null && m.gobid != pl.id) {
-								continue;
+		Coord plg = cc.div(cmaps);
+
+		Coord center = cc.add(off);
+		Coord hsz = sz.div(2);
+
+		Coord ulg = center.sub(hsz).div(cmaps);
+		Coord brg = center.add(hsz).div(cmaps);
+
+		Coord cur = new Coord();
+		for (cur.x = ulg.x; cur.x <= brg.x; cur.x++) {
+			for (cur.y = ulg.y; cur.y <= brg.y; cur.y++) {
+				Defer.Future<MapTile> f;
+				synchronized (cache) {
+					f = cache.get(cur);
+					if (f == null && cur.manhattan2(plg) <= 1) {
+						final Coord tmp = new Coord(cur);
+						f = Defer.later(new Defer.Callable<MapTile>() {
+							public MapTile call() {
+								Coord ul = tmp.mul(cmaps);
+								BufferedImage drawmap = drawmap(ul, cmaps);
+								System.out.println(tmp);
+								return (new MapTile(new TexI(drawmap), ul, tmp));
 							}
-						}
-						Coord ptc;
-						try {
-							ptc = m.getc();
-						} catch (MCache.LoadingMap e) {
-							ptc = null;
-						}
-						if (ptc == null) {
-							continue;
-						}
-						ptc = p2c(ptc);
-						g.chcolor(m.col.getRed(), m.col.getGreen(), m.col.getBlue(), 128);
-						g.image(MiniMap.plx.layer(Resource.imgc).tex(), ptc.add(MiniMap.plx.layer(Resource.negc).cc.inv()));
-						g.chcolor();
+						});
+						cache.put(new Coord(cur), f);
 					}
 				}
-			} catch (Loading l) {
+				if (f != null && f.done()) {
+					MapTile map = f.get();
+					Coord tc = map.ul.sub(center).add(hsz);
+					//g.image(MiniMap.bg, tc);
+					g.image(map.img, tc);
+
+				}
 			}
-		} else {
-			g.image(MiniMap.nomap, Coord.z);
+		}
+		try {
+			synchronized (ui.sess.glob.party.memb) {
+				for (Party.Member m : ui.sess.glob.party.memb.values()) {
+					Coord ptc;
+					try {
+						ptc = m.getc();
+					} catch (MCache.LoadingMap e) {
+						ptc = null;
+					}
+					if (ptc == null) {
+						continue;
+					}
+					ptc = p2c(ptc);
+					g.chcolor(m.col.getRed(), m.col.getGreen(), m.col.getBlue(), 255);
+					g.image(MiniMap.plx.layer(Resource.imgc).tex(), ptc.add(MiniMap.plx.layer(Resource.negc).cc.inv()));
+					g.chcolor();
+				}
+			}
+		} catch (Loading ignored) {
 		}
 		drawicons(g);
 	}
@@ -286,6 +293,28 @@ public class LocalMiniMap extends Widget {
 		} else {
 			mv.wdgmsg("click", rootpos().add(c), c2p(c), button, ui.modflags(), 0, (int) gob.id, gob.rc, 0, -1);
 		}
+		if (button == 3) {
+			doff = c;
+		} else if (button == 2) {
+			off = new Coord();
+		}
 		return (true);
+	}
+
+	@Override
+	public void mousemove(Coord c) {
+		if (doff != null) {
+			off = off.add(doff.sub(c));
+			doff = c;
+		}
+		super.mousemove(c);
+	}
+
+	@Override
+	public boolean mouseup(Coord c, int button) {
+		if (button == 3) {
+			doff = null;
+		}
+		return super.mouseup(c, button);
 	}
 }
