@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Globals {
 
@@ -18,9 +16,13 @@ public class Globals {
 	}
 
 	private static File CustomFolder(String baseName, boolean useDefault) {
+		return CustomFolder(baseName, useDefault, SESSION_TIMESTAMP);
+	}
+
+	private static File CustomFolder(String baseName, boolean useDefault, String sessionTimestamp) {
 		File file;
 		if (!useDefault && !"".equals(USERNAME)) {
-			file = new File(String.format("./%s/%s/%s/", baseName, USERNAME, SESSION_TIMESTAMP));
+			file = new File(String.format("./%s/%s/%s/", baseName, USERNAME, sessionTimestamp));
 		} else {
 			file = new File(String.format("./%s/", baseName));
 		}
@@ -31,9 +33,13 @@ public class Globals {
 	private static File CustomFile(String folderName, String fileName) {
 		return CustomFile(folderName, fileName, false);
 	}
-
+	
 	private static File CustomFile(String folderName, String fileName, boolean useDefault) {
-		File folder = CustomFolder(folderName, useDefault);
+		return CustomFile(folderName, fileName, useDefault, SESSION_TIMESTAMP);
+	}
+
+	private static File CustomFile(String folderName, String fileName, boolean useDefault, String sessionTimestamp) {
+		File folder = CustomFolder(folderName, useDefault, sessionTimestamp);
 		File file = new File(folder, fileName);
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
@@ -49,7 +55,7 @@ public class Globals {
 
 	// Chat
 	public static File ChatFolder() {
-		return CustomFolder("chat");
+		return ChatFolder(false);
 	}
 
 	public static File ChatFolder(boolean useDefault) {
@@ -57,7 +63,7 @@ public class Globals {
 	}
 
 	public static String ChatFolderString() {
-		return ChatFolder().getPath();
+		return ChatFolderString(false);
 	}
 
 	public static String ChatFolderString(boolean useDefault) {
@@ -65,7 +71,7 @@ public class Globals {
 	}
 
 	public static File ChatFile(String fileName) {
-		return CustomFile("chat", fileName);
+		return ChatFile(fileName, false);
 	}
 
 	public static File ChatFile(String fileName, boolean useDefault) {
@@ -73,7 +79,7 @@ public class Globals {
 	}
 
 	public static String ChatFileString(String fileName) {
-		return ChatFile(fileName).getPath();
+		return ChatFileString(fileName, false);
 	}
 
 	public static String ChatFileString(String fileName, boolean useDefault) {
@@ -82,7 +88,7 @@ public class Globals {
 
 	// Log
 	public static File LogFolder() {
-		return CustomFolder("log");
+		return LogFolder(false);
 	}
 
 	public static File LogFolder(boolean useDefault) {
@@ -90,7 +96,7 @@ public class Globals {
 	}
 
 	public static String LogFolderString() {
-		return LogFolder().getPath();
+		return LogFolderString(false);
 	}
 
 	public static String LogFolderString(boolean useDefault) {
@@ -98,7 +104,7 @@ public class Globals {
 	}
 
 	public static File LogFile(String fileName) {
-		return CustomFile("log", fileName);
+		return LogFile(fileName, false);
 	}
 
 	public static File LogFile(String fileName, boolean useDefault) {
@@ -106,7 +112,7 @@ public class Globals {
 	}
 
 	public static String LogFileString(String fileName) {
-		return LogFile(fileName).getPath();
+		return LogFileString(fileName, false);
 	}
 
 	public static String LogFileString(String fileName, boolean useDefault) {
@@ -115,15 +121,15 @@ public class Globals {
 
 	// Map
 	public static File MapFolder() {
-		return CustomFolder("map");
+		return MapFolder(false);
 	}
 
 	public static File MapFolder(boolean useDefault) {
-		return CustomFolder("map", useDefault);
+		return CustomFolder("map", useDefault, MapSaver.SESSION_TIMESTAMP);
 	}
 
 	public static String MapFolderString() {
-		return MapFolder().getPath();
+		return MapFolderString(false);
 	}
 
 	public static String MapFolderString(boolean useDefault) {
@@ -131,15 +137,15 @@ public class Globals {
 	}
 
 	public static File MapFile(String fileName) {
-		return CustomFile("map", fileName);
+		return MapFile(fileName, false);
 	}
 
 	public static File MapFile(String fileName, boolean useDefault) {
-		return CustomFile("map", fileName, useDefault);
+		return CustomFile("map", fileName, useDefault, MapSaver.SESSION_TIMESTAMP);
 	}
 
 	public static String MapFileString(String fileName) {
-		return MapFile(fileName).getPath();
+		return MapFileString(fileName, false);
 	}
 
 	public static String MapFileString(String fileName, boolean useDefault) {
@@ -148,7 +154,7 @@ public class Globals {
 
 	// Setting
 	public static File SettingFolder() {
-		return CustomFolder("setting");
+		return SettingFolder(false);
 	}
 
 	public static File SettingFolder(boolean useDefault) {
@@ -156,7 +162,7 @@ public class Globals {
 	}
 
 	public static String SettingFolderString() {
-		return SettingFolder().getPath();
+		return SettingFolderString(false);
 	}
 
 	public static String SettingFolderString(boolean useDefault) {
@@ -164,7 +170,7 @@ public class Globals {
 	}
 
 	public static File SettingFile(String fileName) {
-		return CustomFile("setting", fileName);
+		return SettingFile(fileName, false);
 	}
 
 	public static File SettingFile(String fileName, boolean useDefault) {
@@ -172,7 +178,7 @@ public class Globals {
 	}
 
 	public static String SettingFileString(String fileName) {
-		return SettingFile(fileName).getPath();
+		return SettingFileString(fileName, false);
 	}
 
 	public static String SettingFileString(String fileName, boolean useDefault) {
@@ -189,5 +195,6 @@ public class Globals {
 			System.setErr(new PrintStream(new FileOutputStream(LogFile("error.log"), true)));
 		} catch (FileNotFoundException ex) {
 		}
+		CFG.loadConfig();
 	}
 }

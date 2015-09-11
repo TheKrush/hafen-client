@@ -39,6 +39,7 @@ import java.util.Date;
 
 public class MapSaver {
 
+	public static String SESSION_TIMESTAMP = "";
 	private UI ui;
 	private Coord lastCoord;
 	private FileWriter fpWriter;
@@ -53,9 +54,10 @@ public class MapSaver {
 	}
 
 	public void newSession() {
+		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
 		try {
 			FileWriter fileWriter = new FileWriter(Globals.MapFile("currentsession.js", true));
-			fileWriter.write("var currentSession = '" + Globals.SESSION_TIMESTAMP + "';\n");
+			fileWriter.write("var currentSession = '" + SESSION_TIMESTAMP + "';\n");
 			fileWriter.close();
 		} catch (IOException ex) {
 		}
@@ -174,12 +176,14 @@ public class MapSaver {
 			ImageAndFingerprint res = drawMapImage(m, g, c.mul(MCache.cmaps));
 			String fileName = String.format("tile_%d_%d.png", c.x, c.y);
 			try {
-				ImageIO.write(res.im, "png", Globals.MapFile(Globals.SESSION_TIMESTAMP + "/" + fileName, true));
+				File file = Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true);
+				ImageIO.write(res.im, "png", file);
 				if (res.fp != 0L) {
-					fpWriter.write(String.format("%s/%s:%s\n", Globals.SESSION_TIMESTAMP, fileName, Long.toHexString(res.fp)));
+					fpWriter.write(String.format("%s/%s:%s\n", SESSION_TIMESTAMP, fileName, Long.toHexString(res.fp)));
 					fpWriter.flush();
 				} else {
-					System.out.println(String.format("Not saving fp for %s/%s - common tile", Globals.SESSION_TIMESTAMP, fileName));
+					System.out.println(String.format("Not saving fp for %s/%s - common tile", SESSION_TIMESTAMP, fileName));
+					file.delete();
 				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
