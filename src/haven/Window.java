@@ -93,7 +93,7 @@ public class Window extends Widget implements DTarget {
 	public Coord wsz, ctl, csz, atl, asz, cptl, cpsz;
 	public int cmw;
 	private UI.Grab dm = null;
-	private Coord doff;
+	protected Coord doff;
 	private WindowCFG cfg = null;
 	public boolean justclose = false;
 	private final Collection<Widget> twdgs = new LinkedList<Widget>();
