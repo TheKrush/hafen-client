@@ -445,7 +445,7 @@ public class OptWnd extends Window {
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
 		panel.add(new CFGLabel("Show all qualities",
-				"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
+						"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
@@ -490,7 +490,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Transfer items / Stockpile transfer items in",
-				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+						"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
@@ -535,7 +535,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Drop items / Stockpile transfer items out",
-				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+						"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override
@@ -596,6 +596,17 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Undock minimap", CFG.UI_MINIMAP_FLOATING) {
+
+			@Override
+			public void set(boolean a) {
+				super.set(a);
+				if (ui != null && ui.gui != null) {
+					ui.gui.showmmappanel(a);
+				}
+			}
+		}, new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show boulders on minimap", CFG.UI_MINIMAP_BOULDERS), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(x, y));
@@ -614,7 +625,7 @@ public class OptWnd extends Window {
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 		y += 25;
 		panel.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
-				"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
+						"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
 
 		my = Math.max(my, y);
 		x += 200;

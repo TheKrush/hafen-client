@@ -32,6 +32,7 @@ public enum CFG {
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
 	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
 	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
+	UI_MINIMAP_FLOATING("ui.minimap.floating", false),
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
