@@ -90,41 +90,45 @@ public class LocalMiniMap extends Widget {
 			for (c.x = 0; c.x < sz.x; c.x++) {
 				int t = m.gettile(ul.add(c));
 				BufferedImage tex = tileimg(t, texes);
-				int rgb = 0xffffffff;
+				int rgb = 0;
 				if (tex != null) {
 					rgb = tex.getRGB(Utils.floormod(c.x + ul.x, tex.getWidth()),
-							Utils.floormod(c.y + ul.y, tex.getHeight()));
+									Utils.floormod(c.y + ul.y, tex.getHeight()));
 				}
 				buf.setRGB(c.x, c.y, rgb);
+
+				try {
+					if ((m.gettile(ul.add(c).add(-1, 0)) > t)
+									|| (m.gettile(ul.add(c).add(1, 0)) > t)
+									|| (m.gettile(ul.add(c).add(0, -1)) > t)
+									|| (m.gettile(ul.add(c).add(0, 1)) > t)) {
+						buf.setRGB(c.x, c.y, Color.BLACK.getRGB());
+					}
+				} catch (Exception e) {
+				}
 			}
 		}
+
 		for (c.y = 1; c.y < sz.y - 1; c.y++) {
 			for (c.x = 1; c.x < sz.x - 1; c.x++) {
-				int t = m.gettile(ul.add(c));
-				Tiler tl = m.tiler(t);
-				if (tl instanceof Ridges.RidgeTile) {
-					if (Ridges.brokenp(m, ul.add(c))) {
-						for (int y = c.y - 1; y <= c.y + 1; y++) {
-							for (int x = c.x - 1; x <= c.x + 1; x++) {
-								Color cc = new Color(buf.getRGB(x, y));
-								buf.setRGB(x, y, Utils.blendcol(cc, Color.BLACK, ((x == c.x) && (y == c.y)) ? 1 : 0.1).getRGB());
+				try {
+					int t = m.gettile(ul.add(c));
+					Tiler tl = m.tiler(t);
+					if (tl instanceof Ridges.RidgeTile) {
+						if (Ridges.brokenp(m, ul.add(c))) {
+							for (int y = c.y - 1; y <= c.y + 1; y++) {
+								for (int x = c.x - 1; x <= c.x + 1; x++) {
+									Color cc = new Color(buf.getRGB(x, y));
+									buf.setRGB(x, y, Utils.blendcol(cc, Color.BLACK, ((x == c.x) && (y == c.y)) ? 1 : 0.1).getRGB());
+								}
 							}
 						}
 					}
+				} catch (Exception e) {
 				}
 			}
 		}
-		for (c.y = 1; c.y < sz.y - 1; c.y++) {
-			for (c.x = 1; c.x < sz.x - 1; c.x++) {
-				int t = m.gettile(ul.add(c));
-				if ((m.gettile(ul.add(c).add(-1, 0)) > t)
-						|| (m.gettile(ul.add(c).add(1, 0)) > t)
-						|| (m.gettile(ul.add(c).add(0, -1)) > t)
-						|| (m.gettile(ul.add(c).add(0, 1)) > t)) {
-					buf.setRGB(c.x, c.y, Color.BLACK.getRGB());
-				}
-			}
-		}
+
 		return (buf);
 	}
 
@@ -213,9 +217,9 @@ public class LocalMiniMap extends Widget {
 							}
 						} else if (res.name.startsWith("gfx/terobjs/trees")) {
 							if (res.basename().endsWith("fall")
-									|| res.basename().endsWith("log")
-									|| res.basename().endsWith("stump")
-									|| res.basename().endsWith("trunk")) {
+											|| res.basename().endsWith("log")
+											|| res.basename().endsWith("stump")
+											|| res.basename().endsWith("trunk")) {
 								continue;
 							}
 							boolean recognized = false;
