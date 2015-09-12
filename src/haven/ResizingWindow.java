@@ -19,6 +19,21 @@ public class ResizingWindow extends Window {
     }
 
     @Override
+    protected void initCfg() {
+	if(cfg != null && cfg.sz != null){
+	    asz = cfg.sz;
+	    resize(asz);
+	}
+	super.initCfg();
+    }
+
+    @Override
+    protected void setCfg() {
+	super.setCfg();
+	cfg.sz = asz;
+    }
+
+    @Override
     public boolean mousedown(Coord c, int button) {
 
 	if(button == 1 && c.isect(sz.sub(gzsz), gzsz)) {
@@ -35,6 +50,7 @@ public class ResizingWindow extends Window {
 	if(rsm != null) {
 	    rsm.remove();
 	    rsm = null;
+	    updateCfg();
 	} else {
 	    super.mouseup(c, button);
 	}
