@@ -1,3 +1,6 @@
+$size[14]{$u{Update for 12.09.15:}
+  * added option (Options->Display->Undock minimap) to put minimap on floating resizable window
+ 
 $size[14]{$u{Update for 10.09.15:}
   * Added displaying of messages in System log when kins go online/offline
   * Added button to lock study window
