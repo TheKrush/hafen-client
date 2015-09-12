@@ -18,7 +18,7 @@ public class MiniMapPanel extends ResizingWindow {
     }
 
     public Widget setmap(LocalMiniMap mmap) {
-	this.mmap = add(mmap);
+	this.mmap = add(mmap, Coord.z);
 	mmap.sz = asz;
 	return mmap;
     }
