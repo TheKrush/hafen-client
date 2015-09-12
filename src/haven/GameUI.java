@@ -670,6 +670,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		} else if (w == mmappanel) {
 			mmappanel = null;
 			placemmap();
+			CFG.UI_MINIMAP_FLOATING.set(false, true);
 		}
 		meters.remove(w);
 	}

@@ -597,6 +597,14 @@ public class OptWnd extends Window {
 		panel.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Undock minimap", CFG.UI_MINIMAP_FLOATING) {
+			{
+				CFG.UI_MINIMAP_FLOATING.setObserver(new CFG.Observer() {
+					@Override
+					public void updated(CFG cfg) {
+						update(cfg);
+					}
+				});
+			}
 
 			@Override
 			public void set(boolean a) {
@@ -604,6 +612,16 @@ public class OptWnd extends Window {
 				if (ui != null && ui.gui != null) {
 					ui.gui.showmmappanel(a);
 				}
+			}
+
+			@Override
+			public void destroy() {
+				CFG.UI_MINIMAP_FLOATING.setObserver(null);
+				super.destroy();
+			}
+
+			private void update(CFG cfg) {
+				a = cfg.valb();
 			}
 		}, new Coord(x, y));
 		y += 25;
