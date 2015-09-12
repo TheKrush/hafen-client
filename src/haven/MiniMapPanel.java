@@ -4,9 +4,11 @@ public class MiniMapPanel extends ResizingWindow {
 
     private LocalMiniMap mmap;
 
-    public MiniMapPanel(Coord sz) {
-	super(sz, "Minimap");
+    public MiniMapPanel() {
+	super(new Coord(133, 133), "Minimap");
+	minsz = new Coord(133, 0);
 	justclose = true;
+
 	addtwdg(add(new IButton("gfx/hud/mmap/claim", "", "-d", "-h"){
 	    {tooltip = Text.render("Display personal claims");}
 	    public void click() {
