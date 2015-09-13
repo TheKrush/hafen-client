@@ -622,6 +622,14 @@ public class BGL {
 		});
 	}
 
+	public void glHint(final int target, final int mode) {
+		add(new Command() {
+			public void run(GL2 gl) {
+				gl.glHint(target, mode);
+			}
+		});
+	}
+
 	public void glLightf(final int light, final int pname, final float param) {
 		add(new Command() {
 			public void run(GL2 gl) {
