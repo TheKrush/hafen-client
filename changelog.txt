@@ -1,32 +1,65 @@
-$size[14]{$u{Update for 12.09.15:}
-  * added option (Options->Display->Undock minimap) to put minimap on floating resizable window
+$size[14]{$u{2015-09-12}
+  * Added option (Options->UI Settings->Undock minimap) to put minimap on floating resizable window
  
-$size[14]{$u{Update for 10.09.15:}
+$size[14]{$u{2015-09-10}
+	* Save window locations.
+	* Added optional for grid overlay.
+
+$size[14]{$u{2015-09-10}
   * Added displaying of messages in System log when kins go online/offline
   * Added button to lock study window
   * Added Craft window that is shown on ALT+C
   * Added displaying of tile grid, toggle by CTRL+G. Copied from k-t client.
   * Added timers. Access through new menu action X->T.
+	* Added option to display item meter as progress bar.
+	* Added option for displaying hourglass percentage.
+	* Added current character into chat messages.
+	* Added character names into private chat messages.
  
-$size[14]{$u{Update for 09.09.15:}
-  * fixed timestamp in named chats
-  * added option to save chat logs on disk
-  * added displaying of percentage to hourglass
-  * added CTRL+1 and CTRL+2 to simulate left clicks on quick access hand slots
-  * client now should show error window in case of crash
-  * you can now put custom resources into 'res' folder to replace any default ones.
+$size[14]{$u{2015-09-09}
+  * Fixed timestamp in named chats
+  * Added option to save chat logs on disk
+  * Added displaying of percentage to hourglass
+  * Added CTRL+1 and CTRL+2 to simulate left clicks on quick access hand slots
+  * Client now should show error window in case of crash
+  * You can now put custom resources into 'res' folder to replace any default ones.
+	* Added BDew's 'combiner' for map combining
+	* Added options for changing default camera.
+
+$size[14]{$u{2015-09-07}
+	* Added seconds to timestamps.
+	* Changing mass transfer hotkey SHIFT+Click to ALT+Click to avoid conflicting hotkeys.
+	* Boulder icon on minimap now a circle and light gray.
+	* Moved a couple window starting locations.
+	* Added log/setting folders.
+	* Added option for changing transfer hotkeys.
+	* Use BDew's map saving code.
+
+$size[14]{$u{2015-09-07}
+	* Adding error.log / output.log
+	* Radio options for item quality overlay.
+	* Added percentage to Food Event Points tooltip.
+	* Added errorFile.txt for crashes.
+	* Added option for item meter as countdown.
  
-$size[14]{$u{Update for 06.09.15:}
+$size[14]{$u{2015-09-06}
   * Added slider to brighten view
+	* Added option for study locking.
+	* Added option to show boulders on minimap.
+	* Changing mass transfer hotkeys to (CTRL+Click & SHIFT+Click)
+	* Added option to change RGBA for item meters.
+	* Fix for brightness so it can go brighter.
  
-$size[14]{$u{Update for 05.09.15:}
+$size[14]{$u{2015-09-05}
   * Added account storing. Accounts are stored in accounts.json as account name and cookie. No actual password is stored. You can move accounts.json to new PC and login in 1 click. If ypu suspect someone got hold of your cookies you can press forget and login again manually to generate new cookie and invalidate all others.
- 
-$size[14]{$u{Update for 10.09.15:}
+	* Added option to show players on minimap.
+	* Added option for free camera rotation.
+
+$size[14]{$u{2015-09-04}
   * Added displaying of quality and 2 options to control it. Quality by default will be displayed as single value in top-right corner. It can be hidden in options. This value is average of all values. It can be toggled to show maximum of all qualities. It will be bluish if all qualities are equal and color of the maximum quality if not. If modifier keys are pressed (CTRL or ALT or SHIFT) single value will be replaced by color coded 3 values.
   * Added options to select which modifier keys show all quality values. You can turn them all off, or leave just one active.
  
-$size[14]{$u{Update for 01.09.15:}
+$size[14]{$u{2015-09-01}
   * Added option to always show kin names
   * Added option to hide flavor objects
   * Changed title font to more readable one
