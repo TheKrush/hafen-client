@@ -34,15 +34,15 @@ public enum CFG {
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
-	private static final String CONFIG_JSON;
+	private static String CONFIG_JSON;
 	private static final int configVersion = 4;
-	private static final Map<String, Object> cfg;
+	private static Map<String, Object> cfg = new HashMap<String, Object>();
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
 	private final String path;
 	public final Object def;
 
-	static {
+	public static void loadConfig() {
 		String configJson = Globals.SettingFileString(Globals.USERNAME + "/config.json", true);
 		Map<String, Object> tmp = new HashMap<String, Object>();
 		try {
