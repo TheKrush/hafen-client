@@ -25,6 +25,7 @@
  */
 package haven;
 
+import java.awt.Color;
 import java.util.*;
 
 public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
@@ -214,10 +215,23 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 				((Overlay.SetupMod) ol.spr).setupmain(rl);
 			}
 		}
-		GobHealth hlt = getattr(GobHealth.class);
+		final GobHealth hlt = getattr(GobHealth.class);
 		if (hlt != null) {
 			rl.prepc(hlt.getfx());
+			if (CFG.DISPLAY_OBJECT_HEALTH.valb()) {
+				PView.Draw2D d = new PView.Draw2D() {
+					@Override
+					public void draw2d(GOut g) {
+						String gobhpstr = hlt.getstr();
+						if (gobhpstr != null && sc != null) {
+							g.atextstroked(gobhpstr, sc.sub(15, 10), Color.WHITE, Color.BLACK);
+						}
+					}
+				};
+				rl.add(d, null);
+			}
 		}
+
 		Drawable d = getattr(Drawable.class);
 		if (d != null) {
 			d.setup(rl);

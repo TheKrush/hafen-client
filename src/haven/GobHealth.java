@@ -45,6 +45,14 @@ public class GobHealth extends GAttrib {
 		return (fx);
 	}
 
+	public String getstr() {
+		if (hp >= 4) {
+			return null;
+		}
+		 final String[] hpstr = new String[] { "25%", "50%", "75%" };
+		 return hpstr[hp - 1];
+	}
+
 	public double asfloat() {
 		return (((double) hp) / 4.0);
 	}

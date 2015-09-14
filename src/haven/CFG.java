@@ -15,9 +15,10 @@ public enum CFG {
 	CAMERA_TYPE("camera.type", 0), // default
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_BRIGHTNESS("display.brightness", 0f),
+	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
 	DISPLAY_FLAVOR("display.flavor", true),
 	DISPLAY_KIN_NAMES("display.kin.names", true),
-	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
+	DISPLAY_OBJECT_HEALTH("display.object.health", false),
 	DISPLAY_WEATHER("display.weather", true),
 	GENERAL_CHAT_SAVE("general.chat.save", true),
 	GENERAL_MAP_SAVE("general.map.save", true),
