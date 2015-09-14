@@ -442,6 +442,9 @@ public class Window extends Widget implements DTarget {
 			} catch (Exception e) {
 			}
 			CONFIG_JSON = configJson;
+			if (tmp == null) {
+				tmp = new HashMap<String, WindowCFG>();
+			}
 			cfg = tmp;
 		}
 

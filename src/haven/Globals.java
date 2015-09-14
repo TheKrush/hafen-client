@@ -186,6 +186,11 @@ public class Globals {
 	}
 
 	public static void Setup() {
+		Setup("");
+	}
+
+	public static void Setup(String username) {
+		USERNAME = username;
 		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
 		try {
 			System.setOut(new PrintStream(new FileOutputStream(LogFile("output.log"), true)));

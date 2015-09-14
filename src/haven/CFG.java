@@ -77,6 +77,9 @@ public enum CFG {
 			System.out.println("Config version mismatch... reseting config");
 			tmp = new HashMap<String, Object>();
 		}
+		if (tmp == null) {
+			tmp = new HashMap<String, Object>();
+		}
 		cfg = tmp;
 		CFG.CONFIG_VERSION.set(configVersion);
 	}

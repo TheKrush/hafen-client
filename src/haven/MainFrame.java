@@ -272,11 +272,11 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 						}
 						fun = bill;
 						setTitle(TITLE);
+						Globals.Setup();
 					} else {
 						fun = new RemoteUI(sess);
 						setTitle(TITLE + " \u2013 " + sess.username);
-						Globals.USERNAME = sess.username;
-						Globals.Setup();
+						Globals.Setup(sess.username);
 					}
 					sess = fun.run(p.newui(sess));
 				}
