@@ -52,10 +52,7 @@ public class Tex2D {
 	public static Value texcoord(FragmentContext fctx) {
 		return (fctx.uniform.ext(rtexcoord, new ValBlock.Factory() {
 			public Value make(ValBlock vals) {
-				return (vals.new Value( 
-					 
-					 
-					VEC2) {
+				return (vals.new Value(VEC2) {
 			    public Expression root() {
 						return (rtexcoord.ref());
 					}
@@ -68,10 +65,7 @@ public class Tex2D {
 		return (fctx.uniform.ext(tex2d, new ValBlock.Factory() {
 			public Value make(ValBlock vals) {
 				texcoord(fctx);
-				return (vals.new Value( 
-					 
-					 
-					VEC4) {
+				return (vals.new Value(VEC4) {
 			    public Expression root() {
 						return (texture2D(tex2d.ref(), texcoord(fctx).depref()));
 					}

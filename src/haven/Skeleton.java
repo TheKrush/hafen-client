@@ -494,10 +494,7 @@ public class Skeleton {
 
 	public static PoseMod combine(final PoseMod... mods) {
 		PoseMod first = mods[0];
-		return (first.skel().new PoseMod( 
-			 
-			 
-			first.owner) {
+		return (first.skel().new PoseMod(first.owner) {
 		final boolean stat;
 
 			{

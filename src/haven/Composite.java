@@ -116,10 +116,7 @@ public class Composite extends Drawable {
 		} else if (tposes != null) {
 			try {
 				final Composited.Poses cp = comp.poses;
-				Composited.Poses np = comp.new Poses( 
-					 
-					 
-					loadposes(tposes, comp.skel, tpmode)) {
+				Composited.Poses np = comp.new Poses(loadposes(tposes, comp.skel, tpmode)) {
 			protected void done() {
 						cp.set(ipollen);
 						updequ();

@@ -122,18 +122,12 @@ public class Phong extends ValBlock.Group {
 			};
 			lvl = tdep.new GValue(FLOAT);
 			dir = tdep.new GValue(VEC3);
-			dl = dvals.new Value( 
-				 
-				 
-				FLOAT) {
+			dl = dvals.new Value(FLOAT) {
 		    public Expression root() {
 					return (dot(norm, dir.depref()));
 				}
 			};
-			sl = svals.new Value( 
-				 
-				 
-				FLOAT) {
+			sl = svals.new Value(FLOAT) {
 		    public Expression root() {
 					Expression reflvl = pow(max(dot(edir, reflect(neg(dir.ref()), norm)), l(0.0)), shine);
 					Expression hvlvl = pow(max(dot(norm, normalize(add(edir, dir.ref())))), shine);

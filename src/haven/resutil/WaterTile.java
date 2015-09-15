@@ -210,10 +210,7 @@ public class WaterTile extends Tiler {
 
 				public void modify(final ProgramContext prog) {
 					MiscLib.fragedir(prog.fctx);
-					final ValBlock.Value nmod = prog.fctx.uniform.new Value( 
-						 
-						 
-						Type.VEC3) {
+					final ValBlock.Value nmod = prog.fctx.uniform.new Value(Type.VEC3) {
 			    public Expression root() {
 							/*
 							 return(mul(sub(mix(pick(texture2D(snrm.ref(),

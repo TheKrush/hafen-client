@@ -61,10 +61,7 @@ public class CloudShadow extends GLState {
 				if ((ph == null) || !ph.pfrag) {
 					return;
 				}
-				final ValBlock.Value shval = prog.fctx.uniform.new Value( 
-					 
-					 
-					FLOAT) {
+				final ValBlock.Value shval = prog.fctx.uniform.new Value(FLOAT) {
 			public Expression root() {
 						Expression tc = add(mul(add(pick(MiscLib.fragmapv.ref(), "xy"),
 										mul(pick(MiscLib.fragmapv.ref(), "z"), cdir.ref())),

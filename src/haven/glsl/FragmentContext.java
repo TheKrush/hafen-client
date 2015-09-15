@@ -73,13 +73,7 @@ public class FragmentContext extends ShaderContext {
 		}
 	};
 
-	public final ValBlock.Value fragcol = mainvals.new Value( 
-		
-			 
-		
-			 
-		
-			Type.VEC4) {
+	public final ValBlock.Value fragcol = mainvals.new Value(Type.VEC4) {
 	    {force();
 		}
 

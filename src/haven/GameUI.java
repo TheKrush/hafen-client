@@ -691,7 +691,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			blpanel.show();
 			mmap.lower();
 		}
-		
+
 		toggleui(uimode);
 	}
 

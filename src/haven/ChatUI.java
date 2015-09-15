@@ -935,7 +935,7 @@ public class ChatUI extends Widget {
 
 			public InMessage(String text, int w) {
 				super(RichText.Parser.quote(String.format(">> %s: %s", name(), text)), new Color(255, 128, 128, 255), w);
-				
+
 			}
 		}
 

@@ -61,10 +61,7 @@ public class BumpMap extends GLState {
 			};
 
 			public void modify(final ProgramContext prog) {
-				final ValBlock.Value nmod = prog.fctx.uniform.new Value( 
-					 
-					 
-					VEC3) {
+				final ValBlock.Value nmod = prog.fctx.uniform.new Value(VEC3) {
 			public Expression root() {
 						return (mul(sub(pick(texture2D(ctex.ref(), Tex2D.texcoord(prog.fctx).ref()), "rgb"),
 										l(0.5)), l(2.0)));

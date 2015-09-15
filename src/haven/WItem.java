@@ -228,10 +228,10 @@ public class WItem extends Widget implements DTarget {
 					a = 1 - a;
 				}
 				g.chcolor(
-						Math.round(255 * CFG.UI_ITEM_METER_RED.valf()),
-						Math.round(255 * CFG.UI_ITEM_METER_GREEN.valf()),
-						Math.round(255 * CFG.UI_ITEM_METER_BLUE.valf()),
-						Math.round(255 * CFG.UI_ITEM_METER_ALPHA.valf()));
+								Math.round(255 * CFG.UI_ITEM_METER_RED.valf()),
+								Math.round(255 * CFG.UI_ITEM_METER_GREEN.valf()),
+								Math.round(255 * CFG.UI_ITEM_METER_BLUE.valf()),
+								Math.round(255 * CFG.UI_ITEM_METER_ALPHA.valf()));
 				if (CFG.UI_ITEM_METER_PROGRESSBAR.valb()) {
 					g.frect(Coord.z, new Coord((int) (sz.x / (100 / (double) (a * 100))), 4));
 				} else {
