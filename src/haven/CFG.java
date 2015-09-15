@@ -16,6 +16,7 @@ public enum CFG {
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_BRIGHTNESS("display.brightness", 0f),
 	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
+	DISPLAY_CROPS_GROWTH("display.crops.growth", false),
 	DISPLAY_FLAVOR("display.flavor", true),
 	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_OBJECT_HEALTH("display.object.health", false),

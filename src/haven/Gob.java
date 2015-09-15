@@ -224,7 +224,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 					public void draw2d(GOut g) {
 						String gobhpstr = hlt.getstr();
 						if (gobhpstr != null && sc != null) {
-							g.atextstroked(gobhpstr, sc.sub(15, 10), Color.WHITE, Color.BLACK);
+							g.atextstroked(gobhpstr, sc.sub(15, 10), Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14));
 						}
 					}
 				};
@@ -235,6 +235,27 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		Drawable d = getattr(Drawable.class);
 		if (d != null) {
 			d.setup(rl);
+			if (CFG.DISPLAY_CROPS_GROWTH.valb()) {
+				try {
+					if (getres().name.startsWith("gfx/terobjs/plants")) {
+						PView.Draw2D staged = new PView.Draw2D() {
+							public void draw2d(GOut g) {
+								if (sc != null) {
+									GAttrib rd = getattr(ResDrawable.class);
+									if (rd != null) {
+										int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
+										if (stage > 0) {
+											g.atextstroked(String.format("%d", (stage + 1)), sc.sub(15, 10), Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14));
+										}
+									}
+								}
+							}
+						};
+						rl.add(staged, null);
+					}
+				} catch (Loading le) {
+				}
+			}
 		}
 		Speaking sp = getattr(Speaking.class);
 		if (sp != null) {
