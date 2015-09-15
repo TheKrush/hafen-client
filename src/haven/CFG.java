@@ -45,6 +45,10 @@ public enum CFG {
 	public final Object def;
 	private Observer observer;
 
+	static {
+		loadConfig();
+	}
+
 	public static interface Observer {
 
 		void updated(CFG cfg);

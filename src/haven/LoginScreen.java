@@ -55,12 +55,29 @@ public class LoginScreen extends Widget {
 	}
 
 	private void showChangeLog() {
-		log = ui.root.add(new Window(new Coord(50, 50), "Changelog"), new Coord(100, 50));
+		log = ui.root.add(new Window(new Coord(50, 50), "Changelog") {
+
+			@Override
+			public void presize() {
+				c = parent.sz.div(2).sub(sz.div(2));
+			}
+		});
 		log.justclose = true;
 		Textlog txt = log.add(new Textlog(new Coord(450, 500)));
+		log.pack();
+
+		Button btn = new Button(200, "Close") {
+
+			@Override
+			public void click() {
+				log.close();
+			}
+		};
+		log.adda(btn, txt.c.x + (txt.sz.x / 2), txt.c.y + txt.sz.y + 5, 0.5, 0);
+		log.pack();
+
 		txt.quote = false;
 		int maxlines = txt.maxLines = 200;
-		log.pack();
 		try {
 			InputStream in = LoginScreen.class.getResourceAsStream("/changelog.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
@@ -69,6 +86,9 @@ public class LoginScreen extends Widget {
 			String strLine;
 			int count = 0;
 			while ((count < maxlines) && (strLine = br.readLine()) != null) {
+				if ("".equals(strLine)) {
+					strLine = " ";
+				}
 				txt.append(strLine);
 				out.write((strLine + "\n").getBytes());
 				count++;

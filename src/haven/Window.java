@@ -421,6 +421,10 @@ public class Window extends Widget implements DTarget {
 		public static Map<String, WindowCFG> cfg = new HashMap<String, WindowCFG>();
 		public Coord c, sz;
 
+		static {
+			loadConfig();
+		}
+
 		public static void loadConfig() {
 			String configJson = Globals.SettingFileString(Globals.USERNAME + "/windows.json", true);
 			Map<String, WindowCFG> tmp = new HashMap<String, WindowCFG>();

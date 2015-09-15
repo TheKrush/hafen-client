@@ -1,5 +1,6 @@
 package haven;
 
+import haven.Window.WindowCFG;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -201,5 +202,7 @@ public class Globals {
 		} catch (FileNotFoundException ex) {
 		}
 		CFG.loadConfig();
+		WindowCFG.loadConfig();
+		Config.loadConfig();
 	}
 }

@@ -55,7 +55,7 @@ public class Config {
 	public static String prefspec = "hafen";
 
 	public static String version;
-	public static final boolean isUpdate;
+	public static boolean isUpdate;
 
 	static {
 		String p;
@@ -64,6 +64,13 @@ public class Config {
 		}
 
 		loadBuildVersion();
+		loadConfig();
+	}
+
+	public static void loadConfig() {
+		if (isUpdate) {
+			return;
+		}
 		isUpdate = !CFG.VERSION.val().equals(version) || !getFile("changelog.txt").exists();
 		if (isUpdate) {
 			CFG.VERSION.set(version);
