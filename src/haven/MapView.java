@@ -25,9 +25,12 @@
  */
 package haven;
 
+import static haven.MCache.cmaps;
 import static haven.MCache.tilesz;
+import haven.Resource.Tile;
 import haven.GLProgram.VarID;
 import me.kt.GridOutline;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.*;
@@ -51,6 +54,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	private Coord3f camoff = new Coord3f(Coord3f.o);
 	public double shake = 0.0;
 	private static final Map<String, Class<? extends Camera>> camtypes = new HashMap<String, Class<? extends Camera>>();
+
 	private boolean showgrid;
 	private GridOutline gridol;
 	private Coord lasttc = Coord.z;
@@ -292,8 +296,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		protected float elev = (float) Math.PI / 6.0f;
 		protected float angl = -(float) Math.PI / 4.0f;
 		protected float field = (float) (100 * Math.sqrt(2));
-		protected Coord dragorig = null;
-		protected float anglorig;
+		private Coord dragorig = null;
+		private float anglorig;
 		protected Coord3f cc, jc;
 
 		public OrthoCam(boolean exact) {
@@ -352,6 +356,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public class SOrthoCam extends OrthoCam {
 
+		private Coord dragorig = null;
+		private float anglorig;
 		private float tangl = angl;
 		private float tfield = field;
 		private final float pi2 = (float) (Math.PI * 2);
@@ -407,6 +413,12 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			} else {
 				jc = cc;
 			}
+		}
+
+		public boolean click(Coord c) {
+			anglorig = angl;
+			dragorig = c;
+			return (true);
 		}
 
 		public void drag(Coord c) {
@@ -1705,4 +1717,5 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
 		}
 	}
+
 }

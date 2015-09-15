@@ -119,14 +119,6 @@ public class MenuGrid extends Widget {
 		super(bgsz.mul(gsz).add(1, 1));
 	}
 
-	@Override
-	protected void attach(UI ui) {
-		super.attach(ui);
-		Glob glob = ui.sess.glob;
-		Collection<Pagina> p = glob.paginae;
-		p.add(glob.paginafor(Resource.local().load("paginae/add/timer")));
-	}
-
 	public static Comparator<Pagina> sorter = new Comparator<Pagina>() {
 		public int compare(Pagina a, Pagina b) {
 			AButton aa = a.act(), ab = b.act();
@@ -169,10 +161,10 @@ public class MenuGrid extends Widget {
 	}
 
 	public static Text rendertt(Resource res, boolean withpg) {
-		return rendertt(res, withpg, true, false);
+		return rendertt(res, withpg, true);
 	}
 
-	public static Text rendertt(Resource res, boolean withpg, boolean hotkey, boolean caption) {
+	public static Text rendertt(Resource res, boolean withpg, boolean hotkey) {
 		Resource.AButton ad = res.layer(Resource.action);
 		Resource.Pagina pg = res.layer(Resource.pagina);
 		String tt = ad.name;
@@ -183,9 +175,6 @@ public class MenuGrid extends Widget {
 			} else if (ad.hk != 0) {
 				tt += " [" + ad.hk + "]";
 			}
-		}
-		if (caption) {
-			tt = String.format("$b{$size[14]{%s}}", tt);
 		}
 		if (withpg && (pg != null)) {
 			tt += "\n\n" + pg.text;
@@ -337,7 +326,6 @@ public class MenuGrid extends Widget {
 		} else {
 			r.newp = 0;
 			senduse(r);
-			wdgmsg("act", (Object[]) r.act().ad);
 			if (reset) {
 				this.cur = null;
 			}
@@ -348,23 +336,15 @@ public class MenuGrid extends Widget {
 
 	public boolean senduse(Pagina r) {
 		String[] ad = r.act().ad;
-		if ((ad == null) || ad.length < 1) {
-			return (false);
+		if ((ad == null) || (ad.length < 1)) {
+			return false;
 		}
 		if (ad[0].equals("@")) {
-			usecustom(ad);
+			//usecustom(ad);
 		} else {
 			wdgmsg("act", (Object[]) ad);
 		}
-		return (true);
-	}
-
-	private void usecustom(String[] ad) {
-		if (ad[1].equals("timers")) {
-			if (ui != null && ui.gui != null) {
-				ui.gui.timers.toggle();
-			}
-		}
+		return true;
 	}
 
 	public void tick(double dt) {
@@ -407,7 +387,7 @@ public class MenuGrid extends Widget {
 
 	public boolean globtype(char k, KeyEvent ev) {
 		if (ui.modflags() != 0) {
-			return (false);
+			return false;
 		}
 		if ((k == 27) && (this.cur != null)) {
 			this.cur = null;
@@ -441,7 +421,7 @@ public class MenuGrid extends Widget {
 	}
 
 	public boolean isCrafting(Pagina p) {
-		return (p != null) && (isCrafting(p.res()) || isCrafting(getParent(p)));
+		return isCrafting(p.res()) || isCrafting(getParent(p));
 	}
 
 	public boolean isCrafting(Resource res) {
@@ -468,10 +448,10 @@ public class MenuGrid extends Widget {
 		Pagina p;
 		while ((p = getParent(item)) != null) {
 			if (p == parent) {
-				return (true);
+				return true;
 			}
 			item = p;
 		}
-		return (false);
+		return false;
 	}
 }
