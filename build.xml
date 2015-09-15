@@ -83,7 +83,6 @@
 		<jar destfile="build/hafen.jar" update="true">
 			<fileset dir="build/classes" />
 			<fileset dir="build/classes-lib" />
-			<fileset file="changelog.txt" />
 			<manifest>
 				<attribute name="Main-Class" value="haven.MainFrame" />
 				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar client-res.jar builtin-res.jar hafen-res.jar" />
@@ -95,7 +94,7 @@
 			<fileset dir="build/classes-lib" />
 			<manifest>
 				<attribute name="Main-Class" value="haven.MainFrame" />
-				<attribute name="Class-Path" value="lib/jogl.jar lib/gluegen-rt.jar lib/builtin-res.jar lib/hafen-res.jar" />
+				<attribute name="Class-Path" value="lib/jogl.jar lib/gluegen-rt.jar lib/client-res.jar lib/builtin-res.jar lib/hafen-res.jar" />
 			</manifest>
 		</jar>
 		<chmod file="dist/hafen.jar" perm="a+x" />
