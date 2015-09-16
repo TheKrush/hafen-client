@@ -41,6 +41,13 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<Class<? extends GAttrib>, GAttrib>();
 	public Collection<Overlay> ols = new LinkedList<Overlay>();
 
+	private static final Tex[] cropstg = new Tex[]{
+		Text.renderstroked("2", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
+		Text.renderstroked("3", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
+		Text.renderstroked("4", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
+		Text.renderstroked("5", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex() // just in case..
+	};
+
 	public static class Overlay implements Rendered {
 
 		public Indir<Resource> res;
@@ -80,9 +87,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 			public void setupmain(RenderList rl);
 		}
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			if (spr != null) {
 				rl.add(spr, null);
@@ -161,6 +170,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		this.a = a;
 	}
 
+	@Override
 	public Coord3f getc() {
 		Moving m = getattr(Moving.class);
 		Coord3f ret = (m != null) ? m.getc() : getrc();
@@ -202,9 +212,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		attr.remove(attrclass(c));
 	}
 
+	@Override
 	public void draw(GOut g) {
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		loc.tick();
 		for (Overlay ol : ols) {
@@ -237,21 +249,24 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 			d.setup(rl);
 			if (CFG.DISPLAY_CROPS_GROWTH.valb()) {
 				try {
-					if (getres().name.startsWith("gfx/terobjs/plants")) {
-						PView.Draw2D staged = new PView.Draw2D() {
-							public void draw2d(GOut g) {
-								if (sc != null) {
-									GAttrib rd = getattr(ResDrawable.class);
-									if (rd != null) {
-										int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
-										if (stage > 0) {
-											g.atextstroked(String.format("%d", (stage + 1)), sc.sub(15, 10), Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14));
+					Resource res = getres();
+					if (res != null && res.name.startsWith("gfx/terobjs/plants") && !res.name.endsWith("trellis")) {
+						GAttrib rd = getattr(ResDrawable.class);
+						if (rd != null) {
+							try {
+								final int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
+								PView.Draw2D staged = new PView.Draw2D() {
+									@Override
+									public void draw2d(GOut g) {
+										if (sc != null && stage > 0 && stage < 5) {
+											g.image(cropstg[stage - 1], sc);
 										}
 									}
-								}
+								};
+								rl.add(staged, null);
+							} catch (ArrayIndexOutOfBoundsException e) { // ignored
 							}
-						};
-						rl.add(staged, null);
+						}
 					}
 				} catch (Loading le) {
 				}
@@ -268,10 +283,12 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		return (false);
 	}
 
+	@Override
 	public Random mkrandoom() {
 		return (Utils.mkrandoom(id));
 	}
 
+	@Override
 	public Resource getres() {
 		Drawable d = getattr(Drawable.class);
 		if (d != null) {
@@ -280,11 +297,13 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		return (null);
 	}
 
+	@Override
 	public Glob glob() {
 		return (glob);
 	}
 
 	/* Because generic functions are too nice a thing for Java. */
+	@Override
 	public double getv() {
 		Moving m = getattr(Moving.class);
 		if (m == null) {
@@ -294,12 +313,15 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	}
 
 	public final GLState olmod = new GLState() {
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			for (Overlay ol : ols) {
 				if (ol.spr instanceof Overlay.SetupMod) {
@@ -316,6 +338,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		public Projection proj = null;
 		boolean debug = false;
 
+		@Override
 		public void prep(Buffer buf) {
 			mv.load(cam.load(buf.get(PView.cam).fin(Matrix4f.id))).mul1(wxf.load(buf.get(PView.loc).fin(Matrix4f.id)));
 			Projection proj = buf.get(PView.proj);
@@ -350,6 +373,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 			}
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			xl.prep(buf);
 			rot.prep(buf);
