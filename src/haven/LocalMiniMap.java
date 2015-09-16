@@ -219,6 +219,12 @@ public class LocalMiniMap extends Widget {
 								}
 							}
 						} else if (res.name.startsWith("gfx/terobjs/trees")) {
+							if (res.basename().endsWith("fall")
+									|| res.basename().endsWith("log")
+									|| res.basename().endsWith("stump")
+									|| res.basename().endsWith("trunk")) {
+								continue;
+							}
 							boolean recognized = false;
 							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_TREES.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
