@@ -2,8 +2,6 @@ package org.ender.updater;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 import javax.swing.JFrame;
 import org.krush.gui.MainGui;
@@ -19,7 +17,7 @@ public class Main extends JFrame {
 
 	public static String VERSION;
 	public static final String TITLE = "Haven & Hearth - Minion Client Updater by Ender & Krush";
-	public static final String LOG_FOLDER = "./log/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";
+	public static final String LOG_FOLDER = "./log/";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {

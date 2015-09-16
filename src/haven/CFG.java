@@ -31,7 +31,7 @@ public enum CFG {
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
-	private static final String CONFIG_JSON = MainFrame.SETTINGS_FOLDER + "config.json";
+	private static final String CONFIG_JSON;
 	private static final int configVersion = 3;
 	private static final Map<String, Object> cfg;
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
@@ -40,16 +40,26 @@ public enum CFG {
 	public final Object def;
 
 	static {
+		String configJson = Globals.SettingFileString(Globals.USERNAME + "/config.json", true);
 		Map<String, Object> tmp = new HashMap<String, Object>();
 		try {
 			Type type = new TypeToken<Map<Object, Object>>() {
 			}.getType();
-			String json = Config.loadFile(CONFIG_JSON);
+			// first check if we have username config
+			String json = Config.loadFile(configJson);
 			if (json != null) {
 				tmp = gson.fromJson(json, type);
+			} else {
+				// now check for default config
+				configJson = Globals.SettingFileString("/config.json", true);
+				json = Config.loadFile(configJson);
+				if (json != null) {
+					tmp = gson.fromJson(json, type);
+				}
 			}
 		} catch (Exception e) {
 		}
+		CONFIG_JSON = configJson;
 		// check config version
 		int version = ((Number) CFG.get(CFG.CONFIG_VERSION, tmp)).intValue();
 		if (version != configVersion) {

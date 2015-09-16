@@ -1305,11 +1305,22 @@ public class Utils {
 	}
 
 	public static String timestamp() {
+		return timestamp(false);
+	}
+
+	public static String timestamp(boolean includeDate) {
+		if (includeDate) {
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		}
 		return new SimpleDateFormat("HH:mm:ss").format(new Date());
 	}
 
 	public static String timestamp(String text) {
-		return String.format("[%s] %s", timestamp(), text);
+		return timestamp(text, false);
+	}
+
+	public static String timestamp(String text, boolean includeDate) {
+		return String.format("[%s] %s", timestamp(includeDate), text);
 	}
 
 	public static String stream2str(InputStream is) {

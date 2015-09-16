@@ -31,12 +31,13 @@ import java.io.*;
 import java.util.*;
 import java.lang.reflect.*;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainFrame extends java.awt.Frame implements Runnable, Console.Directory {
 
 	public static final String TITLE = String.format("Haven & Hearth - Minion Client [%s] by Ender & Krush", Config.version);
-	public static final String LOG_FOLDER = "./log/" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "/";
-	public static final String SETTINGS_FOLDER = "./setting/";
+
 	HavenPanel p;
 	private final ThreadGroup g;
 	public final Thread mt;
@@ -182,30 +183,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 
 	public MainFrame(Coord isz) {
 		super(TITLE);
-		try {
-			File outFile = new File(LOG_FOLDER + "output.log");
-			if (!outFile.getParentFile().exists()) {
-				outFile.getParentFile().mkdirs();
-			}
-			if (!outFile.exists()) {
-				outFile.createNewFile();
-			}
-			System.setOut(new PrintStream(new FileOutputStream(outFile, true)));
-		} catch (FileNotFoundException ex) {
-		} catch (IOException ex) {
-		}
-		try {
-			File errFile = new File(LOG_FOLDER + "error.log");
-			if (!errFile.getParentFile().exists()) {
-				errFile.getParentFile().mkdirs();
-			}
-			if (!errFile.exists()) {
-				errFile.createNewFile();
-			}
-			System.setErr(new PrintStream(new FileOutputStream(errFile, true)));
-		} catch (FileNotFoundException ex) {
-		} catch (IOException ex) {
-		}
+		Globals.Setup();
 		Coord sz;
 		if (isz == null) {
 			sz = Utils.getprefc("wndsz", new Coord(800, 600));
@@ -296,6 +274,8 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 					} else {
 						fun = new RemoteUI(sess);
 						setTitle(TITLE + " \u2013 " + sess.username);
+						Globals.USERNAME = sess.username;
+						Globals.Setup();
 					}
 					sess = fun.run(p.newui(sess));
 				}

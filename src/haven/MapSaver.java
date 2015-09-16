@@ -39,48 +39,30 @@ import java.util.Date;
 
 public class MapSaver {
 
-	public static final String MAP_FOLDER = "./map/";
-
 	private UI ui;
 	private Coord lastCoord;
-	private String session;
-	private File mapDir;
-	private File sessDir;
 	private FileWriter fpWriter;
 
 	public MapSaver(UI ui) {
 		this.ui = ui;
-		mapDir = new File(MAP_FOLDER);
-		mapDir.mkdirs();
 		try {
-			fpWriter = new FileWriter(mapFile("fingerprints.txt"), true);
+			fpWriter = new FileWriter(Globals.MapFile("fingerprints.txt", true), true);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private File mapFile(String name) {
-		return new File(mapDir, name);
-	}
-
-	private File sessionFile(String name) {
-		return new File(sessDir, name);
-	}
-
 	public void newSession() {
-		session = (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date(System.currentTimeMillis()));
-		sessDir = mapFile(session);
-
 		try {
-			FileWriter fileWriter = new FileWriter(new File(mapDir, "currentsession.js"));
-			fileWriter.write("var currentSession = '" + session + "';\n");
+			FileWriter fileWriter = new FileWriter(Globals.MapFile("currentsession.js", true));
+			fileWriter.write("var currentSession = '" + Globals.SESSION_TIMESTAMP + "';\n");
 			fileWriter.close();
 		} catch (IOException ex) {
 		}
 
 		try {
 			InputStream inputStream = MapSaver.class.getResourceAsStream("/map.html");
-			FileOutputStream outputStream = new FileOutputStream(new File(mapDir, "../map.html"));
+			FileOutputStream outputStream = new FileOutputStream(Globals.MapFile("../map.html", true));
 			byte[] bytes = new byte[1024];
 			int read;
 			while ((read = inputStream.read(bytes)) != -1) {
@@ -192,13 +174,12 @@ public class MapSaver {
 			ImageAndFingerprint res = drawMapImage(m, g, c.mul(MCache.cmaps));
 			String fileName = String.format("tile_%d_%d.png", c.x, c.y);
 			try {
-				sessDir.mkdirs();
-				ImageIO.write(res.im, "png", sessionFile(fileName));
+				ImageIO.write(res.im, "png", Globals.MapFile(Globals.SESSION_TIMESTAMP + "/" + fileName, true));
 				if (res.fp != 0L) {
-					fpWriter.write(String.format("%s/%s:%s\n", session, fileName, Long.toHexString(res.fp)));
+					fpWriter.write(String.format("%s/%s:%s\n", Globals.SESSION_TIMESTAMP, fileName, Long.toHexString(res.fp)));
 					fpWriter.flush();
 				} else {
-					System.out.println(String.format("Not saving fp for %s/%s - common tile", session, fileName));
+					System.out.println(String.format("Not saving fp for %s/%s - common tile", Globals.SESSION_TIMESTAMP, fileName));
 				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);

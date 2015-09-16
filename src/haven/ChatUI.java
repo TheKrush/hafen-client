@@ -169,6 +169,9 @@ public class ChatUI extends Widget {
 			private final Text t;
 
 			public SimpleMessage(String text, Color col, int w) {
+				if (CFG.UI_CHAT_TIMESTAMP.valb()) {
+					text = Utils.timestamp(text);
+				}
 				if (col == null) {
 					this.t = fnd.render(RichText.Parser.quote(text), w);
 				} else {
@@ -758,9 +761,6 @@ public class ChatUI extends Widget {
 			private Text r = null;
 
 			public NamedMessage(int from, String text, Color col, int w) {
-				if (CFG.UI_CHAT_TIMESTAMP.valb()) {
-					text = Utils.timestamp(text);
-				}
 				this.from = from;
 				this.text = text;
 				this.w = w;
