@@ -34,7 +34,7 @@ public class Globals {
 	private static File CustomFile(String folderName, String fileName) {
 		return CustomFile(folderName, fileName, false);
 	}
-	
+
 	private static File CustomFile(String folderName, String fileName, boolean useDefault) {
 		return CustomFile(folderName, fileName, useDefault, SESSION_TIMESTAMP);
 	}

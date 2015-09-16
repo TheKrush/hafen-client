@@ -122,7 +122,7 @@ public class MapSaver {
 					}
 				}
 				h = h * 31 + t;
-				int rgb = 0;
+				int rgb = 0xffffffff;
 				BufferedImage tex = texes[t];
 				if (tex == null) {
 					texes[t] = tex = getTileImage(t);
