@@ -27,9 +27,7 @@ package haven;
 
 import static haven.MCache.cmaps;
 import static haven.MCache.tilesz;
-import static haven.MiniMap.bg;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import haven.resutil.Ridges;
@@ -95,7 +93,7 @@ public class LocalMiniMap extends Widget {
 				int rgb = 0xffffffff;
 				if (tex != null) {
 					rgb = tex.getRGB(Utils.floormod(c.x + ul.x, tex.getWidth()),
-									Utils.floormod(c.y + ul.y, tex.getHeight()));
+							Utils.floormod(c.y + ul.y, tex.getHeight()));
 				}
 				buf.setRGB(c.x, c.y, rgb);
 			}
@@ -120,9 +118,9 @@ public class LocalMiniMap extends Widget {
 			for (c.x = 1; c.x < sz.x - 1; c.x++) {
 				int t = m.gettile(ul.add(c));
 				if ((m.gettile(ul.add(c).add(-1, 0)) > t)
-								|| (m.gettile(ul.add(c).add(1, 0)) > t)
-								|| (m.gettile(ul.add(c).add(0, -1)) > t)
-								|| (m.gettile(ul.add(c).add(0, 1)) > t)) {
+						|| (m.gettile(ul.add(c).add(1, 0)) > t)
+						|| (m.gettile(ul.add(c).add(0, -1)) > t)
+						|| (m.gettile(ul.add(c).add(0, 1)) > t)) {
 					buf.setRGB(c.x, c.y, Color.BLACK.getRGB());
 				}
 			}
@@ -155,8 +153,8 @@ public class LocalMiniMap extends Widget {
 						Tex tex = icon.tex();
 						g.image(tex, gc.sub(tex.sz().div(2)));
 					} else if (res != null) {
-						if (CFG.UI_MINIMAP_PLAYERS.valb()) {
-							if ("body".equals(res.basename())) {
+						if ("body".equals(res.basename())) {
+							if (CFG.UI_MINIMAP_PLAYERS.valb()) {
 								if (gob.id == mv.player().id) {
 									/*
 									 g.chcolor(Color.BLACK);
@@ -174,14 +172,82 @@ public class LocalMiniMap extends Widget {
 									g.chcolor();
 								}
 							}
-						}
-						if (CFG.UI_MINIMAP_BOULDERS.valb()) {
-							if (res.name.contains("bumlings")) {
-								g.chcolor(Color.BLACK);
-								g.fellipse(gc, new Coord(4, 4));
-								g.chcolor(Color.LIGHT_GRAY);
-								g.fellipse(gc, new Coord(3, 3));
-								g.chcolor();
+						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
+							boolean recognized = false;
+							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_BOULDERS.valo();
+							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
+								boolean drawobj = false;
+								for (String boulderName : CFG.boulders) {
+									if (res.basename().startsWith(boulderName)) {
+										recognized = true;
+										if (mapVal.containsKey(boulderName) && mapVal.get(boulderName)) {
+											drawobj = true;
+										}
+										break;
+									}
+								}
+								Color color = Color.CYAN;
+								if (!recognized) {
+									System.out.println("Unrecognized boulder: " + res.name);
+									color = Color.RED;
+								}
+								if (drawobj || !recognized) {
+									g.atextstroked("\u25C6", gc, color, Color.BLACK);
+								}
+							}
+						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
+							boolean recognized = false;
+							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_BUSHES.valo();
+							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
+								boolean drawobj = false;
+								for (String bushName : CFG.bushes) {
+									if (res.basename().startsWith(bushName)) {
+										recognized = true;
+										if (mapVal.containsKey(bushName) && mapVal.get(bushName)) {
+											drawobj = true;
+										}
+										break;
+									}
+								}
+								Color color = Color.CYAN;
+								if (!recognized) {
+									System.out.println("Unrecognized bush: " + res.name);
+									color = Color.RED;
+								}
+								if (drawobj || !recognized) {
+									g.atextstroked("\u2605", gc, color, Color.BLACK);
+								}
+							}
+						} else if (res.name.startsWith("gfx/terobjs/trees")) {
+							/*
+							if (res.basename().endsWith("fall")
+									|| res.basename().endsWith("log")
+									|| res.basename().endsWith("stump")
+									|| res.basename().endsWith("trunk")) {
+								continue;
+							}
+							*/
+							boolean recognized = false;
+							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_TREES.valo();
+							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
+								boolean drawobj = false;
+								for (String treeName : CFG.trees) {
+									if (res.basename().startsWith(treeName)) {
+										recognized = true;
+										if (mapVal.containsKey(treeName) && mapVal.get(treeName)) {
+											drawobj = true;
+										}
+										break;
+									}
+								}
+								Color color = Color.CYAN;
+								if (!recognized) {
+									System.out.println("Unrecognized tree: " + res.name);
+									color = Color.RED;
+								}
+								if (drawobj || !recognized) {
+									g.atextstroked("\u25B2", gc, color, Color.BLACK);
+								}
 							}
 						}
 					}
@@ -244,7 +310,6 @@ public class LocalMiniMap extends Widget {
 							public MapTile call() {
 								Coord ul = tmp.mul(cmaps);
 								BufferedImage drawmap = drawmap(ul, cmaps);
-								System.out.println(tmp);
 								return (new MapTile(new TexI(drawmap), ul, tmp));
 							}
 						});

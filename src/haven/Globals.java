@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Paths;
 
 public class Globals {
 
@@ -21,14 +22,27 @@ public class Globals {
 	}
 
 	private static File CustomFolder(String baseName, boolean useDefault, String sessionTimestamp) {
-		File file;
-		if (!useDefault && !"".equals(USERNAME)) {
-			file = new File(String.format("./%s/%s/%s/", baseName, USERNAME, sessionTimestamp));
-		} else {
-			file = new File(String.format("./%s/", baseName));
-		}
+		File file = new File(CustomFolderString(baseName, useDefault, sessionTimestamp));
 		file.mkdirs();
 		return file;
+	}
+
+	private static String CustomFolderString(String baseName) {
+		return CustomFolderString(baseName, false);
+	}
+
+	private static String CustomFolderString(String baseName, boolean useDefault) {
+		return CustomFolderString(baseName, useDefault, SESSION_TIMESTAMP);
+	}
+
+	private static String CustomFolderString(String baseName, boolean useDefault, String sessionTimestamp) {
+		String folderStr;
+		if (!useDefault && !"".equals(USERNAME)) {
+			folderStr = String.format("./%s/%s/%s/", baseName, USERNAME, sessionTimestamp);
+		} else {
+			folderStr = String.format("./%s/", baseName);
+		}
+		return folderStr;
 	}
 
 	private static File CustomFile(String folderName, String fileName) {
@@ -40,8 +54,7 @@ public class Globals {
 	}
 
 	private static File CustomFile(String folderName, String fileName, boolean useDefault, String sessionTimestamp) {
-		File folder = CustomFolder(folderName, useDefault, sessionTimestamp);
-		File file = new File(folder, fileName);
+		File file = new File(CustomFileString(folderName, fileName, useDefault, sessionTimestamp));
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
@@ -52,6 +65,20 @@ public class Globals {
 			}
 		}
 		return file;
+	}
+
+	private static String CustomFileString(String folderName, String fileName) {
+		return CustomFileString(folderName, fileName, false);
+	}
+
+	private static String CustomFileString(String folderName, String fileName, boolean useDefault) {
+		return CustomFileString(folderName, fileName, useDefault, SESSION_TIMESTAMP);
+	}
+
+	private static String CustomFileString(String folderName, String fileName, boolean useDefault, String sessionTimestamp) {
+		String folderStr = CustomFolderString(folderName, useDefault, sessionTimestamp);
+		String fileStr = Paths.get(folderStr, fileName).toString();
+		return fileStr;
 	}
 
 	// Chat
@@ -84,7 +111,7 @@ public class Globals {
 	}
 
 	public static String ChatFileString(String fileName, boolean useDefault) {
-		return ChatFile(fileName, useDefault).getPath();
+		return CustomFileString("chat", fileName, useDefault);
 	}
 
 	// Log
@@ -117,7 +144,7 @@ public class Globals {
 	}
 
 	public static String LogFileString(String fileName, boolean useDefault) {
-		return LogFile(fileName, useDefault).getPath();
+		return CustomFileString("log", fileName, useDefault);
 	}
 
 	// Map
@@ -150,7 +177,7 @@ public class Globals {
 	}
 
 	public static String MapFileString(String fileName, boolean useDefault) {
-		return MapFile(fileName, useDefault).getPath();
+		return CustomFileString("map", fileName, useDefault);
 	}
 
 	// Setting
@@ -183,7 +210,7 @@ public class Globals {
 	}
 
 	public static String SettingFileString(String fileName, boolean useDefault) {
-		return SettingFile(fileName, useDefault).getPath();
+		return CustomFileString("setting", fileName, useDefault);
 	}
 
 	public static void Setup() {

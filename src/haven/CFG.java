@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,13 +32,106 @@ public enum CFG {
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
 	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
-	UI_MINIMAP_BOULDERS("ui.minimap.boulders", true),
+	UI_MINIMAP_BOULDERS("ui.minimap.boulders", new HashMap<String, Boolean>()),
+	UI_MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
+	UI_MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
 	UI_MINIMAP_FLOATING("ui.minimap.floating", false),
 	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
+	public final static String[] boulders = new String[]{
+		"basalt",
+		"cassiterite",
+		"chalcopyrite",
+		"cinnabar",
+		"dolomite",
+		"feldspar",
+		"flint",
+		"gneiss",
+		"granite",
+		"hematite",
+		"ilmenite",
+		"limestone",
+		"limonite",
+		"magnetite",
+		"malachite",
+		"marble",
+		"porphyry",
+		"quartz",
+		"ras",
+		"sandstone",
+		"schist",};
+	public final static String[] bushes = new String[]{
+		"arrowwood",
+		"blackberrybush",
+		"blackcurrant",
+		"blackthorn",
+		"bogmyrtle",
+		"boxwood",
+		"bsnightshade",
+		"caprifole",
+		"crampbark",
+		"dogrose",
+		"elderberrybush",
+		"gooseberrybush",
+		"hawthorn",
+		"holly",
+		"raspberrybush",
+		"redcurrant",
+		"sandthorn",
+		"spindlebush",
+		"teabush",
+		"tibast",
+		"tundrarose",
+		"woodbine",};
+	public final static String[] trees = new String[]{
+		"alder",
+		"juniper",
+		"appletree",
+		"ash",
+		"aspen",
+		"baywillow",
+		"beech",
+		"birch",
+		"birdcherrytree",
+		"buckthorn",
+		"cedar",
+		"cherry",
+		"chestnuttree",
+		"conkertree",
+		"corkoak",
+		"crabappletree",
+		"cypress",
+		"elm",
+		"fir",
+		"goldenchain",
+		"hazel",
+		"hornbeam",
+		"kingsoak",
+		"larch",
+		"laurel",
+		"linden",
+		"maple",
+		"mirkwood",
+		"mulberry",
+		"oak",
+		"olivetree",
+		"peartree",
+		"pine",
+		"planetree",
+		"plumtree",
+		"poplar",
+		"rowan",
+		"sallow",
+		"spruce",
+		"sweetgum",
+		"walnuttree",
+		"whitebeam",
+		"willow",
+		"yew",};
+
 	private static String CONFIG_JSON;
-	private static final int configVersion = 4;
+	private static final int configVersion = 5;
 	private static Map<String, Object> cfg = new HashMap<String, Object>();
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
@@ -46,6 +140,9 @@ public enum CFG {
 	private Observer observer;
 
 	static {
+		Arrays.sort(boulders);
+		Arrays.sort(bushes);
+		Arrays.sort(trees);
 		loadConfig();
 	}
 
@@ -75,13 +172,15 @@ public enum CFG {
 		} catch (Exception e) {
 		}
 		CONFIG_JSON = configJson;
+		cache.clear();
+		System.out.println("Using setting file: " + CONFIG_JSON);
+		if (tmp == null) {
+			tmp = new HashMap<String, Object>();
+		}
 		// check config version
 		int version = ((Number) CFG.get(CFG.CONFIG_VERSION, tmp)).intValue();
 		if (version != configVersion) {
 			System.out.println("Config version mismatch... reseting config");
-			tmp = new HashMap<String, Object>();
-		}
-		if (tmp == null) {
 			tmp = new HashMap<String, Object>();
 		}
 		cfg = tmp;
@@ -95,6 +194,11 @@ public enum CFG {
 
 	public Object val() {
 		return CFG.get(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Object> T valo() {
+		return (T) CFG.get(this);
 	}
 
 	public boolean valb() {

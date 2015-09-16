@@ -26,11 +26,9 @@
 package haven;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.Format;
 import java.util.*;
 
 public class Text {
@@ -201,6 +199,30 @@ public class Text {
 			return (new Line(text, img, m));
 		}
 
+		public Line renderstroked(String text, Color c, Color stroke) {
+			Coord sz = strsize(text);
+			if (sz.x < 1) {
+				sz = sz.add(1, 0);
+			}
+			sz = sz.add(2, 0);
+			BufferedImage img = TexI.mkbuf(sz);
+			Graphics g = img.createGraphics();
+			if (aa) {
+				Utils.AA(g);
+			}
+			g.setFont(font);
+			FontMetrics m = g.getFontMetrics();
+			g.setColor(stroke);
+			g.drawString(text, 0, m.getAscent());
+			g.drawString(text, 2, m.getAscent());
+			g.drawString(text, 1, m.getAscent() - 1);
+			g.drawString(text, 1, m.getAscent() + 1);
+			g.setColor(c);
+			g.drawString(text, 1, m.getAscent());
+			g.dispose();
+			return (new Line(text, img, m));
+		}
+
 		public Line render(String text) {
 			return (render(text, defcol));
 		}
@@ -295,6 +317,14 @@ public class Text {
 
 	public static Line render(String text) {
 		return (render(text, Color.WHITE));
+	}
+
+	public static Line renderstroked(String text, Color c, Color stroke) {
+		return (renderstroked(text, c, stroke, std));
+	}
+
+	public static Line renderstroked(String text, Color c, Color stroke, Foundry foundry) {
+		return (foundry.renderstroked(text, c, stroke));
 	}
 
 	public Tex tex() {
