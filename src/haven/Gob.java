@@ -41,6 +41,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<Class<? extends GAttrib>, GAttrib>();
 	public Collection<Overlay> ols = new LinkedList<Overlay>();
 
+	private static final Tex[] gobhp = new Tex[]{
+		Text.renderstroked("25%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
+		Text.renderstroked("50%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
+		Text.renderstroked("75%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex()
+	};
 	private static final Tex[] cropstg = new Tex[]{
 		Text.renderstroked("2", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
 		Text.renderstroked("3", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
@@ -236,7 +241,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 					public void draw2d(GOut g) {
 						String gobhpstr = hlt.getstr();
 						if (gobhpstr != null && sc != null) {
-							g.atextstroked(gobhpstr, sc.sub(15, 10), Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14));
+							g.image(gobhp[hlt.hp - 1], sc.sub(15, 10));
 						}
 					}
 				};
