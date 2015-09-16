@@ -23,13 +23,13 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public abstract class Element {
-    public abstract void walk(Walker w);
 
-    public void output(Output out) {
-	throw(new RuntimeException("output called on abstract element " + this));
-    }
+	public abstract void walk(Walker w);
+
+	public void output(Output out) {
+		throw (new RuntimeException("output called on abstract element " + this));
+	}
 }

@@ -23,11 +23,11 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 
 public interface BMap<K, V> extends Map<K, V> {
-    public BMap<V, K> reverse();
+
+	public BMap<V, K> reverse();
 }

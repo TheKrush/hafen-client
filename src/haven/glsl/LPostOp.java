@@ -23,31 +23,50 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import java.util.*;
 
 public abstract class LPostOp extends Expression {
-    public final LValue op;
 
-    public LPostOp(LValue op) {
-	this.op = op;
-    }
+	public final LValue op;
 
-    public void walk(Walker w) {
-	w.el(op);
-    }
+	public LPostOp(LValue op) {
+		this.op = op;
+	}
 
-    public abstract String form();
+	public void walk(Walker w) {
+		w.el(op);
+	}
 
-    public void output(Output out) {
-	out.write("(");
-	op.output(out);
-	out.write(form());
-	out.write(")");
-    }
+	public abstract String form();
 
-    public static class Inc extends LPostOp {public String form() {return("++");} public Inc(LValue op) {super(op);}}
-    public static class Dec extends LPostOp {public String form() {return("--");} public Dec(LValue op) {super(op);}}
+	public void output(Output out) {
+		out.write("(");
+		op.output(out);
+		out.write(form());
+		out.write(")");
+	}
+
+	public static class Inc extends LPostOp {
+
+		public String form() {
+			return ("++");
+		}
+
+		public Inc(LValue op) {
+			super(op);
+		}
+	}
+
+	public static class Dec extends LPostOp {
+
+		public String form() {
+			return ("--");
+		}
+
+		public Dec(LValue op) {
+			super(op);
+		}
+	}
 }

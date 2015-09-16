@@ -23,59 +23,66 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class If extends Statement {
-    public final Expression cond;
-    public final Statement t, f;
 
-    public If(Expression cond, Statement t, Statement f) {
-	this.cond = cond;
-	this.t = t;
-	this.f = f;
-    }
+	public final Expression cond;
+	public final Statement t, f;
 
-    public If(Expression cond, Statement t) {
-	this(cond, t, null);
-    }
-
-    public void walk(Walker w) {
-	w.el(cond);
-	w.el(t);
-	if(f != null) w.el(f);
-    }
-
-    public void output(Output out) {
-	out.write("if(");
-	cond.output(out);
-	out.write(")");
-	if(t instanceof Block) {
-	    Block tb = (Block)t;
-	    out.write(" ");
-	    tb.trail(out, false);
-	    if(f != null)
-		out.write(" else");
-	} else {
-	    out.write("\n"); out.indent++; out.indent();
-	    t.output(out);
-	    out.indent--;
-	    if(f != null) {
-		out.write("\n");
-		out.indent();
-		out.write("else");
-	    }
+	public If(Expression cond, Statement t, Statement f) {
+		this.cond = cond;
+		this.t = t;
+		this.f = f;
 	}
-	if(f != null) {
-	    if(f instanceof Block) {
-		Block fb = (Block)f;
-		out.write(" ");
-		fb.trail(out, false);
-	    } else {
-		out.write("\n"); out.indent++; out.indent();
-		f.output(out);
-		out.indent--;
-	    }
+
+	public If(Expression cond, Statement t) {
+		this(cond, t, null);
 	}
-    }
+
+	public void walk(Walker w) {
+		w.el(cond);
+		w.el(t);
+		if (f != null) {
+			w.el(f);
+		}
+	}
+
+	public void output(Output out) {
+		out.write("if(");
+		cond.output(out);
+		out.write(")");
+		if (t instanceof Block) {
+			Block tb = (Block) t;
+			out.write(" ");
+			tb.trail(out, false);
+			if (f != null) {
+				out.write(" else");
+			}
+		} else {
+			out.write("\n");
+			out.indent++;
+			out.indent();
+			t.output(out);
+			out.indent--;
+			if (f != null) {
+				out.write("\n");
+				out.indent();
+				out.write("else");
+			}
+		}
+		if (f != null) {
+			if (f instanceof Block) {
+				Block fb = (Block) f;
+				out.write(" ");
+				fb.trail(out, false);
+			} else {
+				out.write("\n");
+				out.indent++;
+				out.indent();
+				f.output(out);
+				out.indent--;
+			}
+		}
+	}
 }

@@ -23,26 +23,27 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class Array extends Type {
-    public final Type el;
-    public final int sz;
 
-    public Array(Type el, int sz) {
-	this.el = el;
-	this.sz = sz;
-    }
+	public final Type el;
+	public final int sz;
 
-    public Array(Type el) {
-	this(el, 0);
-    }
+	public Array(Type el, int sz) {
+		this.el = el;
+		this.sz = sz;
+	}
 
-    public String name(Context ctx) {
-	if(sz > 0)
-	    return(el.name(ctx) + "[" + sz + "]");
-	else
-	    return(el.name(ctx) + "[]");
-    }
+	public Array(Type el) {
+		this(el, 0);
+	}
+
+	public String name(Context ctx) {
+		if (sz > 0) {
+			return (el.name(ctx) + "[" + sz + "]");
+		} else {
+			return (el.name(ctx) + "[]");
+		}
+	}
 }

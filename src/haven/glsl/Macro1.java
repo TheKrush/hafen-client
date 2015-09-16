@@ -23,9 +23,9 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public interface Macro1<T> {
-    public T expand(T par1);
+
+	public T expand(T par1);
 }

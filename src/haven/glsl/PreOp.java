@@ -23,30 +23,39 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import java.util.*;
 
 public abstract class PreOp extends Expression {
-    public final Expression op;
 
-    public PreOp(Expression op) {
-	this.op = op;
-    }
+	public final Expression op;
 
-    public void walk(Walker w) {
-	w.el(op);
-    }
+	public PreOp(Expression op) {
+		this.op = op;
+	}
 
-    public abstract String form();
+	public void walk(Walker w) {
+		w.el(op);
+	}
 
-    public void output(Output out) {
-	out.write("(");
-	out.write(form());
-	op.output(out);
-	out.write(")");
-    }
+	public abstract String form();
 
-    public static class Neg extends PreOp {public String form() {return("-");} public Neg(Expression op) {super(op);}}
+	public void output(Output out) {
+		out.write("(");
+		out.write(form());
+		op.output(out);
+		out.write(")");
+	}
+
+	public static class Neg extends PreOp {
+
+		public String form() {
+			return ("-");
+		}
+
+		public Neg(Expression op) {
+			super(op);
+		}
+	}
 }

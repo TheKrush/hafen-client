@@ -23,25 +23,27 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import javax.media.opengl.*;
 
 public class DisplayList extends GLObject implements BGL.ID {
-    private int id;
-    
-    public DisplayList(GOut g) {super(g);}
 
-    public void create(GL2 gl) {
-	id = gl.glGenLists(1);
-    }
-    
-    protected void delete(BGL gl) {
-	gl.glDeleteLists(this, 1);
-    }
+	private int id;
 
-    public int glid() {
-	return(id);
-    }
+	public DisplayList(GOut g) {
+		super(g);
+	}
+
+	public void create(GL2 gl) {
+		id = gl.glGenLists(1);
+	}
+
+	protected void delete(BGL gl) {
+		gl.glDeleteLists(this, 1);
+	}
+
+	public int glid() {
+		return (id);
+	}
 }

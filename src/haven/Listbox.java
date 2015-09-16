@@ -23,98 +23,103 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
 
 public abstract class Listbox<T> extends ListWidget<T> {
-    public static final Color selc = new Color(114, 179, 82, 128);
-    public static final Color overc = new Color(189, 239, 137, 53);
-    public Color bgcolor = Color.BLACK;
-    public final int h;
-    public final Scrollbar sb;
-    private T over;
 
-    public Listbox(int w, int h, int itemh) {
-	super(new Coord(w, h * itemh), itemh);
-	this.h = h;
-	this.sb = adda(new Scrollbar(sz.y, 0, 0), sz.x, 0, 1, 0);
-    }
+	public static final Color selc = new Color(114, 179, 82, 128);
+	public static final Color overc = new Color(189, 239, 137, 53);
+	public Color bgcolor = Color.BLACK;
+	public final int h;
+	public final Scrollbar sb;
+	private T over;
 
-    protected void drawsel(GOut g) {
-	drawsel(g, selc);
-    }
-
-    protected void drawsel(GOut g, Color color) {
-	g.chcolor(color);
-	g.frect(Coord.z, g.sz);
-	g.chcolor();
-    }
-
-    protected void drawbg(GOut g) {
-	if(bgcolor != null) {
-	    g.chcolor(bgcolor);
-	    g.frect(Coord.z, sz);
-	    g.chcolor();
+	public Listbox(int w, int h, int itemh) {
+		super(new Coord(w, h * itemh), itemh);
+		this.h = h;
+		this.sb = adda(new Scrollbar(sz.y, 0, 0), sz.x, 0, 1, 0);
 	}
-    }
 
-    public void draw(GOut g) {
-	sb.max = listitems() - h;
-	drawbg(g);
-	int n = listitems();
-	for(int i = 0; i < h; i++) {
-	    int idx = i + sb.val;
-	    if(idx >= n)
-		break;
-	    T item = listitem(idx);
-	    int w = sz.x - (sb.vis()?sb.sz.x:0);
-	    GOut ig = g.reclip(new Coord(0, i * itemh), new Coord(w, itemh));
-	    if(item == sel)
-		drawsel(ig);
-	    else if(item == over){
-		drawsel(ig, overc);
-	    }
-	    drawitem(ig, item, idx);
+	protected void drawsel(GOut g) {
+		drawsel(g, selc);
 	}
-	super.draw(g);
-    }
 
-    public boolean mousewheel(Coord c, int amount) {
-	sb.ch(amount);
-	return(true);
-    }
-
-    protected void itemclick(T item, int button) {
-	if(button == 1)
-	    change(item);
-    }
-
-    public T itemat(Coord c) {
-	int idx = (c.y / itemh) + sb.val;
-	if(idx >= listitems())
-	    return(null);
-	return(listitem(idx));
-    }
-
-    public boolean mousedown(Coord c, int button) {
-	if(super.mousedown(c, button))
-	    return(true);
-	T item = itemat(c);
-	if((item == null) && (button == 1))
-	    change(null);
-	else if(item != null)
-	    itemclick(item, button);
-	return(true);
-    }
-
-    @Override
-    public void mousemove(Coord c) {
-	if(c.isect(Coord.z, sz)){
-	    over = itemat(c);
-	} else{
-	    over = null;
+	protected void drawsel(GOut g, Color color) {
+		g.chcolor(color);
+		g.frect(Coord.z, g.sz);
+		g.chcolor();
 	}
-    }
+
+	protected void drawbg(GOut g) {
+		if (bgcolor != null) {
+			g.chcolor(bgcolor);
+			g.frect(Coord.z, sz);
+			g.chcolor();
+		}
+	}
+
+	public void draw(GOut g) {
+		sb.max = listitems() - h;
+		drawbg(g);
+		int n = listitems();
+		for (int i = 0; i < h; i++) {
+			int idx = i + sb.val;
+			if (idx >= n) {
+				break;
+			}
+			T item = listitem(idx);
+			int w = sz.x - (sb.vis() ? sb.sz.x : 0);
+			GOut ig = g.reclip(new Coord(0, i * itemh), new Coord(w, itemh));
+			if (item == sel) {
+				drawsel(ig);
+			} else if (item == over) {
+				drawsel(ig, overc);
+			}
+			drawitem(ig, item, idx);
+		}
+		super.draw(g);
+	}
+
+	public boolean mousewheel(Coord c, int amount) {
+		sb.ch(amount);
+		return (true);
+	}
+
+	protected void itemclick(T item, int button) {
+		if (button == 1) {
+			change(item);
+		}
+	}
+
+	public T itemat(Coord c) {
+		int idx = (c.y / itemh) + sb.val;
+		if (idx >= listitems()) {
+			return (null);
+		}
+		return (listitem(idx));
+	}
+
+	public boolean mousedown(Coord c, int button) {
+		if (super.mousedown(c, button)) {
+			return (true);
+		}
+		T item = itemat(c);
+		if ((item == null) && (button == 1)) {
+			change(null);
+		} else if (item != null) {
+			itemclick(item, button);
+		}
+		return (true);
+	}
+
+	@Override
+	public void mousemove(Coord c) {
+		if (c.isect(Coord.z, sz)) {
+			over = itemat(c);
+		} else {
+			over = null;
+		}
+	}
 }

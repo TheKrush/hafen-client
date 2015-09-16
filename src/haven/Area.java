@@ -23,42 +23,42 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class Area implements java.io.Serializable {
-    public Coord ul, br;
 
-    public Area(Coord ul, Coord br) {
-	this.ul = ul;
-	this.br = br;
-    }
+	public Coord ul, br;
 
-    public static Area sized(Coord ul, Coord sz) {
-	return(new Area(ul, ul.add(sz)));
-    }
+	public Area(Coord ul, Coord br) {
+		this.ul = ul;
+		this.br = br;
+	}
 
-    public Coord sz() {
-	return(br.sub(ul));
-    }
+	public static Area sized(Coord ul, Coord sz) {
+		return (new Area(ul, ul.add(sz)));
+	}
 
-    public boolean isects(Area o) {
-	return((br.x > o.ul.x) && (br.y > o.ul.y) && (o.br.x > ul.x) && (o.br.y > ul.y));
-    }
+	public Coord sz() {
+		return (br.sub(ul));
+	}
 
-    public boolean contains(Area o) {
-	return((o.ul.x >= ul.x) && (o.ul.y >= ul.y) && (o.br.x <= br.x) && (o.br.y <= br.y));
-    }
+	public boolean isects(Area o) {
+		return ((br.x > o.ul.x) && (br.y > o.ul.y) && (o.br.x > ul.x) && (o.br.y > ul.y));
+	}
 
-    public Area xl(Coord off) {
-	return(new Area(ul.add(off), br.add(off)));
-    }
+	public boolean contains(Area o) {
+		return ((o.ul.x >= ul.x) && (o.ul.y >= ul.y) && (o.br.x <= br.x) && (o.br.y <= br.y));
+	}
 
-    public Area margin(Coord m) {
-	return(new Area(ul.sub(m), br.add(m)));
-    }
+	public Area xl(Coord off) {
+		return (new Area(ul.add(off), br.add(off)));
+	}
 
-    public Area margin(int m) {
-	return(margin(new Coord(m, m)));
-    }
+	public Area margin(Coord m) {
+		return (new Area(ul.sub(m), br.add(m)));
+	}
+
+	public Area margin(int m) {
+		return (margin(new Coord(m, m)));
+	}
 }

@@ -23,42 +23,43 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 
 public abstract class SIterator<T> implements Iterator<T> {
-    private int st = 0;
-    private T n;
-    
-    public abstract T snext() throws NoSuchElementException;
 
-    private void ref() {
-	if(st == 0) {
-	    try {
-		n = snext();
-		st = 1;
-	    } catch(NoSuchElementException e) {
-		st = 2;
-	    }
+	private int st = 0;
+	private T n;
+
+	public abstract T snext() throws NoSuchElementException;
+
+	private void ref() {
+		if (st == 0) {
+			try {
+				n = snext();
+				st = 1;
+			} catch (NoSuchElementException e) {
+				st = 2;
+			}
+		}
 	}
-    }
 
-    public boolean hasNext() {
-	ref();
-	return(st == 1);
-    }
+	public boolean hasNext() {
+		ref();
+		return (st == 1);
+	}
 
-    public T next() {
-	ref();
-	if(st == 2)
-	    throw(new NoSuchElementException());
-	st = 0;
-	return(n);
-    }
+	public T next() {
+		ref();
+		if (st == 2) {
+			throw (new NoSuchElementException());
+		}
+		st = 0;
+		return (n);
+	}
 
-    public void remove() {
-	throw(new UnsupportedOperationException());
-    }
+	public void remove() {
+		throw (new UnsupportedOperationException());
+	}
 }

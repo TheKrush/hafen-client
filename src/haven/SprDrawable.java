@@ -23,26 +23,26 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class SprDrawable extends Drawable {
-    Sprite spr = null;
-	
-    public SprDrawable(Gob gob, Sprite spr) {
-	super(gob);
-	this.spr = spr;
-    }
-	
-    public void setup(RenderList rl) {
-	rl.add(spr, null);
-    }
-	
-    public void ctick(int dt) {
-	spr.tick(dt);
-    }
-    
-    public Resource getres() {
-	return(null);
-    }
+
+	Sprite spr = null;
+
+	public SprDrawable(Gob gob, Sprite spr) {
+		super(gob);
+		this.spr = spr;
+	}
+
+	public void setup(RenderList rl) {
+		rl.add(spr, null);
+	}
+
+	public void ctick(int dt) {
+		spr.tick(dt);
+	}
+
+	public Resource getres() {
+		return (null);
+	}
 }

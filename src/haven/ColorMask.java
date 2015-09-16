@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.awt.Color;
@@ -31,40 +30,43 @@ import haven.glsl.*;
 import static haven.glsl.Type.*;
 
 public class ColorMask extends GLState {
-    public static final Slot<ColorMask> slot = new Slot<ColorMask>(Slot.Type.DRAW, ColorMask.class);
-    public static final Uniform ccol = new Uniform(VEC4);
-    private final float[] col;
 
-    private static final ShaderMacro[] sh = {
-	new ShaderMacro() {
-	    public void modify(ProgramContext prog) {
-		prog.fctx.fragcol.mod(new Macro1<Expression>() {
-			public Expression expand(Expression in) {
-			    return(MiscLib.colblend.call(in, ccol.ref()));
+	public static final Slot<ColorMask> slot = new Slot<ColorMask>(Slot.Type.DRAW, ColorMask.class);
+	public static final Uniform ccol = new Uniform(VEC4);
+	private final float[] col;
+
+	private static final ShaderMacro[] sh = {
+		new ShaderMacro() {
+			public void modify(ProgramContext prog) {
+				prog.fctx.fragcol.mod(new Macro1<Expression>() {
+					public Expression expand(Expression in) {
+						return (MiscLib.colblend.call(in, ccol.ref()));
+					}
+				}, 100);
 			}
-		    }, 100);
-	    }
+		}
+	};
+
+	public ColorMask(Color col) {
+		this.col = Utils.c2fa(col);
 	}
-    };
 
-    public ColorMask(Color col) {
-	this.col = Utils.c2fa(col);
-    }
+	public ShaderMacro[] shaders() {
+		return (sh);
+	}
 
-    public ShaderMacro[] shaders() {return(sh);}
+	public void reapply(GOut g) {
+		g.gl.glUniform4fv(g.st.prog.uniform(ccol), 1, col, 0);
+	}
 
-    public void reapply(GOut g) {
-	g.gl.glUniform4fv(g.st.prog.uniform(ccol), 1, col, 0);
-    }
+	public void apply(GOut g) {
+		reapply(g);
+	}
 
-    public void apply(GOut g) {
-	reapply(g);
-    }
+	public void unapply(GOut g) {
+	}
 
-    public void unapply(GOut g) {
-    }
-
-    public void prep(Buffer buf) {
-	buf.put(slot, this);
-    }
+	public void prep(Buffer buf) {
+		buf.put(slot, this);
+	}
 }

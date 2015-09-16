@@ -23,13 +23,13 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.error;
 
 import java.io.*;
 
 public class ReportException extends IOException {
-    public ReportException(String message) {
-	super(message);
-    }
+
+	public ReportException(String message) {
+		super(message);
+	}
 }

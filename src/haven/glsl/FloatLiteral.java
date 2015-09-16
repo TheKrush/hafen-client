@@ -23,22 +23,23 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class FloatLiteral extends Expression {
-    public static final FloatLiteral z = new FloatLiteral(0);
-    public static final FloatLiteral u = new FloatLiteral(1);
-    public static final FloatLiteral n = new FloatLiteral(-1);
-    public final double val;
 
-    public FloatLiteral(double val) {
-	this.val = val;
-    }
+	public static final FloatLiteral z = new FloatLiteral(0);
+	public static final FloatLiteral u = new FloatLiteral(1);
+	public static final FloatLiteral n = new FloatLiteral(-1);
+	public final double val;
 
-    public void walk(Walker w) {}
+	public FloatLiteral(double val) {
+		this.val = val;
+	}
 
-    public void output(Output out) {
-	out.write(Double.toString(val));
-    }
+	public void walk(Walker w) {
+	}
+
+	public void output(Output out) {
+		out.write(Double.toString(val));
+	}
 }

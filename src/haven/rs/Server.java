@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.rs;
 
 import haven.*;
@@ -35,153 +34,159 @@ import haven.Composited.MD;
 import haven.Composited.ED;
 
 public class Server extends Thread {
-    public static final Map<String, Command> commands = new HashMap<String, Command>();
-    private final ServerSocket sk;
-    private final Random rng;
-    private final byte[] key;
 
-    {
-	try {
-	    rng = SecureRandom.getInstance("SHA1PRNG");
-	} catch(NoSuchAlgorithmException e) {
-	    throw(new Error(e));
-	}
-    }
-
-    public interface Command {
-	public Object[] run(Client cl, Object... args) throws InterruptedException;
-    }
-
-    static {
-	commands.put("ava", AvaRender.call);
-    }
-
-    public class Client extends Thread {
-	private final Socket sk;
-	private boolean auth = false;
-	private final byte[] nonce, ckey;
+	public static final Map<String, Command> commands = new HashMap<String, Command>();
+	private final ServerSocket sk;
+	private final Random rng;
+	private final byte[] key;
 
 	{
-	    nonce = new byte[32];
-	    rng.nextBytes(nonce);
-	    MessageDigest dig;
-	    try {
-		dig = MessageDigest.getInstance("SHA-256");
-	    } catch(NoSuchAlgorithmException e) {
-		throw(new Error(e));
-	    }
-	    dig.update(key);
-	    dig.update(nonce);
-	    ckey = dig.digest();
+		try {
+			rng = SecureRandom.getInstance("SHA1PRNG");
+		} catch (NoSuchAlgorithmException e) {
+			throw (new Error(e));
+		}
 	}
 
-	private Client(Socket sk) {
-	    super("Render server handler");
-	    this.sk = sk;
-	    setDaemon(true);
-	    start();
+	public interface Command {
+
+		public Object[] run(Client cl, Object... args) throws InterruptedException;
 	}
 
-	byte[] read(InputStream in, int bytes) throws IOException {
-	    byte[] ret = new byte[bytes];
-	    int n = 0;
-	    while(n < bytes) {
-		int rv = in.read(ret, n, bytes - n);
-		if(rv < 0)
-		    throw(new IOException("Unexpected end-of-file"));
-		n += rv;
-	    }
-	    return(ret);
+	static {
+		commands.put("ava", AvaRender.call);
+	}
+
+	public class Client extends Thread {
+
+		private final Socket sk;
+		private boolean auth = false;
+		private final byte[] nonce, ckey;
+
+		{
+			nonce = new byte[32];
+			rng.nextBytes(nonce);
+			MessageDigest dig;
+			try {
+				dig = MessageDigest.getInstance("SHA-256");
+			} catch (NoSuchAlgorithmException e) {
+				throw (new Error(e));
+			}
+			dig.update(key);
+			dig.update(nonce);
+			ckey = dig.digest();
+		}
+
+		private Client(Socket sk) {
+			super("Render server handler");
+			this.sk = sk;
+			setDaemon(true);
+			start();
+		}
+
+		byte[] read(InputStream in, int bytes) throws IOException {
+			byte[] ret = new byte[bytes];
+			int n = 0;
+			while (n < bytes) {
+				int rv = in.read(ret, n, bytes - n);
+				if (rv < 0) {
+					throw (new IOException("Unexpected end-of-file"));
+				}
+				n += rv;
+			}
+			return (ret);
+		}
+
+		public void run() {
+			try {
+				InputStream in;
+				OutputStream out;
+				try {
+					in = sk.getInputStream();
+					out = sk.getOutputStream();
+				} catch (IOException e) {
+					throw (new RuntimeException(e));
+				}
+				while (true) {
+					try {
+						int len = Utils.int32d(read(in, 4), 0);
+						if (!auth && (len > 256)) {
+							return;
+						}
+						Message msg = new MessageBuf(read(in, len));
+						String cmd = msg.string();
+						Object[] args = msg.list();
+						Object[] reply;
+						if (auth) {
+							Command cc = commands.get(cmd);
+							if (cc != null) {
+								reply = cc.run(this, args);
+							} else {
+								reply = new Object[]{"nocmd"};
+							}
+						} else {
+							if (cmd.equals("nonce")) {
+								reply = new Object[]{nonce};
+							} else if (cmd.equals("auth")) {
+								if (Arrays.equals((byte[]) args[0], ckey)) {
+									reply = new Object[]{"ok"};
+									auth = true;
+								} else {
+									reply = new Object[]{"no"};
+								}
+							} else {
+								return;
+							}
+						}
+						MessageBuf rb = new MessageBuf();
+						rb.addlist(reply);
+						byte[] rbuf = new byte[4 + rb.size()];
+						Utils.uint32e(rb.size(), rbuf, 0);
+						rb.fin(rbuf, 4);
+						out.write(rbuf);
+					} catch (IOException e) {
+						return;
+					}
+				}
+			} catch (InterruptedException e) {
+			} finally {
+				try {
+					sk.close();
+				} catch (IOException e) {
+					throw (new RuntimeException(e));
+				}
+			}
+		}
+	}
+
+	public Server(int port, byte[] key) throws IOException {
+		super("Render server");
+		this.key = key;
+		sk = new ServerSocket(port);
+		start();
 	}
 
 	public void run() {
-	    try {
-		InputStream in;
-		OutputStream out;
 		try {
-		    in = sk.getInputStream();
-		    out = sk.getOutputStream();
-		} catch(IOException e) {
-		    throw(new RuntimeException(e));
-		}
-		while(true) {
-		    try {
-			int len = Utils.int32d(read(in, 4), 0);
-			if(!auth && (len > 256))
-			    return;
-			Message msg = new MessageBuf(read(in, len));
-			String cmd = msg.string();
-			Object[] args = msg.list();
-			Object[] reply;
-			if(auth) {
-			    Command cc = commands.get(cmd);
-			    if(cc != null)
-				reply = cc.run(this, args);
-			    else
-				reply = new Object[] {"nocmd"};
-			} else {
-			    if(cmd.equals("nonce")) {
-				reply = new Object[] {nonce};
-			    } else if(cmd.equals("auth")) {
-				if(Arrays.equals((byte[])args[0], ckey)) {
-				    reply = new Object[] {"ok"};
-				    auth = true;
-				} else {
-				    reply = new Object[] {"no"};
+			while (true) {
+				Socket nsk;
+				try {
+					nsk = sk.accept();
+				} catch (IOException e) {
+					break;
 				}
-			    } else {
-				return;
-			    }
+				new Client(nsk);
 			}
-			MessageBuf rb = new MessageBuf();
-			rb.addlist(reply);
-			byte[] rbuf = new byte[4 + rb.size()];
-			Utils.uint32e(rb.size(), rbuf, 0);
-			rb.fin(rbuf, 4);
-			out.write(rbuf);
-		    } catch(IOException e) {
-			return;
-		    }
+		} finally {
+			try {
+				sk.close();
+			} catch (IOException e) {
+				throw (new RuntimeException(e));
+			}
 		}
-	    } catch(InterruptedException e) {
-	    } finally {
-		try {
-		    sk.close();
-		} catch(IOException e) {
-		    throw(new RuntimeException(e));
-		}
-	    }
 	}
-    }
 
-    public Server(int port, byte[] key) throws IOException {
-	super("Render server");
-	this.key = key;
-	sk = new ServerSocket(port);
-	start();
-    }
-
-    public void run() {
-	try {
-	    while(true) {
-		Socket nsk;
-		try {
-		    nsk = sk.accept();
-		} catch(IOException e) {
-		    break;
-		}
-		new Client(nsk);
-	    }
-	} finally {
-	    try {
-		sk.close();
-	    } catch(IOException e) {
-		throw(new RuntimeException(e));
-	    }
+	public static void main(String[] args) throws Exception {
+		new Server(Integer.parseInt(args[0]), Utils.base64dec(System.getenv("AUTHKEY")));
 	}
-    }
-
-    public static void main(String[] args) throws Exception {
-	new Server(Integer.parseInt(args[0]), Utils.base64dec(System.getenv("AUTHKEY")));
-    }
 }

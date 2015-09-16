@@ -23,25 +23,26 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class Placeholder extends Statement {
-    public final String comment;
 
-    public Placeholder(String comment) {
-	this.comment = comment;
-    }
+	public final String comment;
 
-    public Placeholder() {
-	this(null);
-    }
-
-    public void walk(Walker w) {}
-
-    public void output(Output out) {
-	if(comment != null) {
-	    out.write("/* " + comment + " */");
+	public Placeholder(String comment) {
+		this.comment = comment;
 	}
-    }
+
+	public Placeholder() {
+		this(null);
+	}
+
+	public void walk(Walker w) {
+	}
+
+	public void output(Output out) {
+		if (comment != null) {
+			out.write("/* " + comment + " */");
+		}
+	}
 }

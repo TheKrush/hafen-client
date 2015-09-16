@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.io.*;
@@ -31,57 +30,64 @@ import java.awt.image.*;
 import javax.media.opengl.*;
 
 public class Debug {
-    public static boolean kf1, kf2, kf3, kf4;
-    public static boolean pk1, pk2, pk3, pk4;
-    public static PrintWriter log = new PrintWriter(System.err);
 
-    public static void cycle() {
-	pk1 = kf1; pk2 = kf2; pk3 = kf3; pk4 = kf4;
-    }
+	public static boolean kf1, kf2, kf3, kf4;
+	public static boolean pk1, pk2, pk3, pk4;
+	public static PrintWriter log = new PrintWriter(System.err);
 
-    public static void dumpimage(BufferedImage img, String fn) {
-	try {
-	    javax.imageio.ImageIO.write(img, "PNG", new File(fn));
-	} catch(IOException e) {
-	    throw(new RuntimeException(e));
-	}
-    }
-
-    public static class DumpGL extends TraceGL4bc {
-	public final ByteArrayOutputStream buf;
-
-	private DumpGL(GL4bc bk, ByteArrayOutputStream buf) {
-	    super(bk, new PrintStream(buf));
-	    this.buf = buf;
-	}
-	public DumpGL(GL4bc bk) {
-	    this(bk, new ByteArrayOutputStream());
+	public static void cycle() {
+		pk1 = kf1;
+		pk2 = kf2;
+		pk3 = kf3;
+		pk4 = kf4;
 	}
 
-	public void reset() {
-	    buf.reset();
-	}
-
-	public void dump(String fn) {
-	    try {
-		OutputStream out = new FileOutputStream(fn);
+	public static void dumpimage(BufferedImage img, String fn) {
 		try {
-		    out.write(buf.toByteArray());
-		} finally {
-		    out.close();
+			javax.imageio.ImageIO.write(img, "PNG", new File(fn));
+		} catch (IOException e) {
+			throw (new RuntimeException(e));
 		}
-	    } catch(IOException e) {
-		throw(new RuntimeException(e));
-	    }
 	}
-    }
 
-    static int dumpseq = 0;
-    public static PrintWriter getdump() {
-	try {
-	    return(new java.io.PrintWriter(new java.io.FileWriter("/tmp/dbdump-" + dumpseq++)));
-	} catch(java.io.IOException e) {
-	    throw(new RuntimeException(e));
+	public static class DumpGL extends TraceGL4bc {
+
+		public final ByteArrayOutputStream buf;
+
+		private DumpGL(GL4bc bk, ByteArrayOutputStream buf) {
+			super(bk, new PrintStream(buf));
+			this.buf = buf;
+		}
+
+		public DumpGL(GL4bc bk) {
+			this(bk, new ByteArrayOutputStream());
+		}
+
+		public void reset() {
+			buf.reset();
+		}
+
+		public void dump(String fn) {
+			try {
+				OutputStream out = new FileOutputStream(fn);
+				try {
+					out.write(buf.toByteArray());
+				} finally {
+					out.close();
+				}
+			} catch (IOException e) {
+				throw (new RuntimeException(e));
+			}
+		}
 	}
-    }
+
+	static int dumpseq = 0;
+
+	public static PrintWriter getdump() {
+		try {
+			return (new java.io.PrintWriter(new java.io.FileWriter("/tmp/dbdump-" + dumpseq++)));
+		} catch (java.io.IOException e) {
+			throw (new RuntimeException(e));
+		}
+	}
 }

@@ -23,41 +23,42 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.io.*;
 
 public class MessageInputStream extends InputStream {
-    private final Message bk;
 
-    public MessageInputStream(Message from) {
-	this.bk = from;
-    }
+	private final Message bk;
 
-    public int read() {
-	while(bk.rt - bk.rh < 1) {
-	    if(!bk.underflow(1))
-		return(-1);
+	public MessageInputStream(Message from) {
+		this.bk = from;
 	}
-	return(Utils.ub(bk.rbuf[bk.rh++]));
-    }
 
-    public int read(byte[] buf, int off, int len) {
-	int read = 0;
-	while(len > 0) {
-	    while(bk.rh >= bk.rt) {
-		if(!bk.underflow(Math.min(len, 1024))) {
-		    return((read > 0)?read:-1);
+	public int read() {
+		while (bk.rt - bk.rh < 1) {
+			if (!bk.underflow(1)) {
+				return (-1);
+			}
 		}
-	    }
-	    int r = Math.min(len, bk.rt - bk.rh);
-	    System.arraycopy(bk.rbuf, bk.rh, buf, off, r);
-	    bk.rh += r;
-	    off += r;
-	    len -= r;
-	    read += r;
+		return (Utils.ub(bk.rbuf[bk.rh++]));
 	}
-	return(read);
-    }
+
+	public int read(byte[] buf, int off, int len) {
+		int read = 0;
+		while (len > 0) {
+			while (bk.rh >= bk.rt) {
+				if (!bk.underflow(Math.min(len, 1024))) {
+					return ((read > 0) ? read : -1);
+				}
+			}
+			int r = Math.min(len, bk.rt - bk.rh);
+			System.arraycopy(bk.rbuf, bk.rh, buf, off, r);
+			bk.rh += r;
+			off += r;
+			len -= r;
+			read += r;
+		}
+		return (read);
+	}
 }

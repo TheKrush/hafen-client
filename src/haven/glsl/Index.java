@@ -23,30 +23,30 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import java.util.*;
 
 public class Index extends LValue {
-    public final Expression val;
-    public final Expression idx;
 
-    public Index(Expression val, Expression idx) {
-	this.val = val;
-	this.idx = idx;
-    }
+	public final Expression val;
+	public final Expression idx;
 
-    public void walk(Walker w) {
-	w.el(val);
-	w.el(idx);
-    }
+	public Index(Expression val, Expression idx) {
+		this.val = val;
+		this.idx = idx;
+	}
 
-    public void output(Output out) {
-	out.write("(");
-	val.output(out);
-	out.write("[");
-	idx.output(out);
-	out.write("])");
-    }
+	public void walk(Walker w) {
+		w.el(val);
+		w.el(idx);
+	}
+
+	public void output(Output out) {
+		out.write("(");
+		val.output(out);
+		out.write("[");
+		idx.output(out);
+		out.write("])");
+	}
 }

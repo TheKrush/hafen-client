@@ -23,45 +23,56 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class For extends Statement {
-    public final Expression init, cond, step;
-    public final Statement body;
 
-    public For(Expression init, Expression cond, Expression step, Statement body) {
-	this.init = init;
-	this.cond = cond;
-	this.step = step;
-	this.body = body;
-    }
+	public final Expression init, cond, step;
+	public final Statement body;
 
-    public void walk(Walker w) {
-	if(init != null) w.el(init);
-	if(cond != null) w.el(cond);
-	if(step != null) w.el(step);
-	w.el(body);
-    }
-
-    public void output(Output out) {
-	out.write("for(");
-	if(init != null)
-	    init.output(out);
-	out.write("; ");
-	if(cond != null)
-	    cond.output(out);
-	out.write("; ");
-	if(step != null)
-	    step.output(out);
-	out.write(")");
-	if(body instanceof Block) {
-	    out.write(" ");
-	    ((Block)body).trail(out, false);
-	} else {
-	    out.write("\n"); out.indent++; out.indent();
-	    body.output(out);
-	    out.indent--;
+	public For(Expression init, Expression cond, Expression step, Statement body) {
+		this.init = init;
+		this.cond = cond;
+		this.step = step;
+		this.body = body;
 	}
-    }
+
+	public void walk(Walker w) {
+		if (init != null) {
+			w.el(init);
+		}
+		if (cond != null) {
+			w.el(cond);
+		}
+		if (step != null) {
+			w.el(step);
+		}
+		w.el(body);
+	}
+
+	public void output(Output out) {
+		out.write("for(");
+		if (init != null) {
+			init.output(out);
+		}
+		out.write("; ");
+		if (cond != null) {
+			cond.output(out);
+		}
+		out.write("; ");
+		if (step != null) {
+			step.output(out);
+		}
+		out.write(")");
+		if (body instanceof Block) {
+			out.write(" ");
+			((Block) body).trail(out, false);
+		} else {
+			out.write("\n");
+			out.indent++;
+			out.indent();
+			body.output(out);
+			out.indent--;
+		}
+	}
 }

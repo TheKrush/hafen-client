@@ -23,57 +23,60 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 import java.lang.ref.*;
 
 public class IDRef {
-    private static Map<Object, WRef> map = new HashMap<Object, WRef>();
-    private static ReferenceQueue<IDRef> queue = new ReferenceQueue<IDRef>();
-    private static int nextseq = 0;
-    /* Just for debugging */
-    private final Object val;
-    private final int seq;
-    
-    private IDRef(Object val) {
-	synchronized(IDRef.class) {
-	    this.seq = nextseq++;
-	}
-	this.val = val;
-    }
-    
-    private static class WRef extends WeakReference<IDRef> {
+
+	private static Map<Object, WRef> map = new HashMap<Object, WRef>();
+	private static ReferenceQueue<IDRef> queue = new ReferenceQueue<IDRef>();
+	private static int nextseq = 0;
+	/* Just for debugging */
 	private final Object val;
-	
-	private WRef(IDRef ref, Object val) {
-	    super(ref, queue);
-	    this.val = val;
+	private final int seq;
+
+	private IDRef(Object val) {
+		synchronized (IDRef.class) {
+			this.seq = nextseq++;
+		}
+		this.val = val;
 	}
-    }
-    
-    public static IDRef intern(Object x) {
-	if(x == null)
-	    return(null);
-	synchronized(map) {
-	    WRef old;
-	    while((old = (WRef)queue.poll()) != null) {
-		if(map.get(old.val) == old)
-		    map.remove(old.val);
-	    }
-	    WRef ref = map.get(x);
-	    IDRef id = (ref == null)?null:(ref.get());
-	    if(id == null) {
-		id = new IDRef(x);
-		ref = new WRef(id, x);
-		map.put(x, ref);
-	    }
-	    return(id);
+
+	private static class WRef extends WeakReference<IDRef> {
+
+		private final Object val;
+
+		private WRef(IDRef ref, Object val) {
+			super(ref, queue);
+			this.val = val;
+		}
 	}
-    }
-    
-    public String toString() {
-	return("<ID: " + val + " (" + seq + ")>");
-    }
+
+	public static IDRef intern(Object x) {
+		if (x == null) {
+			return (null);
+		}
+		synchronized (map) {
+			WRef old;
+			while ((old = (WRef) queue.poll()) != null) {
+				if (map.get(old.val) == old) {
+					map.remove(old.val);
+				}
+			}
+			WRef ref = map.get(x);
+			IDRef id = (ref == null) ? null : (ref.get());
+			if (id == null) {
+				id = new IDRef(x);
+				ref = new WRef(id, x);
+				map.put(x, ref);
+			}
+			return (id);
+		}
+	}
+
+	public String toString() {
+		return ("<ID: " + val + " (" + seq + ")>");
+	}
 }

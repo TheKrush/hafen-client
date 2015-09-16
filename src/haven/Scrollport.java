@@ -23,101 +23,109 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class Scrollport extends Widget {
-    public final Scrollbar bar;
-    public final Scrollcont cont;
-    
-    @RName("scr")
-    public static class $_ implements Factory {
-	public Widget create(Widget parent, Object[] args) {
-	    return(new Scrollport((Coord)args[0]));
-	}
-    }
 
-    public Scrollport(Coord sz) {
-	super(sz);
-	bar = adda(new Scrollbar(sz.y, 0, 0) {
-		public void changed() {
-		    cont.sy = bar.val;
+	public final Scrollbar bar;
+	public final Scrollcont cont;
+
+	@RName("scr")
+	public static class $_ implements Factory {
+
+		public Widget create(Widget parent, Object[] args) {
+			return (new Scrollport((Coord) args[0]));
 		}
-	    }, sz.x, 0, 1, 0);
-	cont = add(new Scrollcont(sz.sub(bar.sz.x, 0)) {
+	}
+
+	public Scrollport(Coord sz) {
+		super(sz);
+		bar = adda(new Scrollbar(sz.y, 0, 0) {
+			public void changed() {
+				cont.sy = bar.val;
+			}
+		}, sz.x, 0, 1, 0);
+		cont = add(new Scrollcont(sz.sub(bar.sz.x, 0)) {
+			public void update() {
+				bar.max = Math.max(0, csz().y - sz.y);
+			}
+		}, Coord.z);
+	}
+
+	public static class Scrollcont extends Widget {
+
+		public int sy = 0;
+
+		public Scrollcont(Coord sz) {
+			super(sz);
+		}
+
+		public Coord csz() {
+			Coord mx = new Coord();
+			for (Widget ch = child; ch != null; ch = ch.next) {
+				if (ch.c.x + ch.sz.x > mx.x) {
+					mx.x = ch.c.x + ch.sz.x;
+				}
+				if (ch.c.y + ch.sz.y > mx.y) {
+					mx.y = ch.c.y + ch.sz.y;
+				}
+			}
+			return (mx);
+		}
+
 		public void update() {
-		    bar.max = Math.max(0, csz().y - sz.y);
 		}
-	    }, Coord.z);
-    }
 
-    public static class Scrollcont extends Widget {
-	public int sy = 0;
+		public void addchild(Widget child, Object... args) {
+			super.addchild(child, args);
+			update();
+		}
 
-	public Scrollcont(Coord sz) {
-	    super(sz);
+		public Coord xlate(Coord c, boolean in) {
+			if (in) {
+				return (c.add(0, -sy));
+			} else {
+				return (c.add(0, sy));
+			}
+		}
+
+		public void draw(GOut g) {
+			Widget next;
+
+			for (Widget wdg = child; wdg != null; wdg = next) {
+				next = wdg.next;
+				if (!wdg.visible) {
+					continue;
+				}
+				Coord cc = xlate(wdg.c, true);
+				if ((cc.y + wdg.sz.y < 0) || (cc.y > sz.y)) {
+					continue;
+				}
+				wdg.draw(g.reclip(cc, wdg.sz));
+			}
+		}
 	}
-	
-	public Coord csz() {
-	    Coord mx = new Coord();
-	    for(Widget ch = child; ch != null; ch = ch.next) {
-		if(ch.c.x + ch.sz.x > mx.x)
-		    mx.x = ch.c.x + ch.sz.x;
-		if(ch.c.y + ch.sz.y > mx.y)
-		    mx.y = ch.c.y + ch.sz.y;
-	    }
-	    return(mx);
+
+	public boolean mousewheel(Coord c, int amount) {
+		bar.ch(amount * 15);
+		return (true);
 	}
-    
-	public void update() {}
 
 	public void addchild(Widget child, Object... args) {
-	    super.addchild(child, args);
-	    update();
+		cont.addchild(child, args);
 	}
-    
-	public Coord xlate(Coord c, boolean in) {
-	    if(in)
-		return(c.add(0, -sy));
-	    else
-		return(c.add(0, sy));
-	}
-    
-	public void draw(GOut g) {
-	    Widget next;
-		
-	    for(Widget wdg = child; wdg != null; wdg = next) {
-		next = wdg.next;
-		if(!wdg.visible)
-		    continue;
-		Coord cc = xlate(wdg.c, true);
-		if((cc.y + wdg.sz.y < 0) || (cc.y > sz.y))
-		    continue;
-		wdg.draw(g.reclip(cc, wdg.sz));
-	    }
-	}
-    }
-    
-    public boolean mousewheel(Coord c, int amount) {
-	bar.ch(amount * 15);
-	return(true);
-    }
-    
-    public void addchild(Widget child, Object... args) {
-	cont.addchild(child, args);
-    }
 
-    public void resize(Coord nsz) {
-	super.resize(nsz);
-	bar.c = new Coord(sz.x - bar.sz.x, 0);
-	cont.resize(sz.sub(bar.sz.x, 0));
-    }
-
-    public void uimsg(String msg, Object... args) {
-	if(msg == "wpack") {
-	    resize(new Coord(cont.contentsz().x + bar.sz.x, sz.y));
-	} else {
-	    super.uimsg(msg, args);
+	public void resize(Coord nsz) {
+		super.resize(nsz);
+		bar.c = new Coord(sz.x - bar.sz.x, 0);
+		cont.resize(sz.sub(bar.sz.x, 0));
 	}
-    }
+
+	public void uimsg(String msg, Object... args) {
+		if (msg == "wpack") {
+			resize(new Coord(cont.contentsz().x + bar.sz.x, sz.y));
+		} else {
+			super.uimsg(msg, args);
+		}
+	}
 }

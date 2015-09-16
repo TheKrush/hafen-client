@@ -23,32 +23,34 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 public class Vec4Cons extends Expression {
-    public static final Vec4Cons z = new Vec4Cons(FloatLiteral.z, FloatLiteral.z, FloatLiteral.z, FloatLiteral.z);
-    public static final Vec4Cons u = new Vec4Cons(FloatLiteral.u, FloatLiteral.u, FloatLiteral.u, FloatLiteral.u);
-    public final Expression[] els;
 
-    public Vec4Cons(Expression... els) {
-	if((els.length < 1) || (els.length > 4))
-	    throw(new RuntimeException("Invalid number of arguments for vec4: " + els.length));
-	this.els = els;
-    }
+	public static final Vec4Cons z = new Vec4Cons(FloatLiteral.z, FloatLiteral.z, FloatLiteral.z, FloatLiteral.z);
+	public static final Vec4Cons u = new Vec4Cons(FloatLiteral.u, FloatLiteral.u, FloatLiteral.u, FloatLiteral.u);
+	public final Expression[] els;
 
-    public void walk(Walker w) {
-	for(Expression el : els)
-	    w.el(el);
-    }
-
-    public void output(Output out) {
-	out.write("vec4(");
-	els[0].output(out);
-	for(int i = 1; i < els.length; i++) {
-	    out.write(", ");
-	    els[i].output(out);
+	public Vec4Cons(Expression... els) {
+		if ((els.length < 1) || (els.length > 4)) {
+			throw (new RuntimeException("Invalid number of arguments for vec4: " + els.length));
+		}
+		this.els = els;
 	}
-	out.write(")");
-    }
+
+	public void walk(Walker w) {
+		for (Expression el : els) {
+			w.el(el);
+		}
+	}
+
+	public void output(Output out) {
+		out.write("vec4(");
+		els[0].output(out);
+		for (int i = 1; i < els.length; i++) {
+			out.write(", ");
+			els[i].output(out);
+		}
+		out.write(")");
+	}
 }

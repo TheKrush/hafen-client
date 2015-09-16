@@ -23,38 +23,39 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class HelpWnd extends Window {
-    public static final RichText.Foundry fnd;
-    public Indir<Resource> res;
-    private Indir<Resource> showing = null;
-    private final RichTextBox text;
-    
-    static {
-	fnd = new RichText.Foundry();
-	fnd.aa = true;
-    }
-    
-    public HelpWnd(Indir<Resource> res) {
-	super(new Coord(300, 430), "Help");
-	this.res = res;
-	this.text = add(new RichTextBox(new Coord(300, 400), "", fnd), Coord.z);
-	add(new Button(100, "Dismiss") {
-		public void click() {
-		    HelpWnd.this.wdgmsg("close");
-		}
-	    }, new Coord(100, 410));
-    }
-    
-    public void tick(double dt) {
-	super.tick(dt);
-	if(res != showing) {
-	    try {
-		text.settext(res.get().layer(Resource.pagina).text);
-		showing = res;
-	    } catch(Loading e) {}
+
+	public static final RichText.Foundry fnd;
+	public Indir<Resource> res;
+	private Indir<Resource> showing = null;
+	private final RichTextBox text;
+
+	static {
+		fnd = new RichText.Foundry();
+		fnd.aa = true;
 	}
-    }
+
+	public HelpWnd(Indir<Resource> res) {
+		super(new Coord(300, 430), "Help");
+		this.res = res;
+		this.text = add(new RichTextBox(new Coord(300, 400), "", fnd), Coord.z);
+		add(new Button(100, "Dismiss") {
+			public void click() {
+				HelpWnd.this.wdgmsg("close");
+			}
+		}, new Coord(100, 410));
+	}
+
+	public void tick(double dt) {
+		super.tick(dt);
+		if (res != showing) {
+			try {
+				text.settext(res.get().layer(Resource.pagina).text);
+				showing = res;
+			} catch (Loading e) {
+			}
+		}
+	}
 }

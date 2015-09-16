@@ -23,7 +23,6 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.glsl;
 
 import java.util.List;
@@ -32,39 +31,52 @@ import haven.GLBuffer;
 import haven.GLState.Buffer;
 
 public class Attribute extends Variable.Global {
-    public Attribute(Type type, Symbol name) {
-	super(type, name);
-    }
 
-    public Attribute(Type type, String infix) {
-	this(type, new Symbol.Shared("s_" + infix));
-    }
-
-    public Attribute(Type type) {
-	this(type, new Symbol.Shared());
-    }
-
-    private class Def extends Definition {
-	public void output(Output out) {
-	    if(out.ctx instanceof ShaderContext) {
-		((ShaderContext)out.ctx).prog.attribs.add(Attribute.this);
-	    }
-	    out.write("attribute ");
-	    super.output(out);
+	public Attribute(Type type, Symbol name) {
+		super(type, name);
 	}
-    }
 
-    public void use(Context ctx) {
-	if(!defined(ctx))
-	    ctx.vardefs.add(new Def());
-    }
+	public Attribute(Type type, String infix) {
+		this(type, new Symbol.Shared("s_" + infix));
+	}
 
-    public static abstract class AutoInstanced extends Attribute {
-	public AutoInstanced(Type type, Symbol name) {super(type, name);}
-	public AutoInstanced(Type type, String infix) {super(type, infix);}
-	public AutoInstanced(Type type) {super(type);}
+	public Attribute(Type type) {
+		this(type, new Symbol.Shared());
+	}
 
-	public abstract GLBuffer bindiarr(GOut g, List<Buffer> inst, GLBuffer prevbuf);
-	public abstract void unbindiarr(GOut g, GLBuffer buf);
-    }
+	private class Def extends Definition {
+
+		public void output(Output out) {
+			if (out.ctx instanceof ShaderContext) {
+				((ShaderContext) out.ctx).prog.attribs.add(Attribute.this);
+			}
+			out.write("attribute ");
+			super.output(out);
+		}
+	}
+
+	public void use(Context ctx) {
+		if (!defined(ctx)) {
+			ctx.vardefs.add(new Def());
+		}
+	}
+
+	public static abstract class AutoInstanced extends Attribute {
+
+		public AutoInstanced(Type type, Symbol name) {
+			super(type, name);
+		}
+
+		public AutoInstanced(Type type, String infix) {
+			super(type, infix);
+		}
+
+		public AutoInstanced(Type type) {
+			super(type);
+		}
+
+		public abstract GLBuffer bindiarr(GOut g, List<Buffer> inst, GLBuffer prevbuf);
+
+		public abstract void unbindiarr(GOut g, GLBuffer buf);
+	}
 }

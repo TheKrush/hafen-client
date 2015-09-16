@@ -23,23 +23,25 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public abstract class ListWidget<T> extends Widget {
-    public final int itemh;
-    public T sel;
 
-    public ListWidget(Coord sz, int itemh) {
-	super(sz);
-	this.itemh = itemh;
-    }
+	public final int itemh;
+	public T sel;
 
-    protected abstract T listitem(int i);
-    protected abstract int listitems();
-    protected abstract void drawitem(GOut g, T item, int i);
+	public ListWidget(Coord sz, int itemh) {
+		super(sz);
+		this.itemh = itemh;
+	}
 
-    public void change(T item) {
-	this.sel = item;
-    }
+	protected abstract T listitem(int i);
+
+	protected abstract int listitems();
+
+	protected abstract void drawitem(GOut g, T item, int i);
+
+	public void change(T item) {
+		this.sel = item;
+	}
 }

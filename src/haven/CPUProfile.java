@@ -23,55 +23,56 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 
 public class CPUProfile extends Profile {
-    public CPUProfile(int hl) {
-	super(hl);
-    }
 
-    public class Frame extends Profile.Frame {
-	private List<Long> pw = new LinkedList<Long>();
-	private List<String> nw = new LinkedList<String>();
-	private long then, last;
-
-	public Frame() {
-	    last = then = System.nanoTime();
+	public CPUProfile(int hl) {
+		super(hl);
 	}
 
-	public void tick(String nm) {
-	    long now = System.nanoTime();
-	    pw.add(now - last);
-	    nw.add(nm);
-	    last = now;
-	}
+	public class Frame extends Profile.Frame {
 
-	public void add(String nm, long tm) {
-	    pw.add(tm);
-	    nw.add(nm);
-	}
+		private List<Long> pw = new LinkedList<Long>();
+		private List<String> nw = new LinkedList<String>();
+		private long then, last;
 
-	public void tick(String nm, long subtm) {
-	    long now = System.nanoTime();
-	    pw.add(now - last - subtm);
-	    nw.add(nm);
-	    last = now;
-	}
+		public Frame() {
+			last = then = System.nanoTime();
+		}
 
-	public void fin() {
-	    double total = (System.nanoTime() - then) / 1000000000.0;
-	    String[] nm = new String[nw.size()];
-	    double[] prt = new double[pw.size()];
-	    for(int i = 0; i < pw.size(); i++) {
-		nm[i] = nw.get(i);
-		prt[i] = pw.get(i) / 1000000000.0;
-	    }
-	    fin(total, nm, prt);
-	    pw = null;
-	    nw = null;
+		public void tick(String nm) {
+			long now = System.nanoTime();
+			pw.add(now - last);
+			nw.add(nm);
+			last = now;
+		}
+
+		public void add(String nm, long tm) {
+			pw.add(tm);
+			nw.add(nm);
+		}
+
+		public void tick(String nm, long subtm) {
+			long now = System.nanoTime();
+			pw.add(now - last - subtm);
+			nw.add(nm);
+			last = now;
+		}
+
+		public void fin() {
+			double total = (System.nanoTime() - then) / 1000000000.0;
+			String[] nm = new String[nw.size()];
+			double[] prt = new double[pw.size()];
+			for (int i = 0; i < pw.size(); i++) {
+				nm[i] = nw.get(i);
+				prt[i] = pw.get(i) / 1000000000.0;
+			}
+			fin(total, nm, prt);
+			pw = null;
+			nw = null;
+		}
 	}
-    }
 }

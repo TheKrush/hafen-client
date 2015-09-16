@@ -23,28 +23,28 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import javax.media.opengl.*;
 
 public class TexMSE extends TexMS {
-    public final int ifmt, dfmt, dtype;
-    public final boolean fixed;
 
-    public TexMSE(Coord sz, int samples, int ifmt, int dfmt, int dtype, boolean fixed) {
-	super(sz.x, sz.y, samples);
-	this.ifmt = ifmt;
-	this.dfmt = dfmt;
-	this.dtype = dtype;
-	this.fixed = fixed;
-    }
+	public final int ifmt, dfmt, dtype;
+	public final boolean fixed;
 
-    public TexMSE(Coord sz, int samples, int ifmt, int dfmt, int dtype) {
-	this(sz, samples, ifmt, dfmt, dtype, false);
-    }
+	public TexMSE(Coord sz, int samples, int ifmt, int dfmt, int dtype, boolean fixed) {
+		super(sz.x, sz.y, samples);
+		this.ifmt = ifmt;
+		this.dfmt = dfmt;
+		this.dtype = dtype;
+		this.fixed = fixed;
+	}
 
-    protected void fill(GOut g) {
-	g.gl.glTexImage2DMultisample(GL3.GL_TEXTURE_2D_MULTISAMPLE, s, ifmt, w, h, fixed);
-    }
+	public TexMSE(Coord sz, int samples, int ifmt, int dfmt, int dtype) {
+		this(sz, samples, ifmt, dfmt, dtype, false);
+	}
+
+	protected void fill(GOut g) {
+		g.gl.glTexImage2DMultisample(GL3.GL_TEXTURE_2D_MULTISAMPLE, s, ifmt, w, h, fixed);
+	}
 }

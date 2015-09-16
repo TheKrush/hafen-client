@@ -23,18 +23,18 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven.test;
 
 public class RobotException extends RuntimeException {
-    public Robot bot;
-    
-    public RobotException(Robot bot, String msg, Throwable cause) {
-	super(bot.c.user + ": " + msg, cause);
-	this.bot = bot;
-    }
 
-    public RobotException(Robot bot, String msg) {
-	this(bot, msg, null);
-    }
+	public Robot bot;
+
+	public RobotException(Robot bot, String msg, Throwable cause) {
+		super(bot.c.user + ": " + msg, cause);
+		this.bot = bot;
+	}
+
+	public RobotException(Robot bot, String msg) {
+		this(bot, msg, null);
+	}
 }

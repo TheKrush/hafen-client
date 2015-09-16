@@ -23,92 +23,104 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 import java.util.*;
 
 public class Tabs {
-    public Widget parent;
-    public Coord c, sz;
-    public Tab curtab = null;
-    public Collection<Tab> tabs = new LinkedList<Tab>();
 
-    public Tabs(Coord c, Coord sz, Widget parent) {
-	this.c = c;
-	this.sz = sz;
-	this.parent = parent;
-    }
+	public Widget parent;
+	public Coord c, sz;
+	public Tab curtab = null;
+	public Collection<Tab> tabs = new LinkedList<Tab>();
 
-    public class Tab extends Widget {
-	public TabButton btn;
-	
-	public Tab() {
-	    super(Tabs.this.sz);
-	    if(curtab == null)
-		curtab = this;
-	    else
-		hide();
-	    tabs.add(this);
+	public Tabs(Coord c, Coord sz, Widget parent) {
+		this.c = c;
+		this.sz = sz;
+		this.parent = parent;
 	}
 
-	public void destroy() {
-	    super.destroy();
-	    tabs.remove(this);
+	public class Tab extends Widget {
+
+		public TabButton btn;
+
+		public Tab() {
+			super(Tabs.this.sz);
+			if (curtab == null) {
+				curtab = this;
+			} else {
+				hide();
+			}
+			tabs.add(this);
+		}
+
+		public void destroy() {
+			super.destroy();
+			tabs.remove(this);
+		}
 	}
-    }
 
-    public Tab add() {
-	return(parent.add(new Tab(), c));
-    }
-
-    public class TabButton extends Button {
-	public final Tab tab;
-
-	public TabButton(int w, String text, Tab tab) {
-	    super(w, text);
-	    this.tab = tab;
+	public Tab add() {
+		return (parent.add(new Tab(), c));
 	}
 
-	public void click() {
-	    showtab(tab);
+	public class TabButton extends Button {
+
+		public final Tab tab;
+
+		public TabButton(int w, String text, Tab tab) {
+			super(w, text);
+			this.tab = tab;
+		}
+
+		public void click() {
+			showtab(tab);
+		}
 	}
-    }
 
-    public void showtab(Tab tab) {
-	Tab old = curtab;
-	if(old != null)
-	    old.hide();
-	if((curtab = tab) != null)
-	    curtab.show();
-	changed(old, tab);
-    }
-
-    public void resize(Coord sz) {
-	for(Tab tab : tabs)
-	    tab.resize(sz);
-	this.sz = sz;
-    }
-
-    public Coord contentsz() {
-	Coord max = new Coord(0, 0);
-	for(Tab tab : tabs) {
-	    Coord br = tab.contentsz();
-	    if(br.x > max.x) max.x = br.x;
-	    if(br.y > max.y) max.y = br.y;
+	public void showtab(Tab tab) {
+		Tab old = curtab;
+		if (old != null) {
+			old.hide();
+		}
+		if ((curtab = tab) != null) {
+			curtab.show();
+		}
+		changed(old, tab);
 	}
-	return(max);
-    }
 
-    public void pack() {
-	resize(contentsz());
-    }
+	public void resize(Coord sz) {
+		for (Tab tab : tabs) {
+			tab.resize(sz);
+		}
+		this.sz = sz;
+	}
 
-    public void indpack() {
-	for(Tab tab : tabs)
-	    tab.pack();
-	this.sz = contentsz();
-    }
+	public Coord contentsz() {
+		Coord max = new Coord(0, 0);
+		for (Tab tab : tabs) {
+			Coord br = tab.contentsz();
+			if (br.x > max.x) {
+				max.x = br.x;
+			}
+			if (br.y > max.y) {
+				max.y = br.y;
+			}
+		}
+		return (max);
+	}
 
-    public void changed(Tab from, Tab to) {}
+	public void pack() {
+		resize(contentsz());
+	}
+
+	public void indpack() {
+		for (Tab tab : tabs) {
+			tab.pack();
+		}
+		this.sz = contentsz();
+	}
+
+	public void changed(Tab from, Tab to) {
+	}
 }

@@ -23,27 +23,31 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public class PMessage extends MessageBuf {
-    public int type;
 
-    public PMessage(int type, byte[] blob, int off, int len) {
-	super(blob, off, len);
-	this.type = type;
-    }
-    public PMessage(int type, byte[] blob) {
-	this(type, blob, 0, blob.length);
-    }
-    public PMessage(int type) {
-	this.type = type;
-    }
-    public PMessage(int type, Message msg) {
-	super(msg);
-	this.type = type;
-    }
-    public PMessage(PMessage msg) {
-	this(msg.type, msg);
-    }
+	public int type;
+
+	public PMessage(int type, byte[] blob, int off, int len) {
+		super(blob, off, len);
+		this.type = type;
+	}
+
+	public PMessage(int type, byte[] blob) {
+		this(type, blob, 0, blob.length);
+	}
+
+	public PMessage(int type) {
+		this.type = type;
+	}
+
+	public PMessage(int type, Message msg) {
+		super(msg);
+		this.type = type;
+	}
+
+	public PMessage(PMessage msg) {
+		this(msg.type, msg);
+	}
 }

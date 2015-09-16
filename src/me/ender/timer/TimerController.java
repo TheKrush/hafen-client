@@ -4,86 +4,82 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import haven.Config;
+import haven.Globals;
 import haven.Utils;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class TimerController {
-    private static File config;
-    private double delta = 0;
-    public List<Timer> timers;
-    final public Object lock = new Object();
 
-    public TimerController() {
-	load();
-    }
-    
-    public void update(double dt) {
-	delta += dt;
-	if(delta > 1) {
-	    synchronized(lock) {
-		for(Timer timer : timers) {
-		    if((timer.isWorking()) && (timer.update())) {
-			timer.stop();
-		    }
+	private static String CONFIG_JSON;
+	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+	private double delta = 0;
+	public List<Timer> timers;
+	final public Object lock = new Object();
+
+	public TimerController() {
+		load();
+	}
+
+	public void update(double dt) {
+		delta += dt;
+		if (delta > 1) {
+			synchronized (lock) {
+				for (Timer timer : timers) {
+					if ((timer.isWorking()) && (timer.update())) {
+						timer.stop();
+					}
+				}
+			}
+			delta = 0;
 		}
-	    }
-	    delta = 0;
 	}
-    }
-    
-    public void add(Timer timer) {
-	synchronized(lock) {
-	    timers.add(timer);
-	    save();
-	}
-    }
-    
-    public void remove(Timer timer) {
-	synchronized(lock) {
-	    timers.remove(timer);
-	}
-    }
 
-    private void load() {
-	config = Config.getFile("timers.cfg");
-	try {
-	    Gson gson = new GsonBuilder().create();
-	    InputStream is = new FileInputStream(config);
-	    timers = gson.fromJson(Utils.stream2str(is), new TypeToken<List<Timer>>() {
-	    }.getType());
-	} catch(Exception ignored) {
-	}
-	if(timers == null) {
-	    timers = new LinkedList<Timer>();
-	}
-    }
-
-    public void save() {
-	Gson gson = new GsonBuilder().create();
-	String data = gson.toJson(timers);
-	boolean exists = config.exists();
-	if(!exists) {
-	    try {
-		//noinspection ResultOfMethodCallIgnored
-		new File(config.getParent()).mkdirs();
-		exists = config.createNewFile();
-	    } catch(IOException ignored) {
-	    }
-	}
-	if(exists && config.canWrite()) {
-	    PrintWriter out = null;
-	    try {
-		out = new PrintWriter(config);
-		out.print(data);
-	    } catch(FileNotFoundException ignored) {
-	    } finally {
-		if(out != null) {
-		    out.close();
+	public void add(Timer timer) {
+		synchronized (lock) {
+			timers.add(timer);
+			save();
 		}
-	    }
 	}
-    }
+
+	public void remove(Timer timer) {
+		synchronized (lock) {
+			timers.remove(timer);
+		}
+	}
+
+	private void load() {
+		String configJson = Globals.SettingFileString(Globals.USERNAME + "/timers.json", true);
+		Map<String, Object> tmp = new HashMap<String, Object>();
+		try {
+			Type type = new TypeToken<List<Timer>>() {
+			}.getType();
+			// first check if we have username config
+			String json = Config.loadFile(configJson);
+			if (json != null) {
+				tmp = gson.fromJson(json, type);
+			} else {
+				// now check for default config
+				configJson = Globals.SettingFileString("/timers.json", true);
+				json = Config.loadFile(configJson);
+				if (json != null) {
+					tmp = gson.fromJson(json, type);
+				}
+			}
+		} catch (Exception e) {
+		}
+		CONFIG_JSON = configJson;
+		if (timers == null) {
+			timers = new LinkedList<Timer>();
+		}
+	}
+
+	public void save() {
+		Config.saveFile(CONFIG_JSON, gson.toJson(timers));
+	}
 }

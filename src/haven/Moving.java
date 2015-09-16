@@ -23,16 +23,18 @@
  *  to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  *  Boston, MA 02111-1307 USA
  */
-
 package haven;
 
 public abstract class Moving extends GAttrib {
-    public Moving(Gob gob) {
-	super(gob);
-    }
-	
-    public void move(Coord c) {}
-	
-    public abstract Coord3f getc();
-    public abstract double getv();
+
+	public Moving(Gob gob) {
+		super(gob);
+	}
+
+	public void move(Coord c) {
+	}
+
+	public abstract Coord3f getc();
+
+	public abstract double getv();
 }
