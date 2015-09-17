@@ -33,7 +33,7 @@ public class LoginScreen extends Widget {
 	Login cur;
 	Text error;
 	IButton btn;
-	Button optbtn;
+	Button optbtn, clbtn;
 	OptWnd opts;
 	AccountList accounts;
 	static Text.Foundry textf, textfs;
@@ -51,10 +51,24 @@ public class LoginScreen extends Widget {
 		setfocustab(true);
 		add(new Img(bg), Coord.z);
 		optbtn = adda(new Button(100, "Options"), 10, sz.y - 10, 0, 1);
+		clbtn = adda(new Button(100, "Changelog") {
+
+			@Override
+			public void click() {
+				showChangeLog();
+			}
+		}, sz.x - 10, 10, 1, 0);
 		accounts = add(new AccountList(10));
 	}
 
 	private void showChangeLog() {
+		if (log == null) {
+			initChangeLog();
+		}
+		log.show();
+	}
+
+	private void initChangeLog() {
 		log = ui.root.add(new Window(new Coord(50, 50), "Changelog") {
 
 			@Override
@@ -63,18 +77,22 @@ public class LoginScreen extends Widget {
 			}
 		});
 		log.justclose = true;
-		Textlog txt = log.add(new Textlog(new Coord(450, 500)));
+		int width = sz.x - 150;
+		int height = sz.y - 150;
+		Textlog txt = log.add(new Textlog(new Coord(width, height), Textlog.fndMono));
 		log.pack();
 
-		Button btn = new Button(200, "Close") {
+		Button btn = new Button(width, "Close") {
 
 			@Override
 			public void click() {
-				log.close();
+				log.hide();
 			}
 		};
 		log.adda(btn, txt.c.x + (txt.sz.x / 2), txt.c.y + txt.sz.y + 5, 0.5, 0);
 		log.pack();
+		parent.pack();
+		log.c = parent.sz.div(2).sub(sz.div(2));
 
 		txt.quote = false;
 		int maxlines = txt.maxLines = 200;

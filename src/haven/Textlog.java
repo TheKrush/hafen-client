@@ -27,6 +27,7 @@ package haven;
 
 import java.util.*;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.font.TextAttribute;
 
 public class Textlog extends Widget {
@@ -35,6 +36,8 @@ public class Textlog extends Widget {
 	static Tex schain = Resource.loadtex("gfx/hud/schain");
 	static Tex sflarp = Resource.loadtex("gfx/hud/sflarp");
 	static RichText.Foundry fnd = new RichText.Foundry(TextAttribute.FAMILY, "SansSerif", TextAttribute.SIZE, 12, TextAttribute.FOREGROUND, Color.BLACK);
+	static RichText.Foundry fndMono = new RichText.Foundry(TextAttribute.FAMILY, "Monospaced", TextAttribute.SIZE, 12, TextAttribute.FOREGROUND, Color.BLACK);
+	RichText.Foundry foundry;
 	List<Text> lines;
 	int maxy, cury;
 	int margin = 3;
@@ -85,6 +88,12 @@ public class Textlog extends Widget {
 		super(sz);
 		lines = new LinkedList<Text>();
 		maxy = cury = 0;
+		foundry = fnd;
+	}
+
+	public Textlog(Coord sz, RichText.Foundry foundry) {
+		this(sz);
+		this.foundry = foundry;
 	}
 
 	public void append(String line, Color col) {
@@ -93,9 +102,9 @@ public class Textlog extends Widget {
 			line = RichText.Parser.quote(line);
 		}
 		if (col == null) {
-			rl = fnd.render(line, sz.x - (margin * 2) - sflarp.sz().x);
+			rl = foundry.render(line, sz.x - (margin * 2) - sflarp.sz().x);
 		} else {
-			rl = fnd.render(line, sz.x - (margin * 2) - sflarp.sz().x, TextAttribute.FOREGROUND, col);
+			rl = foundry.render(line, sz.x - (margin * 2) - sflarp.sz().x, TextAttribute.FOREGROUND, col);
 		}
 		synchronized (lines) {
 			lines.add(rl);
