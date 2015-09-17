@@ -497,7 +497,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		setcanfocus(true);
 
 		if (CFG.DISPLAY_GRID.valb()) {
-			initgrid();
+			updategrid();
 		}
 	}
 
@@ -1720,11 +1720,11 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public void togglegrid() {
 		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
 		if (CFG.DISPLAY_GRID.valb()) {
-			initgrid();
+			updategrid();
 		}
 	}
 
-	public void initgrid() {
+	public void updategrid() {
 		Coord tc = cc.div(tilesz);
 		lasttc = tc.div(MCache.cmaps);
 		gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));

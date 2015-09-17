@@ -431,7 +431,7 @@ public class OptWnd extends Window {
 			public void set(boolean a) {
 				super.set(a);
 				if (a && ui != null && ui.gui != null) {
-					ui.gui.map.initgrid();
+					ui.gui.map.updategrid();
 				}
 			}
 
