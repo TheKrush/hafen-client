@@ -348,18 +348,6 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("Camera Settings", 'c', panel, buttonX, buttonY);
 
-		panel.add(new Label("Brighten view"), new Coord(x, y));
-		y += 15;
-		panel.add(new CFGHSlider(null, CFG.DISPLAY_BRIGHTNESS) {
-			@Override
-			public void changed() {
-				super.changed();
-				if (ui.sess != null && ui.sess.glob != null) {
-					ui.sess.glob.brighten();
-				}
-			}
-		}, new Coord(x, y));
-		y += 25;
 		panel.add(new CFGLabel("Camera type"), new Coord(x, y));
 		y += 15;
 		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panel) {
@@ -412,6 +400,18 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("Display Settings", 'd', panel, buttonX, buttonY);
 
+		panel.add(new Label("Brighten view"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_BRIGHTNESS) {
+			@Override
+			public void changed() {
+				super.changed();
+				if (ui.sess != null && ui.sess.glob != null) {
+					ui.sess.glob.brighten();
+				}
+			}
+		}, new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
