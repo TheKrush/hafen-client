@@ -82,14 +82,17 @@ public class BGL {
 	public void run(GL2 gl) {
 		for (int i = 0; i < n; i++) {
 			try {
-				if (i < list.length) // FIMXE: dirty fix for ArrayIndexOutOfBoundsException
-				{
-					list[i].run(gl);
+				if (i >= list.length) {
+					break;
 				}
-			} catch (IndexOutOfBoundsException ex) {
-				// TODO: find a better fix for this
-				// https://github.com/TheKrush/hafen-client-minion/issues/12
+				list[i].run(gl);
 			} catch (Exception exc) {
+				BGLException bglException = new BGLException(this, list[i], exc);
+				System.err.println("=========== BGL ERROR ===========");
+				exc.printStackTrace(System.err);
+				System.err.println("=========== DUMP ================");
+				System.err.println(bglException.dump.toString());
+				System.err.println("=================================");
 				throw (new BGLException(this, list[i], exc));
 			}
 		}

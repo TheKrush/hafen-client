@@ -160,7 +160,7 @@ public class LocalMiniMap extends Widget {
 									g.chcolor(Color.BLACK);
 									g.fellipse(gc, new Coord(5, 5));
 									KinInfo kininfo = gob.getattr(KinInfo.class);
-									g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.WHITE);
+									g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY);
 									g.fellipse(gc, new Coord(4, 4));
 									g.chcolor();
 								}
