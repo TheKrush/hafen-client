@@ -72,6 +72,10 @@ public class RootWidget extends ConsoleHost {
 				if (ui.gui != null) {
 					ui.gui.map.togglegrid();
 				}
+			} else if (ALT && code == KeyEvent.VK_O) {
+				if (ui.gui != null) {
+					ui.gui.map.togglegobhealth();
+				}
 			} else if (ALT && code == KeyEvent.VK_P) {
 				if (ui.gui != null) {
 					ui.gui.map.toggleplantgrowth();

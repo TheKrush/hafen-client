@@ -441,7 +441,26 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KIN_NAMES), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Show object health", CFG.DISPLAY_OBJECT_HEALTH), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show object health", CFG.DISPLAY_OBJECT_HEALTH) {
+			{
+				CFG.DISPLAY_OBJECT_HEALTH.setObserver(new CFG.Observer() {
+					@Override
+					public void updated(CFG cfg) {
+						update(cfg);
+					}
+				});
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_OBJECT_HEALTH.setObserver(null);
+				super.destroy();
+			}
+
+			private void update(CFG cfg) {
+				a = cfg.valb();
+			}
+		}, new Coord(x, y));
 
 		panel.pack();
 		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;

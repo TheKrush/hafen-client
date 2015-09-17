@@ -1719,6 +1719,10 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		}
 	}
 
+	public void togglegobhealth() {
+		CFG.DISPLAY_OBJECT_HEALTH.set(!CFG.DISPLAY_OBJECT_HEALTH.valb(), true);
+	}
+
 	public void toggleplantgrowth() {
 		CFG.DISPLAY_CROPS_GROWTH.set(!CFG.DISPLAY_CROPS_GROWTH.valb(), true);
 	}
