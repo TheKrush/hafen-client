@@ -1,13 +1,15 @@
 $size[13]{$b{2015-09-16}}
  - Added options to display specific boulder/bush/tree on minimap $i{(romov's client)}
  - Added option to display simple crops $i{(apxeolog's client)}
+ - Moved some options to other panels
+  - Added Minimap Settings section
 
 $size[13]{$b{2015-09-14}}
  - Fixing issue with undocked minimap and toggling the ui
 
 $size[13]{$b{2015-09-12}}
  - Added option to put minimap on floating resizable window $i{(ender's client)}
-  - Options->UI Settings->Undock minimap
+  - Options->Minimap Settings->Undock minimap
 
 $size[13]{$b{2015-09-11}}
  - Save window locations $i{(ender's client)}

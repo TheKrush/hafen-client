@@ -259,7 +259,7 @@ public class ChatUI extends Widget {
 					sb.val = sb.max;
 				}
 			}
-			if (CFG.UI_CHAT_LOGS.valb()) {
+			if (CFG.GENERAL_CHAT_SAVE.valb()) {
 				log(msg);
 			}
 		}

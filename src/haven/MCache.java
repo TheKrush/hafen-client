@@ -486,7 +486,7 @@ public class MCache {
 						grids.put(c, g = new Grid(c));
 					}
 					g.fill(msg);
-					if (CFG.GENERAL_STOREMAP.valb()) {
+					if (CFG.GENERAL_MAP_SAVE.valb()) {
 						UI.mapSaver.recordMapTile(this, g, c);
 					}
 					req.remove(c);
@@ -576,7 +576,7 @@ public class MCache {
 	public void trimall() {
 		synchronized (grids) {
 			synchronized (req) {
-				if (CFG.GENERAL_STOREMAP.valb()) {
+				if (CFG.GENERAL_MAP_SAVE.valb()) {
 					UI.mapSaver.newSession();
 				}
 				for (Grid g : grids.values()) {

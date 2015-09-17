@@ -153,7 +153,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		opts.hide();
 		zerg = add(new Zergwnd(), 187, 50);
 		zerg.hide();
-		showmmappanel(CFG.UI_MINIMAP_FLOATING.valb());
+		showmmappanel(CFG.MINIMAP_FLOATING.valb());
 	}
 
 	private void mapbuttons() {
@@ -670,7 +670,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		} else if (w == mmappanel) {
 			mmappanel = null;
 			placemmap();
-			CFG.UI_MINIMAP_FLOATING.set(false, true);
+			CFG.MINIMAP_FLOATING.set(false, true);
 		}
 		meters.remove(w);
 	}

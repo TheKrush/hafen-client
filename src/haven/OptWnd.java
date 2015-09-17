@@ -40,6 +40,7 @@ public class OptWnd extends Window {
 	public final Panel panelDisplay;
 	public final Panel panelGeneral;
 	public final Panel panelHotkey;
+	public final Panel panelMinimap;
 	public final Panel panelUI;
 	public final Panel panelVideo;
 	public Panel current;
@@ -241,19 +242,21 @@ public class OptWnd extends Window {
 		panelDisplay = add(new Panel());
 		panelGeneral = add(new Panel());
 		panelHotkey = add(new Panel());
+		panelMinimap = add(new Panel());
 		panelUI = add(new Panel());
 
 		int y = 0;
 		initAudioPanel(0, y);
 		initVideoPanel(1, y);
+		y += 2;
+		initDisplayPanel(0, y);
+		initCameraPanel(1, y);
 		y += 1;
 		initGeneralPanel(0, y);
 		initHotkeyPanel(1, y);
 		y += 1;
-		initDisplayPanel(0, y);
-		initCameraPanel(1, y);
-		y += 1;
-		initUIPanel(.5, y);
+		initMinimapPanel(0, y);
+		initUIPanel(1, y);
 		y += 2;
 		if (gopts) {
 			panelMain.add(new Button(200, "Switch character") {
@@ -347,7 +350,7 @@ public class OptWnd extends Window {
 
 		panel.add(new Label("Brighten view"), new Coord(x, y));
 		y += 15;
-		panel.add(new CFGHSlider(null, CFG.CAMERA_BRIGHTNESS) {
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_BRIGHTNESS) {
 			@Override
 			public void changed() {
 				super.changed();
@@ -413,7 +416,7 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
+		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KIN_NAMES), new Coord(x, y));
 
 		panel.pack();
 		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
@@ -427,9 +430,9 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("General Settings", 'g', panel, buttonX, buttonY);
 
-		panel.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chat' folder"), new Coord(x, y));
+		panel.add(new CFGCheckBox("Store chat logs", CFG.GENERAL_CHAT_SAVE, "Logs are stored in 'chat' folder"), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP, "Tiles are stored in 'map' folder") {
+		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_MAP_SAVE, "Tiles are stored in 'map' folder") {
 			@Override
 			public void changed(boolean val) {
 				super.changed(val);
@@ -593,18 +596,14 @@ public class OptWnd extends Window {
 		panel.pack();
 	}
 
-	private void initUIPanel(double buttonX, double buttonY) {
-		Panel panel = panelUI;
+	private void initMinimapPanel(double buttonX, double buttonY) {
+		Panel panel = panelMinimap;
 		int x = 0, y = 0, my = 0;
-		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
+		addPanelButton("Minimap Settings", 'm', panel, buttonX, buttonY);
 
-		panel.add(new CFGCheckBox("Show kin online/offline", CFG.UI_KIN_STATUS), new Coord(x, y));
-		y += 25;
-		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
-		y += 25;
-		panel.add(new CFGCheckBox("Undock minimap", CFG.UI_MINIMAP_FLOATING) {
+		panel.add(new CFGCheckBox("Undock minimap", CFG.MINIMAP_FLOATING) {
 			{
-				CFG.UI_MINIMAP_FLOATING.setObserver(new CFG.Observer() {
+				CFG.MINIMAP_FLOATING.setObserver(new CFG.Observer() {
 					@Override
 					public void updated(CFG cfg) {
 						update(cfg);
@@ -622,7 +621,7 @@ public class OptWnd extends Window {
 
 			@Override
 			public void destroy() {
-				CFG.UI_MINIMAP_FLOATING.setObserver(null);
+				CFG.MINIMAP_FLOATING.setObserver(null);
 				super.destroy();
 			}
 
@@ -631,7 +630,55 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Show players on minimap", CFG.UI_MINIMAP_PLAYERS), new Coord(x, y));
+
+		my = Math.max(my, y);
+		x += 200;
+		y = 0;
+
+		panel.add(new CFGCheckBox("Show players on minimap", CFG.MINIMAP_PLAYERS), new Coord(x, y));
+		y += 25;
+
+		my = Math.max(my, y);
+		x = 0;
+		y = my;
+
+		int curY = my;
+		panel.add(new Label("Show boulders"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BOULDERS, 130, 5);
+		bouldersCheckListbox.additems(CFG.boulders);
+		panel.add(bouldersCheckListbox, new Coord(x, y));
+		x += bouldersCheckListbox.sz.x + 10;
+		y = curY;
+		panel.add(new Label("Show bushes"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BUSHES, 130, 5);
+		bushesCheckListbox.additems(CFG.bushes);
+		panel.add(bushesCheckListbox, new Coord(x, y));
+		x += bushesCheckListbox.sz.x + 10;
+		y = curY;
+		panel.add(new Label("Show trees"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_TREES, 130, 5);
+		treesCheckListbox.additems(CFG.trees);
+		panel.add(treesCheckListbox, new Coord(x, y));
+		x += treesCheckListbox.sz.x + 10;
+
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
+		panel.pack();
+	}
+
+	private void initUIPanel(double buttonX, double buttonY) {
+		Panel panel = panelUI;
+		int x = 0, y = 0;
+		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
+
+		panel.add(new CFGCheckBox("Show kin online/offline", CFG.UI_KIN_STATUS), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
 		//y += 25;
 		//panel.add(new CFGCheckBox("Study lock", CFG.UI_STUDYLOCK), new Coord(x, y));
 		y += 25;
@@ -649,7 +696,6 @@ public class OptWnd extends Window {
 		panel.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
 				"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
 
-		my = Math.max(my, y);
 		x += 200;
 		y = 0;
 
@@ -668,30 +714,6 @@ public class OptWnd extends Window {
 		panel.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
-
-		my = Math.max(my, y);
-		int curY = my + 25;
-		x = 0;
-		y = curY;
-		panel.add(new Label("Show boulders"), new Coord(x, y));
-		y += 15;
-		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BOULDERS, 130, 5);
-		bouldersCheckListbox.additems(CFG.boulders);
-		panel.add(bouldersCheckListbox, new Coord(x, y));
-		x += bouldersCheckListbox.sz.x + 10;
-		y = curY;
-		panel.add(new Label("Show bushes"), new Coord(x, y));
-		y += 15;
-		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BUSHES, 130, 5);
-		bushesCheckListbox.additems(CFG.bushes);
-		panel.add(bushesCheckListbox, new Coord(x, y));
-		x += bushesCheckListbox.sz.x + 10;
-		y = curY;
-		panel.add(new Label("Show trees"), new Coord(x, y));
-		y += 15;
-		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_TREES, 130, 5);
-		treesCheckListbox.additems(CFG.trees);
-		panel.add(treesCheckListbox, new Coord(x, y));
 
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;

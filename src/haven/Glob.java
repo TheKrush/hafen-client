@@ -195,7 +195,7 @@ public class Glob {
 
 	public void brighten() {
 		synchronized (brightsync) {
-			float bright = CFG.CAMERA_BRIGHTNESS.valf();
+			float bright = CFG.DISPLAY_BRIGHTNESS.valf();
 			if (lightamb != null) {
 				blightamb = Utils.blendcol(lightamb, Color.WHITE, bright);
 			}

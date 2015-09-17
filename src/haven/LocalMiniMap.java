@@ -154,7 +154,7 @@ public class LocalMiniMap extends Widget {
 						g.image(tex, gc.sub(tex.sz().div(2)));
 					} else if (res != null) {
 						if ("body".equals(res.basename())) {
-							if (CFG.UI_MINIMAP_PLAYERS.valb()) {
+							if (CFG.MINIMAP_PLAYERS.valb()) {
 								if (gob.id == mv.player().id) {
 								} else {
 									g.chcolor(Color.BLACK);
@@ -167,7 +167,7 @@ public class LocalMiniMap extends Widget {
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
 							boolean recognized = false;
-							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_BOULDERS.valo();
+							Map<String, Boolean> mapVal = CFG.MINIMAP_BOULDERS.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
 								boolean drawobj = false;
 								for (String boulderName : CFG.boulders) {
@@ -190,7 +190,7 @@ public class LocalMiniMap extends Widget {
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
 							boolean recognized = false;
-							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_BUSHES.valo();
+							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
 								boolean drawobj = false;
 								for (String bushName : CFG.bushes) {
@@ -219,7 +219,7 @@ public class LocalMiniMap extends Widget {
 								continue;
 							}
 							boolean recognized = false;
-							Map<String, Boolean> mapVal = CFG.UI_MINIMAP_TREES.valo();
+							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
 								boolean drawobj = false;
 								for (String treeName : CFG.trees) {

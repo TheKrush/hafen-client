@@ -12,18 +12,23 @@ import java.util.Map;
 public enum CFG {
 
 	VERSION("version", ""),
-	CAMERA_BRIGHTNESS("camera.brightness", 0f),
 	CAMERA_TYPE("camera.type", 0), // default
 	CONFIG_VERSION("config.version", 0),
+	DISPLAY_BRIGHTNESS("display.brightness", 0f),
 	DISPLAY_FLAVOR("display.flavor", true),
-	DISPLAY_KINNAMES("display.kinnames", true),
+	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
-	GENERAL_STOREMAP("general.storemap", true),
+	GENERAL_CHAT_SAVE("general.chat.save", true),
+	GENERAL_MAP_SAVE("general.map.save", true),
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
+	MINIMAP_FLOATING("ui.minimap.floating", false),
+	MINIMAP_BOULDERS("ui.minimap.boulders", new HashMap<String, Boolean>()),
+	MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
+	MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
+	MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_ACTION_PROGRESS_PERCENTAGE("ui.action.progress.percentage", true),
-	UI_CHAT_LOGS("ui.chat.logs", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
 	UI_ITEM_METER_PROGRESSBAR("ui.item.meter.progressbar", false),
@@ -34,11 +39,6 @@ public enum CFG {
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
 	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
 	UI_KIN_STATUS("ui.kin.status", true),
-	UI_MINIMAP_BOULDERS("ui.minimap.boulders", new HashMap<String, Boolean>()),
-	UI_MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
-	UI_MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
-	UI_MINIMAP_FLOATING("ui.minimap.floating", false),
-	UI_MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
 	public final static String[] boulders = new String[]{
@@ -133,7 +133,7 @@ public enum CFG {
 		"yew",};
 
 	private static String CONFIG_JSON;
-	private static final int configVersion = 5;
+	private static final int configVersion = 6;
 	private static Map<String, Object> cfg = new HashMap<String, Object>();
 	private static final Map<String, Object> cache = new HashMap<String, Object>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();

@@ -124,7 +124,7 @@ public class UI {
 		widgets.put(0, root);
 		rwidgets.put(root, 0);
 		this.sess = sess;
-		if (CFG.GENERAL_STOREMAP.valb()) {
+		if (CFG.GENERAL_MAP_SAVE.valb()) {
 			mapSaver = new MapSaver(this);
 		}
 	}
