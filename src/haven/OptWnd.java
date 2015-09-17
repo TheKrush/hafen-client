@@ -366,11 +366,14 @@ public class OptWnd extends Window {
 					case 3:
 						newCam = "follow";
 						break;
+					case 4:
+						newCam = "bad";
+						break;
 				}
 				try {
 					if (!newCam.equals(oldCam)) {
 						Utils.setpref("defcam", newCam);
-						ui.gui.map.changecamera(newCam, null);
+						ui.gui.map.changecamera(newCam);
 					}
 					ui.gui.map.camera.release();
 				} catch (Exception ex) {
@@ -386,6 +389,8 @@ public class OptWnd extends Window {
 		qualityRadioGroup.add("Default (no snapping)", CFG.CAMERA_TYPE, 2, new Coord(x, y));
 		y += 15;
 		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 3, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Free", CFG.CAMERA_TYPE, 4, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 
 		panel.pack();

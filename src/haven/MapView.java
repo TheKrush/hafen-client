@@ -495,7 +495,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		this.plgob = plgob;
 		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
 		setcanfocus(true);
-		
+
 		if (CFG.DISPLAY_GRID.valb()) {
 			initgrid();
 		}
@@ -1654,6 +1654,10 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			throw (new RuntimeException(e));
 		}
 		throw (new RuntimeException("No valid constructor found for camera " + ct.getName()));
+	}
+
+	public void changecamera(String defcam) {
+		camera = restorecam(defcam, null);
 	}
 
 	public void changecamera(String defcam, byte[] camargs) {
