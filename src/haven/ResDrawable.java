@@ -25,13 +25,11 @@
  */
 package haven;
 
-import java.awt.Color;
-
 public class ResDrawable extends Drawable {
 
 	public final Indir<Resource> res;
 	public Sprite spr = null;
-	MessageBuf sdt;
+	public MessageBuf sdt;
 	private int delay = 0;
 
 	public ResDrawable(Gob gob, Indir<Resource> res, Message sdt) {

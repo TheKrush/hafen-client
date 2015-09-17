@@ -20,7 +20,7 @@ public class GridOutline implements Rendered {
 		this.map = map;
 		this.size = size;
 		this.area = (size.x + 1) * (size.y + 1);
-		this.color = new States.ColState(255, 255, 255, 64);
+		this.color = new States.ColState(255, 255, 255, 128);
 
 		// double-buffer to prevent flickering
 		vertexBuffers = new FloatBuffer[2];
