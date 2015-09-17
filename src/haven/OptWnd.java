@@ -418,7 +418,26 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Show crop grow stage", CFG.DISPLAY_CROPS_GROWTH), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show crop grow stage", CFG.DISPLAY_CROPS_GROWTH) {
+			{
+				CFG.DISPLAY_CROPS_GROWTH.setObserver(new CFG.Observer() {
+					@Override
+					public void updated(CFG cfg) {
+						update(cfg);
+					}
+				});
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_CROPS_GROWTH.setObserver(null);
+				super.destroy();
+			}
+
+			private void update(CFG cfg) {
+				a = cfg.valb();
+			}
+		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KIN_NAMES), new Coord(x, y));
 		y += 25;
@@ -461,7 +480,7 @@ public class OptWnd extends Window {
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
 		panel.add(new CFGLabel("Show all qualities",
-				"Multiple selections means ANY key must be pressed to activate"), new Coord(x, y));
+						"Multiple selections means ANY key must be pressed to activate"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
@@ -506,7 +525,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Transfer items / Stockpile transfer items in",
-				"Multiple selections means ALL keys must be pressed to activate"), new Coord(x, y));
+						"Multiple selections means ALL keys must be pressed to activate"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
@@ -551,7 +570,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Drop items / Stockpile transfer items out",
-				"Multiple selections means ALL keys must be pressed to activate"), new Coord(x, y));
+						"Multiple selections means ALL keys must be pressed to activate"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override

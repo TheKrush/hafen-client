@@ -38,6 +38,7 @@ public class RootWidget extends ConsoleHost {
 		cursor = defcurs.indir();
 	}
 
+	@Override
 	public boolean globtype(char key, KeyEvent ev) {
 		if (!super.globtype(key, ev)) {
 			int code = ev.getKeyCode();
@@ -71,6 +72,10 @@ public class RootWidget extends ConsoleHost {
 				if (ui.gui != null) {
 					ui.gui.map.togglegrid();
 				}
+			} else if (ALT && code == KeyEvent.VK_P) {
+				if (ui.gui != null) {
+					ui.gui.map.toggleplantgrowth();
+				}
 			} else if (key == ':') {
 				entercmd();
 			} else if (key != 0) {
@@ -85,11 +90,13 @@ public class RootWidget extends ConsoleHost {
 		return super.mousedown(c, button);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		super.draw(g);
 		drawcmd(g, new Coord(20, sz.y - 20));
 	}
 
+	@Override
 	public void error(String msg) {
 	}
 }
