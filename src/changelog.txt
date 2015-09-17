@@ -12,6 +12,9 @@ $size[13]{$b{2015-09-17}}
   - End follow
     - ALT+F
     - Release LMB
+ - Move map fingerprints to per session
+ - Map saving no longer occurs on session thread
+ - Added LP/XP to Curiosity tooltip
 
 $size[13]{$b{2015-09-16}}
  - Added options to display specific boulder/bush/tree on minimap $i{(romov's client)}
