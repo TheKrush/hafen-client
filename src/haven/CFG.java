@@ -17,6 +17,7 @@ public enum CFG {
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_FLAVOR("display.flavor", true),
 	DISPLAY_KINNAMES("display.kinnames", true),
+	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
 	GENERAL_STOREMAP("general.storemap", true),
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
