@@ -32,6 +32,7 @@ public enum CFG {
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
 	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
+	UI_KIN_STATUS("ui.kin.status", true),
 	UI_MINIMAP_BOULDERS("ui.minimap.boulders", new HashMap<String, Boolean>()),
 	UI_MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
 	UI_MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),

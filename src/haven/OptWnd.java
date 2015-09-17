@@ -425,7 +425,9 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("General Settings", 'g', panel, buttonX, buttonY);
 
-		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP) {
+		panel.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chat' folder"), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP, "Tiles are stored in 'map' folder") {
 			@Override
 			public void changed(boolean val) {
 				super.changed(val);
@@ -448,7 +450,7 @@ public class OptWnd extends Window {
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
 		panel.add(new CFGLabel("Show all qualities",
-				"Multiple selections means ANY key must be pressed to activate."), new Coord(x, y));
+				"Multiple selections means ANY key must be pressed to activate"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_QUALITY) {
 			@Override
@@ -493,7 +495,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Transfer items / Stockpile transfer items in",
-				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+				"Multiple selections means ALL keys must be pressed to activate"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_IN) {
 			@Override
@@ -538,7 +540,7 @@ public class OptWnd extends Window {
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Drop items / Stockpile transfer items out",
-				"Multiple selections means ALL keys must be pressed to activate."), new Coord(x, y));
+				"Multiple selections means ALL keys must be pressed to activate"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGCheckBox("SHIFT", CFG.HOTKEY_ITEM_TRANSFER_OUT) {
 			@Override
@@ -594,9 +596,9 @@ public class OptWnd extends Window {
 		int x = 0, y = 0, my = 0;
 		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
 
-		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show kin online/offline", CFG.UI_KIN_STATUS), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Store chat logs", CFG.UI_CHAT_LOGS, "Logs are stored in 'chats' folder"), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Undock minimap", CFG.UI_MINIMAP_FLOATING) {
 			{
@@ -649,11 +651,11 @@ public class OptWnd extends Window {
 		x += 200;
 		y = 0;
 
-		panel.add(new CFGCheckBox("Show above hourglass", CFG.UI_ACTION_PROGRESS_PERCENTAGE), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show percentage above hourglass", CFG.UI_ACTION_PROGRESS_PERCENTAGE), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon."), new Coord(x, y));
+		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon"), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time."), new Coord(x, y));
+		panel.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time"), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGLabel("Item meter"), new Coord(x, y));
 		y += 15;
@@ -669,21 +671,21 @@ public class OptWnd extends Window {
 		int curY = my + 25;
 		x = 0;
 		y = curY;
-		panel.add(new Label("Show boulders:"), new Coord(x, y));
+		panel.add(new Label("Show boulders"), new Coord(x, y));
 		y += 15;
 		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BOULDERS, 130, 5);
 		bouldersCheckListbox.additems(CFG.boulders);
 		panel.add(bouldersCheckListbox, new Coord(x, y));
 		x += bouldersCheckListbox.sz.x + 10;
 		y = curY;
-		panel.add(new Label("Show bushes:"), new Coord(x, y));
+		panel.add(new Label("Show bushes"), new Coord(x, y));
 		y += 15;
 		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BUSHES, 130, 5);
 		bushesCheckListbox.additems(CFG.bushes);
 		panel.add(bushesCheckListbox, new Coord(x, y));
 		x += bushesCheckListbox.sz.x + 10;
 		y = curY;
-		panel.add(new Label("Show trees:"), new Coord(x, y));
+		panel.add(new Label("Show trees"), new Coord(x, y));
 		y += 15;
 		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_TREES, 130, 5);
 		treesCheckListbox.additems(CFG.trees);
