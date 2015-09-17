@@ -678,10 +678,6 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	private Outlines outlines = new Outlines(false);
 
 	public void setup(RenderList rl) {
-		Gob pl = player();
-		if (pl != null) {
-			this.cc = new Coord(pl.getc());
-		}
 		synchronized (glob) {
 			if (glob.lightamb != null) {
 				DirLight light = new DirLight(glob.blightamb, glob.blightdif, glob.blightspc, Coord3f.o.sadd((float) glob.lightelev, (float) glob.lightang, 1f));
@@ -1080,6 +1076,10 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		try {
 			if (camload != null) {
 				throw (new Loading(camload));
+			}
+			Gob pl = player();
+			if (pl != null) {
+				this.cc = new Coord(pl.getc());
 			}
 			undelay(delayed, g);
 			super.draw(g);
