@@ -37,8 +37,7 @@ public enum CFG {
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
-	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single
-	UI_ITEM_QUALITY_SINGLEASMAX("ui.item.quality.singleasmax", false),
+	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single average
 	UI_KIN_STATUS("ui.kin.status", true),
 	UI_STUDYLOCK("ui.studylock", false);
 

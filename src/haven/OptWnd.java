@@ -690,13 +690,18 @@ public class OptWnd extends Window {
 		int qualityRadioGroupCheckedIndex = CFG.UI_ITEM_QUALITY_SHOW.vali();
 		qualityRadioGroup.add("Do not show quality", CFG.UI_ITEM_QUALITY_SHOW, 0, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Show single quality", CFG.UI_ITEM_QUALITY_SHOW, 1, new Coord(x, y));
+		qualityRadioGroup.add("Show single quality as average", CFG.UI_ITEM_QUALITY_SHOW, 1, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 2, new Coord(x, y));
+		qualityRadioGroup.add("Show single quality as max", CFG.UI_ITEM_QUALITY_SHOW, 2, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Show single quality as Essence", CFG.UI_ITEM_QUALITY_SHOW, 3, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Show single quality as Substance", CFG.UI_ITEM_QUALITY_SHOW, 4, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Show single quality as Vitality", CFG.UI_ITEM_QUALITY_SHOW, 5, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 6, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
-		y += 25;
-		panel.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
-				"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
 
 		x += 200;
 		y = 0;

@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 import static haven.Inventory.sqsz;
+import haven.QualityList.QualityType;
 
 public class WItem extends Widget implements DTarget {
 
@@ -250,10 +251,31 @@ public class WItem extends Widget implements DTarget {
 		QualityList quality = itemq.get();
 		if (quality != null) {
 			Tex tex = null;
-			if ((ui.modflags() & CFG.HOTKEY_ITEM_QUALITY.vali()) != 0 || CFG.UI_ITEM_QUALITY_SHOW.vali() == 2) {
+			if ((ui.modflags() & CFG.HOTKEY_ITEM_QUALITY.vali()) != 0) {
 				tex = quality.tex();
-			} else if (!quality.isEmpty() && CFG.UI_ITEM_QUALITY_SHOW.vali() == 1) {
-				tex = quality.single().tex();
+			} else if (!quality.isEmpty()) {
+				switch(CFG.UI_ITEM_QUALITY_SHOW.vali()) {
+					case 0:
+						break;
+					case 1:
+						tex = quality.single(true).tex();
+						break;
+					case 2:
+						tex = quality.single(false).tex();
+						break;
+					case 3:
+						tex = quality.single(QualityType.Essence).tex();
+						break;
+					case 4:
+						tex = quality.single(QualityType.Substance).tex();
+						break;
+					case 5:
+						tex = quality.single(QualityType.Vitality).tex();
+						break;
+					case 6:
+						tex = quality.tex();
+						break;
+				}
 			}
 
 			if (tex != null) {
