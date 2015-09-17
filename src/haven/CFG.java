@@ -132,6 +132,17 @@ public enum CFG {
 		"willow",
 		"yew",};
 
+	public final static String[] icons = new String[]{
+		"blueberry",
+		"chantrelle",
+		"chick",
+		"chicken",
+		"dandelion",
+		"dragonfly",
+		"rat",
+		"spindlytaproot",
+		"stingingnettle",};
+
 	private static String CONFIG_JSON;
 	private static final int configVersion = 6;
 	private static Map<String, Object> cfg = new HashMap<String, Object>();
