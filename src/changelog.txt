@@ -5,6 +5,7 @@ $size[13]{$b{2015-09-16}}
   - Added Minimap Settings section
  - Added option to disable weather (clouds, etc.)
   - Options->Display Settings->Show weather
+ - Added additional item quality display options (Essence, Substance, Vitality)
 
 $size[13]{$b{2015-09-14}}
  - Fixing issue with undocked minimap and toggling the ui
