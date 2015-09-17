@@ -22,7 +22,7 @@ public class QualityList {
 	public QualityList(List<ItemInfo> list) {
 		qualities = new LinkedList<Quality>();
 		for (ItemInfo inf : list) {
-			if (inf.getClass().getName().equals(classname)) {
+			if (inf.getClass().getSimpleName().equals("QBuff")) {
 				String name = Reflect.getFieldValueString(inf, "name");
 				int q = Reflect.getFieldValueInt(inf, "q");
 				try {

@@ -254,7 +254,7 @@ public class WItem extends Widget implements DTarget {
 			if ((ui.modflags() & CFG.HOTKEY_ITEM_QUALITY.vali()) != 0) {
 				tex = quality.tex();
 			} else if (!quality.isEmpty()) {
-				switch(CFG.UI_ITEM_QUALITY_SHOW.vali()) {
+				switch (CFG.UI_ITEM_QUALITY_SHOW.vali()) {
 					case 0:
 						break;
 					case 1:
