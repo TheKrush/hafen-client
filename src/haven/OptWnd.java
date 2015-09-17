@@ -35,7 +35,13 @@ public class OptWnd extends Window {
 	private static final int BUTTON_WIDTH = 200;
 	public static final Coord PANEL_POS = new Coord(220, 30);
 	public final Panel panelMain;
-	public final Panel panelAudio, panelCamera, panelDisplay, panelGeneral, panelHotkey, panelUI, panelVideo;
+	public final Panel panelAudio;
+	public final Panel panelCamera;
+	public final Panel panelDisplay;
+	public final Panel panelGeneral;
+	public final Panel panelHotkey;
+	public final Panel panelUI;
+	public final Panel panelVideo;
 	public Panel current;
 
 	private void chpanel(Panel p, boolean center) {
@@ -285,7 +291,7 @@ public class OptWnd extends Window {
 
 	private void initAudioPanel(double buttonX, double buttonY) {
 		Panel panel = panelAudio;
-		int x = 0, y = 0, mx = 0, my = 0;
+		int x = 0, y = 0;
 		addPanelButton("Audio Settings", 'a', panel, buttonX, buttonY);
 
 		panel.add(new Label("Master audio volume"), new Coord(x, y));
@@ -327,17 +333,16 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 
-		my = Math.max(my, y);
-
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
-		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
 		panel.pack();
 	}
 
 	private void initCameraPanel(double buttonX, double buttonY) {
 		Panel panel = panelCamera;
-		int x = 0, y = 0, mx = 0, my = 0;
+		int x = 0, y = 0;
 		addPanelButton("Camera Settings", 'c', panel, buttonX, buttonY);
 
 		panel.add(new Label("Brighten view"), new Coord(x, y));
@@ -392,34 +397,32 @@ public class OptWnd extends Window {
 		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 3, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 
-		my = Math.max(my, y);
-
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
-		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
 		panel.pack();
 	}
 
 	private void initDisplayPanel(double buttonX, double buttonY) {
 		Panel panel = panelDisplay;
-		int x = 0, y = 0, mx = 0, my = 0;
+		int x = 0, y = 0;
 		addPanelButton("Display Settings", 'd', panel, buttonX, buttonY);
 
 		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KINNAMES), new Coord(x, y));
 
-		my = Math.max(my, y);
-
 		panel.pack();
 		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
-		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
 		panel.pack();
 	}
 
 	private void initGeneralPanel(double buttonX, double buttonY) {
 		Panel panel = panelGeneral;
-		int x = 0, y = 0, mx = 0, my = 0;
+		int x = 0, y = 0;
 		addPanelButton("General Settings", 'g', panel, buttonX, buttonY);
 
 		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_STOREMAP) {
@@ -432,17 +435,16 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 
-		my = Math.max(my, y);
-
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
-		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
 		panel.pack();
 	}
 
 	private void initHotkeyPanel(double buttonX, double buttonY) {
 		Panel panel = panelHotkey;
-		int x = 0, y = 0, mx = 0, my = 0;
+		int x = 0, y = 0;
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
 		panel.add(new CFGLabel("Show all qualities",
@@ -580,17 +582,16 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 
-		my = Math.max(my, y);
-
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
-		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
 		panel.pack();
 	}
 
 	private void initUIPanel(double buttonX, double buttonY) {
 		Panel panel = panelUI;
-		int x = 0, y = 0, mx = 0, my = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
 
 		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
@@ -643,25 +644,6 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show single quality as max", CFG.UI_ITEM_QUALITY_SINGLEASMAX,
 				"If checked will show single value quality as maximum of all qualities, instead of average"), new Coord(x, y));
-		y += 25;
-		panel.add(new Label("Show boulders:"), new Coord(x, y));
-		y += 15;
-		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BOULDERS, 130, 5);
-		bouldersCheckListbox.additems(CFG.boulders);
-		panel.add(bouldersCheckListbox, new Coord(x, y));
-		y += bouldersCheckListbox.sz.y + 5;
-		panel.add(new Label("Show bushes:"), new Coord(x, y));
-		y += 15;
-		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BUSHES, 130, 5);
-		bushesCheckListbox.additems(CFG.bushes);
-		panel.add(bushesCheckListbox, new Coord(x, y));
-		y += bushesCheckListbox.sz.y + 5;
-		panel.add(new Label("Show trees:"), new Coord(x, y));
-		y += 15;
-		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_TREES, 130, 5);
-		treesCheckListbox.additems(CFG.trees);
-		panel.add(treesCheckListbox, new Coord(x, y));
-		y += treesCheckListbox.sz.y + 5;
 
 		my = Math.max(my, y);
 		x += 200;
@@ -682,13 +664,35 @@ public class OptWnd extends Window {
 		panel.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
-		y += 25;
 
 		my = Math.max(my, y);
+		int curY = my + 25;
+		x = 0;
+		y = curY;
+		panel.add(new Label("Show boulders:"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BOULDERS, 130, 5);
+		bouldersCheckListbox.additems(CFG.boulders);
+		panel.add(bouldersCheckListbox, new Coord(x, y));
+		x += bouldersCheckListbox.sz.x + 10;
+		y = curY;
+		panel.add(new Label("Show bushes:"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_BUSHES, 130, 5);
+		bushesCheckListbox.additems(CFG.bushes);
+		panel.add(bushesCheckListbox, new Coord(x, y));
+		x += bushesCheckListbox.sz.x + 10;
+		y = curY;
+		panel.add(new Label("Show trees:"), new Coord(x, y));
+		y += 15;
+		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.UI_MINIMAP_TREES, 130, 5);
+		treesCheckListbox.additems(CFG.trees);
+		panel.add(treesCheckListbox, new Coord(x, y));
 
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
-		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, my + 35));
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
 		panel.pack();
 	}
 
