@@ -25,9 +25,7 @@
  */
 package haven;
 
-import static haven.MCache.cmaps;
 import static haven.MCache.tilesz;
-import haven.Resource.Tile;
 import haven.GLProgram.VarID;
 import me.kt.GridOutline;
 
@@ -560,8 +558,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		private GLState olmat(int r, int g, int b, int a) {
 			return (new Material(Light.deflight,
-							new Material.Colors(Color.BLACK, new Color(0, 0, 0, a), Color.BLACK, new Color(r, g, b, 255), 0),
-							States.presdepth));
+					new Material.Colors(Color.BLACK, new Color(0, 0, 0, a), Color.BLACK, new Color(r, g, b, 255), 0),
+					States.presdepth));
 		}
 
 		public void draw(GOut g) {
@@ -688,12 +686,15 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			} else {
 				amb = null;
 			}
-			for (Glob.Weather w : glob.weather) {
-				w.gsetup(rl);
-			}
-			for (Glob.Weather w : glob.weather) {
-				if (w instanceof Rendered) {
-					rl.add((Rendered) w, null);
+
+			if (CFG.DISPLAY_WEATHER.valb()) {
+				for (Glob.Weather w : glob.weather) {
+					w.gsetup(rl);
+				}
+				for (Glob.Weather w : glob.weather) {
+					if (w instanceof Rendered) {
+						rl.add((Rendered) w, null);
+					}
 				}
 			}
 		}
@@ -779,8 +780,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		protected Color newcol(T t) {
 			int cr = ((i & 0x00000f) << 4) | ((i & 0x00f000) >> 12),
-							cg = ((i & 0x0000f0) << 0) | ((i & 0x0f0000) >> 16),
-							cb = ((i & 0x000f00) >> 4) | ((i & 0xf00000) >> 20);
+					cg = ((i & 0x0000f0) << 0) | ((i & 0x0f0000) >> 16),
+					cb = ((i & 0x000f00) >> 4) | ((i & 0xf00000) >> 20);
 			Color col = new Color(cr, cg, cb);
 			i++;
 			rmap.put(col, t);
@@ -1081,7 +1082,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			poldraw(g);
 			partydraw(g);
 			glob.map.reqarea(cc.div(tilesz).sub(MCache.cutsz.mul(view + 1)),
-							cc.div(tilesz).add(MCache.cutsz.mul(view + 1)));
+					cc.div(tilesz).add(MCache.cutsz.mul(view + 1)));
 			// change grid overlay position when player moves by 20 tiles
 			if (showgrid) {
 				Coord tc = cc.div(MCache.tilesz);

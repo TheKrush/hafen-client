@@ -18,6 +18,7 @@ public enum CFG {
 	DISPLAY_FLAVOR("display.flavor", true),
 	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
+	DISPLAY_WEATHER("display.weather", true),
 	GENERAL_CHAT_SAVE("general.chat.save", true),
 	GENERAL_MAP_SAVE("general.map.save", true),
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT

@@ -412,6 +412,8 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Show weather", CFG.DISPLAY_WEATHER), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
