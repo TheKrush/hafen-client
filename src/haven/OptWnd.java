@@ -412,6 +412,35 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
+			{
+				CFG.DISPLAY_GRID.setObserver(new CFG.Observer() {
+					@Override
+					public void updated(CFG cfg) {
+						update(cfg);
+					}
+				});
+			}
+
+			@Override
+			public void set(boolean a) {
+				super.set(a);
+				if (a && ui != null && ui.gui != null) {
+					ui.gui.map.initgrid();
+				}
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_GRID.setObserver(null);
+				super.destroy();
+			}
+
+			private void update(CFG cfg) {
+				a = cfg.valb();
+			}
+		}, new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show weather", CFG.DISPLAY_WEATHER), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));

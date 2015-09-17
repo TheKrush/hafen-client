@@ -53,7 +53,6 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public double shake = 0.0;
 	private static final Map<String, Class<? extends Camera>> camtypes = new HashMap<String, Class<? extends Camera>>();
 
-	private boolean showgrid;
 	private GridOutline gridol;
 	private Coord lasttc = Coord.z;
 
@@ -496,6 +495,10 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		this.plgob = plgob;
 		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
 		setcanfocus(true);
+		
+		if (CFG.DISPLAY_GRID.valb()) {
+			initgrid();
+		}
 	}
 
 	public boolean visol(int ol) {
@@ -707,7 +710,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			rl.add(outlines, null);
 		}
 		rl.add(map, null);
-		if (showgrid) {
+		if (CFG.DISPLAY_GRID.valb()) {
 			rl.add(gridol, null);
 		}
 		rl.add(mapol, null);
@@ -1084,7 +1087,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			glob.map.reqarea(cc.div(tilesz).sub(MCache.cutsz.mul(view + 1)),
 							cc.div(tilesz).add(MCache.cutsz.mul(view + 1)));
 			// change grid overlay position when player moves by 20 tiles
-			if (showgrid) {
+			if (CFG.DISPLAY_GRID.valb()) {
 				Coord tc = cc.div(MCache.tilesz);
 				if (tc.manhattan2(lasttc) > 20) {
 					lasttc = tc;
@@ -1711,12 +1714,16 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	}
 
 	public void togglegrid() {
-		showgrid = !showgrid;
-		if (showgrid) {
-			Coord tc = cc.div(tilesz);
-			lasttc = tc.div(MCache.cmaps);
-			gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
+		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
+		if (CFG.DISPLAY_GRID.valb()) {
+			initgrid();
 		}
+	}
+
+	public void initgrid() {
+		Coord tc = cc.div(tilesz);
+		lasttc = tc.div(MCache.cmaps);
+		gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
 	}
 
 	public void togglegobhealth() {

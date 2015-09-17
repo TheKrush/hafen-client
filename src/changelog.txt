@@ -1,4 +1,10 @@
 $size[13]{$b{2015-09-16}}
+ - Added option to show object health
+  - Alt+O to toggle it
+ - Added option to show crop growth stage
+  - Alt+P to toggle it
+
+$size[13]{$b{2015-09-16}}
  - Added options to display specific boulder/bush/tree on minimap $i{(romov's client)}
  - Added option to display simple crops $i{(apxeolog's client)}
  - Moved some options to other panels
