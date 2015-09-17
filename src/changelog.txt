@@ -1,5 +1,6 @@
 $size[13]{$b{2015-09-16}}
  - Added options to display specific boulder/bush/tree on minimap $i{(romov's client)}
+ - Added option to display simple crops $i{(apxeolog's client)}
 
 $size[13]{$b{2015-09-14}}
  - Fixing issue with undocked minimap and toggling the ui
