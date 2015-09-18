@@ -118,7 +118,7 @@ public class Partyview extends Widget {
 		if ((avs.size() > 0) && (leave == null)) {
 			leave = add(new Button(84, "Leave party"), Coord.z);
 		}
-		if ((avs.size() == 0) && (leave != null)) {
+		if ((avs.isEmpty()) && (leave != null)) {
 			ui.destroy(leave);
 			leave = null;
 		}

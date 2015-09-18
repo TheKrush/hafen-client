@@ -232,7 +232,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		@Override
 		public void draw(GOut g) {
 			super.draw(g);
-			if (buddies.size() == 0) {
+			if (buddies.isEmpty()) {
 				g.atext("You are alone in the world", sz.div(2), 0.5, 0.5);
 			}
 		}

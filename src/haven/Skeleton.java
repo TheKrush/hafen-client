@@ -572,7 +572,7 @@ public class Skeleton {
 						poses.add(p.forskel(owner, skel, p.defmode));
 					}
 				}
-				if (poses.size() == 0) {
+				if (poses.isEmpty()) {
 					return (skel.nilmod());
 				} else if (poses.size() == 1) {
 					return (Utils.el(poses));

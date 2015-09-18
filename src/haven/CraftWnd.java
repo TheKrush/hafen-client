@@ -48,7 +48,7 @@ public class CraftWnd extends Window {
 		if(button == 1) {
 		    if(item == MenuGrid.bk) {
 			item = current;
-			if(getPaginaChildren(current, null).size() == 0) {
+			if(getPaginaChildren(current, null).isEmpty()) {
 			    item = menu.getParent(item);
 			}
 			item = menu.getParent(item);
@@ -113,7 +113,7 @@ public class CraftWnd extends Window {
 	}
 	if(box != null) {
 	    List<Pagina> children = getPaginaChildren(p, null);
-	    if(children.size() == 0) {
+	    if(children.isEmpty()) {
 		children = getPaginaChildren(menu.getParent(p), null);
 	    } else {
 		closemake();
