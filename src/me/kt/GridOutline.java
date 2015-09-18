@@ -1,6 +1,7 @@
 package me.kt;
 
 import haven.*;
+import java.nio.BufferOverflowException;
 
 import javax.media.opengl.GL2;
 import java.nio.FloatBuffer;
@@ -31,12 +32,20 @@ public class GridOutline implements Rendered {
 			color.rewind();
 		}
 
-		void putColor(float r, float g, float b, float a) {
-			color.put(r).put(g).put(b).put(a);
+		void putVertex(float x, float y, float z) {
+			try {
+				vertex.put(x).put(y).put(z);
+			} catch (BufferOverflowException e) {
+
+			}
 		}
 
-		void putVertex(float x, float y, float z) {
-			vertex.put(x).put(y).put(z);
+		void putColor(float r, float g, float b, float a) {
+			try {
+				color.put(r).put(g).put(b).put(a);
+			} catch (BufferOverflowException e) {
+
+			}
 		}
 	}
 

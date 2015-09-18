@@ -1109,6 +1109,27 @@ public class Utils {
 		return (mkbbuf(n * 4).asIntBuffer());
 	}
 
+	public static FloatBuffer mkfbuf(int n, FloatBuffer a) {
+		FloatBuffer b = mkfbuf(Math.max(n, a.capacity()));
+		a.rewind();
+		b.put(a);
+		return b;
+	}
+
+	public static ShortBuffer mksbuf(int n, ShortBuffer a) {
+		ShortBuffer b = mksbuf(Math.max(n, a.capacity()));
+		a.rewind();
+		b.put(a);
+		return b;
+	}
+
+	public static IntBuffer mkibuf(int n, IntBuffer a) {
+		IntBuffer b = mkibuf(Math.max(n, a.capacity()));
+		a.rewind();
+		b.put(a);
+		return b;
+	}
+
 	/*
 	 public static ByteBuffer wbbuf(int n) {
 	 return(mkbbuf(n));
