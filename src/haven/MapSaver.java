@@ -42,15 +42,9 @@ public class MapSaver {
 	public static String SESSION_TIMESTAMP = "";
 	private UI ui;
 	private Coord lastCoord;
-	private FileWriter fpWriter;
 
 	public MapSaver(UI ui) {
 		this.ui = ui;
-		try {
-			fpWriter = new FileWriter(Globals.MapFile("fingerprints.txt", true), true);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	public void newSession() {
@@ -167,7 +161,7 @@ public class MapSaver {
 		}
 	}
 
-	public void recordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
+	public void doRecordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
 		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
 			newSession();
 		}
@@ -179,6 +173,7 @@ public class MapSaver {
 				File file = Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true);
 				ImageIO.write(res.im, "png", file);
 				if (res.fp != 0L) {
+					FileWriter fpWriter = new FileWriter(Globals.MapFile(SESSION_TIMESTAMP + "/fingerprints.txt", true), true);
 					fpWriter.write(String.format("%s/%s:%s\n", SESSION_TIMESTAMP, fileName, Long.toHexString(res.fp)));
 					fpWriter.flush();
 				} else {
@@ -197,10 +192,24 @@ public class MapSaver {
 				@Override
 				public Void call() throws InterruptedException {
 					Thread.sleep(500);
-					recordMapTile(m, g, c);
+					doRecordMapTile(m, g, c);
 					return null;
 				}
 			});
 		}
+	}
+
+	public void recordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
+		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
+			newSession();
+		}
+		lastCoord = c;
+		Defer.later(new Defer.Callable<Void>() {
+			@Override
+			public Void call() throws InterruptedException {
+				doRecordMapTile(m, g, c);
+				return null;
+			}
+		});
 	}
 }

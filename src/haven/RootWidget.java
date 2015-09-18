@@ -57,27 +57,31 @@ public class RootWidget extends ConsoleHost {
 					add(new Profwnd(ggprof, "GPU profile"), new Coord(450, 250));
 				}
 			} else if (CTRL && code == KeyEvent.VK_1) {
-				if (ui.gui != null) {
+				if (ui.gui != null && ui.gui.eqproxy != null) {
 					ui.gui.eqproxy.activate(0);
 				}
 			} else if (CTRL && code == KeyEvent.VK_2) {
-				if (ui.gui != null) {
+				if (ui.gui != null && ui.gui.eqproxy != null) {
 					ui.gui.eqproxy.activate(1);
 				}
 			} else if (ALT && code == KeyEvent.VK_C) {
 				if (ui.gui != null) {
 					ui.gui.toggleCraftWnd();
 				}
+			} else if (ALT && code == KeyEvent.VK_F) {
+				if (ui.gui != null && ui.gui.map != null) {
+					ui.gui.map.togglemousefollow(true);
+				}
 			} else if (ALT && code == KeyEvent.VK_G) {
-				if (ui.gui != null) {
+				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.togglegrid();
 				}
 			} else if (ALT && code == KeyEvent.VK_O) {
-				if (ui.gui != null) {
+				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.togglegobhealth();
 				}
 			} else if (ALT && code == KeyEvent.VK_P) {
-				if (ui.gui != null) {
+				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.toggleplantgrowth();
 				}
 			} else if (key == ':') {

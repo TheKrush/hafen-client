@@ -587,6 +587,9 @@ public abstract class GLState {
 			 * been altered, future results are undefined. */
 			for (int i = 0; i < deplist.length; i++) {
 				int id = deplist[i].id;
+				if (id >= repl.length) { // FIMXE: dirty fix for ArrayIndexOutOfBoundsException
+					break;
+				}
 				if (repl[id]) {
 					if (next.states[id] != null) {
 						next.states[id].apply(g);

@@ -82,7 +82,7 @@ public class BGL {
 	public void run(GL2 gl) {
 		for (int i = 0; i < n; i++) {
 			try {
-				if (i >= list.length) {
+				if (i >= list.length) { // FIMXE: dirty fix for ArrayIndexOutOfBoundsException
 					break;
 				}
 				list[i].run(gl);
@@ -618,6 +618,14 @@ public class BGL {
 		add(new Command() {
 			public void run(GL2 gl) {
 				gl.glFramebufferRenderbuffer(target, attachment, rbtarget, renderbuffer.glid());
+			}
+		});
+	}
+
+	public void glHint(final int target, final int mode) {
+		add(new Command() {
+			public void run(GL2 gl) {
+				gl.glHint(target, mode);
 			}
 		});
 	}

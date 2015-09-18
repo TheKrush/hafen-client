@@ -28,7 +28,6 @@ package haven;
 import java.util.*;
 import java.lang.ref.*;
 import haven.Resource.Tileset;
-import haven.Resource.Tile;
 
 public class MCache {
 
@@ -50,6 +49,7 @@ public class MCache {
 	public int olseq = 0;
 	Random gen = new Random();
 	Map<Integer, Defrag> fragbufs = new TreeMap<Integer, Defrag>();
+	public long lastMapUpdate = -1;
 
 	public static class LoadingMap extends Loading {
 
@@ -476,6 +476,7 @@ public class MCache {
 	}
 
 	public void mapdata2(Message msg) {
+		lastMapUpdate = sess.glob.globtime();
 		Coord c = msg.coord();
 		Grid g = null;
 		synchronized (grids) {
