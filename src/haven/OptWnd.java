@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class OptWnd extends Window {
@@ -739,21 +738,21 @@ public class OptWnd extends Window {
 		panel.add(new Label("Show boulders"), new Coord(x, y));
 		y += 15;
 		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BOULDERS, 130, 5);
-		bouldersCheckListbox.additems(CFG.boulders);
+		bouldersCheckListbox.additems(Globals.Data.boulders);
 		panel.add(bouldersCheckListbox, new Coord(x, y));
 		x += bouldersCheckListbox.sz.x + 10;
 		y = curY;
 		panel.add(new Label("Show bushes"), new Coord(x, y));
 		y += 15;
 		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BUSHES, 130, 5);
-		bushesCheckListbox.additems(CFG.bushes);
+		bushesCheckListbox.additems(Globals.Data.bushes);
 		panel.add(bushesCheckListbox, new Coord(x, y));
 		x += bushesCheckListbox.sz.x + 10;
 		y = curY;
 		panel.add(new Label("Show trees"), new Coord(x, y));
 		y += 15;
 		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_TREES, 130, 5);
-		treesCheckListbox.additems(CFG.trees);
+		treesCheckListbox.additems(Globals.Data.trees);
 		panel.add(treesCheckListbox, new Coord(x, y));
 		x += treesCheckListbox.sz.x + 10;
 
@@ -818,7 +817,7 @@ public class OptWnd extends Window {
 		panel.add(new CFGLabel("Choose menu items to select automatically"), x, y);
 		y += 15;
 		final CFGFlowerList autochooseList = panel.add(new CFGFlowerList(CFG.UI_MENU_FLOWER_CLICK_AUTO), x, y);
-		autochooseList.additems(CFG.actions);
+		autochooseList.additems(Globals.Data.actions);
 		y += autochooseList.sz.y + 5;
 		final TextEntry autochooseValue = panel.add(new TextEntry(150, "") {
 			@Override
@@ -1073,14 +1072,19 @@ public class OptWnd extends Window {
 			cfgVal(itm.name, itm.selected);
 		}
 
-		public final void additems(String[] keys) {
-			for (String key : keys) {
-				if (this.keys.contains(key)) {
-					continue;
-				}
-				this.keys.add(key);
-				items.add(new CFGCheckListboxItem(key, cfgVal(key)));
+		public final void additems(String[] names) {
+			for (String name : names) {
+				additem(name);
 			}
+			Collections.sort(items);
+		}
+
+		public final void additem(String name) {
+			if (this.keys.contains(name)) {
+				return;
+			}
+			this.keys.add(name);
+			items.add(new CFGCheckListboxItem(name, cfgVal(name)));
 			Collections.sort(items);
 		}
 	}

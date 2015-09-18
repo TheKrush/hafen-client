@@ -1,18 +1,169 @@
 package haven;
 
 import haven.Window.WindowCFG;
+
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Type;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Globals {
 
 	public static String USERNAME = "";
 	public static String SESSION_TIMESTAMP = "";
 
+	public static void Setup() {
+		Setup("");
+	}
+
+	public static void Setup(String username) {
+		USERNAME = username;
+		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
+		try {
+			System.setOut(new PrintStream(new FileOutputStream(LogFile("output.log"), true)));
+		} catch (FileNotFoundException ex) {
+		}
+		try {
+			System.setErr(new PrintStream(new FileOutputStream(LogFile("error.log"), true)));
+		} catch (FileNotFoundException ex) {
+		}
+		CFG.loadConfig();
+		WindowCFG.loadConfig();
+		Config.loadConfig();
+	}
+
+	public static class Data {
+
+		public final static String[] actions = new String[]{
+			"chop",
+			"eat",
+			"harvest",
+			"pick",};
+		public final static String[] boulders = new String[]{
+			"basalt",
+			"cassiterite",
+			"chalcopyrite",
+			"cinnabar",
+			"dolomite",
+			"feldspar",
+			"flint",
+			"gneiss",
+			"granite",
+			"hematite",
+			"ilmenite",
+			"limestone",
+			"limonite",
+			"magnetite",
+			"malachite",
+			"marble",
+			"porphyry",
+			"quartz",
+			"ras",
+			"sandstone",
+			"schist",};
+		public final static String[] bushes = new String[]{
+			"arrowwood",
+			"blackberrybush",
+			"blackcurrant",
+			"blackthorn",
+			"bogmyrtle",
+			"boxwood",
+			"bsnightshade",
+			"caprifole",
+			"crampbark",
+			"dogrose",
+			"elderberrybush",
+			"gooseberrybush",
+			"hawthorn",
+			"holly",
+			"raspberrybush",
+			"redcurrant",
+			"sandthorn",
+			"spindlebush",
+			"teabush",
+			"tibast",
+			"tundrarose",
+			"woodbine",};
+		public final static String[] trees = new String[]{
+			"alder",
+			"juniper",
+			"appletree",
+			"ash",
+			"aspen",
+			"baywillow",
+			"beech",
+			"birch",
+			"birdcherrytree",
+			"buckthorn",
+			"cedar",
+			"cherry",
+			"chestnuttree",
+			"conkertree",
+			"corkoak",
+			"crabappletree",
+			"cypress",
+			"elm",
+			"fir",
+			"goldenchain",
+			"hazel",
+			"hornbeam",
+			"kingsoak",
+			"larch",
+			"laurel",
+			"linden",
+			"maple",
+			"mirkwood",
+			"mulberry",
+			"oak",
+			"olivetree",
+			"peartree",
+			"pine",
+			"planetree",
+			"plumtree",
+			"poplar",
+			"rowan",
+			"sallow",
+			"spruce",
+			"sweetgum",
+			"walnuttree",
+			"whitebeam",
+			"willow",
+			"yew",};
+		public final static String[] icons = new String[]{
+			"blueberry",
+			"chantrelle",
+			"chick",
+			"chicken",
+			"dandelion",
+			"dragonfly",
+			"rat",
+			"spindlytaproot",
+			"stingingnettle",};
+
+		static {
+			Arrays.sort(boulders);
+			Arrays.sort(bushes);
+			Arrays.sort(trees);
+		}
+	}
+
+	private final static String chatFolder = "chat";
+	private final static String logFolder = "log";
+	private final static String mapFolder = "map";
+	private final static String settingFolder = "setting";
+
+	// Custom funtions
 	private static File CustomFolder(String baseName) {
 		return CustomFolder(baseName, false);
 	}
@@ -81,13 +232,13 @@ public class Globals {
 		return fileStr;
 	}
 
-	// Chat
+	// Chat functions
 	public static File ChatFolder() {
 		return ChatFolder(false);
 	}
 
 	public static File ChatFolder(boolean useDefault) {
-		return CustomFolder("chat", useDefault);
+		return CustomFolder(chatFolder, useDefault);
 	}
 
 	public static String ChatFolderString() {
@@ -95,7 +246,7 @@ public class Globals {
 	}
 
 	public static String ChatFolderString(boolean useDefault) {
-		return ChatFolder(useDefault).getPath();
+		return CustomFolderString(chatFolder, useDefault);
 	}
 
 	public static File ChatFile(String fileName) {
@@ -103,7 +254,7 @@ public class Globals {
 	}
 
 	public static File ChatFile(String fileName, boolean useDefault) {
-		return CustomFile("chat", fileName, useDefault);
+		return CustomFile(chatFolder, fileName, useDefault);
 	}
 
 	public static String ChatFileString(String fileName) {
@@ -111,16 +262,16 @@ public class Globals {
 	}
 
 	public static String ChatFileString(String fileName, boolean useDefault) {
-		return CustomFileString("chat", fileName, useDefault);
+		return CustomFileString(chatFolder, fileName, useDefault);
 	}
 
-	// Log
+	// Log functions
 	public static File LogFolder() {
 		return LogFolder(false);
 	}
 
 	public static File LogFolder(boolean useDefault) {
-		return CustomFolder("log", useDefault);
+		return CustomFolder(logFolder, useDefault);
 	}
 
 	public static String LogFolderString() {
@@ -128,7 +279,7 @@ public class Globals {
 	}
 
 	public static String LogFolderString(boolean useDefault) {
-		return LogFolder(useDefault).getPath();
+		return CustomFolderString(logFolder, useDefault);
 	}
 
 	public static File LogFile(String fileName) {
@@ -136,7 +287,7 @@ public class Globals {
 	}
 
 	public static File LogFile(String fileName, boolean useDefault) {
-		return CustomFile("log", fileName, useDefault);
+		return CustomFile(logFolder, fileName, useDefault);
 	}
 
 	public static String LogFileString(String fileName) {
@@ -144,16 +295,16 @@ public class Globals {
 	}
 
 	public static String LogFileString(String fileName, boolean useDefault) {
-		return CustomFileString("log", fileName, useDefault);
+		return CustomFileString(logFolder, fileName, useDefault);
 	}
 
-	// Map
+	// Map functions
 	public static File MapFolder() {
 		return MapFolder(false);
 	}
 
 	public static File MapFolder(boolean useDefault) {
-		return CustomFolder("map", useDefault, MapSaver.SESSION_TIMESTAMP);
+		return CustomFolder(mapFolder, useDefault);
 	}
 
 	public static String MapFolderString() {
@@ -161,7 +312,7 @@ public class Globals {
 	}
 
 	public static String MapFolderString(boolean useDefault) {
-		return MapFolder(useDefault).getPath();
+		return CustomFolderString(mapFolder, useDefault);
 	}
 
 	public static File MapFile(String fileName) {
@@ -169,7 +320,7 @@ public class Globals {
 	}
 
 	public static File MapFile(String fileName, boolean useDefault) {
-		return CustomFile("map", fileName, useDefault, MapSaver.SESSION_TIMESTAMP);
+		return CustomFile(mapFolder, fileName, useDefault);
 	}
 
 	public static String MapFileString(String fileName) {
@@ -177,16 +328,16 @@ public class Globals {
 	}
 
 	public static String MapFileString(String fileName, boolean useDefault) {
-		return CustomFileString("map", fileName, useDefault);
+		return CustomFileString(mapFolder, fileName, useDefault);
 	}
 
-	// Setting
+	// Setting functions
 	public static File SettingFolder() {
 		return SettingFolder(false);
 	}
 
 	public static File SettingFolder(boolean useDefault) {
-		return CustomFolder("setting", useDefault);
+		return CustomFolder(settingFolder, useDefault);
 	}
 
 	public static String SettingFolderString() {
@@ -194,7 +345,7 @@ public class Globals {
 	}
 
 	public static String SettingFolderString(boolean useDefault) {
-		return SettingFolder(useDefault).getPath();
+		return CustomFolderString(settingFolder, useDefault);
 	}
 
 	public static File SettingFile(String fileName) {
@@ -202,7 +353,7 @@ public class Globals {
 	}
 
 	public static File SettingFile(String fileName, boolean useDefault) {
-		return CustomFile("setting", fileName, useDefault);
+		return CustomFile(settingFolder, fileName, useDefault);
 	}
 
 	public static String SettingFileString(String fileName) {
@@ -210,26 +361,6 @@ public class Globals {
 	}
 
 	public static String SettingFileString(String fileName, boolean useDefault) {
-		return CustomFileString("setting", fileName, useDefault);
-	}
-
-	public static void Setup() {
-		Setup("");
-	}
-
-	public static void Setup(String username) {
-		USERNAME = username;
-		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
-		try {
-			System.setOut(new PrintStream(new FileOutputStream(LogFile("output.log"), true)));
-		} catch (FileNotFoundException ex) {
-		}
-		try {
-			System.setErr(new PrintStream(new FileOutputStream(LogFile("error.log"), true)));
-		} catch (FileNotFoundException ex) {
-		}
-		CFG.loadConfig();
-		WindowCFG.loadConfig();
-		Config.loadConfig();
+		return CustomFileString(settingFolder, fileName, useDefault);
 	}
 }

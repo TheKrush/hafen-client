@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -46,112 +45,6 @@ public enum CFG {
 	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
-	public final static String[] actions = new String[]{
-		"chop",
-		"eat",
-		"harvest",
-		"pick",};
-	public final static String[] boulders = new String[]{
-		"basalt",
-		"cassiterite",
-		"chalcopyrite",
-		"cinnabar",
-		"dolomite",
-		"feldspar",
-		"flint",
-		"gneiss",
-		"granite",
-		"hematite",
-		"ilmenite",
-		"limestone",
-		"limonite",
-		"magnetite",
-		"malachite",
-		"marble",
-		"porphyry",
-		"quartz",
-		"ras",
-		"sandstone",
-		"schist",};
-	public final static String[] bushes = new String[]{
-		"arrowwood",
-		"blackberrybush",
-		"blackcurrant",
-		"blackthorn",
-		"bogmyrtle",
-		"boxwood",
-		"bsnightshade",
-		"caprifole",
-		"crampbark",
-		"dogrose",
-		"elderberrybush",
-		"gooseberrybush",
-		"hawthorn",
-		"holly",
-		"raspberrybush",
-		"redcurrant",
-		"sandthorn",
-		"spindlebush",
-		"teabush",
-		"tibast",
-		"tundrarose",
-		"woodbine",};
-	public final static String[] trees = new String[]{
-		"alder",
-		"juniper",
-		"appletree",
-		"ash",
-		"aspen",
-		"baywillow",
-		"beech",
-		"birch",
-		"birdcherrytree",
-		"buckthorn",
-		"cedar",
-		"cherry",
-		"chestnuttree",
-		"conkertree",
-		"corkoak",
-		"crabappletree",
-		"cypress",
-		"elm",
-		"fir",
-		"goldenchain",
-		"hazel",
-		"hornbeam",
-		"kingsoak",
-		"larch",
-		"laurel",
-		"linden",
-		"maple",
-		"mirkwood",
-		"mulberry",
-		"oak",
-		"olivetree",
-		"peartree",
-		"pine",
-		"planetree",
-		"plumtree",
-		"poplar",
-		"rowan",
-		"sallow",
-		"spruce",
-		"sweetgum",
-		"walnuttree",
-		"whitebeam",
-		"willow",
-		"yew",};
-	public final static String[] icons = new String[]{
-		"blueberry",
-		"chantrelle",
-		"chick",
-		"chicken",
-		"dandelion",
-		"dragonfly",
-		"rat",
-		"spindlytaproot",
-		"stingingnettle",};
-
 	private static String CONFIG_JSON;
 	private static final int configVersion = 6;
 	private static Map<String, Object> cfg = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -162,9 +55,6 @@ public enum CFG {
 	private Observer observer;
 
 	static {
-		Arrays.sort(boulders);
-		Arrays.sort(bushes);
-		Arrays.sort(trees);
 		loadConfig();
 	}
 

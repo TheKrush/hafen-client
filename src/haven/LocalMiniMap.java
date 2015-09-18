@@ -176,7 +176,7 @@ public class LocalMiniMap extends Widget {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BOULDERS.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
 								boolean drawobj = false;
-								for (String boulderName : CFG.boulders) {
+								for (String boulderName : Globals.Data.boulders) {
 									if (res.basename().startsWith(boulderName)) {
 										recognized = true;
 										if (mapVal.containsKey(boulderName) && mapVal.get(boulderName)) {
@@ -199,7 +199,7 @@ public class LocalMiniMap extends Widget {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
 								boolean drawobj = false;
-								for (String bushName : CFG.bushes) {
+								for (String bushName : Globals.Data.bushes) {
 									if (res.basename().startsWith(bushName)) {
 										recognized = true;
 										if (mapVal.containsKey(bushName) && mapVal.get(bushName)) {
@@ -228,7 +228,7 @@ public class LocalMiniMap extends Widget {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.valo();
 							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
 								boolean drawobj = false;
-								for (String treeName : CFG.trees) {
+								for (String treeName : Globals.Data.trees) {
 									if (res.basename().startsWith(treeName)) {
 										recognized = true;
 										if (mapVal.containsKey(treeName) && mapVal.get(treeName)) {

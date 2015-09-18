@@ -478,6 +478,10 @@ public class Window extends Widget implements DTarget {
 			cfg = tmp;
 		}
 
+		private static synchronized void saveConfig() {
+			Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
+		}
+
 		public static synchronized WindowCFG get(String name) {
 			return name != null ? cfg.get(name) : null;
 		}
@@ -487,11 +491,7 @@ public class Window extends Widget implements DTarget {
 				return;
 			}
 			WindowCFG.cfg.put(name, cfg);
-			store();
-		}
-
-		private static synchronized void store() {
-			Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
+			saveConfig();
 		}
 	}
 }
