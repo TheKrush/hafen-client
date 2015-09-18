@@ -161,7 +161,7 @@ public class Config {
 
 	private static URL geturl(String name, String def) {
 		String val = getprop(name, def);
-		if (val.equals("")) {
+		if (val.isEmpty()) {
 			return (null);
 		}
 		try {

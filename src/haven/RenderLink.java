@@ -57,8 +57,8 @@ public interface RenderLink {
 				String matnm = buf.string();
 				int matver = buf.uint16();
 				final int matid = buf.int16();
-				final Indir<Resource> mesh = meshnm.equals("") ? res.indir() : res.pool.load(meshnm, meshver);
-				final Indir<Resource> mat = matnm.equals("") ? res.indir() : res.pool.load(matnm, matver);
+				final Indir<Resource> mesh = meshnm.isEmpty() ? res.indir() : res.pool.load(meshnm, meshver);
+				final Indir<Resource> mat = matnm.isEmpty() ? res.indir() : res.pool.load(matnm, matver);
 				l = new RenderLink() {
 					Rendered res = null;
 

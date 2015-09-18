@@ -1486,7 +1486,7 @@ public class JSONObject {
      */
     public static Object stringToValue(String string) {
         Double d;
-        if (string.equals("")) {
+        if (string.isEmpty()) {
             return string;
         }
         if (string.equalsIgnoreCase("true")) {

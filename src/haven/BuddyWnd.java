@@ -358,7 +358,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			}
 		}, new Coord(140, y));
 		String sort = Utils.getpref("buddysort", "");
-		if (sort.equals("")) {
+		if (sort.isEmpty()) {
 			bcmp = statuscmp;
 		} else {
 			if (sort.equals("alpha")) {

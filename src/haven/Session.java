@@ -577,7 +577,7 @@ public class Session {
 				int resver = msg.uint16();
 				boolean loop = !msg.eom() && (msg.uint8() != 0);
 				if (Music.enabled) {
-					if (resnm.equals("")) {
+					if (resnm.isEmpty()) {
 						Music.play(null, false);
 					} else {
 						Music.play(Resource.remote().load(resnm, resver), loop);

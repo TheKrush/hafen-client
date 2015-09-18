@@ -321,7 +321,7 @@ public class Window extends Widget implements DTarget {
 			dt = (Integer) args[0] != 0;
 		} else if (msg == "cap") {
 			String cap = (String) args[0];
-			chcap(cap.equals("") ? null : cap);
+			chcap(cap.isEmpty() ? null : cap);
 		} else {
 			super.uimsg(msg, args);
 		}

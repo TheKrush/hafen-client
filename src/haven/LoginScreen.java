@@ -143,7 +143,7 @@ public class LoginScreen extends Widget {
 			pass.pw = true;
 			add(savepass = new CheckBox("Remember me", true), new Coord(0, 100));
 			savepass.a = save;
-			if (user.text.equals("")) {
+			if (user.text.isEmpty()) {
 				setfocus(user);
 			} else {
 				setfocus(pass);
@@ -163,10 +163,10 @@ public class LoginScreen extends Widget {
 
 		@Override
 		boolean enter() {
-			if (user.text.equals("")) {
+			if (user.text.isEmpty()) {
 				setfocus(user);
 				return (false);
-			} else if (pass.text.equals("")) {
+			} else if (pass.text.isEmpty()) {
 				setfocus(pass);
 				return (false);
 			} else {

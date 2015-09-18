@@ -181,7 +181,7 @@ public class Buff extends Widget {
 			this.res = ui.sess.getres((Integer) args[0]);
 		} else if (msg == "tip") {
 			String tt = (String) args[0];
-			this.tt = tt.equals("") ? null : tt;
+			this.tt = tt.isEmpty() ? null : tt;
 			shorttip = longtip = null;
 		} else if (msg == "am") {
 			this.ameter = (Integer) args[0];

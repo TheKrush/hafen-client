@@ -312,7 +312,7 @@ public class MCache {
 
 		public void fill(Message msg) {
 			String mmname = msg.string().intern();
-			if (mmname.equals("")) {
+			if (mmname.isEmpty()) {
 				mnm = null;
 			} else {
 				mnm = mmname;

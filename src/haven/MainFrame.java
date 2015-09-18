@@ -455,7 +455,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		String ed;
 		URL url = null;
 		try {
-			if (!(ed = Utils.getprop("haven.errorurl", "")).equals("")) {
+			if (!(ed = Utils.getprop("haven.errorurl", "")).isEmpty()) {
 				url = new URL(ed);
 			}
 		} catch (java.net.MalformedURLException e) {

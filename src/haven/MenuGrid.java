@@ -403,7 +403,7 @@ public class MenuGrid extends Widget {
 	public void uimsg(String msg, Object... args) {
 		if (msg == "goto") {
 			String resnm = (String) args[0];
-			if (resnm.equals("")) {
+			if (resnm.isEmpty()) {
 				cur = null;
 			} else {
 				Resource.Named res = Resource.remote().load(resnm, (Integer) args[1]);
