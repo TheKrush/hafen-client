@@ -248,7 +248,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 					trans = tres.layer(Resource.tileset);
 				}
 			}
-			return (new TerrainTile(id, new SNoise3(res.name.hashCode()), base, var.toArray(new Var[0]), trans));
+			return (new TerrainTile(id, new SNoise3(res.name.hashCode()), base, var.toArray(new Var[var.size()]), trans));
 		}
 	}
 

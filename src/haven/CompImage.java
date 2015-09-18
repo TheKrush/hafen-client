@@ -178,6 +178,6 @@ public class CompImage {
 	}
 
 	public static Image[][] transpose(Collection<Image[]> rows) {
-		return (transpose(rows.toArray(new Image[0][])));
+		return (transpose(rows.toArray(new Image[rows.size()][])));
 	}
 }

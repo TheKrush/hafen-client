@@ -154,7 +154,7 @@ public class PoseMorph implements Morpher.Factory {
 				}
 			}
 			normweights(bw, ba, mba);
-			dst.add(new BoneArray(mba, ba, bones.toArray(new String[0])));
+			dst.add(new BoneArray(mba, ba, bones.toArray(new String[bones.size()])));
 			dst.add(new WeightArray(mba, bw));
 		}
 	}

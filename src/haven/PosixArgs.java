@@ -92,7 +92,7 @@ public class PosixArgs {
 				rest.add(arg);
 			}
 		}
-		ret.rest = rest.toArray(new String[0]);
+		ret.rest = rest.toArray(new String[rest.size()]);
 		return (ret);
 	}
 

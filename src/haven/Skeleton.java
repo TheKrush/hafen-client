@@ -577,7 +577,7 @@ public class Skeleton {
 				} else if (poses.size() == 1) {
 					return (Utils.el(poses));
 				} else {
-					return (combine(poses.toArray(new PoseMod[0])));
+					return (combine(poses.toArray(new PoseMod[poses.size()])));
 				}
 			}
 		};
@@ -1012,8 +1012,8 @@ public class Skeleton {
 					tracks.add(new Track(bnm, parseframes(buf)));
 				}
 			}
-			this.tracks = tracks.toArray(new Track[0]);
-			this.effects = fx.toArray(new FxTrack[0]);
+			this.tracks = tracks.toArray(new Track[tracks.size()]);
+			this.effects = fx.toArray(new FxTrack[fx.size()]);
 		}
 
 		private Track[] iaIaCthulhuFhtagn(Skeleton skel) {
@@ -1161,7 +1161,7 @@ public class Skeleton {
 			while (!buf.eom()) {
 				cbuf.add(opcodes[buf.uint8()].make(buf));
 			}
-			this.prog = cbuf.toArray(new Command[0]);
+			this.prog = cbuf.toArray(new Command[cbuf.size()]);
 		}
 
 		@Override

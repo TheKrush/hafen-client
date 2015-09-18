@@ -71,7 +71,7 @@ public class StaticSprite extends Sprite {
 		if (res.layer(Resource.audio, "amb") != null) {
 			rl.add(new ActAudio.Ambience(res));
 		}
-		return (rl.toArray(new Rendered[0]));
+		return (rl.toArray(new Rendered[rl.size()]));
 	}
 
 	@Override

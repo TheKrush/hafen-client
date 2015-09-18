@@ -343,7 +343,7 @@ public class MeshAnim {
 					}
 					frames.add(new Frame(tm, idx, pos, nrm));
 				}
-				a = new MeshAnim(frames.toArray(new Frame[0]), len);
+				a = new MeshAnim(frames.toArray(new Frame[frames.size()]), len);
 			} else {
 				throw (new Resource.LoadException("Invalid meshanim format version: " + ver, res));
 			}

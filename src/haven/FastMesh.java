@@ -101,7 +101,7 @@ public class FastMesh implements FRendered, Rendered.Instanced, Disposable {
 			 * some meaningful way, but I'm not currently sure what
 			 * would consitute a proper ID. */
 			id.add(g.st.prog.autoinst.length > 0);
-			return (ArrayIdentity.intern(id.toArray(new Object[0])));
+			return (ArrayIdentity.intern(id.toArray(new Object[id.size()])));
 		}
 
 		private Compiled last = null;

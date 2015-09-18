@@ -104,7 +104,7 @@ public class FBConfig {
 				}
 			}
 		}
-		this.color = color.toArray(new Attachment[0]);
+		this.color = color.toArray(new Attachment[color.size()]);
 		this.depth = depth;
 		/* XXX: Shaders should be canonized and cached to avoid
 		 * creation of unnecessary identical programs when
@@ -113,7 +113,7 @@ public class FBConfig {
 		if (shb.size() < 1) {
 			shaders = nosh;
 		} else {
-			shaders = shb.toArray(new ShaderMacro[0]);
+			shaders = shb.toArray(new ShaderMacro[shb.size()]);
 		}
 		this.fb = new GLFrameBuffer(this.color, this.depth) {
 			@Override
@@ -134,7 +134,7 @@ public class FBConfig {
 		};
 		stb.add(fb);
 		stb.add(wnd);
-		this.state = GLState.compose(stb.toArray(new GLState[0]));
+		this.state = GLState.compose(stb.toArray(new GLState[stb.size()]));
 		if (res.length > 0) {
 			ShaderMacro[] resp = new ShaderMacro[res.length];
 			for (int i = 0; i < res.length; i++) {

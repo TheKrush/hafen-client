@@ -287,7 +287,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 				opts.add("Forget");
 			}
 			if (menu == null) {
-				menu = new FlowerMenu(opts.toArray(new String[0])) {
+				menu = new FlowerMenu(opts.toArray(new String[opts.size()])) {
 					@Override
 					public void destroy() {
 						menu = null;

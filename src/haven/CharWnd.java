@@ -1019,7 +1019,7 @@ public class CharWnd extends Window {
 		}
 
 		public void pop(Collection<Skill> nsk) {
-			Skill[] skills = nsk.toArray(new Skill[0]);
+			Skill[] skills = nsk.toArray(new Skill[nsk.size()]);
 			sb.val = 0;
 			sb.max = skills.length - h;
 			Skill psel = sel;
@@ -1099,7 +1099,7 @@ public class CharWnd extends Window {
 		}
 
 		public void pop(Collection<Experience> nl) {
-			Experience[] exps = nl.toArray(new Experience[0]);
+			Experience[] exps = nl.toArray(new Experience[nl.size()]);
 			sb.val = 0;
 			sb.max = exps.length - h;
 			sel = null;
@@ -1358,7 +1358,7 @@ public class CharWnd extends Window {
 							args.add(attr.tbv);
 						}
 					}
-					CharWnd.this.wdgmsg("sattr", args.toArray(new Object[0]));
+					CharWnd.this.wdgmsg("sattr", args.toArray(new Object[args.size()]));
 				}
 			}, new Coord(rx - 75, y + 55));
 			sattr.add(new Button(75, "Reset") {

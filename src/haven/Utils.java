@@ -665,7 +665,7 @@ public class Utils {
 		if ((st != "ws") && (st != "word")) {
 			return (null);
 		}
-		return (words.toArray(new String[0]));
+		return (words.toArray(new String[words.size()]));
 	}
 
 	public static String[] splitlines(String text) {
@@ -680,7 +680,7 @@ public class Utils {
 			ret.add(text.substring(p, p2));
 			p = p2 + 1;
 		}
-		return (ret.toArray(new String[0]));
+		return (ret.toArray(new String[ret.size()]));
 	}
 
 	static int atoi(String a) {

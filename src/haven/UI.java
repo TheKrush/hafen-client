@@ -286,7 +286,7 @@ public class UI {
 	}
 
 	private Grab[] c(Collection<Grab> g) {
-		return (g.toArray(new Grab[0]));
+		return (g.toArray(new Grab[g.size()]));
 	}
 
 	public void type(KeyEvent ev) {

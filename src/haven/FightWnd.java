@@ -282,7 +282,7 @@ public class FightWnd extends Widget {
 			args.add(act.u);
 		}
 		args.add(-1);
-		wdgmsg("save", args.toArray(new Object[0]));
+		wdgmsg("save", args.toArray(new Object[args.size()]));
 	}
 
 	public void use(int n) {

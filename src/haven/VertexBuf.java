@@ -560,7 +560,7 @@ public class VertexBuf {
 				}
 				cons.cons(bufs, res, buf, num);
 			}
-			this.b = new VertexBuf(bufs.toArray(new AttribArray[0]));
+			this.b = new VertexBuf(bufs.toArray(new AttribArray[bufs.size()]));
 		}
 
 		@Override
@@ -632,11 +632,11 @@ public class VertexBuf {
 						}
 					}
 					PoseMorph.normweights(bw, ba, mba);
-					bufs.add(new PoseMorph.BoneArray(mba, ba, bones.toArray(new String[0])));
+					bufs.add(new PoseMorph.BoneArray(mba, ba, bones.toArray(new String[bones.size()])));
 					bufs.add(new PoseMorph.WeightArray(mba, bw));
 				}
 			}
-			return (new VertexRes(res, new VertexBuf(bufs.toArray(new AttribArray[0]))));
+			return (new VertexRes(res, new VertexBuf(bufs.toArray(new AttribArray[bufs.size()]))));
 		}
 	}
 }

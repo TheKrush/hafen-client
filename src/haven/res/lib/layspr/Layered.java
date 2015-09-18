@@ -58,7 +58,7 @@ public class Layered extends GSprite {
             do {
                 if(!var4.hasNext()) {
                     Collections.sort(var3, new LayeredComparator(this));
-                    this.lay = (Layer[])var3.toArray(new Layer[0]);
+                    this.lay = (Layer[])var3.toArray(new Layer[var3.size()]);
                     this.sz = new Coord();
                     Layer[] var9 = this.lay;
                     int var10 = var9.length;

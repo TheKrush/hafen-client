@@ -1358,7 +1358,7 @@ public class Resource implements Serializable {
 
 		public LibClassLoader(ClassLoader parent, Collection<ClassLoader> classpath) {
 			super(parent);
-			this.classpath = classpath.toArray(new ClassLoader[0]);
+			this.classpath = classpath.toArray(new ClassLoader[classpath.size()]);
 		}
 
 		@Override

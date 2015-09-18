@@ -123,7 +123,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 				rl.add(r);
 			}
 		}
-		this.parts = rl.toArray(new Rendered[0]);
+		this.parts = rl.toArray(new Rendered[rl.size()]);
 	}
 
 	private void rebuild() {
@@ -145,7 +145,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 				anims.add(ar.make());
 			}
 		}
-		this.manims = anims.toArray(new MeshAnim.Anim[0]);
+		this.manims = anims.toArray(new MeshAnim.Anim[anims.size()]);
 		this.mmorph = MorphedMesh.combine(this.manims);
 	}
 
@@ -179,7 +179,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 				poses.add(mod);
 			}
 		}
-		this.mods = poses.toArray(new PoseMod[0]);
+		this.mods = poses.toArray(new PoseMod[poses.size()]);
 		this.modids = newids;
 		rebuild();
 	}

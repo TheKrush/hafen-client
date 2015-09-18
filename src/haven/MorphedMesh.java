@@ -146,8 +146,8 @@ public class MorphedMesh extends FastMesh {
 			super(ohBitterSweetJavaDays(buf, pos, dir));
 			this.from = buf;
 			this.morph = morph.create(this);
-			this.parrays = pos.toArray(new Pair[0]);
-			this.darrays = dir.toArray(new Pair[0]);
+			this.parrays = pos.toArray(new Pair[pos.size()]);
+			this.darrays = dir.toArray(new Pair[dir.size()]);
 		}
 
 		private MorphedBuf(VertexBuf buf, Morpher.Factory morph) {

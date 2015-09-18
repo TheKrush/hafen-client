@@ -38,7 +38,7 @@ public class TestView extends PView {
 		for (FastMesh.MeshRes m : res.layers(FastMesh.MeshRes.class)) {
 			l.add(m.m);
 		}
-		tmesh = l.toArray(new FastMesh[0]);
+		tmesh = l.toArray(new FastMesh[l.size()]);
 	}
 	final PointedCam camera;
 	int sel = -1;

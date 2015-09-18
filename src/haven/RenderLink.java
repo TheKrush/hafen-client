@@ -117,7 +117,7 @@ public interface RenderLink {
 									cl.add(mr.mat.get().apply(mr.m));
 								}
 							}
-							final Rendered[] ca = cl.toArray(new Rendered[0]);
+							final Rendered[] ca = cl.toArray(new Rendered[cl.size()]);
 							res = new Rendered() {
 								@Override
 								public void draw(GOut g) {

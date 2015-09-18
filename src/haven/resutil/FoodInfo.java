@@ -86,6 +86,6 @@ public class FoodInfo extends ItemInfo.Tip {
 			}
 			imgs.add(efi);
 		}
-		return (catimgs(0, imgs.toArray(new BufferedImage[0])));
+		return (catimgs(0, imgs.toArray(new BufferedImage[imgs.size()])));
 	}
 }

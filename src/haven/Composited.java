@@ -56,7 +56,7 @@ public class Composited implements Rendered {
 		}
 
 		public Poses(List<? extends PoseMod> mods) {
-			this.mods = mods.toArray(new PoseMod[0]);
+			this.mods = mods.toArray(new PoseMod[mods.size()]);
 			stat = true;
 			for (PoseMod mod : this.mods) {
 				if (!mod.stat()) {

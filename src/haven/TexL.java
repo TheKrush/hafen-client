@@ -98,7 +98,7 @@ public abstract class TexL extends TexGL {
 					}
 				}
 			}
-			this.data = data.toArray(new byte[0][]);
+			this.data = data.toArray(new byte[data.size()][]);
 		}
 	}
 

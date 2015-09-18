@@ -68,7 +68,7 @@ public interface ShaderMacro {
 						auto.add((Uniform.AutoApply) var);
 					}
 				}
-				this.auto = auto.toArray(new Uniform.AutoApply[0]);
+				this.auto = auto.toArray(new Uniform.AutoApply[auto.size()]);
 			}
 			this.adirty = new boolean[this.auto.length];
 			{
@@ -107,7 +107,7 @@ public interface ShaderMacro {
 						autoinst.add((Attribute.AutoInstanced) var);
 					}
 				}
-				this.autoinst = autoinst.toArray(new Attribute.AutoInstanced[0]);
+				this.autoinst = autoinst.toArray(new Attribute.AutoInstanced[autoinst.size()]);
 			}
 			this.curinst = new GLBuffer[this.autoinst.length];
 		}

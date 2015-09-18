@@ -51,7 +51,7 @@ public class AnimSprite extends Sprite {
 				anims.add(ar.make());
 			}
 		}
-		this.anims = anims.toArray(new MeshAnim.Anim[0]);
+		this.anims = anims.toArray(new MeshAnim.Anim[anims.size()]);
 		MorphedMesh.Morpher.Factory morph = MorphedMesh.combine(this.anims);
 		Collection<Rendered> rl = new LinkedList<>();
 		for (FastMesh.MeshRes mr : res.layers(FastMesh.MeshRes.class)) {
@@ -70,7 +70,7 @@ public class AnimSprite extends Sprite {
 				}
 			}
 		}
-		parts = rl.toArray(new Rendered[0]);
+		parts = rl.toArray(new Rendered[rl.size()]);
 	}
 
 	@Override
