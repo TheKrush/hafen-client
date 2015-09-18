@@ -267,7 +267,7 @@ public class CDL {
         if (names == null || names.length() == 0) {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ja.length(); i += 1) {
             JSONObject jo = ja.optJSONObject(i);
             if (jo != null) {
