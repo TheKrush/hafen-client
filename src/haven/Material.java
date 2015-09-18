@@ -345,25 +345,24 @@ public class Material extends GLState {
 					case "nofacecull":
 						ret.states.add(nofacecull);
 						break;
-					case "tex":
-						{
-							final int tid = buf.uint16();
-							ret.left.add(new Res.Resolver() {
-								@Override
-								public void resolve(Collection<GLState> buf) {
-									for (Resource.Image img : res.layers(Resource.imgc)) {
-										if (img.id == tid) {
-											buf.add(img.tex().draw());
-											buf.add(img.tex().clip());
-											return;
-										}
+					case "tex": {
+						final int tid = buf.uint16();
+						ret.left.add(new Res.Resolver() {
+							@Override
+							public void resolve(Collection<GLState> buf) {
+								for (Resource.Image img : res.layers(Resource.imgc)) {
+									if (img.id == tid) {
+										buf.add(img.tex().draw());
+										buf.add(img.tex().clip());
+										return;
 									}
-									throw (new RuntimeException(String.format("Specified texture %d not found in %s", tid, res)));
 								}
-							});	break;
-						}
-					case "texlink":
-					{
+								throw (new RuntimeException(String.format("Specified texture %d not found in %s", tid, res)));
+							}
+						});
+						break;
+					}
+					case "texlink": {
 						final String nm = buf.string();
 						final int ver = buf.uint16();
 						final int tid = buf.uint16();
@@ -379,8 +378,9 @@ public class Material extends GLState {
 									}
 								}
 								throw (new RuntimeException(String.format("Specified texture %d for %s not found in %s", tid, res, tres)));
-						}
-					});	break;
+							}
+						});
+						break;
 					}
 					case "light":
 						String l = buf.string();
@@ -528,8 +528,8 @@ public class Material extends GLState {
 				switch (nm) {
 					case "linear":
 						/* XXX: These should very much be removed and
-						* specified directly in the texture layer
-						* instead. */
+						 * specified directly in the texture layer
+						 * instead. */
 						ret.linear = true;
 						break;
 					case "mipmap":
@@ -539,7 +539,8 @@ public class Material extends GLState {
 						ResCons2 cons = rnames.get(nm);
 						if (cons == null) {
 							throw (new Resource.LoadException("Unknown material part name: " + nm, res));
-						}	ret.left.add(cons.cons(res, args));
+						}
+						ret.left.add(cons.cons(res, args));
 						break;
 				}
 			}

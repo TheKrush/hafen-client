@@ -97,7 +97,7 @@ public class MapMesh implements Rendered, Disposable {
 
 		;
 		@Override
-	public void calcnrm() {
+		public void calcnrm() {
 		}
 
 		@Override

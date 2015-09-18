@@ -605,13 +605,15 @@ public class Widget {
 					if (w.canfocus) {
 						setfocus(w);
 					}
-				}	break;
+				}
+				break;
 			case "curs":
 				if (args.length == 0) {
 					cursor = null;
 				} else {
 					cursor = Resource.remote().load((String) args[0], (Integer) args[1]);
-			}	break;
+				}
+				break;
 			case "tip":
 				int a = 0;
 				Object tt = args[a++];
@@ -621,7 +623,7 @@ public class Widget {
 					final Indir<Resource> tres = ui.sess.getres((Integer) tt);
 					tooltip = new Indir<Tex>() {
 						Text t = null;
-						
+
 						@Override
 						public Tex get() {
 							if (t == null) {
@@ -636,7 +638,8 @@ public class Widget {
 							return (t.tex());
 						}
 					};
-				}	break;
+				}
+				break;
 			default:
 				System.err.println("Unhandled widget message: " + msg);
 				break;

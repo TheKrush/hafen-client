@@ -161,25 +161,26 @@ public class Polity extends Widget {
 					adrain = (Integer) args[2];
 					offline = ((Integer) args[3]) != 0;
 					aseq++;
-				}	break;
-			case "add":
-			{
+				}
+				break;
+			case "add": {
 				Integer id = (Integer) args[0];
 				Member pm = new Member(id);
 				synchronized (this) {
 					memb.add(pm);
 					idmap.put(id, pm);
-				}		break;
 				}
-			case "rm":
-				{
-					Integer id = (Integer) args[0];
-					synchronized (this) {
-						Member pm = idmap.get(id);
-						memb.remove(pm);
-						idmap.remove(id);
-			}		break;
+				break;
+			}
+			case "rm": {
+				Integer id = (Integer) args[0];
+				synchronized (this) {
+					Member pm = idmap.get(id);
+					memb.remove(pm);
+					idmap.remove(id);
 				}
+				break;
+			}
 			default:
 				super.uimsg(msg, args);
 				break;

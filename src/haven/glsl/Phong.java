@@ -155,13 +155,13 @@ public class Phong extends ValBlock.Group {
 			dir = tdep.new GValue(VEC3);
 			dl = dvals.new Value(FLOAT) {
 				@Override
-		    public Expression root() {
+				public Expression root() {
 					return (dot(norm, dir.depref()));
 				}
 			};
 			sl = svals.new Value(FLOAT) {
 				@Override
-		    public Expression root() {
+				public Expression root() {
 					Expression reflvl = pow(max(dot(edir, reflect(neg(dir.ref()), norm)), l(0.0)), shine);
 					Expression hvlvl = pow(max(dot(norm, normalize(add(edir, dir.ref())))), shine);
 					return (reflvl);

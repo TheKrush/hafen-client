@@ -61,7 +61,7 @@ public class Tex2D {
 			public Value make(ValBlock vals) {
 				return (vals.new Value(VEC2) {
 					@Override
-			    public Expression root() {
+					public Expression root() {
 						return (rtexcoord.ref());
 					}
 				});
@@ -76,7 +76,7 @@ public class Tex2D {
 				texcoord(fctx);
 				return (vals.new Value(VEC4) {
 					@Override
-			    public Expression root() {
+					public Expression root() {
 						return (texture2D(tex2d.ref(), texcoord(fctx).depref()));
 					}
 				});

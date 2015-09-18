@@ -90,7 +90,7 @@ public class AlphaTex extends GLState {
 			public Value make(ValBlock vals) {
 				return (vals.new Value(VEC4) {
 					@Override
-			    public Expression root() {
+					public Expression root() {
 						return (texture2D(ctex.ref(), fc.ref()));
 					}
 				});

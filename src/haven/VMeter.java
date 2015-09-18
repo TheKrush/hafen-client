@@ -78,7 +78,8 @@ public class VMeter extends Widget {
 				amount = (Integer) args[0];
 				if (args.length > 1) {
 					cl = (Color) args[1];
-				}	break;
+				}
+				break;
 			case "col":
 				cl = (Color) args[0];
 				break;

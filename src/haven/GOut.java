@@ -83,8 +83,8 @@ public class GOut {
 			String ret = null;
 			for (java.lang.reflect.Field f : cl.getFields()) {
 				if (((f.getModifiers() & java.lang.reflect.Modifier.STATIC) != 0)
-						&& ((f.getModifiers() & java.lang.reflect.Modifier.PUBLIC) != 0)
-						&& (f.getType() == Integer.TYPE)) {
+								&& ((f.getModifiers() & java.lang.reflect.Modifier.PUBLIC) != 0)
+								&& (f.getType() == Integer.TYPE)) {
 					int v;
 					try {
 						v = f.getInt(null);

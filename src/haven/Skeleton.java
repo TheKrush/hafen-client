@@ -515,14 +515,14 @@ public class Skeleton {
 				stat = s;
 			}
 
-		@Override
+			@Override
 			public void apply(Pose p) {
 				for (PoseMod m : mods) {
 					m.apply(p);
 				}
 			}
 
-		@Override
+			@Override
 			public boolean tick(float dt) {
 				boolean ret = false;
 				for (PoseMod m : mods) {
@@ -533,19 +533,19 @@ public class Skeleton {
 				return (ret);
 			}
 
-		@Override
+			@Override
 			public void age() {
 				for (PoseMod m : mods) {
 					m.age();
 				}
 			}
 
-		@Override
+			@Override
 			public boolean stat() {
 				return (stat);
 			}
 
-		@Override
+			@Override
 			public boolean done() {
 				for (PoseMod m : mods) {
 					if (m.done()) {

@@ -485,7 +485,8 @@ public class RichText extends Text {
 						na.put(TextAttribute.FAMILY, args[0]);
 						if (args.length > 1) {
 							na.put(TextAttribute.SIZE, Float.parseFloat(args[1]));
-						}	break;
+						}
+						break;
 					case "size":
 						na.put(TextAttribute.SIZE, Float.parseFloat(args[0]));
 						break;
@@ -783,32 +784,31 @@ public class RichText extends Text {
 	public static void main(String[] args) throws Exception {
 		String cmd = args[0].intern();
 		switch (cmd) {
-			case "render":
-				{
-					Map<Attribute, Object> a = new HashMap<>(std.defattrs);
-					PosixArgs opt = PosixArgs.getopt(args, 1, "aw:f:s:");
-					boolean aa = false;
-					int width = 0;
-					for (char c : opt.parsed()) {
-						if (c == 'a') {
-							aa = true;
-						} else if (c == 'f') {
-							a.put(TextAttribute.FAMILY, opt.arg);
-						} else if (c == 'w') {
-							width = Integer.parseInt(opt.arg);
-						} else if (c == 's') {
-							a.put(TextAttribute.SIZE, Integer.parseInt(opt.arg));
-						}
-					}		Foundry fnd = new Foundry(a);
-					fnd.aa = aa;
-					RichText t = fnd.render(opt.rest[0], width);
-					java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
-					javax.imageio.ImageIO.write(t.img, "PNG", out);
-					out.close();
-					break;
+			case "render": {
+				Map<Attribute, Object> a = new HashMap<>(std.defattrs);
+				PosixArgs opt = PosixArgs.getopt(args, 1, "aw:f:s:");
+				boolean aa = false;
+				int width = 0;
+				for (char c : opt.parsed()) {
+					if (c == 'a') {
+						aa = true;
+					} else if (c == 'f') {
+						a.put(TextAttribute.FAMILY, opt.arg);
+					} else if (c == 'w') {
+						width = Integer.parseInt(opt.arg);
+					} else if (c == 's') {
+						a.put(TextAttribute.SIZE, Integer.parseInt(opt.arg));
+					}
 				}
-			case "pagina":
-			{
+				Foundry fnd = new Foundry(a);
+				fnd.aa = aa;
+				RichText t = fnd.render(opt.rest[0], width);
+				java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
+				javax.imageio.ImageIO.write(t.img, "PNG", out);
+				out.close();
+				break;
+			}
+			case "pagina": {
 				PosixArgs opt = PosixArgs.getopt(args, 1, "aw:");
 				boolean aa = false;
 				int width = 0;
@@ -817,19 +817,21 @@ public class RichText extends Text {
 						aa = true;
 					} else if (c == 'w') {
 						width = Integer.parseInt(opt.arg);
+					}
 				}
-				}		Foundry fnd = new Foundry();
+				Foundry fnd = new Foundry();
 				fnd.aa = aa;
 				Resource res = Resource.local().loadwait(opt.rest[0]);
 				Resource.Pagina p = res.layer(Resource.pagina);
 				if (p == null) {
 					throw (new Exception("No pagina in " + res + ", loaded from " + res.source));
-				}		RichText t = fnd.render(p.text, width);
+				}
+				RichText t = fnd.render(p.text, width);
 				java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
 				javax.imageio.ImageIO.write(t.img, "PNG", out);
 				out.close();
-					break;
-				}
+				break;
+			}
 		}
 	}
 }

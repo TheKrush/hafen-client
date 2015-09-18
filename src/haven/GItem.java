@@ -164,7 +164,8 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 					res = ui.sess.getres((Integer) args[0]);
 					sdt = (args.length > 1) ? new MessageBuf((byte[]) args[1]) : MessageBuf.nil;
 					spr = null;
-				}	break;
+				}
+				break;
 			case "tt":
 				info = null;
 				rawinfo = args;

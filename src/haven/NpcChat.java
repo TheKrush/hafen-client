@@ -55,7 +55,8 @@ public class NpcChat extends Window {
 				Color col = null;
 				if (args.length > 1) {
 					col = (Color) args[1];
-				}	out.append((String) args[0], col);
+				}
+				out.append((String) args[0], col);
 				break;
 			case "btns":
 				if (btns != null) {
@@ -63,7 +64,8 @@ public class NpcChat extends Window {
 						ui.destroy(b);
 					}
 					btns = null;
-				}	if (args.length > 0) {
+				}
+				if (args.length > 0) {
 					int y = out.sz.y + 3;
 					btns = new LinkedList<>();
 					for (Object text : args) {
@@ -71,7 +73,8 @@ public class NpcChat extends Window {
 						btns.add(b);
 						y += b.sz.y + 3;
 					}
-			}	pack();
+				}
+				pack();
 				break;
 			default:
 				super.uimsg(msg, args);

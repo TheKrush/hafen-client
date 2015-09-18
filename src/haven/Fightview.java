@@ -223,8 +223,7 @@ public class Fightview extends Widget {
 	@Override
 	public void uimsg(String msg, Object... args) {
 		switch (msg) {
-			case "new":
-			{
+			case "new": {
 				Relation rel = new Relation((Integer) args[0]);
 				rel.give((Integer) args[1]);
 				rel.ip = (Integer) args[2];
@@ -232,8 +231,7 @@ public class Fightview extends Widget {
 				lsrel.addFirst(rel);
 				return;
 			}
-			case "del":
-			{
+			case "del": {
 				Relation rel = getrel((Integer) args[0]);
 				rel.remove();
 				lsrel.remove(rel);
@@ -241,15 +239,14 @@ public class Fightview extends Widget {
 					setcur(null);
 				}
 				return;
-		}
-			case "upd":
-			{
+			}
+			case "upd": {
 				Relation rel = getrel((Integer) args[0]);
 				rel.give((Integer) args[1]);
 				rel.ip = (Integer) args[2];
 				rel.oip = (Integer) args[3];
 				return;
-		}
+			}
 			case "cur":
 				try {
 					Relation rel = getrel((Integer) args[0]);
@@ -258,7 +255,7 @@ public class Fightview extends Widget {
 					setcur(rel);
 				} catch (Notfound e) {
 					setcur(null);
-			}
+				}
 				return;
 			case "atkc":
 				atkcs = System.currentTimeMillis() / 1000.0;
@@ -274,7 +271,7 @@ public class Fightview extends Widget {
 			case "offdef":
 				off = (Integer) args[0];
 				def = (Integer) args[1];
-			return;
+				return;
 		}
 		super.uimsg(msg, args);
 	}

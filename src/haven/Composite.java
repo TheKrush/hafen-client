@@ -121,7 +121,7 @@ public class Composite extends Drawable {
 				final Composited.Poses cp = comp.poses;
 				Composited.Poses np = comp.new Poses(loadposes(tposes, comp.skel, tpmode)) {
 					@Override
-			protected void done() {
+					protected void done() {
 						cp.set(ipollen);
 						updequ();
 					}

@@ -64,7 +64,7 @@ public class CloudShadow extends GLState {
 				}
 				final ValBlock.Value shval = prog.fctx.uniform.new Value(FLOAT) {
 					@Override
-			public Expression root() {
+					public Expression root() {
 						Expression tc = add(mul(add(pick(MiscLib.fragmapv.ref(), "xy"),
 										mul(pick(MiscLib.fragmapv.ref(), "z"), cdir.ref())),
 										cscl.ref()), mul(cvel.ref(), MiscLib.globtime.ref()));

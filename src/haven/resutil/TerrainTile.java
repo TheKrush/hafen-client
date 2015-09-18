@@ -246,26 +246,25 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 				Object[] desc = (Object[]) rdesc;
 				String p = (String) desc[0];
 				switch (p) {
-					case "base":
-						{
-							int mid = (Integer) desc[1];
-							base = res.layer(Material.Res.class, mid).get();
-							break;
+					case "base": {
+						int mid = (Integer) desc[1];
+						base = res.layer(Material.Res.class, mid).get();
+						break;
+					}
+					case "var": {
+						int mid = (Integer) desc[1];
+						double thrl, thrh;
+						if (desc[2] instanceof Object[]) {
+							thrl = (Float) ((Object[]) desc[2])[0];
+							thrh = (Float) ((Object[]) desc[2])[1];
+						} else {
+							thrl = (Float) desc[2];
+							thrh = Double.MAX_VALUE;
 						}
-					case "var":
-						{
-							int mid = (Integer) desc[1];
-							double thrl, thrh;
-							if (desc[2] instanceof Object[]) {
-								thrl = (Float) ((Object[]) desc[2])[0];
-								thrh = (Float) ((Object[]) desc[2])[1];
-							} else {
-								thrl = (Float) desc[2];
-								thrh = Double.MAX_VALUE;
-							}		double nz = (res.name.hashCode() * mid * 8129) % 10000;
-							var.add(new Var(res.layer(Material.Res.class, mid).get(), thrl, thrh, nz));
-							break;
-						}
+						double nz = (res.name.hashCode() * mid * 8129) % 10000;
+						var.add(new Var(res.layer(Material.Res.class, mid).get(), thrl, thrh, nz));
+						break;
+					}
 					case "trans":
 						Resource tres = set.getres().pool.load((String) desc[1], (Integer) desc[2]).get();
 						trans = tres.layer(Resource.tileset);
@@ -418,7 +417,8 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 							mat = mres.layer(Material.Res.class).get();
 							if (desc.length > 3) {
 								texh = (Float) desc[3];
-							}	break;
+							}
+							break;
 						case "rthres":
 							rth = (Integer) desc[1];
 							break;

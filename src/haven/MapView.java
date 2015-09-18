@@ -1287,7 +1287,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 					sdt = new MessageBuf((byte[]) args[a++]);
 				} else {
 					sdt = Message.nil;
-				}	placing = new Plob(res, sdt);
+				}
+				placing = new Plob(res, sdt);
 				while (a < args.length) {
 					Indir<Resource> ores = ui.sess.getres((Integer) args[a++]);
 					Message odt;
@@ -1297,7 +1298,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 						odt = Message.nil;
 					}
 					placing.ols.add(new Gob.Overlay(-1, ores, odt));
-			}	break;
+				}
+				break;
 			case "unplace":
 				placing = null;
 				break;
@@ -1310,8 +1312,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 				for (int i = 0; i < visol.length; i++) {
 					if ((olflash & (1 << i)) != 0) {
 						visol[i]++;
+					}
 				}
-			}	olftimer = System.currentTimeMillis() + (Integer) args[1];
+				olftimer = System.currentTimeMillis() + (Integer) args[1];
 				break;
 			case "sel":
 				boolean sel = ((Integer) args[0]) != 0;
@@ -1320,7 +1323,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 				} else if (!sel && (selection != null)) {
 					selection.destroy();
 					selection = null;
-			}	break;
+				}
+				break;
 			case "shake":
 				shake = ((Number) args[0]).doubleValue();
 				break;

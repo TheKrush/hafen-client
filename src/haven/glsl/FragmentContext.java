@@ -80,12 +80,12 @@ public class FragmentContext extends ShaderContext {
 	    {force();
 		}
 
-			@Override
+		@Override
 		public Expression root() {
 			return (Vec4Cons.u);
 		}
 
-			@Override
+		@Override
 		protected void cons2(Block blk) {
 			LValue tgt;
 			if (mrt) {

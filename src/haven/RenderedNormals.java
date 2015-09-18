@@ -48,7 +48,7 @@ public class RenderedNormals extends FBConfig.RenderTarget {
 						MiscLib.frageyen(prog.fctx);
 						prog.fctx.new FragData(id) {
 							@Override
-				public Expression root() {
+							public Expression root() {
 								return (vec4(mul(add(MiscLib.frageyen(prog.fctx).depref(), l(1.0)), l(0.5)), l(1.0)));
 							}
 						};

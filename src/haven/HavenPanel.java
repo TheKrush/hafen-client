@@ -421,7 +421,8 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 						} catch (Exception e) {
 							cursmode = "tex";
 						}
-					}	break;
+					}
+					break;
 				case "tex":
 					Coord dc = mousepos.add(curs.layer(Resource.negc).cc.inv());
 					g.image(curs.layer(Resource.imgc), dc);

@@ -136,7 +136,8 @@ public class Makewindow extends Widget {
 					Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
 					int num = (Integer) args[i++];
 					inputs.add(new Spec(ui.sess.getres(resid), sdt, num));
-				}	this.inputs = inputs;
+				}
+				this.inputs = inputs;
 				break;
 			case "opop":
 				List<Spec> outputs = new LinkedList<>();
@@ -145,13 +146,15 @@ public class Makewindow extends Widget {
 					Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
 					int num = (Integer) args[i++];
 					outputs.add(new Spec(ui.sess.getres(resid), sdt, num));
-			}	this.outputs = outputs;
+				}
+				this.outputs = outputs;
 				break;
 			case "qmod":
 				List<Indir<Resource>> qmod = new ArrayList<>();
 				for (Object arg : args) {
 					qmod.add(ui.sess.getres((Integer) arg));
-			}	this.qmod = qmod;
+				}
+				this.qmod = qmod;
 				break;
 			default:
 				super.uimsg(msg, args);

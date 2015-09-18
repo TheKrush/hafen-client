@@ -644,7 +644,8 @@ public class Utils {
 						st = "word";
 					} else {
 						i++;
-					}	break;
+					}
+					break;
 				case "word":
 					if (c == '"') {
 						st = "quote";
@@ -659,7 +660,8 @@ public class Utils {
 					} else {
 						buf.append(c);
 						i++;
-					}	break;
+					}
+					break;
 				case "quote":
 					if (c == '"') {
 						st = "word";
@@ -669,8 +671,9 @@ public class Utils {
 						i++;
 					} else {
 						buf.append(c);
-					i++;
-				}	break;
+						i++;
+					}
+					break;
 				case "squote":
 					buf.append(c);
 					i++;

@@ -269,7 +269,7 @@ public class WaterTile extends Tiler {
 					MiscLib.fragedir(prog.fctx);
 					final ValBlock.Value nmod = prog.fctx.uniform.new Value(Type.VEC3) {
 						@Override
-			    public Expression root() {
+						public Expression root() {
 							/*
 							 return(mul(sub(mix(pick(texture2D(snrm.ref(),
 							 add(mul(pick(MiscLib.fragmapv.ref(), "st"), vec2(l(0.01), l(0.012))),
