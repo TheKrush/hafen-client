@@ -115,10 +115,12 @@ public class Glob {
 		public static enum State {
 
 			ENABLED, DISABLED {
+								@Override
 								public Image img(final Pagina pag) {
 									return (new Image() {
 										private Tex c = null;
 
+										@Override
 										public Tex tex() {
 											if (pag.res() == null) {
 												return (null);
@@ -134,6 +136,7 @@ public class Glob {
 
 			public Image img(final Pagina pag) {
 				return (new Image() {
+					@Override
 					public Tex tex() {
 						if (pag.res() == null) {
 							return (null);
@@ -353,11 +356,13 @@ public class Glob {
 	}
 
 	public final Iterable<Weather> weather = new Iterable<Weather>() {
+		@Override
 		public Iterator<Weather> iterator() {
 			return (new Iterator<Weather>() {
 				Iterator<Map.Entry<Indir<Resource>, Object>> bk = wmap.entrySet().iterator();
 				Weather n = null;
 
+				@Override
 				public boolean hasNext() {
 					if (n == null) {
 						while (true) {
@@ -383,6 +388,7 @@ public class Glob {
 					return (true);
 				}
 
+				@Override
 				public Weather next() {
 					if (!hasNext()) {
 						throw (new NoSuchElementException());
@@ -392,6 +398,7 @@ public class Glob {
 					return (ret);
 				}
 
+				@Override
 				public void remove() {
 					throw (new UnsupportedOperationException());
 				}

@@ -42,6 +42,7 @@ public class Partyview extends Widget {
 	@RName("pv")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Partyview((Integer) args[0]));
 		}
@@ -52,6 +53,7 @@ public class Partyview extends Widget {
 		this.ign = ign;
 	}
 
+	@Override
 	protected void added() {
 		party = ui.sess.glob.party;
 		update();
@@ -69,6 +71,7 @@ public class Partyview extends Widget {
 					w = add(new Avaview(new Coord(27, 27), m.gobid, "avacam") {
 						private Tex tooltip = null;
 
+						@Override
 						public Object tooltip(Coord c, Widget prev) {
 							Gob gob = m.getgob();
 							if (gob == null) {
@@ -92,6 +95,7 @@ public class Partyview extends Widget {
 			}
 			List<Map.Entry<Member, Avaview>> wl = new ArrayList<Map.Entry<Member, Avaview>>(avs.entrySet());
 			Collections.sort(wl, new Comparator<Map.Entry<Member, Avaview>>() {
+				@Override
 				public int compare(Entry<Member, Avaview> a, Entry<Member, Avaview> b) {
 					long aid = a.getKey().gobid, bid = b.getKey().gobid;
 					if (aid < bid) {
@@ -120,6 +124,7 @@ public class Partyview extends Widget {
 		}
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == leave) {
 			wdgmsg("leave");
@@ -134,6 +139,7 @@ public class Partyview extends Widget {
 		super.wdgmsg(sender, msg, args);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		update();
 		super.draw(g);

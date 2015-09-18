@@ -56,20 +56,24 @@ public class Polity extends Widget {
 			super(w, h, 20);
 		}
 
+		@Override
 		public Member listitem(int idx) {
 			return (memb.get(idx));
 		}
 
+		@Override
 		public int listitems() {
 			return (memb.size());
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 			g.chcolor(0, 0, 0, 128);
 			g.frect(Coord.z, sz);
 			g.chcolor();
 		}
 
+		@Override
 		public void drawitem(GOut g, Member m, int idx) {
 			if ((mw instanceof MemberWidget) && Utils.eq(((MemberWidget) mw).id, m.id)) {
 				drawsel(g);
@@ -84,6 +88,7 @@ public class Polity extends Widget {
 			g.aimage(rn.tex(), new Coord(0, 10), 0, 0.5);
 		}
 
+		@Override
 		public void change(Member pm) {
 			if (pm == null) {
 				Polity.this.wdgmsg("sel");
@@ -121,6 +126,7 @@ public class Polity extends Widget {
 		private int aseq = -1;
 		private Tex rauth = null;
 
+		@Override
 		public void draw(GOut g) {
 			synchronized (Polity.this) {
 				g.chcolor(0, 0, 0, 255);
@@ -142,6 +148,7 @@ public class Polity extends Widget {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "auth") {
 			synchronized (this) {
@@ -170,6 +177,7 @@ public class Polity extends Widget {
 		}
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		if (args[0] instanceof String) {
 			String p = (String) args[0];
@@ -183,6 +191,7 @@ public class Polity extends Widget {
 		super.addchild(child, args);
 	}
 
+	@Override
 	public void cdestroy(Widget w) {
 		if (w == mw) {
 			mw = null;

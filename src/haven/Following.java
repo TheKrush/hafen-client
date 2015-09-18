@@ -42,6 +42,7 @@ public class Following extends Moving {
 		this.xfname = xfname;
 	}
 
+	@Override
 	public Coord3f getc() {
 		Gob tgt = gob.glob.oc.getgob(this.tgt);
 		if (tgt == null) {
@@ -50,6 +51,7 @@ public class Following extends Moving {
 		return (tgt.getc());
 	}
 
+	@Override
 	public double getv() {
 		Gob tgt = gob.glob.oc.getgob(this.tgt);
 		if (tgt != null) {

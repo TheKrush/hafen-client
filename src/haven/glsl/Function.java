@@ -44,12 +44,14 @@ public abstract class Function {
 			this.params = params;
 		}
 
+		@Override
 		public void walk(Walker w) {
 			for (Expression param : params) {
 				w.el(param);
 			}
 		}
 
+		@Override
 		public void output(Output out) {
 			out.write(name);
 			out.write("(");
@@ -91,10 +93,12 @@ public abstract class Function {
 
 		private class Definition extends Toplevel {
 
+			@Override
 			public void walk(Walker w) {
 				w.el(code);
 			}
 
+			@Override
 			public void output(Output out) {
 				prototype(out);
 				out.write("\n");
@@ -120,6 +124,7 @@ public abstract class Function {
 				}
 			}
 			new Walker() {
+				@Override
 				public void el(Element el) {
 					if (el instanceof Call) {
 						Function fun = ((Call) el).fun();
@@ -161,6 +166,7 @@ public abstract class Function {
 			out.write(")");
 		}
 
+		@Override
 		public Type type(Expression... params) {
 			return (type);
 		}
@@ -186,6 +192,7 @@ public abstract class Function {
 			}
 		}
 
+		@Override
 		public Type type(Expression... params) {
 			if (type == null) {
 				throw (new NullPointerException("type"));

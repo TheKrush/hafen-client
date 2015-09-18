@@ -37,8 +37,10 @@ public class ColorMask extends GLState {
 
 	private static final ShaderMacro[] sh = {
 		new ShaderMacro() {
+			@Override
 			public void modify(ProgramContext prog) {
 				prog.fctx.fragcol.mod(new Macro1<Expression>() {
+					@Override
 					public Expression expand(Expression in) {
 						return (MiscLib.colblend.call(in, ccol.ref()));
 					}
@@ -51,21 +53,26 @@ public class ColorMask extends GLState {
 		this.col = Utils.c2fa(col);
 	}
 
+	@Override
 	public ShaderMacro[] shaders() {
 		return (sh);
 	}
 
+	@Override
 	public void reapply(GOut g) {
 		g.gl.glUniform4fv(g.st.prog.uniform(ccol), 1, col, 0);
 	}
 
+	@Override
 	public void apply(GOut g) {
 		reapply(g);
 	}
 
+	@Override
 	public void unapply(GOut g) {
 	}
 
+	@Override
 	public void prep(Buffer buf) {
 		buf.put(slot, this);
 	}

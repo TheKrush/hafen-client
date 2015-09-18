@@ -52,6 +52,7 @@ public class DirLight extends Light {
 		this.dir = dir.norm().to4a(0.0f);
 	}
 
+	@Override
 	public void enable(GOut g, int idx) {
 		super.enable(g, idx);
 		BGL gl = g.gl;

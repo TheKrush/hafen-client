@@ -49,10 +49,12 @@ public abstract class Message {
 	public byte[] rbuf = empty, wbuf = empty;
 
 	public static final Message nil = new Message() {
+		@Override
 		public boolean underflow(int hint) {
 			return (false);
 		}
 
+		@Override
 		public void overflow(int min) {
 			throw (new RuntimeException("nil message is not writable"));
 		}

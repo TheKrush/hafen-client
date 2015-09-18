@@ -33,10 +33,12 @@ public class Return extends Statement {
 		this.rv = rv;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		w.el(rv);
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("return ");
 		rv.output(out);

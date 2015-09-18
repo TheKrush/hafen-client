@@ -37,9 +37,11 @@ public class RenderedNormals extends FBConfig.RenderTarget {
 		if (ret == null) {
 			ret = new ShaderMacro[]{
 				new ShaderMacro() {
+					@Override
 					public void modify(final ProgramContext prog) {
 						MiscLib.frageyen(prog.fctx);
 						prog.fctx.new FragData(id) {
+							@Override
 				public Expression root() {
 								return (vec4(mul(add(MiscLib.frageyen(prog.fctx).depref(), l(1.0)), l(0.5)), l(1.0)));
 							}
@@ -54,14 +56,17 @@ public class RenderedNormals extends FBConfig.RenderTarget {
 
 	public static final GLState.Slot<GLState> slot = new GLState.Slot<GLState>(GLState.Slot.Type.SYS, GLState.class, GLFrameBuffer.slot, States.presdepth.slot);
 
+	@Override
 	public GLState state(final FBConfig cfg, final int id) {
 		return (new GLState() {
 			private final ShaderMacro[] shaders = code(id);
 
+			@Override
 			public ShaderMacro[] shaders() {
 				return (shaders);
 			}
 
+			@Override
 			public void apply(GOut g) {
 				GLFrameBuffer fb = g.st.get(GLFrameBuffer.slot);
 				if (fb != cfg.fb) {
@@ -72,10 +77,12 @@ public class RenderedNormals extends FBConfig.RenderTarget {
 				}
 			}
 
+			@Override
 			public void unapply(GOut g) {
 				g.st.cur(GLFrameBuffer.slot).mask(g, id, true);
 			}
 
+			@Override
 			public void prep(Buffer buf) {
 				buf.put(slot, this);
 			}
@@ -83,6 +90,7 @@ public class RenderedNormals extends FBConfig.RenderTarget {
 	}
 
 	public static final PView.RenderContext.DataID<RenderedNormals> id = new PView.RenderContext.DataID<RenderedNormals>() {
+		@Override
 		public RenderedNormals make(PView.RenderContext ctx) {
 			return (new RenderedNormals());
 		}

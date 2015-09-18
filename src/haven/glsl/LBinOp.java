@@ -37,6 +37,7 @@ public abstract class LBinOp extends Expression {
 		this.rhs = rhs;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		w.el(lhs);
 		w.el(rhs);
@@ -44,6 +45,7 @@ public abstract class LBinOp extends Expression {
 
 	public abstract String form();
 
+	@Override
 	public void output(Output out) {
 		out.write("(");
 		lhs.output(out);
@@ -54,6 +56,7 @@ public abstract class LBinOp extends Expression {
 
 	public static class Assign extends LBinOp {
 
+		@Override
 		public String form() {
 			return ("=");
 		}
@@ -65,6 +68,7 @@ public abstract class LBinOp extends Expression {
 
 	public static class AAdd extends LBinOp {
 
+		@Override
 		public String form() {
 			return ("+=");
 		}
@@ -76,6 +80,7 @@ public abstract class LBinOp extends Expression {
 
 	public static class ASub extends LBinOp {
 
+		@Override
 		public String form() {
 			return ("-=");
 		}
@@ -87,6 +92,7 @@ public abstract class LBinOp extends Expression {
 
 	public static class AMul extends LBinOp {
 
+		@Override
 		public String form() {
 			return ("*=");
 		}
@@ -98,6 +104,7 @@ public abstract class LBinOp extends Expression {
 
 	public static class ADiv extends LBinOp {
 
+		@Override
 		public String form() {
 			return ("/=");
 		}

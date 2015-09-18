@@ -95,33 +95,40 @@ public class Light implements Rendered {
 			this.shaders = shaders;
 		}
 
+		@Override
 		public void reapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glUniform1i(g.st.prog.uniform(Phong.nlights), g.st.get(lights).nlights);
 		}
 
+		@Override
 		public void apply(GOut g) {
 			reapply(g);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(lighting, this);
 		}
 	}
 
 	private static final ShaderMacro vlight = new ShaderMacro() {
+		@Override
 		public void modify(ProgramContext prog) {
 			new Phong(prog.vctx);
 		}
 	};
 	private static final ShaderMacro plight = new ShaderMacro() {
+		@Override
 		public void modify(ProgramContext prog) {
 			new Phong(prog.fctx);
 		}
@@ -138,18 +145,22 @@ public class Light implements Rendered {
 			shaders = new ShaderMacro[]{new Phong.CelShade(dif, spc)};
 		}
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
 		private final ShaderMacro[] shaders;
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(slot, this);
 		}
@@ -160,6 +171,7 @@ public class Light implements Rendered {
 	@Material.ResName("cel")
 	public static class $cel implements Material.ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			if (args.length < 1) {
 				return (celshade);
@@ -172,12 +184,15 @@ public class Light implements Rendered {
 	}
 
 	public static final GLState deflight = new GLState() {
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			if (buf.cfg.pref.flight.val) {
 				plights.prep(buf);
@@ -193,6 +208,7 @@ public class Light implements Rendered {
 	@Material.ResName("light")
 	public static class $light implements Material.ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			String nm = (String) args[0];
 			if (nm.equals("def")) {
@@ -216,6 +232,7 @@ public class Light implements Rendered {
 		private final List<Light> en = new ArrayList<Light>();
 		public int nlights = 0;
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			int nl = ll.size();
@@ -235,6 +252,7 @@ public class Light implements Rendered {
 			nlights = nl;
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			for (int i = 0; i < en.size(); i++) {
 				en.get(i).disable(g, i);
@@ -243,14 +261,17 @@ public class Light implements Rendered {
 			nlights = 0;
 		}
 
+		@Override
 		public int capply() {
 			return (1000);
 		}
 
+		@Override
 		public int cunapply() {
 			return (1000);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(lights, this);
 		}
@@ -282,26 +303,31 @@ public class Light implements Rendered {
 			this(Color.BLACK);
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, amb, 0);
 			gl.glLightModeli(GL2.GL_LIGHT_MODEL_COLOR_CONTROL, cc);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, defamb, 0);
 			gl.glLightModeli(GL2.GL_LIGHT_MODEL_COLOR_CONTROL, GL2.GL_SINGLE_COLOR);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(model, this);
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		LightList l = rl.state().get(lights);
 		if (l != null) {
@@ -374,6 +400,7 @@ public class Light implements Rendered {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 	}

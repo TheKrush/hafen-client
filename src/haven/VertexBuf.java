@@ -62,6 +62,7 @@ public class VertexBuf {
 
 	public abstract class Binding extends GLState {
 
+		@Override
 		public void prep(GLState.Buffer buf) {
 			buf.put(bound, this);
 		}
@@ -69,6 +70,7 @@ public class VertexBuf {
 
 	public class MemBinding extends Binding {
 
+		@Override
 		public void apply(GOut g) {
 			for (int i = 0; i < bufs.length; i++) {
 				if (bufs[i] instanceof GLArray) {
@@ -77,6 +79,7 @@ public class VertexBuf {
 			}
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			for (int i = 0; i < bufs.length; i++) {
 				if (bufs[i] instanceof GLArray) {
@@ -180,10 +183,12 @@ public class VertexBuf {
 			this.data = data;
 		}
 
+		@Override
 		public FloatBuffer data() {
 			return (data);
 		}
 
+		@Override
 		public FloatBuffer direct() {
 			if (!data.isDirect()) {
 				data = Utils.bufcp(data);
@@ -191,6 +196,7 @@ public class VertexBuf {
 			return (data);
 		}
 
+		@Override
 		public int elsize() {
 			return (4);
 		}
@@ -209,10 +215,12 @@ public class VertexBuf {
 			this.data = data;
 		}
 
+		@Override
 		public IntBuffer data() {
 			return (data);
 		}
 
+		@Override
 		public IntBuffer direct() {
 			if (!data.isDirect()) {
 				data = Utils.bufcp(data);
@@ -220,6 +228,7 @@ public class VertexBuf {
 			return (data);
 		}
 
+		@Override
 		public int elsize() {
 			return (4);
 		}
@@ -236,10 +245,12 @@ public class VertexBuf {
 			this(loadbuf(Utils.wfbuf(nv * 3), buf));
 		}
 
+		@Override
 		public VertexArray dup() {
 			return (new VertexArray(Utils.bufcp(data)));
 		}
 
+		@Override
 		public void bind(GOut g, boolean asvbo) {
 			BGL gl = g.gl;
 			if (asvbo) {
@@ -253,10 +264,12 @@ public class VertexBuf {
 			gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 		}
 
+		@Override
 		public void unbind(GOut g) {
 			g.gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 		}
 
+		@Override
 		public Object progid(GOut g) {
 			return (null);
 		}
@@ -264,6 +277,7 @@ public class VertexBuf {
 		/* XXX: It feels very much like morphing should be layered
 		 * strictly above VertexBuf, but I can't quite see an
 		 * alternative to this at this point. */
+		@Override
 		public MorphedMesh.MorphType morphtype() {
 			return (MorphedMesh.MorphType.POS);
 		}
@@ -280,10 +294,12 @@ public class VertexBuf {
 			this(loadbuf(Utils.wfbuf(nv * 3), buf));
 		}
 
+		@Override
 		public NormalArray dup() {
 			return (new NormalArray(Utils.bufcp(data)));
 		}
 
+		@Override
 		public void bind(GOut g, boolean asvbo) {
 			BGL gl = g.gl;
 			if (asvbo) {
@@ -297,14 +313,17 @@ public class VertexBuf {
 			gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
 		}
 
+		@Override
 		public void unbind(GOut g) {
 			g.gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
 		}
 
+		@Override
 		public Object progid(GOut g) {
 			return (null);
 		}
 
+		@Override
 		public MorphedMesh.MorphType morphtype() {
 			return (MorphedMesh.MorphType.DIR);
 		}
@@ -325,6 +344,7 @@ public class VertexBuf {
 			return (new ColorArray(Utils.bufcp(data)));
 		}
 
+		@Override
 		public void bind(GOut g, boolean asvbo) {
 			BGL gl = g.gl;
 			if (asvbo) {
@@ -338,10 +358,12 @@ public class VertexBuf {
 			gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 		}
 
+		@Override
 		public void unbind(GOut g) {
 			g.gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
 		}
 
+		@Override
 		public Object progid(GOut g) {
 			return (null);
 		}
@@ -362,6 +384,7 @@ public class VertexBuf {
 			return (new TexelArray(Utils.bufcp(data)));
 		}
 
+		@Override
 		public void bind(GOut g, boolean asvbo) {
 			BGL gl = g.gl;
 			if (asvbo) {
@@ -375,10 +398,12 @@ public class VertexBuf {
 			gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 		}
 
+		@Override
 		public void unbind(GOut g) {
 			g.gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 		}
 
+		@Override
 		public Object progid(GOut g) {
 			return (null);
 		}
@@ -394,6 +419,7 @@ public class VertexBuf {
 			this.attr = attr;
 		}
 
+		@Override
 		public void bind(GOut g, boolean asvbo) {
 			if ((bound = g.st.prog.cattrib(attr)) != null) {
 				BGL gl = g.gl;
@@ -409,6 +435,7 @@ public class VertexBuf {
 			}
 		}
 
+		@Override
 		public void unbind(GOut g) {
 			if (bound != null) {
 				g.gl.glDisableVertexAttribArray(bound);
@@ -416,6 +443,7 @@ public class VertexBuf {
 			}
 		}
 
+		@Override
 		public Object progid(GOut g) {
 			/* XXX: This is not a good ID, as it doesn't intern
 			 * locations in various programs. */
@@ -498,6 +526,7 @@ public class VertexBuf {
 					throw (new Error("No proper constructor for res-consable vertex-array class " + cl, e));
 				}
 				rnames.put(nm, new ArrayCons() {
+					@Override
 					public void cons(Collection<AttribArray> dst, Resource res, Message buf, int num) {
 						dst.add(Utils.construct(cons, res, buf, num));
 					}
@@ -534,6 +563,7 @@ public class VertexBuf {
 			this.b = new VertexBuf(bufs.toArray(new AttribArray[0]));
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -541,6 +571,7 @@ public class VertexBuf {
 	@Resource.LayerName("vbuf")
 	public static class Legacy implements Resource.LayerFactory<VertexRes> {
 
+		@Override
 		public VertexRes cons(Resource res, Message buf) {
 			ArrayList<AttribArray> bufs = new ArrayList<AttribArray>();
 			int fl = buf.uint8();

@@ -43,6 +43,7 @@ public abstract class Symbol {
 			this("g");
 		}
 
+		@Override
 		public String name(Context ctx) {
 			String nm = ctx.symtab.get(this);
 			if (nm == null) {
@@ -56,6 +57,7 @@ public abstract class Symbol {
 			return (nm);
 		}
 
+		@Override
 		public String toString() {
 			return ("#:" + prefix);
 		}
@@ -69,6 +71,7 @@ public abstract class Symbol {
 			this.name = name;
 		}
 
+		@Override
 		public String name(Context ctx) {
 			Symbol p = ctx.rsymtab.get(name);
 			if (p == null) {
@@ -80,6 +83,7 @@ public abstract class Symbol {
 			return (name);
 		}
 
+		@Override
 		public String toString() {
 			return (name);
 		}
@@ -97,6 +101,7 @@ public abstract class Symbol {
 			this("s_g");
 		}
 
+		@Override
 		public String name(Context ctx) {
 			if (!(ctx instanceof ShaderContext)) {
 				throw (new ClassCastException("Program-shared symbols cannot be used outside a program context"));
@@ -123,6 +128,7 @@ public abstract class Symbol {
 			return (nm);
 		}
 
+		@Override
 		public String toString() {
 			return ("#s:" + prefix);
 		}

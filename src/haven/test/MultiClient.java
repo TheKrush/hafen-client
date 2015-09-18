@@ -39,6 +39,7 @@ public class MultiClient extends BaseTest {
 		this.started = 0;
 	}
 
+	@Override
 	public void run() {
 		long lastck = System.currentTimeMillis();
 		long laststarted = 0;
@@ -49,6 +50,7 @@ public class MultiClient extends BaseTest {
 				if ((started < num) && (now - laststarted >= delay)) {
 					TestClient c = new TestClient("test" + (started + 1));
 					new CharSelector(c, null, null) {
+						@Override
 						public void succeed() {
 							System.out.println("Selected character");
 						}

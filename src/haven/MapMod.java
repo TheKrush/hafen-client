@@ -43,6 +43,7 @@ public class MapMod extends Window implements MapView.Grabber {
 	@RName("mapmod")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new MapMod());
 		}
@@ -59,6 +60,7 @@ public class MapMod extends Window implements MapView.Grabber {
 		tilenm.canactivate = true;
 	}
 
+	@Override
 	protected void added() {
 		map = ui.sess.glob.map;
 		mv = getparent(GameUI.class).map;
@@ -67,6 +69,7 @@ public class MapMod extends Window implements MapView.Grabber {
 		mv.grab(grab);
 	}
 
+	@Override
 	public void destroy() {
 		mv.disol(17);
 		if (!walkmod) {
@@ -78,6 +81,7 @@ public class MapMod extends Window implements MapView.Grabber {
 		super.destroy();
 	}
 
+	@Override
 	public boolean mmousedown(Coord mc, int button) {
 		if (button != 1) {
 			return (false);
@@ -93,16 +97,19 @@ public class MapMod extends Window implements MapView.Grabber {
 		return (true);
 	}
 
+	@Override
 	public boolean mmousewheel(Coord mc, int amount) {
 		return (false);
 	}
 
+	@Override
 	public boolean mmouseup(Coord mc, int button) {
 		grab.mv = false;
 		mgrab.remove();
 		return (true);
 	}
 
+	@Override
 	public void mmousemove(Coord mc) {
 		Coord tc = mc.div(MCache.tilesz);
 		Coord c1 = new Coord(0, 0), c2 = new Coord(0, 0);
@@ -126,6 +133,7 @@ public class MapMod extends Window implements MapView.Grabber {
 		text.settext(String.format(fmt, c2.x - c1.x + 1, c2.y - c1.y + 1));
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == btn) {
 			if ((c1 != null) && (c2 != null)) {

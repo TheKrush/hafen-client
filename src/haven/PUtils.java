@@ -306,6 +306,7 @@ public class PUtils {
 			this.col = col;
 		}
 
+		@Override
 		public BufferedImage proc(Text text) {
 			return (rasterimg(blurmask2(text.img.getRaster(), grad, brad, col)));
 		}
@@ -320,6 +321,7 @@ public class PUtils {
 			this.tex = tex;
 		}
 
+		@Override
 		public BufferedImage proc(Text text) {
 			tilemod(text.img.getRaster(), tex.getRaster(), Coord.z);
 			return (text.img);
@@ -368,10 +370,12 @@ public class PUtils {
 	}
 
 	public static final Convolution box = new Convolution() {
+		@Override
 		public double cval(double td) {
 			return (((td >= -0.5) && (td < 0.5)) ? 1.0 : 0.0);
 		}
 
+		@Override
 		public double support() {
 			return (0.5);
 		}
@@ -385,6 +389,7 @@ public class PUtils {
 			this.sz = sz;
 		}
 
+		@Override
 		public double cval(double td) {
 			if (td == 0) {
 				return (1.0);
@@ -395,6 +400,7 @@ public class PUtils {
 			return ((Math.sin(tdp) / tdp) * (0.5 + (0.5 * Math.cos(tdp / sz))));
 		}
 
+		@Override
 		public double support() {
 			return (sz);
 		}
@@ -408,6 +414,7 @@ public class PUtils {
 			this.sz = sz;
 		}
 
+		@Override
 		public double cval(double td) {
 			if (td == 0) {
 				return (1.0);
@@ -418,6 +425,7 @@ public class PUtils {
 			return ((Math.sin(tdp) / tdp) * (0.54 + (0.46 * Math.cos(tdp / sz))));
 		}
 
+		@Override
 		public double support() {
 			return (sz);
 		}
@@ -431,6 +439,7 @@ public class PUtils {
 			this.sz = sz;
 		}
 
+		@Override
 		public double cval(double td) {
 			if (td == 0) {
 				return (1.0);
@@ -442,6 +451,7 @@ public class PUtils {
 			return ((Math.sin(tdp) / tdp) * (Math.sin(wtdp) / wtdp));
 		}
 
+		@Override
 		public double support() {
 			return (sz);
 		}

@@ -34,6 +34,7 @@ public class Img extends Widget {
 	@RName("img")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Indir<Resource> res;
 			int a = 0;
@@ -52,6 +53,7 @@ public class Img extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if (res != null) {
 			try {
@@ -78,6 +80,7 @@ public class Img extends Widget {
 		this.img = null;
 	}
 
+	@Override
 	public void uimsg(String name, Object... args) {
 		if (name == "ch") {
 			if (args[0] instanceof String) {
@@ -90,6 +93,7 @@ public class Img extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (hit) {
 			wdgmsg("click", c, button, ui.modflags());

@@ -61,10 +61,12 @@ public class I2<T> implements Iterator<T> {
 		}
 	}
 
+	@Override
 	public boolean hasNext() {
 		return (hco);
 	}
 
+	@Override
 	public T next() {
 		if (!hco) {
 			throw (new NoSuchElementException());
@@ -74,6 +76,7 @@ public class I2<T> implements Iterator<T> {
 		return (ret);
 	}
 
+	@Override
 	public void remove() {
 		throw (new UnsupportedOperationException());
 	}

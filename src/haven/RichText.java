@@ -131,18 +131,22 @@ public class RichText extends Text {
 			}
 		}
 
+		@Override
 		public int width() {
 			return (img.getWidth());
 		}
 
+		@Override
 		public int height() {
 			return (img.getHeight());
 		}
 
+		@Override
 		public int baseline() {
 			return (img.getHeight() - 1);
 		}
 
+		@Override
 		public void render(Graphics2D g) {
 			g.drawImage(img, x, y, null);
 		}
@@ -169,10 +173,12 @@ public class RichText extends Text {
 			return (lm);
 		}
 
+		@Override
 		public int height() {
 			return ((int) lm().getHeight());
 		}
 
+		@Override
 		public int baseline() {
 			return ((int) lm().getAscent());
 		}
@@ -203,6 +209,7 @@ public class RichText extends Text {
 			return (str.getIterator(null, start, end));
 		}
 
+		@Override
 		public void append(Part p) {
 			if (next == null) {
 				if (p instanceof TextPart) {
@@ -240,6 +247,7 @@ public class RichText extends Text {
 			return (tm().getAdvanceBetween(start + from, start + to));
 		}
 
+		@Override
 		public int width() {
 			if (start == end) {
 				return (0);
@@ -247,6 +255,7 @@ public class RichText extends Text {
 			return ((int) tm().getAdvanceBetween(start, end));
 		}
 
+		@Override
 		public int height() {
 			if (start == end) {
 				return (0);
@@ -254,6 +263,7 @@ public class RichText extends Text {
 			return ((int) (tl().getAscent() + tl().getDescent() + tl().getLeading()));
 		}
 
+		@Override
 		public int baseline() {
 			if (start == end) {
 				return (0);
@@ -270,6 +280,7 @@ public class RichText extends Text {
 			return (p1);
 		}
 
+		@Override
 		public Part split(int w) {
 			int l = start, r = end;
 			while (true) {
@@ -298,6 +309,7 @@ public class RichText extends Text {
 			return (split2(l, l));
 		}
 
+		@Override
 		public void render(Graphics2D g) {
 			if (start == end) {
 				return;

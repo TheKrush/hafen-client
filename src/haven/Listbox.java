@@ -60,6 +60,7 @@ public abstract class Listbox<T> extends ListWidget<T> {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		sb.max = listitems() - h;
 		drawbg(g);
@@ -82,6 +83,7 @@ public abstract class Listbox<T> extends ListWidget<T> {
 		super.draw(g);
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		sb.ch(amount);
 		return (true);
@@ -101,6 +103,7 @@ public abstract class Listbox<T> extends ListWidget<T> {
 		return (listitem(idx));
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (super.mousedown(c, button)) {
 			return (true);

@@ -62,6 +62,7 @@ public abstract class Profile {
 			}
 		}
 
+		@Override
 		public String toString() {
 			StringBuilder buf = new StringBuilder();
 			for (int i = 0; i < prt.length; i++) {

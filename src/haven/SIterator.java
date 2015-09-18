@@ -45,11 +45,13 @@ public abstract class SIterator<T> implements Iterator<T> {
 		}
 	}
 
+	@Override
 	public boolean hasNext() {
 		ref();
 		return (st == 1);
 	}
 
+	@Override
 	public T next() {
 		ref();
 		if (st == 2) {
@@ -59,6 +61,7 @@ public abstract class SIterator<T> implements Iterator<T> {
 		return (n);
 	}
 
+	@Override
 	public void remove() {
 		throw (new UnsupportedOperationException());
 	}

@@ -104,21 +104,26 @@ public abstract class Tex {
 	}
 
 	public static final Tex empty = new Tex(Coord.z) {
+		@Override
 		public void render(GOut g, Coord c, Coord ul, Coord br, Coord sz) {
 		}
 
+		@Override
 		public float tcx(int x) {
 			return (0);
 		}
 
+		@Override
 		public float tcy(int y) {
 			return (0);
 		}
 
+		@Override
 		public GLState draw() {
 			return (null);
 		}
 
+		@Override
 		public GLState clip() {
 			return (null);
 		}

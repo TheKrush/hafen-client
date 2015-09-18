@@ -63,6 +63,7 @@ public class PosLight extends Light {
 		aq = q;
 	}
 
+	@Override
 	public void enable(GOut g, int idx) {
 		super.enable(g, idx);
 		BGL gl = g.gl;
@@ -72,6 +73,7 @@ public class PosLight extends Light {
 		gl.glLightf(GL2.GL_LIGHT0 + idx, GL2.GL_QUADRATIC_ATTENUATION, aq);
 	}
 
+	@Override
 	public void disable(GOut g, int idx) {
 		BGL gl = g.gl;
 		gl.glLightf(GL2.GL_LIGHT0 + idx, GL2.GL_CONSTANT_ATTENUATION, 1.0f);

@@ -65,6 +65,7 @@ public class HackThread extends Thread {
 		}
 	}
 
+	@Override
 	public void interrupt() {
 		super.interrupt();
 		synchronized (ils) {

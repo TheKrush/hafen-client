@@ -70,6 +70,7 @@ public class CaveTile extends Tiler {
 	@ResName("cave")
 	public static class Factory implements Tiler.Factory {
 
+		@Override
 		public Tiler create(int id, Resource.Tileset set) {
 			Material wtex = null;
 			for (Object rdesc : set.ta) {
@@ -99,6 +100,7 @@ public class CaveTile extends Tiler {
 		}
 	}
 
+	@Override
 	public void model(MapMesh m, Random rnd, Coord lc, Coord gc) {
 		super.model(m, rnd, lc, gc);
 		Walls w = null;
@@ -132,6 +134,7 @@ public class CaveTile extends Tiler {
 		}
 	}
 
+	@Override
 	public void lay(MapMesh m, Random rnd, Coord lc, Coord gc) {
 		Walls w = null;
 		for (int i = 0; i < 4; i++) {
@@ -146,6 +149,7 @@ public class CaveTile extends Tiler {
 		}
 	}
 
+	@Override
 	public void trans(MapMesh m, Random rnd, Tiler gt, Coord lc, Coord gc, int z, int bmask, int cmask) {
 	}
 }

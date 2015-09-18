@@ -113,6 +113,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 
 	{
 		cmdmap.put("sz", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				if (args.length == 3) {
 					int w = Integer.parseInt(args[1]),
@@ -132,6 +133,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 			}
 		});
 		cmdmap.put("fsmode", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) throws Exception {
 				if (args.length == 3) {
 					DisplayMode mode = findmode(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
@@ -144,17 +146,20 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 			}
 		});
 		cmdmap.put("fs", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				if (args.length >= 2) {
 					Runnable r;
 					if (Utils.atoi(args[1]) != 0) {
 						r = new Runnable() {
+							@Override
 							public void run() {
 								setfs();
 							}
 						};
 					} else {
 						r = new Runnable() {
+							@Override
 							public void run() {
 								setwnd();
 							}
@@ -166,6 +171,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		});
 	}
 
+	@Override
 	public Map<String, Console.Command> findcmds() {
 		return (cmdmap);
 	}
@@ -221,14 +227,17 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		setVisible(true);
 		p.init();
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				g.interrupt();
 			}
 
+			@Override
 			public void windowActivated(WindowEvent e) {
 				p.bgmode = false;
 			}
 
+			@Override
 			public void windowDeactivated(WindowEvent e) {
 				p.bgmode = true;
 			}
@@ -253,6 +262,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		}
 	}
 
+	@Override
 	public void run() {
 		if (Thread.currentThread() != this.mt) {
 			throw (new RuntimeException("MainFrame is being run from an invalid context"));
@@ -385,6 +395,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		/* Work around a stupid deadlock bug in AWT. */
 		try {
 			javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
 				public void run() {
 					PrintStream bitbucket = new PrintStream(new ByteArrayOutputStream());
 					bitbucket.print(LoginScreen.textf);
@@ -451,12 +462,14 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		}
 		final haven.error.ErrorHandler hg = new haven.error.ErrorHandler(url);
 		hg.sethandler(new haven.error.ErrorGui(null) {
+			@Override
 			public void errorsent() {
 				hg.interrupt();
 			}
 		});
 		g = hg;
 		Thread main = new HackThread(g, new Runnable() {
+			@Override
 			public void run() {
 				main2(args);
 			}

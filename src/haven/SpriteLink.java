@@ -36,6 +36,7 @@ public class SpriteLink extends Resource.Layer {
 	public final Factory f;
 
 	public static final Factory sfact = new Factory() {
+		@Override
 		public Sprite create(Owner owner, Resource res, Message sdt) {
 			SpriteLink link = res.layer(SpriteLink.class);
 			if (link != null) {
@@ -61,6 +62,7 @@ public class SpriteLink extends Resource.Layer {
 			def = refs.get(buf.int16());
 		}
 
+		@Override
 		public Sprite create(Owner owner, Resource res, Message sdt) {
 			Gob gob = (Gob) owner;
 			Glob glob = gob.glob;
@@ -84,10 +86,12 @@ public class SpriteLink extends Resource.Layer {
 			this.res = res.pool.load(resnm, resver);
 		}
 
+		@Override
 		public Sprite create(Owner owner, Resource res, Message sdt) {
 			return (Sprite.create(owner, this.res.get(), sdt));
 		}
 
+		@Override
 		public String toString() {
 			return (res.toString());
 		}
@@ -122,6 +126,7 @@ public class SpriteLink extends Resource.Layer {
 		this.f = refs.get(buf.int16());
 	}
 
+	@Override
 	public void init() {
 	}
 }

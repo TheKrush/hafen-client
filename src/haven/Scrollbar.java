@@ -43,6 +43,7 @@ public class Scrollbar extends Widget {
 		return (max > min);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if (vis()) {
 			int cx = (sflarp.sz().x / 2) - (schain.sz().x / 2);
@@ -55,6 +56,7 @@ public class Scrollbar extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
@@ -67,6 +69,7 @@ public class Scrollbar extends Widget {
 		return (true);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (drag != null) {
 			double a = (double) (c.y - (sflarp.sz().y / 2)) / (double) (sz.y - sflarp.sz().y);
@@ -81,6 +84,7 @@ public class Scrollbar extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if (button != 1) {
 			return (false);

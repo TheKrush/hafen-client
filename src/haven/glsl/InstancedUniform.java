@@ -42,15 +42,18 @@ public abstract class InstancedUniform {
 	public InstancedUniform(Type type, String infix, Slot... deps) {
 		this.deps = deps;
 		uniform = new Uniform.AutoApply(type, infix, deps) {
+			@Override
 			public void apply(GOut g, VarID location) {
 				InstancedUniform.this.apply(g, location);
 			}
 		};
 		attrib = new Attribute.AutoInstanced(type, infix) {
+			@Override
 			public GLBuffer bindiarr(GOut g, List<Buffer> inst, GLBuffer prev) {
 				return (InstancedUniform.this.bindiarr(g, inst, prev));
 			}
 
+			@Override
 			public void unbindiarr(GOut g, GLBuffer buf) {
 				InstancedUniform.this.unbindiarr(g, buf);
 			}
@@ -61,6 +64,7 @@ public abstract class InstancedUniform {
 
 	public Expression ref() {
 		return (new PostProc.AutoMacro(refproc) {
+			@Override
 			public Expression expand(Context ctx) {
 				if (!((ShaderContext) ctx).prog.instanced) {
 					return (uniform.ref());
@@ -85,10 +89,12 @@ public abstract class InstancedUniform {
 
 		public abstract Matrix4f forstate(GOut g, Buffer buf);
 
+		@Override
 		protected void apply(GOut g, VarID loc) {
 			g.gl.glUniformMatrix4fv(loc, 1, false, forstate(g, g.st.state()).m, 0);
 		}
 
+		@Override
 		protected GLBuffer bindiarr(GOut g, List<Buffer> inst, GLBuffer prev) {
 			float[] buf = new float[inst.size() * 16];
 			int i = 0;
@@ -117,6 +123,7 @@ public abstract class InstancedUniform {
 			return (bo);
 		}
 
+		@Override
 		protected void unbindiarr(GOut g, GLBuffer buf) {
 			BGL gl = g.gl;
 			VarID loc = g.st.prog.attrib(attrib);

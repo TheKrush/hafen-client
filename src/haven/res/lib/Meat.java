@@ -52,6 +52,7 @@ public class Meat extends Layered implements DynName {
         this(var1, decode(var1.glob(), var3));
     }
 
+		@Override
     public String name() {
         return this.name;
     }

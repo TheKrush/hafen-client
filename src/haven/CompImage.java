@@ -66,10 +66,12 @@ public class CompImage {
 
 	public static Image mk(final BufferedImage img) {
 		return (new Image() {
+			@Override
 			public void draw(Graphics g, Coord c) {
 				g.drawImage(img, c.x, c.y, null);
 			}
 
+			@Override
 			public Coord sz() {
 				return (PUtils.imgsz(img));
 			}
@@ -83,10 +85,12 @@ public class CompImage {
 
 	public static Image mk(final CompImage img) {
 		return (new Image() {
+			@Override
 			public void draw(Graphics g, Coord c) {
 				img.compose(g, c);
 			}
 
+			@Override
 			public Coord sz() {
 				return (img.sz);
 			}

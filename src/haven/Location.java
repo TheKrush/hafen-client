@@ -58,12 +58,15 @@ public class Location extends Transform {
 			return (loc.fin(p.fin(o)));
 		}
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(Buffer b) {
 			throw (new RuntimeException("Location chains should not be applied directly."));
 		}
@@ -77,6 +80,7 @@ public class Location extends Transform {
 			return (null);
 		}
 
+		@Override
 		public String toString() {
 			String ret = loc.toString();
 			if (p != null) {
@@ -87,35 +91,42 @@ public class Location extends Transform {
 
 		public static final Instancer<Chain> instancer = new Instancer<Chain>() {
 			final Chain instanced = new Chain(null, null) {
+				@Override
 				public Matrix4f fin(Matrix4f o) {
 					throw (new RuntimeException("Current in instanced drawing; cannot finalize a single location"));
 				}
 
+				@Override
 				public String toString() {
 					return ("instanced location");
 				}
 
 				final haven.glsl.ShaderMacro[] shaders = {mkinstanced};
 
+				@Override
 				public haven.glsl.ShaderMacro[] shaders() {
 					return (shaders);
 				}
 			};
 
+			@Override
 			public Chain inststate(Chain[] in) {
 				return (instanced);
 			}
 		};
 	}
 
+	@Override
 	public void apply(GOut g) {
 		throw (new RuntimeException("Locations should not be applied directly."));
 	}
 
+	@Override
 	public void unapply(GOut g) {
 		throw (new RuntimeException("Locations should not be applied directly."));
 	}
 
+	@Override
 	public void prep(Buffer b) {
 		Chain p = b.get(PView.loc);
 		b.put(PView.loc, new Chain(this, p));
@@ -137,6 +148,7 @@ public class Location extends Transform {
 
 	public static GLState goback(final String id) {
 		return (new GLState.Abstract() {
+			@Override
 			public void prep(Buffer buf) {
 				goback(buf, id);
 			}
@@ -154,6 +166,7 @@ public class Location extends Transform {
 	public static final Location onlyxl = new Location(Matrix4f.id) {
 		private Matrix4f lp = null, fin;
 
+		@Override
 		public Matrix4f fin(Matrix4f p) {
 			if (p != lp) {
 				fin = Matrix4f.identity();

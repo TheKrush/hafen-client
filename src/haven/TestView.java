@@ -52,12 +52,14 @@ public class TestView extends PView {
 		setcanfocus(true);
 	}
 
+	@Override
 	protected Camera camera() {
 		return (camera);
 	}
 
 	public static class Cube implements Rendered {
 
+		@Override
 		public void draw(GOut g) {
 			g.apply();
 			BGL gl = g.gl;
@@ -107,12 +109,14 @@ public class TestView extends PView {
 			gl.glEnd();
 		}
 
+		@Override
 		public boolean setup(RenderList rls) {
 			rls.state().put(States.color, States.vertexcolor);
 			return (true);
 		}
 	}
 
+	@Override
 	protected void setup(RenderList rls) {
 		int i = 0;
 		for (FastMesh m : tmesh) {
@@ -125,6 +129,7 @@ public class TestView extends PView {
 		rls.add(new Cube(), Location.xlate(new Coord3f(1.5f, 0, 0)));
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (c.x < 0 || c.x >= sz.x || c.y < 0 || c.y >= sz.y) {
 			return;
@@ -133,6 +138,7 @@ public class TestView extends PView {
 		camera.a = (float) Math.PI * 2 * ((float) c.x / (float) sz.x);
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		float d = camera.dist + (amount * 5);
 		if (d < 5) {
@@ -142,6 +148,7 @@ public class TestView extends PView {
 		return (true);
 	}
 
+	@Override
 	public boolean type(char key, java.awt.event.KeyEvent ev) {
 		if (key == ' ') {
 			sel = -1;

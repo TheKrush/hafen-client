@@ -52,6 +52,7 @@ public class HSlider extends Widget {
 		this.max = max;
 	}
 
+	@Override
 	public void draw(GOut g) {
 		int cy = (sflarp.sz().y - schain.sz().y) / 2;
 		for (int x = 0; x < sz.x; x += schain.sz().x) {
@@ -61,6 +62,7 @@ public class HSlider extends Widget {
 		g.image(sflarp, new Coord(fx, 0));
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
@@ -70,6 +72,7 @@ public class HSlider extends Widget {
 		return (true);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (drag != null) {
 			double a = (double) (c.x - (sflarp.sz().x / 2)) / (double) (sz.x - sflarp.sz().x);
@@ -84,6 +87,7 @@ public class HSlider extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if (button != 1) {
 			return (false);

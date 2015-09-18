@@ -37,6 +37,7 @@ public class Label extends Widget {
 	@RName("lbl")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			if (args.length > 1) {
 				return (new Label((String) args[0], (Integer) args[1]));
@@ -46,6 +47,7 @@ public class Label extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.image(text.tex(), Coord.z);
 	}
@@ -83,6 +85,7 @@ public class Label extends Widget {
 		sz = this.text.sz();
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "set") {
 			settext((String) args[0]);

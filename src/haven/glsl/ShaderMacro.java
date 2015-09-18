@@ -154,6 +154,7 @@ public interface ShaderMacro {
 			return (ret);
 		}
 
+		@Override
 		public void dispose() {
 			synchronized (this) {
 				super.dispose();
@@ -167,6 +168,7 @@ public interface ShaderMacro {
 			}
 		}
 
+		@Override
 		protected void link(GOut g) {
 			super.link(g);
 			for (Uniform var : built.uniforms) {

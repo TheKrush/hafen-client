@@ -37,6 +37,7 @@ public abstract class BaseTest implements Runnable {
 		Resource.loadergroup = tg;
 		Audio.enabled = false;
 		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
 			public void run() {
 				printf("Terminating test upon JVM shutdown...");
 				BaseTest.this.stop();

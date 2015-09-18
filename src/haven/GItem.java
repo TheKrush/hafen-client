@@ -43,6 +43,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 	@RName("item")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			int res = (Integer) args[0];
 			Message sdt = (args.length > 1) ? new MessageBuf((byte[]) args[1]) : Message.nil;
@@ -69,6 +70,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 			this.num = num;
 		}
 
+		@Override
 		public int itemnum() {
 			return (num);
 		}
@@ -85,6 +87,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 
 	private Random rnd = null;
 
+	@Override
 	public Random mkrandoom() {
 		if (rnd == null) {
 			rnd = new Random();
@@ -92,10 +95,12 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 		return (rnd);
 	}
 
+	@Override
 	public Resource getres() {
 		return (res.get());
 	}
 
+	@Override
 	public Glob glob() {
 		return (ui.sess.glob);
 	}
@@ -119,6 +124,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 		return "";
 	}
 
+	@Override
 	public void tick(double dt) {
 		GSprite spr = spr();
 		if (spr != null) {
@@ -126,6 +132,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 		}
 	}
 
+	@Override
 	public List<ItemInfo> info() {
 		if (info == null) {
 			info = ItemInfo.buildinfo(this, rawinfo);
@@ -133,10 +140,12 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 		return (info);
 	}
 
+	@Override
 	public Resource resource() {
 		return (res.get());
 	}
 
+	@Override
 	public GSprite sprite() {
 		if (spr == null) {
 			throw (new Loading("Still waiting for sprite to be constructed"));
@@ -144,6 +153,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 		return (spr);
 	}
 
+	@Override
 	public void uimsg(String name, Object... args) {
 		if (name == "num") {
 			num = (Integer) args[0];

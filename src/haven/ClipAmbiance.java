@@ -55,10 +55,12 @@ public class ClipAmbiance implements Rendered {
 			this.desc = desc;
 		}
 
+		@Override
 		public int hashCode() {
 			return (desc.hashCode());
 		}
 
+		@Override
 		public boolean equals(Object other) {
 			return ((other instanceof Glob) && (((Glob) other).desc == this.desc));
 		}
@@ -68,6 +70,7 @@ public class ClipAmbiance implements Rendered {
 			final VolAdjust[] clist = cur[chan];
 			synchronized (this) {
 				clist[idx] = new VolAdjust(new Audio.Monitor(clip.stream()) {
+					@Override
 					protected void eof() {
 						synchronized (Glob.this) {
 							clist[idx] = null;
@@ -147,6 +150,7 @@ public class ClipAmbiance implements Rendered {
 			}
 		}
 
+		@Override
 		public boolean cycle(ActAudio list) {
 			double now = System.currentTimeMillis() / 1000.0;
 			double td = Math.max(now - lastupd, 0.0);
@@ -204,6 +208,7 @@ public class ClipAmbiance implements Rendered {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.apply();
 		if ((glob == null) || glob.dead) {
@@ -223,6 +228,7 @@ public class ClipAmbiance implements Rendered {
 		glob.add(desc, svol * bvol);
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		return (true);
 	}
@@ -264,6 +270,7 @@ public class ClipAmbiance implements Rendered {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 	}

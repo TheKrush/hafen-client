@@ -58,6 +58,7 @@ public class AlphaTex extends GLState {
 			ipol = Interpol.CENTROID;
 		}
 
+		@Override
 		protected Expression root(VertexContext vctx) {
 			return (clipc.ref());
 		}
@@ -65,8 +66,10 @@ public class AlphaTex extends GLState {
 
 	private static Value value(FragmentContext fctx) {
 		return (fctx.uniform.ext(ctex, new ValBlock.Factory() {
+			@Override
 			public Value make(ValBlock vals) {
 				return (vals.new Value(VEC4) {
+					@Override
 			    public Expression root() {
 						return (texture2D(ctex.ref(), fc.ref()));
 					}
@@ -75,10 +78,12 @@ public class AlphaTex extends GLState {
 		}));
 	}
 	private static final ShaderMacro main = new ShaderMacro() {
+		@Override
 		public void modify(ProgramContext prog) {
 			final Value val = value(prog.fctx);
 			val.force();
 			prog.fctx.fragcol.mod(new Macro1<Expression>() {
+				@Override
 				public Expression expand(Expression in) {
 					return (mul(in, val.ref()));
 				}
@@ -86,10 +91,12 @@ public class AlphaTex extends GLState {
 		}
 	};
 	private static final ShaderMacro clip = new ShaderMacro() {
+		@Override
 		public void modify(ProgramContext prog) {
 			final Value val = value(prog.fctx);
 			val.force();
 			prog.fctx.mainmod(new CodeMacro() {
+				@Override
 				public void expand(Block blk) {
 					blk.add(new If(lt(pick(val.ref(), "a"), cclip.ref()),
 									new Discard()));
@@ -101,6 +108,7 @@ public class AlphaTex extends GLState {
 	private static final ShaderMacro[] shnc = {main};
 	private static final ShaderMacro[] shwc = {main, clip};
 
+	@Override
 	public ShaderMacro[] shaders() {
 		return ((cthr > 0) ? shwc : shnc);
 	}
@@ -109,6 +117,7 @@ public class AlphaTex extends GLState {
 		return (true);
 	}
 
+	@Override
 	public void reapply(GOut g) {
 		g.gl.glUniform1i(g.st.prog.uniform(ctex), sampler.id);
 		if (cthr > 0) {
@@ -116,16 +125,19 @@ public class AlphaTex extends GLState {
 		}
 	}
 
+	@Override
 	public void apply(GOut g) {
 		sampler = TexGL.lbind(g, tex);
 		reapply(g);
 	}
 
+	@Override
 	public void unapply(GOut g) {
 		sampler.ufree(g);
 		sampler = null;
 	}
 
+	@Override
 	public void prep(Buffer buf) {
 		buf.put(slot, this);
 	}

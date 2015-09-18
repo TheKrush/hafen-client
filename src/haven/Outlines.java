@@ -36,6 +36,7 @@ public class Outlines implements Rendered {
 
 	private boolean symmetric;
 
+	@Override
 	public void draw(GOut g) {
 	}
 
@@ -119,8 +120,10 @@ public class Outlines implements Rendered {
 				}
 			};
 
+			@Override
 			public void modify(ProgramContext prog) {
 				prog.fctx.fragcol.mod(new Macro1<Expression>() {
+					@Override
 					public Expression expand(Expression in) {
 						Expression of = (!ms) ? ofac.call(l(-1)) : msfac.call();
 						return (vec4(col3(color), mix(l(0.0), l(1.0), of)));
@@ -143,6 +146,7 @@ public class Outlines implements Rendered {
 		this.symmetric = symmetric;
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		final PView.ConfContext ctx = (PView.ConfContext) rl.state().get(PView.ctx);
 		final RenderedNormals nrm = ctx.data(RenderedNormals.id);
@@ -154,12 +158,14 @@ public class Outlines implements Rendered {
 			private TexUnit tnrm;
 			private TexUnit tdep;
 
+			@Override
 			public void reapply(GOut g) {
 				BGL gl = g.gl;
 				gl.glUniform1i(g.st.prog.uniform(!ms ? snrm : msnrm), tnrm.id);
 				gl.glUniform1i(g.st.prog.uniform(!ms ? sdep : msdep), tdep.id);
 			}
 
+			@Override
 			public void apply(GOut g) {
 				if (!ms) {
 					tnrm = g.st.texalloc(g, ((GLFrameBuffer.Attach2D) nrm.tex).tex);
@@ -171,6 +177,7 @@ public class Outlines implements Rendered {
 				reapply(g);
 			}
 
+			@Override
 			public void unapply(GOut g) {
 				tnrm.ufree(g);
 				tnrm = null;

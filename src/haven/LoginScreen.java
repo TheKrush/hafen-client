@@ -152,13 +152,16 @@ public class LoginScreen extends Widget {
 			LoginScreen.this.add(this, new Coord(345, 310));
 		}
 
+		@Override
 		public void wdgmsg(Widget sender, String name, Object... args) {
 		}
 
+		@Override
 		Object[] data() {
 			return (new Object[]{new AuthClient.NativeCred(user.text, pass.text), savepass.a});
 		}
 
+		@Override
 		boolean enter() {
 			if (user.text.equals("")) {
 				setfocus(user);
@@ -171,6 +174,7 @@ public class LoginScreen extends Widget {
 			}
 		}
 
+		@Override
 		public boolean globtype(char k, KeyEvent ev) {
 			if ((k == 'r') && ((ev.getModifiersEx() & (KeyEvent.META_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) != 0)) {
 				savepass.set(!savepass.a);
@@ -196,14 +200,17 @@ public class LoginScreen extends Widget {
 			this.token = token;
 		}
 
+		@Override
 		Object[] data() {
 			return (new Object[]{name, token});
 		}
 
+		@Override
 		boolean enter() {
 			return (true);
 		}
 
+		@Override
 		public void wdgmsg(Widget sender, String name, Object... args) {
 			if (sender == btn) {
 				LoginScreen.this.wdgmsg("forget");
@@ -212,11 +219,13 @@ public class LoginScreen extends Widget {
 			super.wdgmsg(sender, name, args);
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.image(label.tex(), new Coord((sz.x / 2) - (label.sz().x / 2), 0));
 			super.draw(g);
 		}
 
+		@Override
 		public boolean globtype(char k, KeyEvent ev) {
 			if ((k == 'f') && ((ev.getModifiersEx() & (KeyEvent.META_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) != 0)) {
 				LoginScreen.this.wdgmsg("forget");
@@ -229,10 +238,12 @@ public class LoginScreen extends Widget {
 	private void mklogin() {
 		synchronized (ui) {
 			adda(btn = new IButton("gfx/hud/buttons/login", "u", "d", "o") {
+				@Override
 				protected void depress() {
 					Audio.play(Button.lbtdown.stream());
 				}
 
+				@Override
 				protected void unpress() {
 					Audio.play(Button.lbtup.stream());
 				}
@@ -273,6 +284,7 @@ public class LoginScreen extends Widget {
 		progress(null);
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == btn) {
 			if (cur.enter()) {
@@ -290,6 +302,7 @@ public class LoginScreen extends Widget {
 		} else if (sender == optbtn) {
 			if (opts == null) {
 				opts = ui.root.adda(new OptWnd(false) {
+					@Override
 					public void hide() {
 						/* XXX */
 						reqdestroy();
@@ -307,12 +320,14 @@ public class LoginScreen extends Widget {
 		super.wdgmsg(sender, msg, args);
 	}
 
+	@Override
 	public void cdestroy(Widget ch) {
 		if (ch == opts) {
 			opts = null;
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		synchronized (ui) {
 			if (msg == "passwd") {
@@ -333,10 +348,12 @@ public class LoginScreen extends Widget {
 		}
 	}
 
+	@Override
 	public void presize() {
 		c = parent.sz.div(2).sub(sz.div(2));
 	}
 
+	@Override
 	protected void added() {
 		presize();
 		parent.setfocus(this);
@@ -345,6 +362,7 @@ public class LoginScreen extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		super.draw(g);
 		if (error != null) {
@@ -355,6 +373,7 @@ public class LoginScreen extends Widget {
 		}
 	}
 
+	@Override
 	public boolean type(char k, KeyEvent ev) {
 		if (k == 10) {
 			if ((cur != null) && cur.enter()) {

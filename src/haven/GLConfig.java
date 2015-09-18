@@ -135,6 +135,7 @@ public class GLConfig implements java.io.Serializable, Console.Directory {
 
 	{
 		cmdmap.put("gl", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) throws Exception {
 				if (args.length >= 3) {
 					String var = args[1].intern();
@@ -150,12 +151,14 @@ public class GLConfig implements java.io.Serializable, Console.Directory {
 			}
 		});
 		cmdmap.put("glreset", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				resetprefs();
 			}
 		});
 	}
 
+	@Override
 	public Map<String, Console.Command> findcmds() {
 		return (cmdmap);
 	}

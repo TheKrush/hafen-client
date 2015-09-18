@@ -37,10 +37,12 @@ public class ResData {
 		this.sdt = new MessageBuf(sdt);
 	}
 
+	@Override
 	public ResData clone() {
 		return (new ResData(res, sdt));
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof ResData)) {
 			return (false);

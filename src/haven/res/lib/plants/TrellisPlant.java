@@ -30,6 +30,7 @@ public class TrellisPlant implements Factory {
 		this(2);
 	}
 
+	@Override
 	public Sprite create(Owner var1, Resource var2, Message var3) {
 		double var4 = -((Gob) var1).a;
 		float var6 = (float) Math.cos(var4);

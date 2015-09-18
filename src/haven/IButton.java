@@ -39,6 +39,7 @@ public class IButton extends SSWidget {
 	@RName("ibtn")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new IButton(Resource.loadimg((String) args[0]), Resource.loadimg((String) args[1])));
 		}
@@ -96,6 +97,7 @@ public class IButton extends SSWidget {
 	protected void unpress() {
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
@@ -110,6 +112,7 @@ public class IButton extends SSWidget {
 		return (true);
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if ((d != null) && button == 1) {
 			d.remove();
@@ -124,6 +127,7 @@ public class IButton extends SSWidget {
 		return (false);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		boolean h = checkhit(c);
 		boolean a = false;
@@ -138,6 +142,7 @@ public class IButton extends SSWidget {
 		}
 	}
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		if (!checkhit(c)) {
 			return (null);

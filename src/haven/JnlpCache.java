@@ -107,6 +107,7 @@ public class JnlpCache implements ResCache {
 		 * Sucks? You don't say.
 		 */
 		Utils.defer(new Runnable() {
+			@Override
 			public void run() {
 				realput(loc, data);
 			}
@@ -118,6 +119,7 @@ public class JnlpCache implements ResCache {
 		return (file.getInputStream());
 	}
 
+	@Override
 	public OutputStream store(final String name) throws IOException {
 		/*
 		 * The persistence service actually yields a real
@@ -130,6 +132,7 @@ public class JnlpCache implements ResCache {
 		 * Oh God, it's so stupid.
 		 */
 		OutputStream ret = new ByteArrayOutputStream() {
+			@Override
 			public void close() {
 				byte[] res = toByteArray();
 				try {
@@ -142,6 +145,7 @@ public class JnlpCache implements ResCache {
 		return (ret);
 	}
 
+	@Override
 	public InputStream fetch(String name) throws IOException {
 		try {
 			URL loc = new URL(base, mangle(name));

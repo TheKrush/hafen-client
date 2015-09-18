@@ -1038,6 +1038,7 @@ public class JSONArray implements Iterable<Object> {
      * @return a printable, displayable, transmittable representation of the
      *         array.
      */
+		@Override
     public String toString() {
         try {
             return this.toString(0);

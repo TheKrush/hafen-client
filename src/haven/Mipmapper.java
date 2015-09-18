@@ -45,6 +45,7 @@ public abstract class Mipmapper {
 	}
 
 	public static final Mipmapper3 avg = new Mipmapper3() {
+		@Override
 		public byte[] gen4(Coord dim, byte[] data, int fmt) {
 			int dst = dim.x * 4;
 			dim = dim.div(2);
@@ -130,6 +131,7 @@ public abstract class Mipmapper {
 			return (ndata);
 		}
 
+		@Override
 		public byte[] gen3(Coord dim, byte[] data, int fmt) {
 			int dst = dim.x * 3;
 			dim = dim.div(2);
@@ -200,6 +202,7 @@ public abstract class Mipmapper {
 	};
 
 	public static final Mipmapper rnd = new Mipmapper() {
+		@Override
 		public byte[] gen4(Coord dim, byte[] data, int fmt) {
 			Random rnd = new Random();
 			int dst = dim.x * 4;
@@ -237,6 +240,7 @@ public abstract class Mipmapper {
 	};
 
 	public static final Mipmapper cnt = new Mipmapper() {
+		@Override
 		public byte[] gen4(Coord dim, byte[] data, int fmt) {
 			int dst = dim.x * 4;
 			dim = dim.div(2);
@@ -338,6 +342,7 @@ public abstract class Mipmapper {
 	};
 
 	public static final Mipmapper dav = new Mipmapper() {
+		@Override
 		public byte[] gen4(Coord dim, byte[] data, int fmt) {
 			int dst = dim.x * 4;
 			dim = dim.div(2);
@@ -441,6 +446,7 @@ public abstract class Mipmapper {
 	public static final Mipmapper lanczos = new Mipmapper() {
 		final PUtils.Convolution filter = new PUtils.Lanczos(2);
 
+		@Override
 		public byte[] gen4(Coord dim, byte[] data, int fmt) {
 			BufferedImage img = PUtils.rasterimg(Raster.createInterleavedRaster(new DataBufferByte(data, data.length),
 							dim.x, dim.y, dim.x * 4, 4, new int[]{0, 1, 2, 3}, null));

@@ -36,6 +36,7 @@ public class NpcChat extends Window {
 	@RName("npc")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new NpcChat((Coord) args[0], (String) args[1]));
 		}
@@ -46,6 +47,7 @@ public class NpcChat extends Window {
 		out = add(new Textlog(new Coord(sz.x, sz.y)), Coord.z);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "log") {
 			Color col = null;
@@ -75,6 +77,7 @@ public class NpcChat extends Window {
 		}
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if ((btns != null) && (btns.contains(sender))) {
 			wdgmsg("btn", btns.indexOf(sender));

@@ -83,6 +83,7 @@ public class GLProgram implements java.io.Serializable {
 			this.info = info;
 		}
 
+		@Override
 		public String toString() {
 			if (info == null) {
 				return (super.toString());
@@ -100,14 +101,17 @@ public class GLProgram implements java.io.Serializable {
 			super(g);
 		}
 
+		@Override
 		public void create(GL2 gl) {
 			id = gl.glCreateProgramObjectARB();
 		}
 
+		@Override
 		public void delete(BGL gl) {
 			gl.glDeleteObjectARB(this);
 		}
 
+		@Override
 		public int glid() {
 			return (id);
 		}
@@ -119,6 +123,7 @@ public class GLProgram implements java.io.Serializable {
 			}
 			gl.glLinkProgram(this);
 			gl.bglSubmit(new BGL.Request() {
+				@Override
 				public void run(GL2 rgl) {
 					int[] buf = {0};
 					rgl.glGetObjectParameterivARB(id, GL2.GL_OBJECT_LINK_STATUS_ARB, buf, 0);
@@ -184,6 +189,7 @@ public class GLProgram implements java.io.Serializable {
 			this.name = name;
 		}
 
+		@Override
 		public int glid() {
 			return (id);
 		}
@@ -208,6 +214,7 @@ public class GLProgram implements java.io.Serializable {
 		if (r == null) {
 			final ProgOb glob = glob(g);
 			r = new VarID(name) {
+				@Override
 				public void run(GL2 gl) {
 					if ((this.id = glob.uniform(gl, name)) < 0) {
 						throw (new UnknownExternException("Unknown uniform name: " + name, GLProgram.this, "uniform", name));
@@ -227,6 +234,7 @@ public class GLProgram implements java.io.Serializable {
 		if (r == null) {
 			final ProgOb glob = glob(g);
 			r = new VarID(name) {
+				@Override
 				public void run(GL2 gl) {
 					if ((this.id = glob.attrib(gl, name)) < 0) {
 						throw (new UnknownExternException("Unknown attribute name: " + name, GLProgram.this, "attrib", name));

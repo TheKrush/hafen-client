@@ -59,6 +59,7 @@ public class HackSocket extends Socket {
 
 		private boolean interrupted;
 
+		@Override
 		public void run() {
 			interrupted = true;
 			try {
@@ -102,6 +103,7 @@ public class HackSocket extends Socket {
 		}
 	}
 
+	@Override
 	public void connect(SocketAddress address, int timeout) throws IOException {
 		hook();
 		try {
@@ -111,6 +113,7 @@ public class HackSocket extends Socket {
 		}
 	}
 
+	@Override
 	public void connect(SocketAddress address) throws IOException {
 		connect(address, 0);
 	}
@@ -123,10 +126,12 @@ public class HackSocket extends Socket {
 			this.bk = bk;
 		}
 
+		@Override
 		public void close() throws IOException {
 			bk.close();
 		}
 
+		@Override
 		public int read() throws IOException {
 			hook();
 			try {
@@ -136,6 +141,7 @@ public class HackSocket extends Socket {
 			}
 		}
 
+		@Override
 		public int read(byte[] buf) throws IOException {
 			hook();
 			try {
@@ -145,6 +151,7 @@ public class HackSocket extends Socket {
 			}
 		}
 
+		@Override
 		public int read(byte[] buf, int off, int len) throws IOException {
 			hook();
 			try {
@@ -163,10 +170,12 @@ public class HackSocket extends Socket {
 			this.bk = bk;
 		}
 
+		@Override
 		public void close() throws IOException {
 			bk.close();
 		}
 
+		@Override
 		public void flush() throws IOException {
 			hook();
 			try {
@@ -176,6 +185,7 @@ public class HackSocket extends Socket {
 			}
 		}
 
+		@Override
 		public void write(int b) throws IOException {
 			hook();
 			try {
@@ -185,6 +195,7 @@ public class HackSocket extends Socket {
 			}
 		}
 
+		@Override
 		public void write(byte[] buf) throws IOException {
 			hook();
 			try {
@@ -194,6 +205,7 @@ public class HackSocket extends Socket {
 			}
 		}
 
+		@Override
 		public void write(byte[] buf, int off, int len) throws IOException {
 			hook();
 			try {
@@ -204,6 +216,7 @@ public class HackSocket extends Socket {
 		}
 	}
 
+	@Override
 	public InputStream getInputStream() throws IOException {
 		synchronized (this) {
 			if (in == null) {
@@ -213,6 +226,7 @@ public class HackSocket extends Socket {
 		}
 	}
 
+	@Override
 	public OutputStream getOutputStream() throws IOException {
 		synchronized (this) {
 			if (out == null) {

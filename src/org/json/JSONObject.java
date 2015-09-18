@@ -131,6 +131,7 @@ public class JSONObject {
          *
          * @return The string "null".
          */
+				@Override
         public String toString() {
             return "null";
         }
@@ -1586,6 +1587,7 @@ public class JSONObject {
      *         brace)</small> and ending with <code>}</code>&nbsp;<small>(right
      *         brace)</small>.
      */
+		@Override
     public String toString() {
         try {
             return this.toString(0);

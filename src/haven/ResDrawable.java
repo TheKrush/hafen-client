@@ -53,6 +53,7 @@ public class ResDrawable extends Drawable {
 		spr = Sprite.create(gob, res.get(), sdt.clone());
 	}
 
+	@Override
 	public void setup(RenderList rl) {
 		try {
 			init();
@@ -62,6 +63,7 @@ public class ResDrawable extends Drawable {
 		spr.setup(rl);
 	}
 
+	@Override
 	public void ctick(int dt) {
 		if (spr == null) {
 			delay += dt;
@@ -71,16 +73,19 @@ public class ResDrawable extends Drawable {
 		}
 	}
 
+	@Override
 	public void dispose() {
 		if (spr != null) {
 			spr.dispose();
 		}
 	}
 
+	@Override
 	public Resource getres() {
 		return (res.get());
 	}
 
+	@Override
 	public Skeleton.Pose getpose() {
 		init();
 		if (spr instanceof SkelSprite) {

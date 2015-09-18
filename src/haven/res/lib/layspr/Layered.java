@@ -26,6 +26,7 @@ public class Layered extends GSprite {
             this.base = var1;
         }
 
+				@Override
         public int compare(Layer var1, Layer var2) {
             return var1.z - var2.z;
         }
@@ -92,6 +93,7 @@ public class Layered extends GSprite {
         }
     }
 
+		@Override
     public void draw(GOut var1) {
         Layer[] var2 = this.lay;
         int var3 = var2.length;
@@ -103,10 +105,12 @@ public class Layered extends GSprite {
 
     }
 
+		@Override
     public Coord sz() {
         return this.sz;
     }
 
+		@Override
     public void tick(double var1) {
         Layer[] var3 = this.lay;
         int var4 = var3.length;

@@ -99,6 +99,7 @@ public class AccountList extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		Coord cc = new Coord(5, 5);
 		synchronized (accounts) {
@@ -118,11 +119,13 @@ public class AccountList extends Widget {
 		super.draw(g);
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		scroll(amount);
 		return (true);
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender instanceof Button) {
 			synchronized (accounts) {

@@ -79,6 +79,7 @@ public class GLSettings implements java.io.Serializable {
 			super(nm);
 		}
 
+		@Override
 		public void set(String val) {
 			boolean bval;
 			try {
@@ -99,6 +100,7 @@ public class GLSettings implements java.io.Serializable {
 			this.real = real;
 		}
 
+		@Override
 		public void set(String val) {
 			E f = null;
 			val = val.toUpperCase();
@@ -123,6 +125,7 @@ public class GLSettings implements java.io.Serializable {
 			super(nm);
 		}
 
+		@Override
 		public void set(String val) {
 			float fval;
 			try {
@@ -144,6 +147,7 @@ public class GLSettings implements java.io.Serializable {
 	}
 
 	public final EnumSetting<MeshMode> meshmode = new EnumSetting<MeshMode>("meshmode", MeshMode.class) {
+		@Override
 		public MeshMode defval() {
 			if (cfg.exts.contains("GL_ARB_vertex_array_object")) {
 				return (MeshMode.VAO);
@@ -151,6 +155,7 @@ public class GLSettings implements java.io.Serializable {
 			return (MeshMode.DLIST);
 		}
 
+		@Override
 		public void validate(MeshMode mode) {
 			switch (mode) {
 				case VAO:
@@ -163,10 +168,12 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting instancing = new BoolSetting("instance") {
+		@Override
 		public Boolean defval() {
 			return (cfg.exts.contains("GL_ARB_instanced_arrays"));
 		}
 
+		@Override
 		public void validate(Boolean val) {
 			if (!cfg.exts.contains("GL_ARB_instanced_arrays")) {
 				throw (new SettingException("Video card does not support instancing."));
@@ -175,10 +182,12 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting fsaa = new BoolSetting("fsaa") {
+		@Override
 		public Boolean defval() {
 			return (false);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 			if (val && !cfg.havefsaa()) {
 				throw (new SettingException("FSAA is not supported."));
@@ -187,10 +196,12 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting alphacov = new BoolSetting("alphacov") {
+		@Override
 		public Boolean defval() {
 			return (false);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 			if (val) {
 				if (!fsaa.val) {
@@ -201,19 +212,23 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting flight = new BoolSetting("flight") {
+		@Override
 		public Boolean defval() {
 			return (true);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 		}
 	};
 
 	public final BoolSetting cel = new BoolSetting("cel") {
+		@Override
 		public Boolean defval() {
 			return (false);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 			if (val) {
 				if (!flight.val) {
@@ -224,10 +239,12 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting lshadow = new BoolSetting("sdw") {
+		@Override
 		public Boolean defval() {
 			return (true);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 			if (val) {
 				if (!flight.val) {
@@ -241,10 +258,12 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting outline = new BoolSetting("outl") {
+		@Override
 		public Boolean defval() {
 			return (true);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 			if (val) {
 				if (!cfg.havefbo()) {
@@ -255,27 +274,33 @@ public class GLSettings implements java.io.Serializable {
 	};
 
 	public final BoolSetting wsurf = new BoolSetting("wsurf") {
+		@Override
 		public Boolean defval() {
 			return (cfg.glmajver >= 3);
 		}
 
+		@Override
 		public void validate(Boolean val) {
 		}
 	};
 
 	public final FloatSetting anisotex = new FloatSetting("aniso") {
+		@Override
 		public Float defval() {
 			return (0f);
 		}
 
+		@Override
 		public float min() {
 			return (0);
 		}
 
+		@Override
 		public float max() {
 			return (cfg.anisotropy);
 		}
 
+		@Override
 		public void validate(Float val) {
 			if (val != 0) {
 				if (cfg.anisotropy <= 1) {
@@ -290,6 +315,7 @@ public class GLSettings implements java.io.Serializable {
 			}
 		}
 
+		@Override
 		public void set(Float val) {
 			super.set(val);
 			TexGL.setallparams();

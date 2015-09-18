@@ -45,6 +45,7 @@ public abstract class AutoVarying extends Varying {
 			blk.super(AutoVarying.this.type, AutoVarying.this.name);
 		}
 
+		@Override
 		protected void cons2(Block blk) {
 			tgt = AutoVarying.this.ref();
 			blk.add(new LBinOp.Assign(tgt, init));
@@ -57,6 +58,7 @@ public abstract class AutoVarying extends Varying {
 
 	protected Value make(ValBlock vals, final VertexContext vctx) {
 		return (new Value(vals) {
+			@Override
 			public Expression root() {
 				return (AutoVarying.this.root(vctx));
 			}
@@ -65,12 +67,14 @@ public abstract class AutoVarying extends Varying {
 
 	public ValBlock.Value value(final VertexContext ctx) {
 		return (ctx.mainvals.ext(this, new ValBlock.Factory() {
+			@Override
 			public ValBlock.Value make(ValBlock vals) {
 				return (AutoVarying.this.make(vals, ctx));
 			}
 		}));
 	}
 
+	@Override
 	public void use(Context ctx) {
 		if (ctx instanceof FragmentContext) {
 			FragmentContext fctx = (FragmentContext) ctx;

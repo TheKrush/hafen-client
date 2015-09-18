@@ -55,6 +55,7 @@ public abstract class Sprite implements Rendered {
 
 	public static class FactMaker implements Resource.PublishedCode.Instancer {
 
+		@Override
 		public Factory make(Class<?> cl) throws InstantiationException, IllegalAccessException {
 			if (Factory.class.isAssignableFrom(cl)) {
 				return (cl.asSubclass(Factory.class).newInstance());
@@ -76,6 +77,7 @@ public abstract class Sprite implements Rendered {
 		try {
 			final Constructor<? extends Sprite> cons = cl.getConstructor(Owner.class, Resource.class);
 			return (new Factory() {
+				@Override
 				public Sprite create(Owner owner, Resource res, Message sdt) {
 					return (Utils.construct(cons, owner, res));
 				}
@@ -85,6 +87,7 @@ public abstract class Sprite implements Rendered {
 		try {
 			final Constructor<? extends Sprite> cons = cl.getConstructor(Owner.class, Resource.class, Message.class);
 			return (new Factory() {
+				@Override
 				public Sprite create(Owner owner, Resource res, Message sdt) {
 					return (Utils.construct(cons, owner, res, sdt));
 				}
@@ -142,9 +145,11 @@ public abstract class Sprite implements Rendered {
 		throw (new ResourceException("Does not know how to draw resource " + res.name, res));
 	}
 
+	@Override
 	public void draw(GOut g) {
 	}
 
+	@Override
 	public abstract boolean setup(RenderList d);
 
 	public boolean tick(int dt) {

@@ -59,6 +59,7 @@ public class Music {
 			this.waitfor = waitfor;
 		}
 
+		@Override
 		public void run() {
 			try {
 				if (waitfor != null) {
@@ -86,6 +87,7 @@ public class Music {
 					throw (e);
 				}
 				seq.addMetaEventListener(new MetaEventListener() {
+					@Override
 					public void meta(MetaMessage msg) {
 						debug("Meta " + msg.getType());
 						if (msg.getType() == 47) {
@@ -172,6 +174,7 @@ public class Music {
 
 	static {
 		Console.setscmd("bgm", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				int i = 1;
 				String opt;
@@ -195,6 +198,7 @@ public class Music {
 			}
 		});
 		Console.setscmd("bgmsw", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				if (args.length < 2) {
 					enable(!enabled);

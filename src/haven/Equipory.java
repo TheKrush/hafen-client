@@ -69,6 +69,7 @@ public class Equipory extends Widget implements DTarget {
 	@RName("epry")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			long gobid;
 			if (args.length < 1) {
@@ -83,10 +84,12 @@ public class Equipory extends Widget implements DTarget {
 	public Equipory(long gobid) {
 		super(isz);
 		Avaview ava = add(new Avaview(bg.sz(), gobid, "equcam") {
+			@Override
 			public boolean mousedown(Coord c, int button) {
 				return (false);
 			}
 
+			@Override
 			public void draw(GOut g) {
 				g.image(bg, Coord.z);
 				super.draw(g);
@@ -94,11 +97,13 @@ public class Equipory extends Widget implements DTarget {
 
 			Outlines outlines = new Outlines(true);
 
+			@Override
 			protected void setup(RenderList rl) {
 				super.setup(rl);
 				rl.add(outlines, null);
 			}
 
+			@Override
 			protected java.awt.Color clearcolor() {
 				return (null);
 			}
@@ -106,6 +111,7 @@ public class Equipory extends Widget implements DTarget {
 		ava.color = null;
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		if (child instanceof GItem) {
 			add(child);
@@ -122,6 +128,7 @@ public class Equipory extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public void cdestroy(Widget w) {
 		super.cdestroy(w);
 		if (w instanceof GItem) {
@@ -137,6 +144,7 @@ public class Equipory extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public boolean drop(Coord cc, Coord ul) {
 		ul = ul.add(invsq.sz().div(2));
 		for (int i = 0; i < ecoords.length; i++) {
@@ -149,6 +157,7 @@ public class Equipory extends Widget implements DTarget {
 		return (true);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		for (Coord ec : ecoords) {
 			g.image(invsq, ec);
@@ -156,6 +165,7 @@ public class Equipory extends Widget implements DTarget {
 		super.draw(g);
 	}
 
+	@Override
 	public boolean iteminteract(Coord cc, Coord ul) {
 		return (false);
 	}

@@ -274,6 +274,7 @@ public class Skeleton {
 			return (new Location(Matrix4f.identity()) {
 				private int cseq = -1;
 
+				@Override
 				public Matrix4f fin(Matrix4f p) {
 					if (cseq != seq) {
 						Matrix4f xf = Transform.makexlate(new Matrix4f(), new Coord3f(gpos[bone][0], gpos[bone][1], gpos[bone][2]));
@@ -294,6 +295,7 @@ public class Skeleton {
 				private int cseq = -1;
 				private float[] pos = new float[3], rot = new float[4];
 
+				@Override
 				public Matrix4f fin(Matrix4f p) {
 					if (cseq != seq) {
 						rot = qqmul(rot, grot[bone], qinv(rot, bindpose.grot[bone]));
@@ -324,6 +326,7 @@ public class Skeleton {
 				this.tgt = tgt.idx;
 			}
 
+			@Override
 			public Matrix4f fin(Matrix4f p) {
 				if (cseq != seq) {
 					Coord3f cur = new Coord3f(gpos[tgt][0] - gpos[orig][0], gpos[tgt][1] - gpos[orig][1], gpos[tgt][2] - gpos[orig][2]).norm();
@@ -371,6 +374,7 @@ public class Skeleton {
 		}
 
 		public final Rendered debug = new Rendered() {
+			@Override
 			public void draw(GOut g) {
 				BGL gl = g.gl;
 				g.st.put(Light.lighting, null);
@@ -389,6 +393,7 @@ public class Skeleton {
 				gl.glEnd();
 			}
 
+			@Override
 			public boolean setup(RenderList rl) {
 				rl.prepo(States.vertexcolor);
 				rl.prepo(States.xray);
@@ -406,14 +411,17 @@ public class Skeleton {
 		public Glob glob();
 
 		public static final ModOwner nil = new ModOwner() {
+			@Override
 			public double getv() {
 				return (0);
 			}
 
+			@Override
 			public Coord3f getc() {
 				return (Coord3f.o);
 			}
 
+			@Override
 			public Glob glob() {
 				throw (new NullPointerException());
 			}
@@ -482,10 +490,12 @@ public class Skeleton {
 
 	public PoseMod nilmod() {
 		return (new PoseMod(ModOwner.nil) {
+			@Override
 			public boolean stat() {
 				return (true);
 			}
 
+			@Override
 			public boolean done() {
 				return (false);
 			}
@@ -505,12 +515,14 @@ public class Skeleton {
 				stat = s;
 			}
 
+		@Override
 			public void apply(Pose p) {
 				for (PoseMod m : mods) {
 					m.apply(p);
 				}
 			}
 
+		@Override
 			public boolean tick(float dt) {
 				boolean ret = false;
 				for (PoseMod m : mods) {
@@ -521,16 +533,19 @@ public class Skeleton {
 				return (ret);
 			}
 
+		@Override
 			public void age() {
 				for (PoseMod m : mods) {
 					m.age();
 				}
 			}
 
+		@Override
 			public boolean stat() {
 				return (stat);
 			}
 
+		@Override
 			public boolean done() {
 				for (PoseMod m : mods) {
 					if (m.done()) {
@@ -548,6 +563,7 @@ public class Skeleton {
 		public PoseMod create(Skeleton skel, ModOwner owner, Resource res, Message sdt);
 
 		public static final ModFactory def = new ModFactory() {
+			@Override
 			public PoseMod create(Skeleton skel, ModOwner owner, Resource res, Message sdt) {
 				int mask = Sprite.decnum(sdt);
 				Collection<PoseMod> poses = new ArrayList<PoseMod>(16);
@@ -607,12 +623,14 @@ public class Skeleton {
 				}
 			}
 			s = new Skeleton(bones.values()) {
+				@Override
 				public String toString() {
 					return ("Skeleton(" + getres().name + ")");
 				}
 			};
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -729,6 +747,7 @@ public class Skeleton {
 			}
 		}
 
+		@Override
 		public boolean tick(float dt) {
 			if (speedmod) {
 				dt *= owner.getv() / nspeed;
@@ -778,6 +797,7 @@ public class Skeleton {
 			}
 		}
 
+		@Override
 		public void age() {
 			switch (mode) {
 				case PONGLOOP:
@@ -796,10 +816,12 @@ public class Skeleton {
 			aupdate(time);
 		}
 
+		@Override
 		public boolean stat() {
 			return (stat);
 		}
 
+		@Override
 		public boolean done() {
 			return (done);
 		}
@@ -865,6 +887,7 @@ public class Skeleton {
 				this.loc = loc;
 			}
 
+			@Override
 			public void trigger(Gob gob) {
 				final Coord3f fc;
 				try {
@@ -873,10 +896,12 @@ public class Skeleton {
 					return;
 				}
 				Gob n = gob.glob.oc.new Virtual(gob.rc, gob.a) {
+					@Override
 					public Coord3f getc() {
 						return (new Coord3f(fc));
 					}
 
+					@Override
 					public boolean setup(RenderList rl) {
 						if (SpawnSprite.this.loc != null) {
 							rl.prepc(SpawnSprite.this.loc);
@@ -897,6 +922,7 @@ public class Skeleton {
 				this.id = id.intern();
 			}
 
+			@Override
 			public void trigger(Gob gob) {
 			}
 		}
@@ -1016,6 +1042,7 @@ public class Skeleton {
 				this(owner, skel, defmode);
 			}
 
+			@Override
 			public String toString() {
 				return (String.format("#<pose %d in %s>", id, getres().name));
 			}
@@ -1035,10 +1062,12 @@ public class Skeleton {
 			return (forskel(gob, skel, mode));
 		}
 
+		@Override
 		public Integer layerid() {
 			return (id);
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -1052,11 +1081,13 @@ public class Skeleton {
 
 		static {
 			opcodes[0] = new HatingJava() {
+				@Override
 				public Command make(Message buf) {
 					final float x = (float) buf.cpfloat();
 					final float y = (float) buf.cpfloat();
 					final float z = (float) buf.cpfloat();
 					return (new Command() {
+						@Override
 						public GLState make(Pose pose) {
 							return (Location.xlate(new Coord3f(x, y, z)));
 						}
@@ -1064,12 +1095,14 @@ public class Skeleton {
 				}
 			};
 			opcodes[1] = new HatingJava() {
+				@Override
 				public Command make(Message buf) {
 					final float ang = (float) buf.cpfloat();
 					final float ax = (float) buf.cpfloat();
 					final float ay = (float) buf.cpfloat();
 					final float az = (float) buf.cpfloat();
 					return (new Command() {
+						@Override
 						public GLState make(Pose pose) {
 							return (Location.rot(new Coord3f(ax, ay, az), ang));
 						}
@@ -1077,9 +1110,11 @@ public class Skeleton {
 				}
 			};
 			opcodes[2] = new HatingJava() {
+				@Override
 				public Command make(Message buf) {
 					final String bonenm = buf.string();
 					return (new Command() {
+						@Override
 						public GLState make(Pose pose) {
 							Bone bone = pose.skel().bones.get(bonenm);
 							return (pose.bonetrans(bone.idx));
@@ -1088,6 +1123,7 @@ public class Skeleton {
 				}
 			};
 			opcodes[3] = new HatingJava() {
+				@Override
 				public Command make(Message buf) {
 					float rx1 = (float) buf.cpfloat();
 					float ry1 = (float) buf.cpfloat();
@@ -1097,6 +1133,7 @@ public class Skeleton {
 					final String orignm = buf.string();
 					final String tgtnm = buf.string();
 					return (new Command() {
+						@Override
 						public GLState make(Pose pose) {
 							Bone orig = pose.skel().bones.get(orignm);
 							Bone tgt = pose.skel().bones.get(tgtnm);
@@ -1127,10 +1164,12 @@ public class Skeleton {
 			this.prog = cbuf.toArray(new Command[0]);
 		}
 
+		@Override
 		public String layerid() {
 			return (nm);
 		}
 
+		@Override
 		public void init() {
 		}
 

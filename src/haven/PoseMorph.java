@@ -98,10 +98,12 @@ public class PoseMorph implements Morpher.Factory {
 			this.names = names;
 		}
 
+		@Override
 		public BoneArray dup() {
 			return (new BoneArray(n, Utils.bufcp(data), Utils.splice(names, 0)));
 		}
 
+		@Override
 		public MorphedMesh.MorphType morphtype() {
 			return (MorphedMesh.MorphType.DUP);
 		}
@@ -117,6 +119,7 @@ public class PoseMorph implements Morpher.Factory {
 	@VertexBuf.ResName("bones")
 	public static class $Res implements VertexBuf.ArrayCons {
 
+		@Override
 		public void cons(Collection<VertexBuf.AttribArray> dst, Resource res, Message buf, int nv) {
 			int mba = buf.uint8();
 			IntBuffer ba = Utils.wibuf(nv * mba);
@@ -177,6 +180,7 @@ public class PoseMorph implements Morpher.Factory {
 		}
 	}
 
+	@Override
 	public Morpher create(final MorphedBuf vb) {
 		BoneArray ob = vb.from.buf(BoneArray.class);
 		BoneArray nb = vb.buf(BoneArray.class);
@@ -198,6 +202,7 @@ public class PoseMorph implements Morpher.Factory {
 		return (new Morpher() {
 			private int pseq = -1;
 
+			@Override
 			public boolean update() {
 				if (pseq == pose.seq) {
 					return (false);
@@ -207,6 +212,7 @@ public class PoseMorph implements Morpher.Factory {
 				return (true);
 			}
 
+			@Override
 			public void morphp(FloatBuffer dst, FloatBuffer src) {
 				BoneArray ba = vb.buf(BoneArray.class);
 				int apv = ba.n;
@@ -240,6 +246,7 @@ public class PoseMorph implements Morpher.Factory {
 				}
 			}
 
+			@Override
 			public void morphd(FloatBuffer dst, FloatBuffer src) {
 				BoneArray ba = vb.buf(BoneArray.class);
 				int apv = ba.n;

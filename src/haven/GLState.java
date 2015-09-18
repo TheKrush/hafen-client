@@ -72,6 +72,7 @@ public abstract class GLState {
 
 		public T inststate(T[] states);
 		public static final ShaderMacro mkinstanced = new ShaderMacro() {
+			@Override
 			public void modify(haven.glsl.ProgramContext ctx) {
 				ctx.instanced = true;
 			}
@@ -184,6 +185,7 @@ public abstract class GLState {
 				}
 			}
 			Comparator<Slot> cmp = new Comparator<Slot>() {
+				@Override
 				public int compare(Slot a, Slot b) {
 					return (order.get(a) - order.get(b));
 				}
@@ -207,6 +209,7 @@ public abstract class GLState {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return ("Slot<" + scl.getName() + ">");
 		}
@@ -302,6 +305,7 @@ public abstract class GLState {
 			return ((T) states[slot.id]);
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (!(o instanceof Buffer)) {
 				return (false);
@@ -317,6 +321,7 @@ public abstract class GLState {
 			return (true);
 		}
 
+		@Override
 		public String toString() {
 			StringBuilder buf = new StringBuilder();
 			buf.append('[');
@@ -868,9 +873,11 @@ public abstract class GLState {
 			this.r = r;
 		}
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			rl.add(r, GLState.this);
 			return (false);
@@ -887,9 +894,11 @@ public abstract class GLState {
 
 	public static abstract class Abstract extends GLState {
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 	}
@@ -924,6 +933,7 @@ public abstract class GLState {
 			this.states = states;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (!(o instanceof Composed)) {
 				return (false);
@@ -931,16 +941,19 @@ public abstract class GLState {
 			return (Arrays.equals(states, ((Composed) o).states));
 		}
 
+		@Override
 		public int hashCode() {
 			return (Arrays.hashCode(states));
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			for (GLState st : states) {
 				st.prep(buf);
 			}
 		}
 
+		@Override
 		public String toString() {
 			return ("composed(" + Arrays.asList(states) + ")");
 		}
@@ -958,6 +971,7 @@ public abstract class GLState {
 			this.del = del;
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			del.prep(buf);
 		}
@@ -985,24 +999,29 @@ public abstract class GLState {
 			slot = new Slot<StandAlone>(type, StandAlone.class, dep);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(slot, this);
 		}
 	}
 
 	public static final GLState nullstate = new GLState() {
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 		}
 	};
 
 	static {
 		Console.setscmd("applydb", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				Applier.debug = Utils.parsebool(args[1], false);
 			}

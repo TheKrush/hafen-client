@@ -37,11 +37,13 @@ public class Index extends LValue {
 		this.idx = idx;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		w.el(val);
 		w.el(idx);
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("(");
 		val.output(out);

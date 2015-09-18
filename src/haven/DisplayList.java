@@ -35,14 +35,17 @@ public class DisplayList extends GLObject implements BGL.ID {
 		super(g);
 	}
 
+	@Override
 	public void create(GL2 gl) {
 		id = gl.glGenLists(1);
 	}
 
+	@Override
 	protected void delete(BGL gl) {
 		gl.glDeleteLists(this, 1);
 	}
 
+	@Override
 	public int glid() {
 		return (id);
 	}

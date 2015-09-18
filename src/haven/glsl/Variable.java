@@ -37,9 +37,11 @@ public abstract class Variable {
 
 	public class Ref extends LValue {
 
+		@Override
 		public void walk(Walker w) {
 		}
 
+		@Override
 		public void output(Output out) {
 			out.write(name);
 		}
@@ -70,18 +72,22 @@ public abstract class Variable {
 
 		public class Ref extends Variable.Ref implements PostProc.Processed {
 
+			@Override
 			public void process(PostProc proc) {
 				use(proc.ctx);
 			}
 
+			@Override
 			public Object ppid() {
 				return (ppid);
 			}
 
+			@Override
 			public void walk(Walker w) {
 			}
 		}
 
+		@Override
 		public Ref ref() {
 			return (new Ref());
 		}
@@ -103,9 +109,11 @@ public abstract class Variable {
 
 		public class Definition extends Toplevel {
 
+			@Override
 			public void walk(Walker w) {
 			}
 
+			@Override
 			public void output(Output out) {
 				out.write(type.name(out.ctx));
 				out.write(" ");

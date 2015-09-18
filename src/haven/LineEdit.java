@@ -66,6 +66,7 @@ public class LineEdit {
 			return ("");
 		}
 
+		@Override
 		public boolean key(char c, int code, int mod) {
 			if ((c == 8) && (mod == 0)) {
 				if (point > 0) {
@@ -190,6 +191,7 @@ public class LineEdit {
 			return ("");
 		}
 
+		@Override
 		public boolean key(char c, int code, int mod) {
 			if (mark > line.length()) {
 				mark = line.length();
@@ -432,6 +434,7 @@ public class LineEdit {
 
 	static {
 		Console.setscmd("editmode", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				Utils.setpref("editmode", args[1]);
 			}

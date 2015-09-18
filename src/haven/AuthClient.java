@@ -170,6 +170,7 @@ public class AuthClient {
 		public void discard() {
 		}
 
+		@Override
 		protected void finalize() {
 			discard();
 		}
@@ -206,10 +207,12 @@ public class AuthClient {
 			this(username, ohdearjava(pw));
 		}
 
+		@Override
 		public String name() {
 			return (username);
 		}
 
+		@Override
 		public String tryauth(AuthClient cl) throws IOException {
 			Message rpl = cl.cmd("pw", username, phash);
 			String stat = rpl.string();
@@ -224,6 +227,7 @@ public class AuthClient {
 			}
 		}
 
+		@Override
 		public void discard() {
 			if (phash != null) {
 				for (int i = 0; i < phash.length; i++) {
@@ -246,10 +250,12 @@ public class AuthClient {
 			}
 		}
 
+		@Override
 		public String name() {
 			throw (new UnsupportedOperationException());
 		}
 
+		@Override
 		public String tryauth(AuthClient cl) throws IOException {
 			Message rpl = cl.cmd("token", acctname, token);
 			String stat = rpl.string();
@@ -267,6 +273,7 @@ public class AuthClient {
 
 	public static void main(final String[] args) throws Exception {
 		Thread t = new HackThread(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					AuthClient test = new AuthClient("127.0.0.1", 1871);

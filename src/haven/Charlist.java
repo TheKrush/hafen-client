@@ -51,6 +51,7 @@ public class Charlist extends Widget {
 	@RName("charlist")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Charlist((Integer) args[0]));
 		}
@@ -63,6 +64,7 @@ public class Charlist extends Widget {
 		setcanfocus(true);
 	}
 
+	@Override
 	protected void added() {
 		parent.setfocus(this);
 	}
@@ -79,6 +81,7 @@ public class Charlist extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		int y = 20;
 		synchronized (chars) {
@@ -109,11 +112,13 @@ public class Charlist extends Widget {
 		super.draw(g);
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		scroll(amount);
 		return (true);
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender instanceof Button) {
 			synchronized (chars) {
@@ -129,6 +134,7 @@ public class Charlist extends Widget {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "add") {
 			Char c = new Char((String) args[0]);
@@ -146,6 +152,7 @@ public class Charlist extends Widget {
 		}
 	}
 
+	@Override
 	public boolean keydown(java.awt.event.KeyEvent ev) {
 		if (ev.getKeyCode() == ev.VK_UP) {
 			sel = Math.max(sel - 1, 0);

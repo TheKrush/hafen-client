@@ -57,6 +57,7 @@ public class Coord implements Comparable<Coord>, java.io.Serializable {
 		return (new Coord((int) Math.round(Math.cos(a) * r), -(int) Math.round(Math.sin(a) * r)));
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Coord)) {
 			return (false);
@@ -69,6 +70,7 @@ public class Coord implements Comparable<Coord>, java.io.Serializable {
 		return ((x == X) && (y == Y));
 	}
 
+	@Override
 	public int compareTo(Coord c) {
 		if (c.y != y) {
 			return (c.y - y);
@@ -79,6 +81,7 @@ public class Coord implements Comparable<Coord>, java.io.Serializable {
 		return (0);
 	}
 
+	@Override
 	public int hashCode() {
 		return (((y & 0xffff) << 16) | (x & 0xffff));
 	}
@@ -135,6 +138,7 @@ public class Coord implements Comparable<Coord>, java.io.Serializable {
 		return ((x >= c.x) && (y >= c.y) && (x < c.x + s.x) && (y < c.y + s.y));
 	}
 
+	@Override
 	public String toString() {
 		return ("(" + x + ", " + y + ")");
 	}

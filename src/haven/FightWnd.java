@@ -83,17 +83,21 @@ public class FightWnd extends Widget {
 			super(w, h, attrf.height() + 2);
 		}
 
+		@Override
 		protected Action listitem(int n) {
 			return (acts.get(n));
 		}
 
+		@Override
 		protected int listitems() {
 			return (acts.size());
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 		}
 
+		@Override
 		protected void drawitem(GOut g, Action act, int idx) {
 			g.chcolor((idx % 2 == 0) ? CharWnd.every : CharWnd.other);
 			g.frect(Coord.z, g.sz);
@@ -116,9 +120,11 @@ public class FightWnd extends Widget {
 			g.aimage(sub[ds == idx ? 1 : 0], new Coord(sz.x - 25, itemh / 2), 1.0, 0.5);
 		}
 
+		@Override
 		public void change(final Action act) {
 			if (act != null) {
 				info.settext(new Indir<String>() {
+					@Override
 					public String get() {
 						return (act.rendertext());
 					}
@@ -129,6 +135,7 @@ public class FightWnd extends Widget {
 			super.change(act);
 		}
 
+		@Override
 		public boolean mousewheel(Coord c, int am) {
 			if (ui.modshift) {
 				Action act = itemat(c);
@@ -141,6 +148,7 @@ public class FightWnd extends Widget {
 			return (super.mousewheel(c, am));
 		}
 
+		@Override
 		public void draw(GOut g) {
 			if (loading) {
 				loading = false;
@@ -153,6 +161,7 @@ public class FightWnd extends Widget {
 					}
 				}
 				Collections.sort(acts, new Comparator<Action>() {
+					@Override
 					public int compare(Action a, Action b) {
 						int ret = a.rnm.text.compareTo(b.rnm.text);
 						return (ret);
@@ -174,6 +183,7 @@ public class FightWnd extends Widget {
 			return (ic.isect(new Coord(sz.x - 25 - add[0].sz().x, by), add[0].sz()));
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			if (button == 1) {
 				int idx = (c.y / itemh) + sb.val;
@@ -192,6 +202,7 @@ public class FightWnd extends Widget {
 			return (super.mousedown(c, button));
 		}
 
+		@Override
 		public boolean mouseup(Coord c, int button) {
 			if ((d != null) && (button == 1)) {
 				d.remove();
@@ -224,17 +235,21 @@ public class FightWnd extends Widget {
 			sel = Integer.valueOf(0);
 		}
 
+		@Override
 		protected Integer listitem(int idx) {
 			return (idx);
 		}
 
+		@Override
 		protected int listitems() {
 			return (nsave);
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 		}
 
+		@Override
 		protected void drawitem(GOut g, Integer save, int n) {
 			g.chcolor((n % 2 == 0) ? CharWnd.every : CharWnd.other);
 			g.frect(Coord.z, g.sz);
@@ -249,6 +264,7 @@ public class FightWnd extends Widget {
 	@RName("fmg")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new FightWnd((Integer) args[0]));
 		}
@@ -294,12 +310,14 @@ public class FightWnd extends Widget {
 		Frame.around(this, Collections.singletonList(savelist));
 
 		add(new Button(110, "Load", false) {
+			@Override
 			public void click() {
 				load(savelist.sel);
 				use(savelist.sel);
 			}
 		}, 5, 274);
 		add(new Button(110, "Save", false) {
+			@Override
 			public void click() {
 				save(savelist.sel);
 				use(savelist.sel);
@@ -336,6 +354,7 @@ public class FightWnd extends Widget {
 		pack();
 	}
 
+	@Override
 	public void uimsg(String nm, Object... args) {
 		if (nm == "act") {
 			List<Action> acts = new ArrayList<Action>();

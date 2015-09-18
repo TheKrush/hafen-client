@@ -65,6 +65,7 @@ public class Audio {
 			this(false);
 		}
 
+		@Override
 		public int get(double[][] dst, int ns) {
 			int nch = dst.length;
 			double[][] buf = new double[nch][ns];
@@ -168,6 +169,7 @@ public class Audio {
 			this.sch = nch;
 		}
 
+		@Override
 		public int get(double[][] dst, int ns) {
 			int nch = dst.length;
 			double[] dec = new double[sch];
@@ -217,6 +219,7 @@ public class Audio {
 			this.clip = clip;
 		}
 
+		@Override
 		public int get(double[][] dst, int ns) {
 			int nch = dst.length;
 			if (data == null) {
@@ -257,6 +260,7 @@ public class Audio {
 			this(bk, 1.0);
 		}
 
+		@Override
 		public int get(double[][] dst, int ns) {
 			int nch = dst.length;
 			int ret = bk.get(dst, ns);
@@ -308,6 +312,7 @@ public class Audio {
 			this(bk, fmt.getSampleRate());
 		}
 
+		@Override
 		public int get(double[][] dst, int ns) {
 			int nch = dst.length;
 			if (nval.length != nch) {
@@ -351,6 +356,7 @@ public class Audio {
 			this.bk = bk;
 		}
 
+		@Override
 		public int get(double[][] dst, int ns) {
 			int ret = bk.get(dst, ns);
 			if ((ret < 0) && !eof) {
@@ -379,6 +385,7 @@ public class Audio {
 
 		private CS cur = null;
 
+		@Override
 		public int get(double[][] buf, int ns) {
 			while (true) {
 				if (cur == null) {
@@ -412,6 +419,7 @@ public class Audio {
 			this(bk, 44100);
 		}
 
+		@Override
 		public int get(double[][] buf, int ns) {
 			int nch = buf.length;
 			int ret = bk.get(buf, ns);
@@ -481,6 +489,7 @@ public class Audio {
 			return (wr);
 		}
 
+		@Override
 		public void run() {
 			SourceDataLine line = null;
 			try {
@@ -597,6 +606,7 @@ public class Audio {
 
 	public static void play(final Indir<Resource> clip) {
 		queue(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					play(clip.get());
@@ -627,11 +637,13 @@ public class Audio {
 
 	static {
 		Console.setscmd("sfx", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				play(Resource.remote().load(args[1]));
 			}
 		});
 		Console.setscmd("sfxvol", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				setvolume(Double.parseDouble(args[1]));
 			}

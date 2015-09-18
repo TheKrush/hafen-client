@@ -76,6 +76,7 @@ public class IDRef {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return ("<ID: " + val + " (" + seq + ")>");
 	}

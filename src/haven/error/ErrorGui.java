@@ -54,6 +54,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 					{
 						setEditable(false);
 						addHyperlinkListener(new HyperlinkListener() {
+							@Override
 							public void hyperlinkUpdate(HyperlinkEvent ev) {
 								if (ev.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 									try {
@@ -82,6 +83,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 						add(closebtn = new JButton("Close") {
 							{
 								addActionListener(new ActionListener() {
+									@Override
 									public void actionPerformed(ActionEvent ev) {
 										ErrorGui.this.dispose();
 										synchronized (ErrorGui.this) {
@@ -95,6 +97,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 						add(detbtn = new JButton("Details >>>") {
 							{
 								addActionListener(new ActionListener() {
+									@Override
 									public void actionPerformed(ActionEvent ev) {
 										if (details.isVisible()) {
 											details.setVisible(false);
@@ -129,6 +132,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 			}
 		});
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent ev) {
 				ErrorGui.this.dispose();
 				synchronized (ErrorGui.this) {
@@ -141,12 +145,14 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 		pack();
 	}
 
+	@Override
 	public boolean goterror(Throwable t) {
 		reporter = Thread.currentThread();
 		java.io.StringWriter w = new java.io.StringWriter();
 		t.printStackTrace(new java.io.PrintWriter(w));
 		final String tr = w.toString();
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				closebtn.setEnabled(false);
 				status.setText("Please wait...");
@@ -158,8 +164,10 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 		return (true);
 	}
 
+	@Override
 	public void connecting() {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				status.setText("Connecting to server...");
 				pack();
@@ -167,8 +175,10 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 		});
 	}
 
+	@Override
 	public void sending() {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				status.setText("Sending error...");
 				pack();
@@ -176,9 +186,11 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 		});
 	}
 
+	@Override
 	public void done(final String ctype, final String info) {
 		done = false;
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				closebtn.setEnabled(true);
 				if ((ctype != null) && ctype.equals("text/x-report-info")) {
@@ -187,6 +199,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 					ErrorGui.this.info.setText(info);
 					infoc.setVisible(true);
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							infoc.getVerticalScrollBar().setValue(0);
 						}
@@ -209,6 +222,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 		errorsent();
 	}
 
+	@Override
 	public void senderror(Exception e) {
 		final String errstr;
 		if (e instanceof ReportException) {
@@ -238,6 +252,7 @@ public abstract class ErrorGui extends JDialog implements ErrorStatus {
 		}
 		done = false;
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				closebtn.setEnabled(true);
 				status.setText(errstr);

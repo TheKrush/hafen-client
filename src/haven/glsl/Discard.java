@@ -30,9 +30,11 @@ public class Discard extends Statement {
 	public Discard() {
 	}
 
+	@Override
 	public void walk(Walker w) {
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("discard;");
 	}

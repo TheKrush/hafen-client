@@ -42,6 +42,7 @@ public class RepeatStream extends InputStream {
 		this.cur = rep.cons();
 	}
 
+	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
 		if (cur == null) {
 			return (-1);
@@ -56,6 +57,7 @@ public class RepeatStream extends InputStream {
 		return (ret);
 	}
 
+	@Override
 	public int read() throws IOException {
 		if (cur == null) {
 			return (-1);
@@ -70,6 +72,7 @@ public class RepeatStream extends InputStream {
 		return (ret);
 	}
 
+	@Override
 	public void close() throws IOException {
 		if (cur != null) {
 			cur.close();

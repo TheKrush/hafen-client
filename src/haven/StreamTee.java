@@ -40,10 +40,12 @@ public class StreamTee extends InputStream {
 		this.in = in;
 	}
 
+	@Override
 	public int available() throws IOException {
 		return (in.available());
 	}
 
+	@Override
 	public void close() throws IOException {
 		in.close();
 		if (!ncwe || readeof) {
@@ -67,13 +69,16 @@ public class StreamTee extends InputStream {
 		}
 	}
 
+	@Override
 	public void mark(int limit) {
 	}
 
+	@Override
 	public boolean markSupported() {
 		return (false);
 	}
 
+	@Override
 	public int read() throws IOException {
 		int rv = in.read();
 		if (rv >= 0) {
@@ -88,6 +93,7 @@ public class StreamTee extends InputStream {
 		return (rv);
 	}
 
+	@Override
 	public int read(byte[] buf, int off, int len) throws IOException {
 		int rv = in.read(buf, off, len);
 		if (rv > 0) {
@@ -102,6 +108,7 @@ public class StreamTee extends InputStream {
 		return (rv);
 	}
 
+	@Override
 	public void reset() throws IOException {
 		throw (new IOException("Mark not supported on StreamTee"));
 	}

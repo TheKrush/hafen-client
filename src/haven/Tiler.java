@@ -126,6 +126,7 @@ public abstract class Tiler {
 
 		public void faces(MapMesh m, MPart desc);
 		public static final MCons nil = new MCons() {
+			@Override
 			public void faces(MapMesh m, MPart desc) {
 			}
 		};
@@ -140,6 +141,7 @@ public abstract class Tiler {
 
 		public MeshVertex make(MeshBuf buf, MPart d, int i);
 		public static final VertFactory id = new VertFactory() {
+			@Override
 			public MeshVertex make(MeshBuf buf, MPart d, int i) {
 				return (new MeshVertex(buf, d.v[i]));
 			}
@@ -185,14 +187,17 @@ public abstract class Tiler {
 				this.hash = (mat.hashCode() * 31) + f.hashCode();
 			}
 
+			@Override
 			public int hashCode() {
 				return (hash);
 			}
 
+			@Override
 			public boolean equals(Object x) {
 				return ((x instanceof Key) && mat.equals(((Key) x).mat) && f.equals(((Key) x).f));
 			}
 
+			@Override
 			public SModel make(MapMesh m) {
 				return (new SModel(m, mat, f));
 			}
@@ -241,6 +246,7 @@ public abstract class Tiler {
 
 	public static class FactMaker implements Resource.PublishedCode.Instancer {
 
+		@Override
 		public Factory make(Class<?> cl) throws InstantiationException, IllegalAccessException {
 			if (Factory.class.isAssignableFrom(cl)) {
 				return (cl.asSubclass(Factory.class).newInstance());
@@ -249,6 +255,7 @@ public abstract class Tiler {
 				try {
 					final Constructor<? extends Tiler> cons = tcl.getConstructor(Integer.TYPE, Resource.Tileset.class);
 					return (new Factory() {
+						@Override
 						public Tiler create(int id, Resource.Tileset set) {
 							return (Utils.construct(cons, id, set));
 						}
@@ -279,6 +286,7 @@ public abstract class Tiler {
 
 	static {
 		java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Object>() {
+			@Override
 			public Object run() {
 				for (Class<?> cl : dolda.jglob.Loader.get(ResName.class).classes()) {
 					String nm = cl.getAnnotation(ResName.class).value();

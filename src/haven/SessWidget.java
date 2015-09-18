@@ -35,6 +35,7 @@ public class SessWidget extends AWidget {
 	@RName("sess")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			String host = (String) args[0];
 			int port = (Integer) args[1];
@@ -57,6 +58,7 @@ public class SessWidget extends AWidget {
 
 	public SessWidget(final String addr, final int port, final byte[] cookie, final Object... args) {
 		conn = Defer.later(new Defer.Callable<Connection>() {
+			@Override
 			public Connection call() throws InterruptedException {
 				InetAddress host;
 				try {
@@ -87,6 +89,7 @@ public class SessWidget extends AWidget {
 		});
 	}
 
+	@Override
 	public void tick(double dt) {
 		super.tick(dt);
 		if (!rep && conn.done()) {
@@ -95,6 +98,7 @@ public class SessWidget extends AWidget {
 		}
 	}
 
+	@Override
 	public void uimsg(String name, Object... args) {
 		if (name == "exec") {
 			((RemoteUI) ui.rcvr).ret(conn.get().sess);
@@ -103,6 +107,7 @@ public class SessWidget extends AWidget {
 		}
 	}
 
+	@Override
 	public void destroy() {
 		super.destroy();
 		/* XXX: There's a race condition here, but I admit I'm not

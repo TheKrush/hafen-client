@@ -105,12 +105,15 @@ public class Console {
 
 	public void clearout() {
 		out = new PrintWriter(new Writer() {
+			@Override
 			public void write(char[] b, int o, int c) {
 			}
 
+			@Override
 			public void close() {
 			}
 
+			@Override
 			public void flush() {
 			}
 		});

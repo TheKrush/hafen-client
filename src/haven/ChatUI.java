@@ -72,6 +72,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	protected void added() {
 		base = this.c;
 		resize(this.sz);
@@ -110,6 +111,7 @@ public class ChatUI extends Widget {
 			super(args);
 		}
 
+		@Override
 		protected RichText.Part text(PState s, String text, Map<? extends Attribute, ?> attrs) throws IOException {
 			RichText.Part ret = null;
 			int p = 0;
@@ -184,14 +186,17 @@ public class ChatUI extends Widget {
 				}
 			}
 
+			@Override
 			public Text text() {
 				return (t);
 			}
 
+			@Override
 			public Tex tex() {
 				return (t.tex());
 			}
 
+			@Override
 			public Coord sz() {
 				return (t.sz());
 			}
@@ -288,6 +293,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.chcolor(0, 0, 0, 128);
 			g.frect(Coord.z, sz);
@@ -318,11 +324,13 @@ public class ChatUI extends Widget {
 			updurgency(0);
 		}
 
+		@Override
 		public boolean mousewheel(Coord c, int amount) {
 			sb.ch(amount * 15);
 			return (true);
 		}
 
+		@Override
 		public void resize(Coord sz) {
 			super.resize(sz);
 			if (sb != null) {
@@ -360,6 +368,7 @@ public class ChatUI extends Widget {
 				this.ch = ch;
 			}
 
+			@Override
 			public boolean equals(Object oo) {
 				if (!(oo instanceof CharPos)) {
 					return (false);
@@ -370,6 +379,7 @@ public class ChatUI extends Widget {
 		}
 
 		public final Comparator<CharPos> poscmp = new Comparator<CharPos>() {
+			@Override
 			public int compare(CharPos a, CharPos b) {
 				if (a.msg != b.msg) {
 					synchronized (msgs) {
@@ -467,6 +477,7 @@ public class ChatUI extends Widget {
 		private UI.Grab grab;
 		private boolean dragging;
 
+		@Override
 		public boolean mousedown(Coord c, int btn) {
 			if (super.mousedown(c, btn)) {
 				return (true);
@@ -484,6 +495,7 @@ public class ChatUI extends Widget {
 			return (false);
 		}
 
+		@Override
 		public void mousemove(Coord c) {
 			if (selorig != null) {
 				CharPos ch = charat(c);
@@ -573,6 +585,7 @@ public class ChatUI extends Widget {
 				final CharPos ownsel = selstart;
 				cl.setContents(new StringSelection(buf.toString()),
 								new ClipboardOwner() {
+									@Override
 									public void lostOwnership(Clipboard cl, Transferable tr) {
 										if (selstart == ownsel) {
 											selstart = selend = null;
@@ -596,6 +609,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public boolean mouseup(Coord c, int btn) {
 			if (btn == 1) {
 				if (selorig != null) {
@@ -660,6 +674,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public void uimsg(String name, Object... args) {
 			if (name == "sel") {
 				select();
@@ -670,6 +685,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public void wdgmsg(Widget sender, String msg, Object... args) {
 			if (sender == cb) {
 				wdgmsg("close");
@@ -690,6 +706,7 @@ public class ChatUI extends Widget {
 			this.name = name;
 		}
 
+		@Override
 		public String name() {
 			return (name);
 		}
@@ -706,6 +723,7 @@ public class ChatUI extends Widget {
 			super(closable);
 			setfocusctl(true);
 			this.in = new TextEntry(0, "") {
+				@Override
 				public void activate(String text) {
 					if (text.length() > 0) {
 						send(text);
@@ -714,6 +732,7 @@ public class ChatUI extends Widget {
 					hpos = history.size();
 				}
 
+				@Override
 				public boolean keydown(KeyEvent ev) {
 					if (ev.getKeyCode() == KeyEvent.VK_UP) {
 						if (hpos > 0) {
@@ -740,10 +759,12 @@ public class ChatUI extends Widget {
 			add(this.in);
 		}
 
+		@Override
 		public int ih() {
 			return (sz.y - in.sz.y);
 		}
 
+		@Override
 		public void resize(Coord sz) {
 			super.resize(sz);
 			if (in != null) {
@@ -767,6 +788,7 @@ public class ChatUI extends Widget {
 			this.name = name;
 		}
 
+		@Override
 		public void uimsg(String msg, Object... args) {
 			if ((msg == "msg") || (msg == "log")) {
 				String line = (String) args[0];
@@ -788,6 +810,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public String name() {
 			return (name);
 		}
@@ -815,6 +838,7 @@ public class ChatUI extends Widget {
 				this.col = col;
 			}
 
+			@Override
 			public Text text() {
 				BuddyWnd.Buddy b = getparent(GameUI.class).buddies.find(from);
 				String nm = (b == null) ? "???" : (b.name);
@@ -829,10 +853,12 @@ public class ChatUI extends Widget {
 				return (r);
 			}
 
+			@Override
 			public Tex tex() {
 				return (text().tex());
 			}
 
+			@Override
 			public Coord sz() {
 				if (r == null) {
 					return (text().sz());
@@ -871,6 +897,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public void uimsg(String msg, Object... args) {
 			if (msg == "msg") {
 				Integer from = (Integer) args[0];
@@ -889,6 +916,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public String name() {
 			return (name);
 		}
@@ -900,6 +928,7 @@ public class ChatUI extends Widget {
 			super(false, "Party", 2);
 		}
 
+		@Override
 		public void uimsg(String msg, Object... args) {
 			if (msg == "msg") {
 				Integer from = (Integer) args[0];
@@ -951,6 +980,7 @@ public class ChatUI extends Widget {
 			this.other = other;
 		}
 
+		@Override
 		public void uimsg(String msg, Object... args) {
 			if (msg == "msg") {
 				String t = (String) args[0];
@@ -972,6 +1002,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public String name() {
 			BuddyWnd.Buddy b = getparent(GameUI.class).buddies.find(other);
 			if (b == null) {
@@ -985,6 +1016,7 @@ public class ChatUI extends Widget {
 	@RName("schan")
 	public static class $SChan implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			String name = (String) args[0];
 			return (new SimpleChat(false, name));
@@ -994,6 +1026,7 @@ public class ChatUI extends Widget {
 	@RName("mchat")
 	public static class $MChat implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			String name = (String) args[0];
 			int urgency = (Integer) args[1];
@@ -1004,6 +1037,7 @@ public class ChatUI extends Widget {
 	@RName("pchat")
 	public static class $PChat implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new PartyChat());
 		}
@@ -1012,16 +1046,19 @@ public class ChatUI extends Widget {
 	@RName("pmchat")
 	public static class $PMChat implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			int other = (Integer) args[0];
 			return (new PrivChat(true, other));
 		}
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		add(child);
 	}
 
+	@Override
 	public <T extends Widget> T add(T w) {
 		if (w instanceof Channel) {
 			Channel chan = (Channel) w;
@@ -1036,6 +1073,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public void cdestroy(Widget w) {
 		if (w instanceof Channel) {
 			Channel chan = (Channel) w;
@@ -1093,6 +1131,7 @@ public class ChatUI extends Widget {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			int i = s;
 			int y = 0;
@@ -1157,6 +1196,7 @@ public class ChatUI extends Widget {
 			return (null);
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			if (button == 1) {
 				Channel chan = bypos(c);
@@ -1167,6 +1207,7 @@ public class ChatUI extends Widget {
 			return (true);
 		}
 
+		@Override
 		public boolean mousewheel(Coord c, int amount) {
 			if (!ui.modshift) {
 				s += amount;
@@ -1255,6 +1296,7 @@ public class ChatUI extends Widget {
 	private static final Tex bmf = Resource.loadtex("gfx/hud/chat-mid");
 	private static final Tex bcbd = Resource.loadtex("gfx/hud/chat-close-g");
 
+	@Override
 	public void draw(GOut g) {
 		g.rimage(Window.bg, marg, sz.sub(marg.x * 2, marg.y));
 		super.draw(g);
@@ -1285,6 +1327,7 @@ public class ChatUI extends Widget {
 			show();
 		}
 
+		@Override
 		public void ntick(double a) {
 			double b = Math.cos(Math.PI * 2.5 * a) * Math.exp(-5 * a);
 			resize(sz.x, nh + (int) ((nh - oh) * b));
@@ -1294,6 +1337,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public void resize(Coord sz) {
 		super.resize(sz);
 		this.c = base.add(0, -this.sz.y);
@@ -1337,6 +1381,7 @@ public class ChatUI extends Widget {
 			qgrab.remove();
 		}
 
+		@Override
 		protected void done(String line) {
 			if (line.length() > 0) {
 				chan.send(line);
@@ -1344,6 +1389,7 @@ public class ChatUI extends Widget {
 			cancel();
 		}
 
+		@Override
 		public boolean key(char c, int code, int mod) {
 			if (c == 27) {
 				cancel();
@@ -1358,6 +1404,7 @@ public class ChatUI extends Widget {
 	private Coord doff;
 	public int savedh = Math.max(111, Utils.getprefi("chatsize", 111));
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		int bmfx = (sz.x - bmf.sz().x) / 2;
 		if ((button == 1) && (c.y < bmf.sz().y) && (c.x >= bmfx) && (c.x <= (bmfx + bmf.sz().x))) {
@@ -1369,6 +1416,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (dm != null) {
 			resize(sz.x, savedh = Math.max(111, sz.y + doff.y - c.y));
@@ -1377,6 +1425,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if (dm != null) {
 			dm.remove();
@@ -1388,6 +1437,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public boolean keydown(KeyEvent ev) {
 		boolean M = (ev.getModifiersEx() & (KeyEvent.META_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) != 0;
 		if (qline != null) {
@@ -1432,6 +1482,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public boolean type(char key, KeyEvent ev) {
 		if (qline != null) {
 			qline.key(ev);
@@ -1441,6 +1492,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
+	@Override
 	public boolean globtype(char key, KeyEvent ev) {
 		if (key == 10) {
 			if (!visible && (sel instanceof EntryChannel)) {

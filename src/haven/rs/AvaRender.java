@@ -72,6 +72,7 @@ public class AvaRender {
 		final BufferedImage[] ret = {null};
 		try {
 			buf.render(new Drawn() {
+				@Override
 				public void draw(GOut g) {
 					float field = 0.5f;
 					float aspect = ((float) buf.sz.y) / ((float) buf.sz.x);
@@ -84,9 +85,11 @@ public class AvaRender {
 					while (true) {
 						try {
 							view.render(new Rendered() {
+								@Override
 								public void draw(GOut g) {
 								}
 
+								@Override
 								public boolean setup(RenderList rl) {
 									rl.add(comp, null);
 									rl.add(new DirLight(Color.WHITE, Color.WHITE, Color.WHITE, new Coord3f(1, 1, 1).norm()), null);
@@ -103,6 +106,7 @@ public class AvaRender {
 						}
 					}
 					g.getimage(new Callback<BufferedImage>() {
+						@Override
 						public void done(BufferedImage res) {
 							ret[0] = res;
 						}
@@ -118,6 +122,7 @@ public class AvaRender {
 	}
 
 	public static final Server.Command call = new Server.Command() {
+		@Override
 		public Object[] run(Server.Client cl, Object... args) throws InterruptedException {
 			Coord sz = (Coord) args[0];
 			Indir<Resource> base = Resource.local().load((String) args[1]);

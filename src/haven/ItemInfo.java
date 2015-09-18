@@ -88,6 +88,7 @@ public abstract class ItemInfo {
 
 		public BufferedImage render() {
 			Collections.sort(tips, new Comparator<Tip>() {
+				@Override
 				public int compare(Tip a, Tip b) {
 					return (a.order() - b.order());
 				}
@@ -142,6 +143,7 @@ public abstract class ItemInfo {
 			this.str = Text.render(str);
 		}
 
+		@Override
 		public BufferedImage tipimg() {
 			return (str.img);
 		}
@@ -160,20 +162,25 @@ public abstract class ItemInfo {
 			this(owner, Text.render(str));
 		}
 
+		@Override
 		public BufferedImage tipimg() {
 			return (str.img);
 		}
 
+		@Override
 		public int order() {
 			return (0);
 		}
 
+		@Override
 		public Tip shortvar() {
 			return (new Tip(owner) {
+				@Override
 				public BufferedImage tipimg() {
 					return (str.img);
 				}
 
+				@Override
 				public int order() {
 					return (0);
 				}
@@ -191,6 +198,7 @@ public abstract class ItemInfo {
 			this.sub = sub;
 		}
 
+		@Override
 		public BufferedImage tipimg() {
 			BufferedImage stip = longtip(sub);
 			BufferedImage img = TexI.mkbuf(new Coord(stip.getWidth() + 10, stip.getHeight() + 15));
@@ -201,12 +209,15 @@ public abstract class ItemInfo {
 			return (img);
 		}
 
+		@Override
 		public Tip shortvar() {
 			return (new Tip(owner) {
+				@Override
 				public BufferedImage tipimg() {
 					return (shorttip(sub));
 				}
 
+				@Override
 				public int order() {
 					return (100);
 				}

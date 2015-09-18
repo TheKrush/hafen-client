@@ -121,6 +121,7 @@ public class Surface {
 			cl[i++] = new Corner(f.v3, f.v2, f.v1);
 		}
 		Arrays.sort(cl, new Comparator<Corner>() {
+			@Override
 			public int compare(Corner a, Corner b) {
 				return (a.v.vi - b.v.vi);
 			}
@@ -169,6 +170,7 @@ public class Surface {
 		}
 	}
 	public static final DataID<Normals> nrm = new DataID<Normals>() {
+		@Override
 		public Normals make(Surface s) {
 			return (s.new Normals());
 		}

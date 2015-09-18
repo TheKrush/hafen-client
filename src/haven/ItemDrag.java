@@ -34,17 +34,20 @@ public class ItemDrag extends WItem {
 		this.doff = dc;
 	}
 
+	@Override
 	protected void added() {
 		this.c = parent.ui.mc.add(doff.inv());
 		ui.grabmouse(this);
 	}
 
+	@Override
 	public void drawmain(GOut g, GSprite spr) {
 		g.chcolor(255, 255, 255, 128);
 		super.drawmain(g, spr);
 		g.chcolor();
 	}
 
+	@Override
 	public void tick(double dt) {
 		super.tick(dt);
 		if (parent.child != this) {
@@ -92,6 +95,7 @@ public class ItemDrag extends WItem {
 		return (false);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button == 1) {
 			dropon(parent, c.add(this.c));
@@ -103,6 +107,7 @@ public class ItemDrag extends WItem {
 		return (false);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		this.c = this.c.add(c.add(doff.inv()));
 	}

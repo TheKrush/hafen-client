@@ -73,6 +73,7 @@ public class ErrorHandler extends ThreadGroup {
 			this.status = status;
 		}
 
+		@Override
 		public void run() {
 			while (true) {
 				synchronized (errors) {
@@ -187,6 +188,7 @@ public class ErrorHandler extends ThreadGroup {
 		reporter.status = handler;
 	}
 
+	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		reporter.report(t, e);
 	}

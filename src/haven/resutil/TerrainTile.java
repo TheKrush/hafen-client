@@ -192,6 +192,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 										+ (((bv[l][vs.o(lc.x + 0, lc.y + 1)] * icx) + (bv[l][vs.o(lc.x + 1, lc.y + 1)] * tcx)) * tcy));
 					}
 
+					@Override
 					public Surface.MeshVertex make(MeshBuf buf, MPart d, int i) {
 						Surface.MeshVertex ret = new Surface.MeshVertex(buf, d.v[i]);
 						Coord3f tan = Coord3f.yu.cmul(ret.nrm).norm();
@@ -209,6 +210,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 		}
 	}
 	public final MapMesh.DataID<Blend> blend = new MapMesh.DataID<Blend>() {
+		@Override
 		public Blend make(MapMesh m) {
 			return (new Blend(m));
 		}
@@ -217,6 +219,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 	@ResName("trn")
 	public static class Factory implements Tiler.Factory {
 
+		@Override
 		public TerrainTile create(int id, Resource.Tileset set) {
 			Resource res = set.getres();
 			Tileset trans = null;
@@ -260,10 +263,12 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 		this.transset = transset;
 	}
 
+	@Override
 	public void lay(MapMesh m, Random rnd, Coord lc, Coord gc) {
 		lay(m, lc, gc, this, false);
 	}
 
+	@Override
 	public void faces(MapMesh m, MPart d) {
 		Blend b = m.data(blend);
 		Surface.MeshVertex[] mv = new Surface.MeshVertex[d.v.length];
@@ -324,17 +329,20 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 
 	private MCons tcons(final int z, final Tile t) {
 		return (new MCons() {
+			@Override
 			public void faces(MapMesh m, MPart d) {
 				_faces(m, z, t, d);
 			}
 		});
 	}
 
+	@Override
 	public MCons tcons(final int z, final int bmask, final int cmask) {
 		if ((transset == null) || ((bmask == 0) && (cmask == 0))) {
 			return (MCons.nil);
 		}
 		return (new MCons() {
+			@Override
 			public void faces(MapMesh m, MPart d) {
 				Random rnd = m.rnd(d.lc);
 				if ((transset.btrans != null) && (bmask != 0)) {
@@ -347,6 +355,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 		});
 	}
 
+	@Override
 	public void trans(MapMesh m, Random rnd, Tiler gt, Coord lc, Coord gc, int z, int bmask, int cmask) {
 		if (transset == null) {
 			return;
@@ -370,6 +379,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 		@ResName("trn-r")
 		public static class RFactory implements Tiler.Factory {
 
+			@Override
 			public Tiler create(int id, Resource.Tileset set) {
 				TerrainTile base = new Factory().create(id, set);
 				int rth = 20;
@@ -401,16 +411,19 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 			this.rcons = new Ridges.TexCons(rmat, texh);
 		}
 
+		@Override
 		public int breakz() {
 			return (rth);
 		}
 
+		@Override
 		public void model(MapMesh m, Random rnd, Coord lc, Coord gc) {
 			if (!m.data(Ridges.id).model(lc)) {
 				super.model(m, rnd, lc, gc);
 			}
 		}
 
+		@Override
 		public void lay(MapMesh m, Coord lc, Coord gc, MCons cons, boolean cover) {
 			Ridges r = m.data(Ridges.id);
 			if (!r.laygnd(lc, cons)) {
@@ -420,6 +433,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 			}
 		}
 
+		@Override
 		public void lay(MapMesh m, Random rnd, Coord lc, Coord gc) {
 			super.lay(m, rnd, lc, gc);
 			m.data(Ridges.id).layridge(lc, rcons);

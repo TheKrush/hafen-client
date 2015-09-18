@@ -39,19 +39,23 @@ public interface ErrorStatus {
 
 	public static class Simple implements ErrorStatus {
 
+		@Override
 		public boolean goterror(Throwable t) {
 			System.err.println("Caught error: " + t);
 			return (true);
 		}
 
+		@Override
 		public void connecting() {
 			System.err.println("Connecting to error server");
 		}
 
+		@Override
 		public void sending() {
 			System.err.println("Sending error");
 		}
 
+		@Override
 		public void done(String ctype, String info) {
 			if (ctype != null) {
 				System.err.println(ctype + ": " + info);
@@ -60,6 +64,7 @@ public interface ErrorStatus {
 			}
 		}
 
+		@Override
 		public void senderror(Exception e) {
 			System.err.println("Error while sending error:");
 			e.printStackTrace(System.err);

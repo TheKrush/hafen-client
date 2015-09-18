@@ -66,6 +66,7 @@ public class Struct extends Type {
 		return (new Struct(name, fs));
 	}
 
+	@Override
 	public String name(Context ctx) {
 		return ("struct " + name.name(ctx));
 	}

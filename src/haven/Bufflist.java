@@ -57,15 +57,18 @@ public class Bufflist extends Widget {
 		resize(br.add(Buff.cframe.sz()));
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		add(child);
 		arrange(child);
 	}
 
+	@Override
 	public void cdestroy(Widget ch) {
 		arrange(null);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		draw(g, false);
 	}

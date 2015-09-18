@@ -48,11 +48,13 @@ public class Textlog extends Widget {
 	@RName("log")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Textlog((Coord) args[0]));
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		Coord dc = new Coord();
 		for (dc.y = 0; dc.y < sz.y; dc.y += texpap.sz().y) {
@@ -125,12 +127,14 @@ public class Textlog extends Widget {
 		append(line, null);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "apnd") {
 			append((String) args[0]);
 		}
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		cury += amount * 20;
 		if (cury < sz.y) {
@@ -142,6 +146,7 @@ public class Textlog extends Widget {
 		return (true);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
@@ -156,6 +161,7 @@ public class Textlog extends Widget {
 		return (false);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (sdrag != null) {
 			double a = (double) (c.y - (sflarp.sz().y / 2)) / (double) (sz.y - sflarp.sz().y);
@@ -169,6 +175,7 @@ public class Textlog extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if ((button == 1) && (sdrag != null)) {
 			sdrag.remove();

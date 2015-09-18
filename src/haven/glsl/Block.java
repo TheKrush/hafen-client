@@ -55,12 +55,14 @@ public class Block extends Statement {
 				this.init = init;
 			}
 
+			@Override
 			public void walk(Walker w) {
 				if (init != null) {
 					w.el(init);
 				}
 			}
 
+			@Override
 			public void output(Output out) {
 				out.write(type.name(out.ctx));
 				out.write(" ");
@@ -123,6 +125,7 @@ public class Block extends Statement {
 		return (local(type, new Symbol.Gen(), init));
 	}
 
+	@Override
 	public void walk(Walker w) {
 		for (Statement s : stmts) {
 			w.el(s);
@@ -148,6 +151,7 @@ public class Block extends Statement {
 		}
 	}
 
+	@Override
 	public void output(Output out) {
 		out.indent();
 		trail(out, true);

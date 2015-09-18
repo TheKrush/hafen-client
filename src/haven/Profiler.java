@@ -93,6 +93,7 @@ public class Profiler {
 			this(f.getClassName(), f.getMethodName());
 		}
 
+		@Override
 		public boolean equals(Object bp) {
 			if (!(bp instanceof Function)) {
 				return (false);
@@ -103,6 +104,7 @@ public class Profiler {
 
 		private int hc = 0;
 
+		@Override
 		public int hashCode() {
 			if (hc == 0) {
 				hc = cl.hashCode() * 31 + nm.hashCode();
@@ -171,6 +173,7 @@ public class Profiler {
 		PrintStream p = new PrintStream(out);
 		List<Function> funs = new ArrayList<Function>(this.funs.keySet());
 		Collections.sort(funs, new Comparator<Function>() {
+			@Override
 			public int compare(Function a, Function b) {
 				return (b.dticks - a.dticks);
 			}
@@ -191,6 +194,7 @@ public class Profiler {
 		}
 		p.println();
 		Collections.sort(funs, new Comparator<Function>() {
+			@Override
 			public int compare(Function a, Function b) {
 				return ((b.iticks + b.dticks) - (a.iticks + a.dticks));
 			}
@@ -215,6 +219,7 @@ public class Profiler {
 				cfs.add(new AbstractMap.SimpleEntry<Function, Integer>(null, fn.dticks));
 			}
 			Collections.sort(cfs, new Comparator<Map.Entry<Function, Integer>>() {
+				@Override
 				public int compare(Map.Entry<Function, Integer> a, Map.Entry<Function, Integer> b) {
 					return (b.getValue() - a.getValue());
 				}
@@ -242,6 +247,7 @@ public class Profiler {
 			p.printf("  %s.%s\n", fn.cl, fn.nm);
 			List<Map.Entry<Function, Integer>> cfs = new ArrayList<Map.Entry<Function, Integer>>(fn.fticks.entrySet());
 			Collections.sort(cfs, new Comparator<Map.Entry<Function, Integer>>() {
+				@Override
 				public int compare(Map.Entry<Function, Integer> a, Map.Entry<Function, Integer> b) {
 					return (b.getValue() - a.getValue());
 				}
@@ -282,6 +288,7 @@ public class Profiler {
 			setDaemon(true);
 		}
 
+		@Override
 		public void run() {
 			try {
 				while (true) {

@@ -33,13 +33,16 @@ import haven.glsl.ValBlock.Value;
 public class GLColorVary implements ShaderMacro {
 
 	public static final AutoVarying color = new AutoVarying(VEC4) {
+		@Override
 		protected Expression root(VertexContext vctx) {
 			return (vctx.gl_Color.ref());
 		}
 	};
 
+	@Override
 	public void modify(ProgramContext prog) {
 		prog.fctx.fragcol.mod(new Macro1<Expression>() {
+			@Override
 			public Expression expand(Expression in) {
 				return (mul(in, color.ref()));
 			}

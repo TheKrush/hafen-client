@@ -35,6 +35,7 @@ public class LimitMessage extends Message {
 		this.left = left;
 	}
 
+	@Override
 	public boolean underflow(int hint) {
 		if (left < 1) {
 			return (false);
@@ -61,6 +62,7 @@ public class LimitMessage extends Message {
 		return (true);
 	}
 
+	@Override
 	public void overflow(int min) {
 		throw (new RuntimeException("LimitMessage is not writeable"));
 	}

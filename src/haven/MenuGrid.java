@@ -53,6 +53,7 @@ public class MenuGrid extends Widget {
 	@RName("scm")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new MenuGrid());
 		}
@@ -128,6 +129,7 @@ public class MenuGrid extends Widget {
 	}
 
 	public static Comparator<Pagina> sorter = new Comparator<Pagina>() {
+		@Override
 		public int compare(Pagina a, Pagina b) {
 			AButton aa = a.act(), ab = b.act();
 			if ((aa.ad.length == 0) && (ab.ad.length > 0)) {
@@ -204,6 +206,7 @@ public class MenuGrid extends Widget {
 		return (ret);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		long now = System.currentTimeMillis();
 		for (int y = 0; y < gsz.y; y++) {
@@ -252,6 +255,7 @@ public class MenuGrid extends Widget {
 		if (dragging != null) {
 			final Tex dt = dragging.img.tex();
 			ui.drawafter(new UI.AfterDraw() {
+				@Override
 				public void draw(GOut g) {
 					g.image(dt, ui.mc.add(dt.sz().div(2).inv()));
 				}
@@ -264,6 +268,7 @@ public class MenuGrid extends Widget {
 	private Text curtt = null;
 	private long hoverstart;
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		Pagina pag = bhit(c);
 		long now = System.currentTimeMillis();
@@ -293,6 +298,7 @@ public class MenuGrid extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		Pagina h = bhit(c);
 		if ((button == 1) && (h != null)) {
@@ -302,6 +308,7 @@ public class MenuGrid extends Widget {
 		return (true);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if ((dragging == null) && (pressed != null)) {
 			Pagina h = bhit(c);
@@ -366,12 +373,14 @@ public class MenuGrid extends Widget {
 		}
 	}
 
+	@Override
 	public void tick(double dt) {
 		if (loading || (pagseq != ui.sess.glob.pagseq)) {
 			updlayout();
 		}
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		Pagina h = bhit(c);
 		if ((button == 1) && (grab != null)) {
@@ -390,6 +399,7 @@ public class MenuGrid extends Widget {
 		return (true);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "goto") {
 			String resnm = (String) args[0];
@@ -404,6 +414,7 @@ public class MenuGrid extends Widget {
 		}
 	}
 
+	@Override
 	public boolean globtype(char k, KeyEvent ev) {
 		if (ui.modflags() != 0) {
 			return false;

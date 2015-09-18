@@ -141,6 +141,7 @@ public class HtmlReporter {
 			t = r.t;
 		}
 
+		@Override
 		public int compareTo(ErrorIdentity o) {
 			int sc = jarrev.compareTo(o.jarrev);
 			if (sc != 0) {
@@ -318,6 +319,7 @@ public class HtmlReporter {
 
 			List<Map.Entry<File, Report>> reps = groups.get(id);
 			Collections.sort(reps, new Comparator<Map.Entry<File, Report>>() {
+				@Override
 				public int compare(Map.Entry<File, Report> a, Map.Entry<File, Report> b) {
 					long at = a.getValue().time, bt = b.getValue().time;
 					if (at > bt) {

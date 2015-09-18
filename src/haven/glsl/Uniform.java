@@ -45,6 +45,7 @@ public class Uniform extends Variable.Global {
 
 	private class Def extends Definition {
 
+		@Override
 		public void output(Output out) {
 			if (out.ctx instanceof ShaderContext) {
 				((ShaderContext) out.ctx).prog.uniforms.add(Uniform.this);
@@ -54,6 +55,7 @@ public class Uniform extends Variable.Global {
 		}
 	}
 
+	@Override
 	public void use(Context ctx) {
 		if (!defined(ctx)) {
 			ctx.vardefs.add(new Def());

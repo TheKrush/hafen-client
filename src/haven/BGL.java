@@ -118,6 +118,7 @@ public class BGL {
 	public void bglCheckErr() {
 		final Throwable place = null;
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				GOut.checkerr(gl);
 			}
@@ -126,6 +127,7 @@ public class BGL {
 
 	public void bglCreate(final GLObject ob) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ob.create(gl);
 			}
@@ -134,6 +136,7 @@ public class BGL {
 
 	public void bglSubmit(final Request req) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				req.run(gl);
 			}
@@ -142,6 +145,7 @@ public class BGL {
 
 	public void bglCopyBufferf(final FloatBuffer dst, final int doff, final FloatBuffer src, final int soff, final int len) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				dst.position(doff);
 				src.position(soff).limit(len);
@@ -154,6 +158,7 @@ public class BGL {
 
 	public void bglCopyBufferf(final FloatBuffer dst, final int doff, final float[] src, final int soff, final int len) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				dst.position(doff);
 				dst.put(src, soff, len);
@@ -164,6 +169,7 @@ public class BGL {
 
 	public void glActiveTexture(final int texture) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glActiveTexture(texture);
 			}
@@ -172,6 +178,7 @@ public class BGL {
 
 	public void glAlphaFunc(final int func, final float val) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glAlphaFunc(func, val);
 			}
@@ -180,6 +187,7 @@ public class BGL {
 
 	public void glAttachShader(final ID program, final ID shader) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glAttachShader(program.glid(), shader.glid());
 			}
@@ -188,6 +196,7 @@ public class BGL {
 
 	public void glBegin(final int mode) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBegin(mode);
 			}
@@ -196,6 +205,7 @@ public class BGL {
 
 	public void glBindBuffer(final int target, final ID buffer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBindBuffer(target, (buffer == null) ? 0 : buffer.glid());
 			}
@@ -204,6 +214,7 @@ public class BGL {
 
 	public void glBindFramebuffer(final int target, final ID buffer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBindFramebuffer(target, (buffer == null) ? 0 : buffer.glid());
 			}
@@ -212,6 +223,7 @@ public class BGL {
 
 	public void glBindRenderbuffer(final int target, final ID buffer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBindRenderbuffer(target, (buffer == null) ? 0 : buffer.glid());
 			}
@@ -220,6 +232,7 @@ public class BGL {
 
 	public void glBindTexture(final int target, final ID texture) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBindTexture(target, (texture == null) ? 0 : texture.glid());
 			}
@@ -228,6 +241,7 @@ public class BGL {
 
 	public void glBindVertexArray(final ID array) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBindVertexArray((array == null) ? 0 : array.glid());
 			}
@@ -236,6 +250,7 @@ public class BGL {
 
 	public void glBlendEquationSeparate(final int cmode, final int amode) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBlendEquationSeparate(cmode, amode);
 			}
@@ -244,6 +259,7 @@ public class BGL {
 
 	public void glBlendFunc(final int sfac, final int dfac) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glBlendFunc(sfac, dfac);
 			}
@@ -253,6 +269,7 @@ public class BGL {
 	public void glBufferData(final int target, final long size, Buffer data, final int usage) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glBufferData(target, size, ds.buf, usage);
@@ -262,6 +279,7 @@ public class BGL {
 
 	public void glCallList(final ID list) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glCallList(list.glid());
 			}
@@ -270,6 +288,7 @@ public class BGL {
 
 	public void glClear(final int mask) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glClear(mask);
 			}
@@ -278,6 +297,7 @@ public class BGL {
 
 	public void glClearColor(final float r, final float g, final float b, final float a) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glClearColor(r, g, b, a);
 			}
@@ -286,6 +306,7 @@ public class BGL {
 
 	public void glClearDepth(final double d) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glClearDepth(d);
 			}
@@ -294,6 +315,7 @@ public class BGL {
 
 	public void glColor3f(final float r, final float g, final float b) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glColor3f(r, g, b);
 			}
@@ -302,6 +324,7 @@ public class BGL {
 
 	public void glColor4f(final float r, final float g, final float b, final float a) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glColor4f(r, g, b, a);
 			}
@@ -310,6 +333,7 @@ public class BGL {
 
 	public void glColor4fv(final float[] v, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glColor4fv(v, n);
 			}
@@ -318,6 +342,7 @@ public class BGL {
 
 	public void glColorMask(final boolean r, final boolean g, final boolean b, final boolean a) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glColorMask(r, g, b, a);
 			}
@@ -326,6 +351,7 @@ public class BGL {
 
 	public void glColorPointer(final int size, final int type, final int stride, final long pointer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glColorPointer(size, type, stride, pointer);
 			}
@@ -335,6 +361,7 @@ public class BGL {
 	public void glColorPointer(final int size, final int type, final int stride, Buffer data) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glColorPointer(size, type, stride, ds.buf);
@@ -344,6 +371,7 @@ public class BGL {
 
 	public void glCompileShaderARB(final ID shader) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glCompileShaderARB(shader.glid());
 			}
@@ -352,6 +380,7 @@ public class BGL {
 
 	public void glDeleteBuffers(final int count, final ID[] buffers, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				int[] buf = new int[buffers.length];
 				for (int i = 0; i < buf.length; i++) {
@@ -364,6 +393,7 @@ public class BGL {
 
 	public void glDeleteFramebuffers(final int count, final ID[] buffers, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				int[] buf = new int[buffers.length];
 				for (int i = 0; i < buf.length; i++) {
@@ -376,6 +406,7 @@ public class BGL {
 
 	public void glDeleteLists(final ID list, final int range) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDeleteLists(list.glid(), range);
 			}
@@ -384,6 +415,7 @@ public class BGL {
 
 	public void glDeleteObjectARB(final ID id) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDeleteObjectARB(id.glid());
 			}
@@ -392,6 +424,7 @@ public class BGL {
 
 	public void glDeleteRenderbuffers(final int count, final ID[] buffers, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				int[] buf = new int[buffers.length];
 				for (int i = 0; i < buf.length; i++) {
@@ -404,6 +437,7 @@ public class BGL {
 
 	public void glDeleteTextures(final int count, final ID[] buffers, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				int[] buf = new int[buffers.length];
 				for (int i = 0; i < buf.length; i++) {
@@ -416,6 +450,7 @@ public class BGL {
 
 	public void glDeleteVertexArrays(final int count, final ID[] buffers, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				int[] buf = new int[buffers.length];
 				for (int i = 0; i < buf.length; i++) {
@@ -428,6 +463,7 @@ public class BGL {
 
 	public void glDepthFunc(final int func) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDepthFunc(func);
 			}
@@ -436,6 +472,7 @@ public class BGL {
 
 	public void glDepthMask(final boolean mask) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDepthMask(mask);
 			}
@@ -444,6 +481,7 @@ public class BGL {
 
 	public void glDisable(final int cap) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDisable(cap);
 			}
@@ -452,6 +490,7 @@ public class BGL {
 
 	public void glDisableClientState(final int cap) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDisableClientState(cap);
 			}
@@ -460,6 +499,7 @@ public class BGL {
 
 	public void glDisableVertexAttribArray(final ID location) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDisableVertexAttribArray(location.glid());
 			}
@@ -468,6 +508,7 @@ public class BGL {
 
 	public void glDisableVertexAttribArray(final ID location, final int offset) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDisableVertexAttribArray(location.glid() + offset);
 			}
@@ -476,6 +517,7 @@ public class BGL {
 
 	public void glDrawBuffer(final int buf) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDrawBuffer(buf);
 			}
@@ -484,6 +526,7 @@ public class BGL {
 
 	public void glDrawBuffers(final int n, final int[] bufs, final int i) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDrawBuffers(n, bufs, i);
 			}
@@ -492,6 +535,7 @@ public class BGL {
 
 	public void glDrawArrays(final int mode, final int first, final int count) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDrawArrays(mode, first, count);
 			}
@@ -500,6 +544,7 @@ public class BGL {
 
 	public void glDrawElementsInstanced(final int mode, final int count, final int type, final long indices, final int primcount) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDrawElementsInstanced(mode, count, type, indices, primcount);
 			}
@@ -509,6 +554,7 @@ public class BGL {
 	public void glDrawElements(final int mode, final int count, final int type, Buffer indices) {
 		final BufState is = new BufState(indices);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				is.restore();
 				gl.glDrawElements(mode, count, type, is.buf);
@@ -519,6 +565,7 @@ public class BGL {
 	public void glDrawRangeElements(final int mode, final int start, final int end, final int count, final int type, Buffer indices) {
 		final BufState is = new BufState(indices);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				is.restore();
 				gl.glDrawRangeElements(mode, start, end, count, type, is.buf);
@@ -528,6 +575,7 @@ public class BGL {
 
 	public void glDrawRangeElements(final int mode, final int start, final int end, final int count, final int type, final long indices) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glDrawRangeElements(mode, start, end, count, type, indices);
 			}
@@ -536,6 +584,7 @@ public class BGL {
 
 	public void glEnable(final int cap) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glEnable(cap);
 			}
@@ -544,6 +593,7 @@ public class BGL {
 
 	public void glEnableClientState(final int cap) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glEnableClientState(cap);
 			}
@@ -552,6 +602,7 @@ public class BGL {
 
 	public void glEnableVertexAttribArray(final ID location) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glEnableVertexAttribArray(location.glid());
 			}
@@ -560,6 +611,7 @@ public class BGL {
 
 	public void glEnableVertexAttribArray(final ID location, final int offset) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glEnableVertexAttribArray(location.glid() + offset);
 			}
@@ -568,6 +620,7 @@ public class BGL {
 
 	public void glEnd() {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glEnd();
 			}
@@ -576,6 +629,7 @@ public class BGL {
 
 	public void glEndList() {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glEndList();
 			}
@@ -584,6 +638,7 @@ public class BGL {
 
 	public void glFogi(final int pname, final int param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glFogi(pname, param);
 			}
@@ -592,6 +647,7 @@ public class BGL {
 
 	public void glFogf(final int pname, final float param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glFogf(pname, param);
 			}
@@ -600,6 +656,7 @@ public class BGL {
 
 	public void glFogfv(final int pname, final float[] param, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glFogfv(pname, param, n);
 			}
@@ -608,6 +665,7 @@ public class BGL {
 
 	public void glFramebufferTexture2D(final int target, final int attachment, final int textarget, final ID texture, final int level) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glFramebufferTexture2D(target, attachment, textarget, texture.glid(), level);
 			}
@@ -616,6 +674,7 @@ public class BGL {
 
 	public void glFramebufferRenderbuffer(final int target, final int attachment, final int rbtarget, final ID renderbuffer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glFramebufferRenderbuffer(target, attachment, rbtarget, renderbuffer.glid());
 			}
@@ -624,6 +683,7 @@ public class BGL {
 
 	public void glHint(final int target, final int mode) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glHint(target, mode);
 			}
@@ -632,6 +692,7 @@ public class BGL {
 
 	public void glLightf(final int light, final int pname, final float param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLightf(light, pname, param);
 			}
@@ -640,6 +701,7 @@ public class BGL {
 
 	public void glLightfv(final int light, final int pname, final float[] param, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLightfv(light, pname, param, n);
 			}
@@ -648,6 +710,7 @@ public class BGL {
 
 	public void glLightModelfv(final int pname, final float[] param, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLightModelfv(pname, param, n);
 			}
@@ -656,6 +719,7 @@ public class BGL {
 
 	public void glLightModeli(final int pname, final int param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLightModeli(pname, param);
 			}
@@ -664,6 +728,7 @@ public class BGL {
 
 	public void glLineWidth(final float w) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLineWidth(w);
 			}
@@ -672,6 +737,7 @@ public class BGL {
 
 	public void glLinkProgram(final ID program) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLinkProgram(program.glid());
 			}
@@ -680,6 +746,7 @@ public class BGL {
 
 	public void glLoadMatrixf(final float[] m, final int i) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glLoadMatrixf(m, i);
 			}
@@ -688,6 +755,7 @@ public class BGL {
 
 	public void glMaterialf(final int face, final int pname, final float param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glMaterialf(face, pname, param);
 			}
@@ -696,6 +764,7 @@ public class BGL {
 
 	public void glMaterialfv(final int face, final int pname, final float[] param, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glMaterialfv(face, pname, param, n);
 			}
@@ -704,6 +773,7 @@ public class BGL {
 
 	public void glMatrixMode(final int mode) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glMatrixMode(mode);
 			}
@@ -712,6 +782,7 @@ public class BGL {
 
 	public void glNewList(final ID list, final int mode) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glNewList(list.glid(), mode);
 			}
@@ -720,6 +791,7 @@ public class BGL {
 
 	public void glNormal3f(final float x, final float y, final float z) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glNormal3f(x, y, z);
 			}
@@ -728,6 +800,7 @@ public class BGL {
 
 	public void glNormalPointer(final int type, final int stride, final long pointer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glNormalPointer(type, stride, pointer);
 			}
@@ -737,6 +810,7 @@ public class BGL {
 	public void glNormalPointer(final int type, final int stride, Buffer data) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glNormalPointer(type, stride, ds.buf);
@@ -746,6 +820,7 @@ public class BGL {
 
 	public void glPixelStorei(final int pname, final int param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glPixelStorei(pname, param);
 			}
@@ -754,6 +829,7 @@ public class BGL {
 
 	public void glPointSize(final float size) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glPointSize(size);
 			}
@@ -762,6 +838,7 @@ public class BGL {
 
 	public void glPolygonMode(final int face, final int mode) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glPolygonMode(face, mode);
 			}
@@ -770,6 +847,7 @@ public class BGL {
 
 	public void glPolygonOffset(final float factor, final float units) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glPolygonOffset(factor, units);
 			}
@@ -778,6 +856,7 @@ public class BGL {
 
 	public void glReadBuffer(final int buf) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glReadBuffer(buf);
 			}
@@ -786,6 +865,7 @@ public class BGL {
 
 	public void glRenderbufferStorage(final int target, final int format, final int width, final int height) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glRenderbufferStorage(target, format, width, height);
 			}
@@ -794,6 +874,7 @@ public class BGL {
 
 	public void glRenderbufferStorageMultisample(final int target, final int samples, final int format, final int width, final int height) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glRenderbufferStorageMultisample(target, samples, format, width, height);
 			}
@@ -802,6 +883,7 @@ public class BGL {
 
 	public void glSampleCoverage(final float value, final boolean invert) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glSampleCoverage(value, invert);
 			}
@@ -810,6 +892,7 @@ public class BGL {
 
 	public void glScissor(final int x, final int y, final int w, final int h) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glScissor(x, y, w, h);
 			}
@@ -818,6 +901,7 @@ public class BGL {
 
 	public void glShaderSourceARB(final ID shader, final int count, final String[] string, final int[] length, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glShaderSourceARB(shader.glid(), count, string, length, n);
 			}
@@ -826,6 +910,7 @@ public class BGL {
 
 	public void glTexCoord2f(final float s, final float t) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glTexCoord2f(s, t);
 			}
@@ -834,6 +919,7 @@ public class BGL {
 
 	public void glTexCoordPointer(final int size, final int type, final int stride, final long pointer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glTexCoordPointer(size, type, stride, pointer);
 			}
@@ -843,6 +929,7 @@ public class BGL {
 	public void glTexCoordPointer(final int size, final int type, final int stride, Buffer data) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glTexCoordPointer(size, type, stride, ds.buf);
@@ -853,6 +940,7 @@ public class BGL {
 	public void glTexImage2D(final int target, final int level, final int internalformat, final int width, final int height, final int border, final int format, final int type, Buffer data) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glTexImage2D(target, level, internalformat, width, height, border, format, type, ds.buf);
@@ -863,6 +951,7 @@ public class BGL {
 	public void glTexSubImage2D(final int target, final int level, final int xoff, final int yoff, final int width, final int height, final int format, final int type, Buffer data) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glTexSubImage2D(target, level, xoff, yoff, width, height, format, type, ds.buf);
@@ -872,6 +961,7 @@ public class BGL {
 
 	public void glTexImage2DMultisample(final int target, final int samples, final int internalformat, final int width, final int height, final boolean fixedsamplelocations) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.getGL3bc().glTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
 			}
@@ -880,6 +970,7 @@ public class BGL {
 
 	public void glTexParameterf(final int target, final int pname, final float param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glTexParameterf(target, pname, param);
 			}
@@ -888,6 +979,7 @@ public class BGL {
 
 	public void glTexParameteri(final int target, final int pname, final int param) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glTexParameteri(target, pname, param);
 			}
@@ -896,6 +988,7 @@ public class BGL {
 
 	public void glUniform1f(final ID location, final float v0) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniform1f(location.glid(), v0);
 			}
@@ -904,6 +997,7 @@ public class BGL {
 
 	public void glUniform2f(final ID location, final float v0, final float v1) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniform2f(location.glid(), v0, v1);
 			}
@@ -912,6 +1006,7 @@ public class BGL {
 
 	public void glUniform3f(final ID location, final float v0, final float v1, final float v2) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniform3f(location.glid(), v0, v1, v2);
 			}
@@ -920,6 +1015,7 @@ public class BGL {
 
 	public void glUniform4f(final ID location, final float v0, final float v1, final float v2, final float v3) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniform4f(location.glid(), v0, v1, v2, v3);
 			}
@@ -928,6 +1024,7 @@ public class BGL {
 
 	public void glUniform4fv(final ID location, final int count, final float[] val, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniform4fv(location.glid(), count, val, n);
 			}
@@ -936,6 +1033,7 @@ public class BGL {
 
 	public void glUniform1i(final ID location, final int v0) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniform1i(location.glid(), v0);
 			}
@@ -944,6 +1042,7 @@ public class BGL {
 
 	public void glUniformMatrix3fv(final ID location, final int count, final boolean transpose, final float[] value, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniformMatrix3fv(location.glid(), count, transpose, value, n);
 			}
@@ -952,6 +1051,7 @@ public class BGL {
 
 	public void glUniformMatrix4fv(final ID location, final int count, final boolean transpose, final float[] value, final int n) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUniformMatrix4fv(location.glid(), count, transpose, value, n);
 			}
@@ -960,6 +1060,7 @@ public class BGL {
 
 	public void glUseProgramObjectARB(final ID program) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glUseProgramObjectARB(program.glid());
 			}
@@ -968,6 +1069,7 @@ public class BGL {
 
 	public void glVertex2f(final float x, final float y) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertex2f(x, y);
 			}
@@ -976,6 +1078,7 @@ public class BGL {
 
 	public void glVertex2i(final int x, final int y) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertex2i(x, y);
 			}
@@ -984,6 +1087,7 @@ public class BGL {
 
 	public void glVertex3f(final float x, final float y, final float z) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertex3f(x, y, z);
 			}
@@ -992,6 +1096,7 @@ public class BGL {
 
 	public void glVertex3i(final int x, final int y, final int z) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertex3i(x, y, z);
 			}
@@ -1000,6 +1105,7 @@ public class BGL {
 
 	public void glVertexAttribDivisor(final ID location, final int divisor) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				((GL3) gl).glVertexAttribDivisor(location.glid(), divisor);
 			}
@@ -1008,6 +1114,7 @@ public class BGL {
 
 	public void glVertexAttribDivisor(final ID location, final int offset, final int divisor) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				((GL3) gl).glVertexAttribDivisor(location.glid() + offset, divisor);
 			}
@@ -1017,6 +1124,7 @@ public class BGL {
 	public void glVertexAttribPointer(final ID location, final int size, final int type, final boolean normalized, final int stride, Buffer pointer) {
 		final BufState ps = new BufState(pointer);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ps.restore();
 				gl.glVertexAttribPointer(location.glid(), size, type, normalized, stride, ps.buf);
@@ -1026,6 +1134,7 @@ public class BGL {
 
 	public void glVertexAttribPointer(final ID location, final int size, final int type, final boolean normalized, final int stride, final long pointer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertexAttribPointer(location.glid(), size, type, normalized, stride, pointer);
 			}
@@ -1034,6 +1143,7 @@ public class BGL {
 
 	public void glVertexAttribPointer(final ID location, final int offset, final int size, final int type, final boolean normalized, final int stride, final long pointer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertexAttribPointer(location.glid() + offset, size, type, normalized, stride, pointer);
 			}
@@ -1042,6 +1152,7 @@ public class BGL {
 
 	public void glVertexPointer(final int size, final int type, final int stride, final long pointer) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glVertexPointer(size, type, stride, pointer);
 			}
@@ -1051,6 +1162,7 @@ public class BGL {
 	public void glVertexPointer(final int size, final int type, final int stride, Buffer data) {
 		final BufState ds = new BufState(data);
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				ds.restore();
 				gl.glVertexPointer(size, type, stride, ds.buf);
@@ -1060,6 +1172,7 @@ public class BGL {
 
 	public void glViewport(final int x, final int y, final int w, final int h) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.glViewport(x, y, w, h);
 			}
@@ -1068,6 +1181,7 @@ public class BGL {
 
 	public void joglSetSwapInterval(final int swap) {
 		add(new Command() {
+			@Override
 			public void run(GL2 gl) {
 				gl.setSwapInterval(swap);
 			}
@@ -1090,6 +1204,7 @@ public class BGL {
 				this.clnm = o.getClass().getName();
 			}
 
+			@Override
 			public String toString() {
 				return (String.format("#<dummy %s #%d>", clnm, id));
 			}
@@ -1104,6 +1219,7 @@ public class BGL {
 				this.info = info;
 			}
 
+			@Override
 			public String toString() {
 				return (String.format("#<dummy %s(%s) #%d>", clnm, info, id));
 			}
@@ -1211,6 +1327,7 @@ public class BGL {
 				}
 			}
 
+			@Override
 			public String toString() {
 				StringBuilder buf = new StringBuilder();
 				buf.append("#<cmd ");

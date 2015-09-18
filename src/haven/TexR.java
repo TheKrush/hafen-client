@@ -105,6 +105,7 @@ public class TexR extends Resource.Layer implements Resource.IDLayer<Integer> {
 				 * creating tempfiles without doing that
 				 * privileged itself. It can very much be argued
 				 * that this is a bug in ImageIO. */
+				@Override
 				public BufferedImage run() {
 					try {
 						return (ImageIO.read(new ByteArrayInputStream(data)));
@@ -115,6 +116,7 @@ public class TexR extends Resource.Layer implements Resource.IDLayer<Integer> {
 			}));
 		}
 
+		@Override
 		protected BufferedImage fill() {
 			if (mask == null) {
 				return (rd(TexR.this.img));
@@ -140,6 +142,7 @@ public class TexR extends Resource.Layer implements Resource.IDLayer<Integer> {
 			}
 		}
 
+		@Override
 		protected void fill(GOut g) {
 			try {
 				super.fill(g);
@@ -148,10 +151,12 @@ public class TexR extends Resource.Layer implements Resource.IDLayer<Integer> {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return ("TexR(" + getres().name + ", " + id + ")");
 		}
 
+		@Override
 		public String loadname() {
 			return ("texture in " + getres().name);
 		}
@@ -161,10 +166,12 @@ public class TexR extends Resource.Layer implements Resource.IDLayer<Integer> {
 		return (tex);
 	}
 
+	@Override
 	public Integer layerid() {
 		return (id);
 	}
 
+	@Override
 	public void init() {
 	}
 }

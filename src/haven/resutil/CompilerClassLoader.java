@@ -20,6 +20,7 @@ public class CompilerClassLoader extends ClassLoader {
 		}
 	}
 
+	@Override
 	public Class<?> findClass(String name) throws ClassNotFoundException {
 		for (Indir<Resource> res : useres) {
 			try {

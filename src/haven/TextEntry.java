@@ -51,6 +51,7 @@ public class TextEntry extends SIWidget {
 	@RName("text")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			if (args[0] instanceof Coord) {
 				return (new TextEntry((Coord) args[0], (String) args[1]));
@@ -67,10 +68,12 @@ public class TextEntry extends SIWidget {
 
 	public void rsettext(String text) {
 		buf = new LineEdit(this.text = text) {
+			@Override
 			protected void done(String line) {
 				activate(line);
 			}
 
+			@Override
 			protected void changed() {
 				redraw();
 				TextEntry.this.text = line;
@@ -85,6 +88,7 @@ public class TextEntry extends SIWidget {
 		redraw();
 	}
 
+	@Override
 	public void uimsg(String name, Object... args) {
 		if (name == "settext") {
 			settext((String) args[0]);
@@ -113,6 +117,7 @@ public class TextEntry extends SIWidget {
 		}
 	}
 
+	@Override
 	public void draw(BufferedImage img) {
 		Graphics g = img.getGraphics();
 		String dtext = dtext();
@@ -134,6 +139,7 @@ public class TextEntry extends SIWidget {
 		g.dispose();
 	}
 
+	@Override
 	public void draw(GOut g) {
 		super.draw(g);
 		if (hasfocus && (((System.currentTimeMillis() - focusstart) % 1000) < 500)) {
@@ -164,15 +170,18 @@ public class TextEntry extends SIWidget {
 		}
 	}
 
+	@Override
 	public boolean type(char c, KeyEvent ev) {
 		return (buf.key(ev));
 	}
 
+	@Override
 	public boolean keydown(KeyEvent e) {
 		buf.key(e);
 		return (true);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		parent.setfocus(this);
 		if (tcache != null) {
@@ -181,6 +190,7 @@ public class TextEntry extends SIWidget {
 		return (true);
 	}
 
+	@Override
 	public void gotfocus() {
 		focusstart = System.currentTimeMillis();
 	}

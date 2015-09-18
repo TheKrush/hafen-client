@@ -38,11 +38,13 @@ public class FragmentContext extends ShaderContext {
 
 	{
 		code.add(new CodeMacro() {
+			@Override
 			public void expand(Block blk) {
 				mainvals.cons(blk);
 			}
 		}, 0);
 		code.add(new CodeMacro() {
+			@Override
 			public void expand(Block blk) {
 				uniform.cons(blk);
 				main.code.add(new Placeholder("Uniform control up until here."));
@@ -68,6 +70,7 @@ public class FragmentContext extends ShaderContext {
 			force();
 		}
 
+		@Override
 		protected void cons2(Block blk) {
 			blk.add(new LBinOp.Assign(new Index(gl_FragData.ref(), new IntLiteral(id)), init));
 		}
@@ -77,10 +80,12 @@ public class FragmentContext extends ShaderContext {
 	    {force();
 		}
 
+			@Override
 		public Expression root() {
 			return (Vec4Cons.u);
 		}
 
+			@Override
 		protected void cons2(Block blk) {
 			LValue tgt;
 			if (mrt) {

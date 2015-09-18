@@ -37,9 +37,11 @@ public class Placeholder extends Statement {
 		this(null);
 	}
 
+	@Override
 	public void walk(Walker w) {
 	}
 
+	@Override
 	public void output(Output out) {
 		if (comment != null) {
 			out.write("/* " + comment + " */");

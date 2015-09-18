@@ -95,10 +95,12 @@ public class MeshAnim {
 
 		public abstract boolean tick(float dt);
 
+		@Override
 		public Morpher create(final MorphedBuf vb) {
 			return (new Morpher() {
 				int lseq = -1;
 
+				@Override
 				public boolean update() {
 					if (lseq == seq) {
 						return (false);
@@ -107,6 +109,7 @@ public class MeshAnim {
 					return (true);
 				}
 
+				@Override
 				public void morphp(FloatBuffer dst, FloatBuffer src) {
 					Frame f;
 					float a;
@@ -139,6 +142,7 @@ public class MeshAnim {
 					}
 				}
 
+				@Override
 				public void morphd(FloatBuffer dst, FloatBuffer src) {
 					Frame f;
 					float a;
@@ -218,6 +222,7 @@ public class MeshAnim {
 			this.seq++;
 		}
 
+		@Override
 		public boolean tick(float dt) {
 			boolean ret = false;
 			this.time += dt;
@@ -251,6 +256,7 @@ public class MeshAnim {
 			fl = ((fi < frames.length - 1) ? (frames[fi + 1].time) : len) - frames[fi].time;
 		}
 
+		@Override
 		public boolean tick(float dt) {
 			fp += dt;
 			if (fp >= fl) {
@@ -347,6 +353,7 @@ public class MeshAnim {
 			return (rnd ? a.new RAnim() : a.new SAnim());
 		}
 
+		@Override
 		public void init() {
 		}
 	}

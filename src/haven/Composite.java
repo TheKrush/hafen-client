@@ -58,6 +58,7 @@ public class Composite extends Drawable {
 		comp.eqowner = gob;
 	}
 
+	@Override
 	public void setup(RenderList rl) {
 		try {
 			init();
@@ -101,6 +102,7 @@ public class Composite extends Drawable {
 		}
 	}
 
+	@Override
 	public void ctick(int dt) {
 		if (comp == null) {
 			return;
@@ -117,6 +119,7 @@ public class Composite extends Drawable {
 			try {
 				final Composited.Poses cp = comp.poses;
 				Composited.Poses np = comp.new Poses(loadposes(tposes, comp.skel, tpmode)) {
+					@Override
 			protected void done() {
 						cp.set(ipollen);
 						updequ();
@@ -134,10 +137,12 @@ public class Composite extends Drawable {
 		comp.tick(dt);
 	}
 
+	@Override
 	public Resource getres() {
 		return (base.get());
 	}
 
+	@Override
 	public Pose getpose() {
 		init();
 		return (comp.pose);

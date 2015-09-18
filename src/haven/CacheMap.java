@@ -49,6 +49,7 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 			this.key = key;
 		}
 
+		@Override
 		public K key() {
 			return (this.key);
 		}
@@ -63,6 +64,7 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 			this.key = key;
 		}
 
+		@Override
 		public K key() {
 			return (this.key);
 		}
@@ -71,10 +73,12 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 	public static enum RefType {
 
 		SOFT {
+							@Override
 							public <K, V> Reference<V> mkref(K k, V v, ReferenceQueue<V> cleanq) {
 								return (new SRef<K, V>(k, v, cleanq));
 							}
 						}, WEAK {
+							@Override
 							public <K, V> Reference<V> mkref(K k, V v, ReferenceQueue<V> cleanq) {
 								return (new WRef<K, V>(k, v, cleanq));
 							}
@@ -97,6 +101,7 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 		putAll(m);
 	}
 
+	@Override
 	public boolean containsKey(Object k) {
 		return (get(k) != null);
 	}
@@ -111,23 +116,28 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 			this.v = v;
 		}
 
+		@Override
 		public K getKey() {
 			return (k);
 		}
 
+		@Override
 		public V getValue() {
 			return (v);
 		}
 
 		@SuppressWarnings("unchecked")
+		@Override
 		public boolean equals(Object o) {
 			return ((o instanceof CacheMap.IteredEntry) && k.equals(((IteredEntry) o).k));
 		}
 
+		@Override
 		public int hashCode() {
 			return (k.hashCode());
 		}
 
+		@Override
 		public V setValue(V nv) {
 			return (put(k, this.v = nv));
 		}
@@ -135,14 +145,17 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 
 	private Set<Entry<K, V>> entries = null;
 
+	@Override
 	public Set<Entry<K, V>> entrySet() {
 		if (entries == null) {
 			entries = new AbstractSet<Entry<K, V>>() {
+				@Override
 				public int size() {
 					clean();
 					return (back.size());
 				}
 
+				@Override
 				public Iterator<Entry<K, V>> iterator() {
 					clean();
 					final Iterator<Entry<K, Reference<V>>> iter = back.entrySet().iterator();
@@ -150,6 +163,7 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 						private K nk;
 						private V nv;
 
+						@Override
 						public boolean hasNext() {
 							while (true) {
 								if (nv != null) {
@@ -169,6 +183,7 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 							}
 						}
 
+						@Override
 						public Entry<K, V> next() {
 							if (!hasNext()) {
 								throw (new NoSuchElementException());
@@ -179,12 +194,14 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 							return (ret);
 						}
 
+						@Override
 						public void remove() {
 							iter.remove();
 						}
 					});
 				}
 
+				@Override
 				public void clear() {
 					back.clear();
 				}
@@ -201,18 +218,21 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 		}
 	}
 
+	@Override
 	public V get(Object k) {
 		clean();
 		Reference<V> ref = back.get(k);
 		return ((ref == null) ? null : (ref.get()));
 	}
 
+	@Override
 	public V put(K k, V v) {
 		clean();
 		Reference<V> old = back.put(k, reftype.mkref(k, v, cleanq));
 		return ((old == null) ? null : (old.get()));
 	}
 
+	@Override
 	public V remove(Object k) {
 		clean();
 		Reference<V> ref = back.remove(k);

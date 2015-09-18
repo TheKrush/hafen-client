@@ -48,6 +48,7 @@ public class RadioGroup {
 			super(lbl);
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			boolean result = super.mousedown(c, button);
 			if (result) {
@@ -56,6 +57,7 @@ public class RadioGroup {
 			return result;
 		}
 
+		@Override
 		public void changed(boolean val) {
 			a = val;
 			super.changed(val);

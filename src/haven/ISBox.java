@@ -51,6 +51,7 @@ public class ISBox extends Widget implements DTarget {
 	@RName("isbox")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Indir<Resource> res;
 			if (args[0] instanceof String) {
@@ -96,6 +97,7 @@ public class ISBox extends Widget implements DTarget {
 		setlabel(rem, av, bi);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.image(bg, Coord.z);
 		try {
@@ -108,6 +110,7 @@ public class ISBox extends Widget implements DTarget {
 		super.draw(g);
 	}
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		try {
 			if (res.get().layer(Resource.tooltip) != null) {
@@ -118,6 +121,7 @@ public class ISBox extends Widget implements DTarget {
 		return (null);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (take != null) {
 			Coord cc = xlate(take.c, true);
@@ -156,6 +160,7 @@ public class ISBox extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		if (amount < 0) {
 			wdgmsg("xfer2", -1, ui.modflags());
@@ -166,16 +171,19 @@ public class ISBox extends Widget implements DTarget {
 		return (true);
 	}
 
+	@Override
 	public boolean drop(Coord cc, Coord ul) {
 		wdgmsg("drop");
 		return (true);
 	}
 
+	@Override
 	public boolean iteminteract(Coord cc, Coord ul) {
 		wdgmsg("iact");
 		return (true);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg.equals("chnum")) {
 			setlabel((Integer) args[0], (Integer) args[1], (Integer) args[2]);

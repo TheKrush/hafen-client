@@ -11,6 +11,7 @@ public class MiniMapPanel extends ResizingWindow {
 
 	addtwdg(add(new IButton("gfx/hud/mmap/claim", "", "-d", "-h"){
 	    {tooltip = Text.render("Display village claims");}
+			@Override
 	    public void click() {
 		if(ui != null && ui.gui != null && ui.gui.map != null) {
 		    if(!ui.gui.map.visol(2))
@@ -22,6 +23,7 @@ public class MiniMapPanel extends ResizingWindow {
 	}));
 	addtwdg(add(new IButton("gfx/hud/mmap/vil", "", "-d", "-h"){
 	    {tooltip = Text.render("Display personal claims");}
+			@Override
 	    public void click() {
 		if(ui != null && ui.gui != null && ui.gui.map != null) {
 		    if(!ui.gui.map.visol(0))

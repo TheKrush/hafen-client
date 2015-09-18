@@ -124,6 +124,7 @@ public class WaterTile extends Tiler {
 				this.d = d;
 			}
 
+			@Override
 			public void modify(MeshBuf buf, MeshBuf.Vertex v) {
 				buf.layer(depthlayer).set(v, d);
 			}
@@ -141,6 +142,7 @@ public class WaterTile extends Tiler {
 				surf[vs.o(c.x + 1, c.y)],});
 		}
 
+		@Override
 		public void calcnrm() {
 			super.calcnrm();
 			MapMesh.MapSurface ms = m.data(MapMesh.gnd);
@@ -158,6 +160,7 @@ public class WaterTile extends Tiler {
 		public static final MapMesh.DataID<Bottom> id = MapMesh.makeid(Bottom.class);
 	}
 
+	@Override
 	public void model(MapMesh m, Random rnd, Coord lc, Coord gc) {
 		super.model(m, rnd, lc, gc);
 		Bottom b = m.data(Bottom.id);
@@ -203,14 +206,17 @@ public class WaterTile extends Tiler {
 		private ShaderMacro[] shaders = {
 			new ShaderMacro() {
 				final AutoVarying skyc = new AutoVarying(Type.VEC3) {
+					@Override
 					protected Expression root(VertexContext vctx) {
 						return (mul(icam.ref(), reflect(MiscLib.vertedir(vctx).depref(), vctx.eyen.depref())));
 					}
 				};
 
+				@Override
 				public void modify(final ProgramContext prog) {
 					MiscLib.fragedir(prog.fctx);
 					final ValBlock.Value nmod = prog.fctx.uniform.new Value(Type.VEC3) {
+						@Override
 			    public Expression root() {
 							/*
 							 return(mul(sub(mix(pick(texture2D(snrm.ref(),
@@ -263,6 +269,7 @@ public class WaterTile extends Tiler {
 					};
 					nmod.force();
 					MiscLib.frageyen(prog.fctx).mod(new Macro1<Expression>() {
+						@Override
 						public Expression expand(Expression in) {
 							Expression m = nmod.ref();
 							return (add(mul(pick(m, "x"), vec3(l(1.0), l(0.0), l(0.0))),
@@ -271,6 +278,7 @@ public class WaterTile extends Tiler {
 						}
 					}, -10);
 					prog.fctx.fragcol.mod(new Macro1<Expression>() {
+						@Override
 						public Expression expand(Expression in) {
 							return (mul(in, textureCube(ssky.ref(), neg(mul(icam.ref(), reflect(MiscLib.fragedir(prog.fctx).depref(), MiscLib.frageyen(prog.fctx).depref())))),
 											l(0.4)));
@@ -280,6 +288,7 @@ public class WaterTile extends Tiler {
 			}
 		};
 
+		@Override
 		public void reapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glUniform1i(g.st.prog.uniform(ssky), tsky.id);
@@ -287,10 +296,12 @@ public class WaterTile extends Tiler {
 			gl.glUniformMatrix3fv(g.st.prog.uniform(icam), 1, false, PView.camxf(g).transpose().trim3(), 0);
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE);
@@ -301,6 +312,7 @@ public class WaterTile extends Tiler {
 			reapply(g);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			tsky.act(g);
@@ -314,6 +326,7 @@ public class WaterTile extends Tiler {
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(surfslot, this);
 			buf.put(States.color, null);
@@ -325,6 +338,7 @@ public class WaterTile extends Tiler {
 	public static final GLState surfmat = new GLState.Abstract() {
 		final GLState s = new BetterSurface();
 
+		@Override
 		public void prep(Buffer buf) {
 			s.prep(buf);
 		}
@@ -349,6 +363,7 @@ public class WaterTile extends Tiler {
 		};
 		public static final Attribute depth = new Attribute(Type.FLOAT);
 		public static final AutoVarying fragd = new AutoVarying(Type.FLOAT) {
+			@Override
 			protected Expression root(VertexContext vctx) {
 				return (depth.ref());
 			}
@@ -356,8 +371,10 @@ public class WaterTile extends Tiler {
 
 		private final ShaderMacro shaders[] = {
 			new ShaderMacro() {
+				@Override
 				public void modify(ProgramContext prog) {
 					prog.fctx.fragcol.mod(new Macro1<Expression>() {
+						@Override
 						public Expression expand(Expression in) {
 							return (rgbmix.call(in, mfogcolor, min(div(fragd.ref(), l(maxdepth)), l(1.0))));
 						}
@@ -370,16 +387,20 @@ public class WaterTile extends Tiler {
 			super(Slot.Type.DRAW);
 		}
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			if (buf.cfg.pref.wsurf.val) {
 				super.prep(buf);
@@ -393,12 +414,14 @@ public class WaterTile extends Tiler {
 	public static final GLState obfog = new GLState.StandAlone(GLState.Slot.Type.DRAW) {
 		{
 			slot.instanced = new GLState.Instancer<StandAlone>() {
+				@Override
 				public StandAlone inststate(StandAlone[] states) {
 					return (null);
 				}
 			};
 		}
 		final AutoVarying fragd = new AutoVarying(Type.FLOAT) {
+			@Override
 			protected Expression root(VertexContext vctx) {
 				return (sub(pick(MiscLib.maploc.ref(), "z"), pick(vctx.mapv.depref(), "z")));
 			}
@@ -406,8 +429,10 @@ public class WaterTile extends Tiler {
 
 		final ShaderMacro[] shaders = {
 			new ShaderMacro() {
+				@Override
 				public void modify(ProgramContext prog) {
 					prog.fctx.fragcol.mod(new Macro1<Expression>() {
+						@Override
 						public Expression expand(Expression in) {
 							return (BottomFog.rgbmix.call(in, BottomFog.mfogcolor, clamp(div(fragd.ref(), l(BottomFog.maxdepth)), l(0.0), l(1.0))));
 						}
@@ -416,12 +441,15 @@ public class WaterTile extends Tiler {
 			}
 		};
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
@@ -430,6 +458,7 @@ public class WaterTile extends Tiler {
 	@ResName("water")
 	public static class Fac implements Factory {
 
+		@Override
 		public Tiler create(int id, Resource.Tileset set) {
 			int a = 0;
 			int depth = (Integer) set.ta[a++];
@@ -459,6 +488,7 @@ public class WaterTile extends Tiler {
 		this(id, new GroundTile(0, set), depth);
 	}
 
+	@Override
 	public void lay(MapMesh m, Random rnd, Coord lc, Coord gc) {
 		MapMesh.MapSurface ms = m.data(MapMesh.gnd);
 		SModel smod = SModel.get(m, surfmatc, VertFactory.id);
@@ -472,6 +502,7 @@ public class WaterTile extends Tiler {
 		bottom.faces(m, bd);
 	}
 
+	@Override
 	public void trans(MapMesh m, Random rnd, Tiler gt, Coord lc, Coord gc, int z, int bmask, int cmask) {
 		if (m.map.gettile(gc) <= id) {
 			return;
@@ -491,6 +522,7 @@ public class WaterTile extends Tiler {
 		}
 	}
 
+	@Override
 	public GLState drawstate(Glob glob, GLConfig cfg, Coord3f c) {
 		if (cfg.pref.wsurf.val) {
 			return (obfog);

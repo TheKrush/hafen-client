@@ -63,9 +63,11 @@ public class Phong extends ValBlock.Group {
 			}
 		};
 
+		@Override
 		public void modify(ProgramContext prog) {
 			Phong ph = prog.getmod(Phong.class);
 			Macro1<Expression> cel = new Macro1<Expression>() {
+				@Override
 				public Expression expand(Expression in) {
 					return (celramp.call(in));
 				}
@@ -101,9 +103,11 @@ public class Phong extends ValBlock.Group {
 			super(VOID);
 
 			ValBlock.Group tdep = dvals.new Group() {
+				@Override
 				public void cons1() {
 				}
 
+				@Override
 				public void cons2(Block blk) {
 					lvl.tgt = blk.local(FLOAT, null).ref();
 					dir.tgt = blk.local(VEC3, null).ref();
@@ -123,11 +127,13 @@ public class Phong extends ValBlock.Group {
 			lvl = tdep.new GValue(FLOAT);
 			dir = tdep.new GValue(VEC3);
 			dl = dvals.new Value(FLOAT) {
+				@Override
 		    public Expression root() {
 					return (dot(norm, dir.depref()));
 				}
 			};
 			sl = svals.new Value(FLOAT) {
+				@Override
 		    public Expression root() {
 					Expression reflvl = pow(max(dot(edir, reflect(neg(dir.ref()), norm)), l(0.0)), shine);
 					Expression hvlvl = pow(max(dot(norm, normalize(add(edir, dir.ref())))), shine);
@@ -139,6 +145,7 @@ public class Phong extends ValBlock.Group {
 			sl.force();
 		}
 
+		@Override
 		protected void cons() {
 			dvals.cons(code);
 			code.add(stmt(aadd(diff, mul(pick(fref(mat, "ambient"), "rgb"),
@@ -169,9 +176,11 @@ public class Phong extends ValBlock.Group {
 	}
 	public final DoLight dolight;
 
+	@Override
 	public void cons1() {
 	}
 
+	@Override
 	public void cons2(Block blk) {
 		bcol.tgt = blk.local(VEC3, pick(fref(prog.gl_FrontMaterial.ref(), "emission"), "rgb")).ref();
 		scol.tgt = blk.local(VEC3, Vec3Cons.z).ref();
@@ -195,6 +204,7 @@ public class Phong extends ValBlock.Group {
 
 	private static void fmod(final FragmentContext fctx, final Expression bcol, final Expression scol) {
 		fctx.fragcol.mod(new Macro1<Expression>() {
+			@Override
 			public Expression expand(Expression in) {
 				return (add(mul(in, vec4(bcol, pick(fref(fctx.prog.gl_FrontMaterial.ref(), "diffuse"), "a"))), vec4(scol, l(0.0))));
 			}
@@ -214,11 +224,13 @@ public class Phong extends ValBlock.Group {
 		this.norm = vctx.eyen.ref();
 
 		Expression bcol = new AutoVarying(VEC3) {
+			@Override
 			public Expression root(VertexContext vctx) {
 				return (Phong.this.bcol.depref());
 			}
 		}.ref();
 		Expression scol = new AutoVarying(VEC3) {
+			@Override
 			public Expression root(VertexContext vctx) {
 				return (Phong.this.scol.depref());
 			}

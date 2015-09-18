@@ -40,6 +40,7 @@ public class Profwnd extends Window {
 		this.tex = new TexIM(new Coord(prof.hist.length, h));
 	}
 
+	@Override
 	public void cdraw(GOut g) {
 		double[] ttl = new double[prof.hist.length];
 		for (int i = 0; i < prof.hist.length; i++) {
@@ -64,6 +65,7 @@ public class Profwnd extends Window {
 		g.image(tex, Coord.z);
 	}
 
+	@Override
 	public boolean type(char k, java.awt.event.KeyEvent ev) {
 		if (k == 'd') {
 			prof.dump(System.err);
@@ -72,6 +74,7 @@ public class Profwnd extends Window {
 		return (super.type(k, ev));
 	}
 
+	@Override
 	public String tooltip(Coord c, Widget prev) {
 		c = xlate(c, false);
 		if ((c.x >= 0) && (c.x < prof.hist.length) && (c.y >= 0) && (c.y < h)) {
@@ -90,6 +93,7 @@ public class Profwnd extends Window {
 		return ("");
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (msg.equals("close")) {
 			ui.destroy(this);

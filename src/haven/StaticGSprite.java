@@ -30,6 +30,7 @@ public class StaticGSprite extends GSprite {
 	public final Resource.Image img;
 
 	public static final Factory fact = new Factory() {
+		@Override
 		public GSprite create(Owner owner, Resource res, Message sdt) {
 			Resource.Image img = res.layer(Resource.imgc);
 			if (img != null) {
@@ -44,10 +45,12 @@ public class StaticGSprite extends GSprite {
 		this.img = img;
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.image(img, Coord.z);
 	}
 
+	@Override
 	public Coord sz() {
 		return (img.sz);
 	}

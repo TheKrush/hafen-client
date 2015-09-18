@@ -44,6 +44,7 @@ public class TexMSE extends TexMS {
 		this(sz, samples, ifmt, dfmt, dtype, false);
 	}
 
+	@Override
 	protected void fill(GOut g) {
 		g.gl.glTexImage2DMultisample(GL3.GL_TEXTURE_2D_MULTISAMPLE, s, ifmt, w, h, fixed);
 	}

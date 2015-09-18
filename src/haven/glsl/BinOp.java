@@ -36,6 +36,7 @@ public abstract class BinOp extends Expression {
 		this.rhs = rhs;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		w.el(lhs);
 		w.el(rhs);
@@ -43,6 +44,7 @@ public abstract class BinOp extends Expression {
 
 	public abstract String form();
 
+	@Override
 	public void output(Output out) {
 		out.write("(");
 		lhs.output(out);
@@ -53,6 +55,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Eq extends BinOp {
 
+		@Override
 		public String form() {
 			return ("==");
 		}
@@ -64,6 +67,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Ne extends BinOp {
 
+		@Override
 		public String form() {
 			return ("!=");
 		}
@@ -75,6 +79,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Lt extends BinOp {
 
+		@Override
 		public String form() {
 			return ("<");
 		}
@@ -86,6 +91,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Gt extends BinOp {
 
+		@Override
 		public String form() {
 			return (">");
 		}
@@ -97,6 +103,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Le extends BinOp {
 
+		@Override
 		public String form() {
 			return ("<=");
 		}
@@ -108,6 +115,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Ge extends BinOp {
 
+		@Override
 		public String form() {
 			return (">=");
 		}
@@ -119,6 +127,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Or extends BinOp {
 
+		@Override
 		public String form() {
 			return ("||");
 		}
@@ -130,6 +139,7 @@ public abstract class BinOp extends Expression {
 
 	public static class And extends BinOp {
 
+		@Override
 		public String form() {
 			return ("&&");
 		}
@@ -141,6 +151,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Sub extends BinOp {
 
+		@Override
 		public String form() {
 			return ("-");
 		}
@@ -152,6 +163,7 @@ public abstract class BinOp extends Expression {
 
 	public static class Div extends BinOp {
 
+		@Override
 		public String form() {
 			return ("/");
 		}

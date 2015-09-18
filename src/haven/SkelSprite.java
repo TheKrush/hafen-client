@@ -49,6 +49,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 	private Rendered[] parts;
 
 	public static final Factory fact = new Factory() {
+		@Override
 		public Sprite create(Owner owner, Resource res, Message sdt) {
 			if (res.layer(Skeleton.Res.class) == null) {
 				return (null);
@@ -183,12 +184,14 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 		rebuild();
 	}
 
+	@Override
 	public void update(Message sdt) {
 		int fl = sdt.eom() ? 0xffff0000 : decnum(sdt);
 		chposes(fl, false);
 		chparts(fl);
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		for (Rendered p : parts) {
 			rl.add(p, null);
@@ -197,6 +200,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 		return (false);
 	}
 
+	@Override
 	public boolean tick(int idt) {
 		float dt = idt / 1000.0f;
 		if (!stat || (ipold > 0)) {
@@ -219,6 +223,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 
 	static {
 		Console.setscmd("bonedb", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				bonedb = Utils.parsebool(args[1], false);
 			}

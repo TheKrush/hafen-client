@@ -43,6 +43,7 @@ public class LocationCam extends Camera {
 		this(loc, loc.fin(Matrix4f.id));
 	}
 
+	@Override
 	public Matrix4f fin(Matrix4f p) {
 		Matrix4f lm = loc.fin(Matrix4f.id);
 		if (lm != ll) {

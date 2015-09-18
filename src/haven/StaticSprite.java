@@ -32,6 +32,7 @@ public class StaticSprite extends Sprite {
 	public final Rendered[] parts;
 
 	public static final Factory fact = new Factory() {
+		@Override
 		public Sprite create(Owner owner, Resource res, Message sdt) {
 			if ((res.layer(FastMesh.MeshRes.class) != null)
 							|| (res.layer(RenderLink.Res.class) != null)) {
@@ -73,6 +74,7 @@ public class StaticSprite extends Sprite {
 		return (rl.toArray(new Rendered[0]));
 	}
 
+	@Override
 	public boolean setup(RenderList r) {
 		for (Rendered p : parts) {
 			r.add(p, null);

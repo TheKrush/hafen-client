@@ -71,23 +71,28 @@ public class IntMap<V> extends AbstractMap<Integer, V> {
 			this.k = k;
 		}
 
+		@Override
 		public Integer getKey() {
 			return (k);
 		}
 
+		@Override
 		public V getValue() {
 			return (get(k));
 		}
 
 		@SuppressWarnings("unchecked")
+		@Override
 		public boolean equals(Object o) {
 			return ((o instanceof IntMap.IteredEntry) && (((IteredEntry) o).k == k));
 		}
 
+		@Override
 		public int hashCode() {
 			return (k);
 		}
 
+		@Override
 		public V setValue(V nv) {
 			return (put(k, nv));
 		}
@@ -95,18 +100,22 @@ public class IntMap<V> extends AbstractMap<Integer, V> {
 
 	private Set<Entry<Integer, V>> entries = null;
 
+	@Override
 	public Set<Entry<Integer, V>> entrySet() {
 		if (entries == null) {
 			entries = new AbstractSet<Entry<Integer, V>>() {
+				@Override
 				public int size() {
 					return (sz);
 				}
 
+				@Override
 				public Iterator<Entry<Integer, V>> iterator() {
 					return (new Iterator<Entry<Integer, V>>() {
 						private int ni = -1;
 						private int li = -1;
 
+						@Override
 						public boolean hasNext() {
 							if (ni < 0) {
 								for (ni = li + 1; ni < vals.length; ni++) {
@@ -118,6 +127,7 @@ public class IntMap<V> extends AbstractMap<Integer, V> {
 							return (ni < vals.length);
 						}
 
+						@Override
 						public Entry<Integer, V> next() {
 							if (!hasNext()) {
 								throw (new NoSuchElementException());
@@ -128,12 +138,14 @@ public class IntMap<V> extends AbstractMap<Integer, V> {
 							return (ret);
 						}
 
+						@Override
 						public void remove() {
 							vals[li] = null;
 						}
 					});
 				}
 
+				@Override
 				public void clear() {
 					vals = new Object[0];
 				}
@@ -149,6 +161,7 @@ public class IntMap<V> extends AbstractMap<Integer, V> {
 		return (ocast(vals[k]));
 	}
 
+	@Override
 	public V get(Object k) {
 		if (!(k instanceof Integer)) {
 			return (null);
@@ -167,6 +180,7 @@ public class IntMap<V> extends AbstractMap<Integer, V> {
 		return (ret);
 	}
 
+	@Override
 	public V put(Integer k, V v) {
 		return (put(k.intValue(), v));
 	}

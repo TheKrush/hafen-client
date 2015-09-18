@@ -42,6 +42,7 @@ public class IDSet<T> {
 			hash = ob.hashCode();
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (!(o instanceof WRef)) {
 				return (false);
@@ -50,6 +51,7 @@ public class IDSet<T> {
 			return (Utils.eq(get(), r.get()));
 		}
 
+		@Override
 		public int hashCode() {
 			return (hash);
 		}

@@ -49,15 +49,18 @@ public abstract class GLShader implements java.io.Serializable {
 			this.type = type;
 		}
 
+		@Override
 		public void create(GL2 gl) {
 			id = gl.glCreateShaderObjectARB(type);
 			GOut.checkerr(gl);
 		}
 
+		@Override
 		protected void delete(BGL gl) {
 			gl.glDeleteObjectARB(this);
 		}
 
+		@Override
 		public int glid() {
 			return (id);
 		}
@@ -71,6 +74,7 @@ public abstract class GLShader implements java.io.Serializable {
 			gl.glShaderSourceARB(this, 1, new String[]{sh.source}, new int[]{sh.source.length()}, 0);
 			gl.glCompileShaderARB(this);
 			gl.bglSubmit(new BGL.Request() {
+				@Override
 				public void run(GL2 rgl) {
 					int[] buf = {0};
 					rgl.glGetObjectParameterivARB(id, GL2.GL_OBJECT_COMPILE_STATUS_ARB, buf, 0);
@@ -101,6 +105,7 @@ public abstract class GLShader implements java.io.Serializable {
 			this.info = info;
 		}
 
+		@Override
 		public String toString() {
 			if (info == null) {
 				return (super.toString());
@@ -156,6 +161,7 @@ public abstract class GLShader implements java.io.Serializable {
 			this(source, "");
 		}
 
+		@Override
 		protected ShaderOb create(GOut g) {
 			ShaderOb r = new ShaderOb(g, GL2.GL_VERTEX_SHADER);
 			r.compile(g.gl, this);
@@ -171,6 +177,7 @@ public abstract class GLShader implements java.io.Serializable {
 					super(in);
 				}
 
+				@Override
 				public void directive(String d, String a) {
 					if (d == "header") {
 						buf = header;
@@ -208,6 +215,7 @@ public abstract class GLShader implements java.io.Serializable {
 			this(source, "");
 		}
 
+		@Override
 		protected ShaderOb create(GOut g) {
 			ShaderOb r = new ShaderOb(g, GL2.GL_FRAGMENT_SHADER);
 			r.compile(g.gl, this);
@@ -223,6 +231,7 @@ public abstract class GLShader implements java.io.Serializable {
 					super(in);
 				}
 
+				@Override
 				public void directive(String d, String a) {
 					if (d == "header") {
 						buf = header;

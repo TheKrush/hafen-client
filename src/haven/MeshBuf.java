@@ -87,6 +87,7 @@ public class MeshBuf {
 			}
 		}
 
+		@Override
 		public L cons(MeshBuf buf) {
 			return (Utils.construct(cons, buf));
 		}
@@ -94,6 +95,7 @@ public class MeshBuf {
 
 	public class Tex extends Layer<Coord3f> {
 
+		@Override
 		public VertexBuf.TexelArray build(Collection<Coord3f> in) {
 			FloatBuffer data = Utils.wfbuf(in.size() * 2);
 			for (Coord3f c : in) {
@@ -103,6 +105,7 @@ public class MeshBuf {
 			return (new VertexBuf.TexelArray(data));
 		}
 
+		@Override
 		public void copy(VertexBuf buf, Vertex[] vmap, int off) {
 			VertexBuf.TexelArray src = buf.buf(VertexBuf.TexelArray.class);
 			if (src == null) {
@@ -119,6 +122,7 @@ public class MeshBuf {
 
 	public class Col extends Layer<Color> {
 
+		@Override
 		public VertexBuf.ColorArray build(Collection<Color> in) {
 			FloatBuffer data = Utils.wfbuf(in.size() * 4);
 			for (Color c : in) {
@@ -147,6 +151,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public VertexBuf.Vec1Array build(Collection<Float> in) {
 			FloatBuffer data = Utils.wfbuf(in.size());
 			for (Float d : in) {
@@ -162,6 +167,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public VertexBuf.Vec2Array build(Collection<Coord3f> in) {
 			FloatBuffer data = Utils.wfbuf(in.size() * 2);
 			for (Coord3f d : in) {
@@ -178,6 +184,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public VertexBuf.Vec3Array build(Collection<Coord3f> in) {
 			FloatBuffer data = Utils.wfbuf(in.size() * 3);
 			for (Coord3f d : in) {
@@ -195,6 +202,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public VertexBuf.Vec4Array build(Collection<float[]> in) {
 			FloatBuffer data = Utils.wfbuf(in.size() * 4);
 			for (float[] d : in) {
@@ -222,6 +230,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public Vec1Layer cons(MeshBuf buf) {
 			return (buf.new Vec1Layer(attrib));
 		}
@@ -233,6 +242,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public Vec2Layer cons(MeshBuf buf) {
 			return (buf.new Vec2Layer(attrib));
 		}
@@ -244,6 +254,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public Vec3Layer cons(MeshBuf buf) {
 			return (buf.new Vec3Layer(attrib));
 		}
@@ -255,6 +266,7 @@ public class MeshBuf {
 			super(attrib);
 		}
 
+		@Override
 		public Vec4Layer cons(MeshBuf buf) {
 			return (buf.new Vec4Layer(attrib));
 		}
@@ -287,6 +299,7 @@ public class MeshBuf {
 			v.add(this);
 		}
 
+		@Override
 		public String toString() {
 			return (String.format("MeshBuf.Vertex(%s, %s)", pos, nrm));
 		}
@@ -358,6 +371,7 @@ public class MeshBuf {
 	}
 
 	private static final LayerMapper defmapper = new LayerMapper() {
+		@Override
 		public Layer mapbuf(MeshBuf buf, VertexBuf.AttribArray src) {
 			if (src instanceof VertexBuf.TexelArray) {
 				return (buf.layer(tex));

@@ -61,9 +61,11 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 	}
 
 	private final Rendered scene = new Rendered() {
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			GLState.Buffer buf = new GLState.Buffer(rl.cfg);
 			for (RenderList.Slot s : parts) {
@@ -84,6 +86,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 		tgt.dispose();
 	}
 
+	@Override
 	public void prerender(RenderList rl, GOut g) {
 		parts.clear();
 		Light.LightList ll = null;
@@ -136,17 +139,21 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 	 System.err.println(String.format("(%f, %f, %f, %f)", a[0], a[1], a[2], a[3]));
 	 }
 	 */
+	@Override
 	public Global global(RenderList rl, Buffer ctx) {
 		return (this);
 	}
 
+	@Override
 	public void postsetup(RenderList rl) {
 	}
 
+	@Override
 	public void postrender(RenderList rl, GOut g) {
 		/* g.image(lbuf, Coord.z, g.sz); */
 	}
 
+	@Override
 	public void prep(Buffer buf) {
 		buf.put(smap, this);
 	}
@@ -155,6 +162,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 
 		public static final Uniform txf = new Uniform(MAT4), sl = new Uniform(INT), map = new Uniform(SAMPLER2D);
 		public static final AutoVarying stc = new AutoVarying(VEC4) {
+			@Override
 			public Expression root(VertexContext vctx) {
 				return (mul(txf.ref(), vctx.eyev.depref()));
 			}
@@ -189,6 +197,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 			};
 		}
 
+		@Override
 		public void modify(ProgramContext prog) {
 			final Phong ph = prog.getmod(Phong.class);
 			if ((ph == null) || !ph.pfrag) {
@@ -196,6 +205,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 			}
 
 			ph.dolight.mod(new Runnable() {
+				@Override
 				public void run() {
 					ph.dolight.dcalc.add(new If(eq(sl.ref(), ph.dolight.i),
 									stmt(amul(ph.dolight.dl.tgt, shcalc.call()))),
@@ -208,12 +218,14 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 	public final Shader shader;
 	private final ShaderMacro[] shaders;
 
+	@Override
 	public ShaderMacro[] shaders() {
 		return (shaders);
 	}
 
 	private TexUnit sampler;
 
+	@Override
 	public void apply(GOut g) {
 		sampler = g.st.texalloc();
 		BGL gl = g.gl;
@@ -222,6 +234,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 		reapply(g);
 	}
 
+	@Override
 	public void reapply(GOut g) {
 		BGL gl = g.gl;
 		VarID mapu = g.st.prog.cuniform(Shader.map);
@@ -232,6 +245,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 		}
 	}
 
+	@Override
 	public void unapply(GOut g) {
 		BGL gl = g.gl;
 		sampler.act(g);

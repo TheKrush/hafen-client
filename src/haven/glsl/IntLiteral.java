@@ -36,9 +36,11 @@ public class IntLiteral extends Expression {
 		this.val = val;
 	}
 
+	@Override
 	public void walk(Walker w) {
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write(Integer.toString(val));
 	}

@@ -69,6 +69,7 @@ public class FColor {
 		return (new float[]{r, g, b, a});
 	}
 
+	@Override
 	public String toString() {
 		return (String.format("color(%f, %f, %f, %f)", r, g, b, a));
 	}

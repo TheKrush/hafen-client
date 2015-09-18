@@ -40,6 +40,7 @@ public class VertexContext extends ShaderContext {
 
 	{
 		code.add(new CodeMacro() {
+			@Override
 			public void expand(Block blk) {
 				mainvals.cons(blk);
 			}
@@ -62,26 +63,31 @@ public class VertexContext extends ShaderContext {
 		new Variable.Implicit(Type.VEC4, new Symbol.Fix("gl_MultiTexCoord7")),};
 
 	private static final Uniform u_proj = new Uniform.AutoApply(Type.MAT4, "proj", PView.proj) {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			g.gl.glUniformMatrix4fv(loc, 1, false, g.st.proj.m, 0);
 		}
 	};
 	private static final Uniform u_cam = new Uniform.AutoApply(Type.MAT4, "cam", PView.cam) {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			g.gl.glUniformMatrix4fv(loc, 1, false, PView.camxf(g).m, 0);
 		}
 	};
 	private static final InstancedUniform u_wxf = new InstancedUniform.Mat4("wxf", PView.loc) {
+		@Override
 		public Matrix4f forstate(GOut g, GLState.Buffer buf) {
 			return (PView.locxf(buf));
 		}
 	};
 	private static final InstancedUniform u_mv = new InstancedUniform.Mat4("mv", PView.loc, PView.cam) {
+		@Override
 		public Matrix4f forstate(GOut g, GLState.Buffer buf) {
 			return (PView.mvxf(g, buf));
 		}
 	};
 	private static final InstancedUniform u_pmv = new InstancedUniform.Mat4("pmv", PView.loc, PView.cam, PView.proj) {
+		@Override
 		public Matrix4f forstate(GOut g, GLState.Buffer buf) {
 			return (PView.pmvxf(g, buf));
 		}
@@ -99,6 +105,7 @@ public class VertexContext extends ShaderContext {
 			this.v = v;
 		}
 
+		@Override
 		public Expression expand(Context ctx) {
 			return (new Mul(u_wxf.ref(), v));
 		}
@@ -119,6 +126,7 @@ public class VertexContext extends ShaderContext {
 			return (norm ? new Mat3Cons(xf) : xf);
 		}
 
+		@Override
 		public Expression expand(Context ctx) {
 			VertexContext vctx = (VertexContext) ctx;
 			vctx.xfpinit();
@@ -139,6 +147,7 @@ public class VertexContext extends ShaderContext {
 			this.v = v;
 		}
 
+		@Override
 		public Expression expand(Context ctx) {
 			VertexContext vctx = (VertexContext) ctx;
 			vctx.xfpinit();
@@ -157,6 +166,7 @@ public class VertexContext extends ShaderContext {
 			return;
 		}
 		walk(new Walker() {
+			@Override
 			public void el(Element e) {
 				if (e instanceof WorldTransform) {
 					h_wxf = true;
@@ -197,6 +207,7 @@ public class VertexContext extends ShaderContext {
 	}
 
 	public final ValBlock.Value objv = mainvals.new Value(Type.VEC4, new Symbol.Gen("objv")) {
+		@Override
 		public Expression root() {
 			return (gl_Vertex.ref());
 		}
@@ -206,8 +217,10 @@ public class VertexContext extends ShaderContext {
 			softdep(objv);
 		}
 
+		@Override
 		public Expression root() {
 			return (new PostProc.AutoMacro(PostProc.misc) {
+				@Override
 				public Expression expand(Context ctx) {
 					if (objv.used) {
 						return (wxf(objv.ref()));
@@ -224,8 +237,10 @@ public class VertexContext extends ShaderContext {
 			softdep(mapv);
 		}
 
+		@Override
 		public Expression root() {
 			return (new PostProc.AutoMacro(PostProc.misc) {
+				@Override
 				public Expression expand(Context ctx) {
 					if (mapv.used) {
 						return (camxf(mapv.ref()));
@@ -239,6 +254,7 @@ public class VertexContext extends ShaderContext {
 		}
 	};
 	public final ValBlock.Value eyen = mainvals.new Value(Type.VEC3, new Symbol.Gen("eyen")) {
+		@Override
 		public Expression root() {
 			return (nxf(gl_Normal.ref()));
 		}
@@ -251,8 +267,10 @@ public class VertexContext extends ShaderContext {
 			force();
 		}
 
+		@Override
 		public Expression root() {
 			return (new PostProc.AutoMacro(PostProc.misc) {
+				@Override
 				public Expression expand(Context ctx) {
 					if (eyev.used) {
 						return (projxf(eyev.ref()));
@@ -267,16 +285,19 @@ public class VertexContext extends ShaderContext {
 			});
 		}
 
+		@Override
 		protected void cons2(Block blk) {
 			tgt = gl_Position.ref();
 			blk.add(new LBinOp.Assign(tgt, init));
 		}
 	};
 	public final ValBlock.Value ptsz = mainvals.new Value(Type.FLOAT, new Symbol.Gen("ptsz")) {
+		@Override
 		public Expression root() {
 			return (new FloatLiteral(1.0));
 		}
 
+		@Override
 		protected void cons2(Block blk) {
 			tgt = gl_PointSize.ref();
 			blk.add(new LBinOp.Assign(tgt, init));

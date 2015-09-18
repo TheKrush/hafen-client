@@ -50,6 +50,7 @@ public class GBuffer {
 			this.prof = GLProfile.getDefault();
 			GLDrawableFactory df = GLDrawableFactory.getFactory(prof);
 			gstate = new GLState() {
+				@Override
 				public void apply(GOut g) {
 					BGL gl = g.gl;
 					gl.glColor3f(1, 1, 1);
@@ -63,9 +64,11 @@ public class GBuffer {
 					GOut.checkerr(gl);
 				}
 
+				@Override
 				public void unapply(GOut g) {
 				}
 
+				@Override
 				public void prep(Buffer buf) {
 					buf.put(HavenPanel.global, this);
 				}
@@ -77,12 +80,14 @@ public class GBuffer {
 			 * fails. :-/ */
 			this.buf = df.createOffscreenAutoDrawable(null, caps(prof), null, 1, 1, null);
 			buf.addGLEventListener(new GLEventListener() {
+				@Override
 				public void display(GLAutoDrawable d) {
 					GL2 gl = d.getGL().getGL2();
 					/* gl = new TraceGL2(gl, System.err) */
 					redraw(gl);
 				}
 
+				@Override
 				public void init(GLAutoDrawable d) {
 					GL2 gl = d.getGL().getGL2();
 					if ((curgl == null) || (curgl.gl != gl)) {
@@ -93,9 +98,11 @@ public class GBuffer {
 					}
 				}
 
+				@Override
 				public void reshape(GLAutoDrawable d, final int x, final int y, final int w, final int h) {
 				}
 
+				@Override
 				public void dispose(GLAutoDrawable d) {
 					BGL buf = new BGL();
 					GLObject.disposeall(curgl, buf);
@@ -187,10 +194,12 @@ public class GBuffer {
 	public static void main(String[] args) {
 		GBuffer test = new GBuffer(new Coord(250, 250));
 		test.render(new Drawn() {
+			@Override
 			public void draw(GOut g) {
 				g.chcolor(255, 0, 128, 255);
 				g.frect(new Coord(50, 50), new Coord(100, 100));
 				g.getimage(new Callback<BufferedImage>() {
+					@Override
 					public void done(BufferedImage img) {
 						try {
 							javax.imageio.ImageIO.write(img, "PNG", new java.io.File("/tmp/bard.png"));

@@ -43,6 +43,7 @@ public abstract class SIWidget extends Widget {
 		return (buf);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if (this.surf == null) {
 			this.surf = new TexI(draw());

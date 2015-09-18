@@ -63,6 +63,7 @@ public class SpotLight extends PosLight {
 		this.cut = 90.0f;
 	}
 
+	@Override
 	public void enable(GOut g, int idx) {
 		super.enable(g, idx);
 		BGL gl = g.gl;
@@ -71,6 +72,7 @@ public class SpotLight extends PosLight {
 		gl.glLightf(GL2.GL_LIGHT0 + idx, GL2.GL_SPOT_CUTOFF, cut);
 	}
 
+	@Override
 	public void disable(GOut g, int idx) {
 		BGL gl = g.gl;
 		gl.glLightfv(GL2.GL_LIGHT0 + idx, GL2.GL_SPOT_DIRECTION, defdir, 0);

@@ -43,6 +43,7 @@ class Animation extends Layer {
 
     }
 
+		@Override
     void draw(GOut var1) {
         for(int var2 = 0; var2 < this.a.f[this.cf].length; ++var2) {
             var1.image(this.a.f[this.cf][var2], Coord.z);

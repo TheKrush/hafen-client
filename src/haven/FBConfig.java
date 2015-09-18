@@ -116,15 +116,18 @@ public class FBConfig {
 			shaders = shb.toArray(new ShaderMacro[0]);
 		}
 		this.fb = new GLFrameBuffer(this.color, this.depth) {
+			@Override
 			public ShaderMacro[] shaders() {
 				return (shaders);
 			}
 		};
 		this.wnd = new PView.RenderState() {
+			@Override
 			public Coord ul() {
 				return (Coord.z);
 			}
 
+			@Override
 			public Coord sz() {
 				return (sz);
 			}
@@ -139,12 +142,14 @@ public class FBConfig {
 			}
 			resp = ArrayIdentity.intern(resp);
 			this.resp = new States.AdHoc(resp) {
+				@Override
 				public void apply(GOut g) {
 					for (ResolveFilter f : res) {
 						f.apply(FBConfig.this, g);
 					}
 				}
 
+				@Override
 				public void unapply(GOut g) {
 					for (ResolveFilter f : res) {
 						f.unapply(FBConfig.this, g);
@@ -283,6 +288,7 @@ public class FBConfig {
 	}
 
 	public static final Uniform numsamples = new Uniform.AutoApply(Type.INT) {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			g.gl.glUniform1i(loc, ((PView.ConfContext) g.st.get(PView.ctx)).cur.ms);
 		}
@@ -303,17 +309,21 @@ public class FBConfig {
 
 	private static class Resolve1 implements ResolveFilter {
 
+		@Override
 		public void prepare(FBConfig cfg, GOut g) {
 		}
 
+		@Override
 		public boolean cleanp() {
 			return (true);
 		}
 
 		private static final Uniform ctex = new Uniform(Type.SAMPLER2D);
 		private static final ShaderMacro code = new ShaderMacro() {
+			@Override
 			public void modify(ProgramContext prog) {
 				prog.fctx.fragcol.mod(new Macro1<Expression>() {
+					@Override
 					public Expression expand(Expression in) {
 						return (Cons.texture2D(ctex.ref(), Tex2D.rtexcoord.ref()));
 					}
@@ -321,22 +331,26 @@ public class FBConfig {
 			}
 		};
 
+		@Override
 		public ShaderMacro code(FBConfig cfg) {
 			return (code);
 		}
 
 		private GLState.TexUnit csmp;
 
+		@Override
 		public void apply(FBConfig cfg, GOut g) {
 			csmp = g.st.texalloc(g, ((GLFrameBuffer.Attach2D) cfg.color[0]).tex);
 			g.gl.glUniform1i(g.st.prog.uniform(ctex), csmp.id);
 		}
 
+		@Override
 		public void unapply(FBConfig cfg, GOut g) {
 			csmp.ufree(g);
 			csmp = null;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			return (o instanceof Resolve1);
 		}
@@ -350,17 +364,21 @@ public class FBConfig {
 			this.samples = samples;
 		}
 
+		@Override
 		public void prepare(FBConfig cfg, GOut g) {
 		}
 
+		@Override
 		public boolean cleanp() {
 			return (true);
 		}
 
 		private static final Uniform ctex = new Uniform(Type.SAMPLER2DMS);
 		private final ShaderMacro code = new ShaderMacro() {
+			@Override
 			public void modify(ProgramContext prog) {
 				prog.fctx.fragcol.mod(new Macro1<Expression>() {
+					@Override
 					public Expression expand(Expression in) {
 						Expression[] texels = new Expression[samples];
 						for (int i = 0; i < samples; i++) {
@@ -372,22 +390,26 @@ public class FBConfig {
 			}
 		};
 
+		@Override
 		public ShaderMacro code(FBConfig cfg) {
 			return (code);
 		}
 
 		private GLState.TexUnit csmp;
 
+		@Override
 		public void apply(FBConfig cfg, GOut g) {
 			csmp = g.st.texalloc(g, ((GLFrameBuffer.AttachMS) cfg.color[0]).tex);
 			g.gl.glUniform1i(g.st.prog.uniform(ctex), csmp.id);
 		}
 
+		@Override
 		public void unapply(FBConfig cfg, GOut g) {
 			csmp.ufree(g);
 			csmp = null;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			return ((o instanceof ResolveMS) && (((ResolveMS) o).samples == samples));
 		}

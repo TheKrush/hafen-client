@@ -143,6 +143,7 @@ public class SslHelper {
 
 	public void ignoreName() {
 		ver = new HostnameVerifier() {
+			@Override
 			public boolean verify(String hostname, SSLSession sess) {
 				return (true);
 			}

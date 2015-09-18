@@ -37,6 +37,7 @@ public class CheckBox extends Widget {
 	@RName("chk")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			CheckBox ret = new CheckBox((String) args[0]);
 			ret.canactivate = true;
@@ -62,6 +63,7 @@ public class CheckBox extends Widget {
 		this(lbl, false);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
@@ -75,6 +77,7 @@ public class CheckBox extends Widget {
 		changed(a);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.image(lbl.tex(), loff.add(box.sz().x, box.sz().y - lbl.sz().y));
 		g.image(box, Coord.z);

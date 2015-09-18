@@ -38,12 +38,14 @@ public class Vec2Cons extends Expression {
 		this.els = els;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		for (Expression el : els) {
 			w.el(el);
 		}
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("vec2(");
 		els[0].output(out);

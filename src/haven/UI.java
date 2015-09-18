@@ -75,11 +75,13 @@ public class UI {
 
 		{
 			setcmd("q", new Command() {
+				@Override
 				public void run(Console cons, String[] args) {
 					HackThread.tg().interrupt();
 				}
 			});
 			setcmd("lo", new Command() {
+				@Override
 				public void run(Console cons, String[] args) {
 					sess.close();
 				}
@@ -98,6 +100,7 @@ public class UI {
 			}
 		}
 
+		@Override
 		public Map<String, Command> findcmds() {
 			Map<String, Command> ret = super.findcmds();
 			findcmds(ret, root);
@@ -188,6 +191,7 @@ public class UI {
 			throw (new NullPointerException());
 		}
 		Grab g = new Grab(wdg) {
+			@Override
 			public void remove() {
 				mousegrab.remove(this);
 			}
@@ -201,6 +205,7 @@ public class UI {
 			throw (new NullPointerException());
 		}
 		Grab g = new Grab(wdg) {
+			@Override
 			public void remove() {
 				keygrab.remove(this);
 			}

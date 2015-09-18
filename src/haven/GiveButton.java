@@ -37,6 +37,7 @@ public class GiveButton extends Widget {
 	@RName("give")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new GiveButton((Integer) args[0]));
 		}
@@ -51,6 +52,7 @@ public class GiveButton extends Widget {
 		this(state, bg.sz());
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if (state == 0) {
 			g.chcolor(255, 192, 192, 255);
@@ -73,11 +75,13 @@ public class GiveButton extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		wdgmsg("click", button);
 		return (true);
 	}
 
+	@Override
 	public void uimsg(String name, Object... args) {
 		if (name == "ch") {
 			this.state = (Integer) args[0];

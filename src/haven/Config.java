@@ -247,11 +247,13 @@ public class Config {
 
 	static {
 		Console.setscmd("stats", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				dbtext = Utils.parsebool(args[1]);
 			}
 		});
 		Console.setscmd("profile", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				if (args[1].equals("none") || args[1].equals("off")) {
 					profile = profilegpu = false;

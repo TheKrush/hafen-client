@@ -38,12 +38,14 @@ public class Mul extends Expression {
 		this.terms = terms;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		for (Expression term : terms) {
 			w.el(term);
 		}
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("(");
 		terms[0].output(out);

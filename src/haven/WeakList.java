@@ -43,12 +43,14 @@ public class WeakList<T> extends AbstractCollection<T> {
 		}
 	}
 
+	@Override
 	public Iterator<T> iterator() {
 		clean();
 		return (new Iterator<T>() {
 			Entry<T> c = head, l = null;
 			T n = null;
 
+			@Override
 			public boolean hasNext() {
 				while (n == null) {
 					if (c == null) {
@@ -60,6 +62,7 @@ public class WeakList<T> extends AbstractCollection<T> {
 				return (true);
 			}
 
+			@Override
 			public T next() {
 				if (!hasNext()) {
 					throw (new NoSuchElementException());
@@ -69,6 +72,7 @@ public class WeakList<T> extends AbstractCollection<T> {
 				return (ret);
 			}
 
+			@Override
 			public void remove() {
 				if (l == null) {
 					throw (new IllegalStateException());
@@ -86,15 +90,18 @@ public class WeakList<T> extends AbstractCollection<T> {
 		return (n);
 	}
 
+	@Override
 	public boolean add(T e) {
 		add2(e);
 		return (true);
 	}
 
+	@Override
 	public void clear() {
 		head = null;
 	}
 
+	@Override
 	public int size() {
 		int ret = 0;
 		for (T e : this) {

@@ -68,6 +68,7 @@ public class Frame extends Widget {
 		return (around(parent, new Area(tl, br)));
 	}
 
+	@Override
 	public Coord xlate(Coord c, boolean in) {
 		if (in) {
 			return (c.add(box.btloff()));
@@ -76,6 +77,7 @@ public class Frame extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		super.draw(g);
 		box.draw(g, Coord.z, sz);

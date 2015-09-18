@@ -612,6 +612,7 @@ public class GOut {
 
 	public void getpixel(final Coord c, final Callback<Color> cb) {
 		gl.bglSubmit(new BGL.Request() {
+			@Override
 			public void run(GL2 gl) {
 				byte[] buf = new byte[4];
 				gl.glReadPixels(c.x + tx.x, root.sz.y - c.y - tx.y, 1, 1, GL.GL_RGBA, GL2.GL_UNSIGNED_BYTE, ByteBuffer.wrap(buf));
@@ -623,6 +624,7 @@ public class GOut {
 
 	public void getimage(final Coord ul, final Coord sz, final Callback<BufferedImage> cb) {
 		gl.bglSubmit(new BGL.Request() {
+			@Override
 			public void run(GL2 gl) {
 				byte[] buf = new byte[sz.x * sz.y * 4];
 				gl.glReadPixels(ul.x + tx.x, root.sz.y - ul.y - sz.y - tx.y, sz.x, sz.y, GL.GL_RGBA, GL2.GL_UNSIGNED_BYTE, ByteBuffer.wrap(buf));

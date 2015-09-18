@@ -43,6 +43,7 @@ public class Tree extends StaticSprite {
         return mkscale(var0, var0, var0);
     }
 
+		@Override
     public boolean setup(RenderList var1) {
         if(this.scale != null) {
             var1.prepc(this.scale);

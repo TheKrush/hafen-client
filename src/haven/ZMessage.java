@@ -36,6 +36,7 @@ public class ZMessage extends Message {
 		this.bk = from;
 	}
 
+	@Override
 	public boolean underflow(int hint) {
 		if (z == null) {
 			return (false);
@@ -75,6 +76,7 @@ public class ZMessage extends Message {
 		}
 	}
 
+	@Override
 	public void overflow(int min) {
 		throw (new RuntimeException("ZMessages are not writable yet"));
 	}

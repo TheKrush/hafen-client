@@ -59,6 +59,7 @@ public class Window extends Widget implements DTarget {
 	public static final Coord dlmrgn = new Coord(23, 14), dsmrgn = new Coord(9, 9);
 	public static final BufferedImage ctex = Resource.loadimg("gfx/hud/fonttex");
 	public static final Text.Furnace cf = new Text.Imager(new PUtils.TexFurn(new Text.Foundry(Text.serif.deriveFont(Font.BOLD, 16)).aa(true), ctex)) {
+		@Override
 		protected BufferedImage proc(Text text) {
 			return (rasterimg(blurmask2(text.img.getRaster(), 1, 1, Color.BLACK)));
 		}
@@ -66,18 +67,22 @@ public class Window extends Widget implements DTarget {
 	public static final IBox wbox = new IBox("gfx/hud/wnd", "tl", "tr", "bl", "br", "extvl", "extvr", "extht", "exthb") {
 		final Coord co = new Coord(3, 3), bo = new Coord(2, 2);
 
+		@Override
 		public Coord btloff() {
 			return (super.btloff().sub(bo));
 		}
 
+		@Override
 		public Coord ctloff() {
 			return (super.ctloff().sub(co));
 		}
 
+		@Override
 		public Coord bisz() {
 			return (super.bisz().sub(bo.mul(2)));
 		}
 
+		@Override
 		public Coord cisz() {
 			return (super.cisz().sub(co.mul(2)));
 		}
@@ -101,6 +106,7 @@ public class Window extends Widget implements DTarget {
 	@RName("wnd")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Coord sz = (Coord) args[0];
 			String cap = (args.length > 1) ? (String) args[1] : null;
@@ -127,6 +133,7 @@ public class Window extends Widget implements DTarget {
 		this(sz, cap, false);
 	}
 
+	@Override
 	protected void added() {
 		parent.setfocus(this);
 
@@ -215,6 +222,7 @@ public class Window extends Widget implements DTarget {
 		g.image(br, tlo.add(wsz.sub(br.sz())));
 	}
 
+	@Override
 	public void draw(GOut g) {
 		Coord bgc = new Coord();
 		for (bgc.y = ctl.y; bgc.y < ctl.y + csz.y; bgc.y += bg.sz().y) {
@@ -246,6 +254,7 @@ public class Window extends Widget implements DTarget {
 		super.draw(g);
 	}
 
+	@Override
 	public Coord contentsz() {
 		Coord max = new Coord(0, 0);
 		for (Widget wdg = child; wdg != null; wdg = wdg.next) {
@@ -284,6 +293,7 @@ public class Window extends Widget implements DTarget {
 		cbtn.c = xlate(new Coord(ctl.x + csz.x - cbtn.sz.x, ctl.y).add(2, -2), false);
 	}
 
+	@Override
 	public void resize(Coord sz) {
 		asz = sz;
 		csz = asz.add(mrgn.mul(2));
@@ -303,6 +313,7 @@ public class Window extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "pack") {
 			pack();
@@ -316,6 +327,7 @@ public class Window extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public Coord xlate(Coord c, boolean in) {
 		if (in) {
 			return (c.add(atl));
@@ -324,6 +336,7 @@ public class Window extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (super.mousedown(c, button)) {
 			parent.setfocus(this);
@@ -343,6 +356,7 @@ public class Window extends Widget implements DTarget {
 		return (false);
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if (dm != null) {
 			dm.remove();
@@ -354,6 +368,7 @@ public class Window extends Widget implements DTarget {
 		return (true);
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (dm != null) {
 			this.c = this.c.add(c.add(doff.inv()));
@@ -362,6 +377,7 @@ public class Window extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == cbtn) {
 			if (justclose) {
@@ -378,6 +394,7 @@ public class Window extends Widget implements DTarget {
 		ui.destroy(this);
 	}
 
+	@Override
 	public boolean type(char key, java.awt.event.KeyEvent ev) {
 		if (super.type(key, ev)) {
 			return (true);
@@ -393,6 +410,7 @@ public class Window extends Widget implements DTarget {
 		return (false);
 	}
 
+	@Override
 	public boolean drop(Coord cc, Coord ul) {
 		if (dt) {
 			wdgmsg("drop", cc);
@@ -401,10 +419,12 @@ public class Window extends Widget implements DTarget {
 		return (false);
 	}
 
+	@Override
 	public boolean iteminteract(Coord cc, Coord ul) {
 		return (false);
 	}
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		Object ret = super.tooltip(c, prev);
 		if (ret != null) {

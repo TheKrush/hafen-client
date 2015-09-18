@@ -48,6 +48,7 @@ public class HavenApplet extends Applet {
 		public ErrorPanel() {
 			setBackground(Color.BLACK);
 			addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (ar && !running) {
 						HavenApplet.this.remove(ErrorPanel.this);
@@ -57,6 +58,7 @@ public class HavenApplet extends Applet {
 			});
 		}
 
+		@Override
 		public boolean goterror(Throwable t) {
 			stopgame();
 			setSize(HavenApplet.this.getSize());
@@ -65,28 +67,33 @@ public class HavenApplet extends Applet {
 			return (true);
 		}
 
+		@Override
 		public void connecting() {
 			status = "Connecting to error report server...";
 			repaint();
 		}
 
+		@Override
 		public void sending() {
 			status = "Sending error report...";
 			repaint();
 		}
 
+		@Override
 		public void done(String ctype, String info) {
 			status = "Done";
 			ar = true;
 			repaint();
 		}
 
+		@Override
 		public void senderror(Exception e) {
 			status = "Could not send error report";
 			ar = true;
 			repaint();
 		}
 
+		@Override
 		public void paint(Graphics g) {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
@@ -131,6 +138,7 @@ public class HavenApplet extends Applet {
 		}
 	}
 
+	@Override
 	public void destroy() {
 		stopgame();
 	}
@@ -151,6 +159,7 @@ public class HavenApplet extends Applet {
 			applets.put(p, this);
 		}
 		Thread main = new HackThread(p, new Runnable() {
+			@Override
 			public void run() {
 				Thread ui = new HackThread(h, "Haven UI thread");
 				ui.start();
@@ -193,6 +202,7 @@ public class HavenApplet extends Applet {
 		h = null;
 	}
 
+	@Override
 	public void init() {
 		initonce();
 		resize(800, 600);
@@ -201,6 +211,7 @@ public class HavenApplet extends Applet {
 
 	static {
 		WebBrowser.self = new WebBrowser() {
+			@Override
 			public void show(URL url) {
 				HavenApplet a;
 				synchronized (applets) {

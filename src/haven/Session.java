@@ -113,6 +113,7 @@ public class Session {
 			this.resid = res.resid;
 		}
 
+		@Override
 		public void waitfor() throws InterruptedException {
 			synchronized (res) {
 				while (res.resnm == null) {
@@ -121,6 +122,7 @@ public class Session {
 			}
 		}
 
+		@Override
 		public boolean canwait() {
 			return (true);
 		}
@@ -141,6 +143,7 @@ public class Session {
 
 			private Resource res;
 
+			@Override
 			public Resource get() {
 				if (resnm == null) {
 					throw (new LoadingIndir(CachedRes.this));
@@ -151,6 +154,7 @@ public class Session {
 				return (res);
 			}
 
+			@Override
 			public String toString() {
 				if (res == null) {
 					return ("<res:" + resid + ">");
@@ -225,6 +229,7 @@ public class Session {
 			setDaemon(true);
 		}
 
+		@Override
 		public void run() {
 			try {
 				while (true) {
@@ -608,6 +613,7 @@ public class Session {
 			}
 		}
 
+		@Override
 		public void run() {
 			try {
 				alive = true;
@@ -686,6 +692,7 @@ public class Session {
 			}
 		}
 
+		@Override
 		public void interrupt() {
 			alive = false;
 			super.interrupt();
@@ -699,6 +706,7 @@ public class Session {
 			setDaemon(true);
 		}
 
+		@Override
 		public void run() {
 			try {
 				long to, last = 0, retries = 0;

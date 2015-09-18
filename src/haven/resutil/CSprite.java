@@ -52,6 +52,7 @@ public class CSprite extends Sprite {
 		addpart(loc, mat, part);
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		rl.prepc(Location.goback("gobx"));
 		for (Rendered p : parts) {

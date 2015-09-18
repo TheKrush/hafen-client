@@ -50,6 +50,7 @@ public class Utils {
 
 	public static void defer(final Runnable r) {
 		Defer.later(new Defer.Callable<Object>() {
+			@Override
 			public Object call() {
 				r.run();
 				return (null);
@@ -1363,16 +1364,19 @@ public class Utils {
 
 	static {
 		Console.setscmd("die", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				throw (new Error("Triggered death"));
 			}
 		});
 		Console.setscmd("threads", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				Utils.dumptg(null, cons.out);
 			}
 		});
 		Console.setscmd("gc", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				System.gc();
 			}

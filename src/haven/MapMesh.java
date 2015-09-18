@@ -54,6 +54,7 @@ public class MapMesh implements Rendered, Disposable {
 		try {
 			final java.lang.reflect.Constructor<T> cons = cl.getConstructor(MapMesh.class);
 			return (new DataID<T>() {
+				@Override
 				public T make(MapMesh m) {
 					return (Utils.construct(cons, m));
 				}
@@ -63,6 +64,7 @@ public class MapMesh implements Rendered, Disposable {
 		try {
 			final java.lang.reflect.Constructor<T> cons = cl.getConstructor();
 			return (new DataID<T>() {
+				@Override
 				public T make(MapMesh m) {
 					return (Utils.construct(cons));
 				}
@@ -85,16 +87,20 @@ public class MapMesh implements Rendered, Disposable {
 
 	public static class Hooks implements ConsHooks {
 
+		@Override
 		public void sfin() {
 		}
 
 		;
+		@Override
 	public void calcnrm() {
 		}
 
+		@Override
 		public void postcalcnrm(Random rnd) {
 		}
 
+		@Override
 		public boolean clean() {
 			return (false);
 		}
@@ -162,16 +168,20 @@ public class MapMesh implements Rendered, Disposable {
 				surf[vs.o(c.x + 1, c.y)],});
 		}
 
+		@Override
 		public void sfin() {
 			fin();
 		}
 
+		@Override
 		public void calcnrm() {
 		}
 
+		@Override
 		public void postcalcnrm(Random rnd) {
 		}
 
+		@Override
 		public boolean clean() {
 			return (true);
 		}
@@ -190,24 +200,29 @@ public class MapMesh implements Rendered, Disposable {
 			this(z, 0);
 		}
 
+		@Override
 		public int mainz() {
 			return (1000);
 		}
 
+		@Override
 		public boolean equals(Object x) {
 			return ((x instanceof MLOrder) && (((MLOrder) x).z == this.z));
 		}
 
+		@Override
 		public int hashCode() {
 			return (z);
 		}
 
 		private final static RComparator<Rendered> cmp = new RComparator<Rendered>() {
+			@Override
 			public int compare(Rendered a, Rendered b, GLState.Buffer sa, GLState.Buffer sb) {
 				return (((MLOrder) sa.get(order)).z - ((MLOrder) sb.get(order)).z);
 			}
 		};
 
+		@Override
 		public RComparator<Rendered> cmp() {
 			return (cmp);
 		}
@@ -295,16 +310,20 @@ public class MapMesh implements Rendered, Disposable {
 			this.mat = mat;
 		}
 
+		@Override
 		public void sfin() {
 		}
 
+		@Override
 		public void calcnrm() {
 		}
 
+		@Override
 		public boolean clean() {
 			return (false);
 		}
 
+		@Override
 		public void postcalcnrm(Random rnd) {
 			FastMesh mesh = mkmesh();
 			m.extras.add(mat.apply(mesh));
@@ -321,14 +340,17 @@ public class MapMesh implements Rendered, Disposable {
 				this.hash = mat.hashCode() * 37;
 			}
 
+			@Override
 			public int hashCode() {
 				return (hash);
 			}
 
+			@Override
 			public boolean equals(Object x) {
 				return ((x instanceof MatKey) && mat.equals(((MatKey) x).mat));
 			}
 
+			@Override
 			public Model make(MapMesh m) {
 				return (new Model(m, mat));
 			}
@@ -420,6 +442,7 @@ public class MapMesh implements Rendered, Disposable {
 				final MeshBuf.Tex ta = buf.layer(MeshBuf.tex);
 				final Map<Vertex, MeshVertex> cv = new HashMap<Vertex, MeshVertex>();
 
+				@Override
 				public void faces(MapMesh m, Tiler.MPart d) {
 					Coord3f[] texc = new Coord3f[d.v.length];
 					for (int i = 0; i < d.v.length; i++) {
@@ -492,13 +515,16 @@ public class MapMesh implements Rendered, Disposable {
 			mesh = buf.mkmesh();
 		}
 
+		@Override
 		public void dispose() {
 			mesh.dispose();
 		}
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			rl.prepc(gmorder);
 			rl.prepc(gmoff);
@@ -513,6 +539,7 @@ public class MapMesh implements Rendered, Disposable {
 			super(z);
 		}
 
+		@Override
 		public int mainz() {
 			return (1002);
 		}
@@ -528,6 +555,7 @@ public class MapMesh implements Rendered, Disposable {
 			int[] fl = new int[16];
 			int fn = 0;
 
+			@Override
 			public void faces(MapMesh m, Tiler.MPart d) {
 				for (Vertex v : d.v) {
 					if (vl[v.vi] == null) {
@@ -574,14 +602,17 @@ public class MapMesh implements Rendered, Disposable {
 				final int z = i;
 				class OL implements Rendered, Disposable {
 
+					@Override
 					public void draw(GOut g) {
 						mesh.draw(g);
 					}
 
+					@Override
 					public void dispose() {
 						mesh.dispose();
 					}
 
+					@Override
 					public boolean setup(RenderList rl) {
 						rl.prepo(new OLOrder(z));
 						return (true);
@@ -604,6 +635,7 @@ public class MapMesh implements Rendered, Disposable {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 	}
 
@@ -616,6 +648,7 @@ public class MapMesh implements Rendered, Disposable {
 			float[] col2 = new float[vl * 4];
 			short[] ind = new short[sz.x * sz.y * 6];
 
+			@Override
 			public void faces(MapMesh m, Tiler.MPart d) {
 				if (vn + d.v.length > vl) {
 					vl *= 2;
@@ -684,12 +717,14 @@ public class MapMesh implements Rendered, Disposable {
 		flats[mode].draw(g);
 	}
 
+	@Override
 	public void dispose() {
 		for (Disposable p : dparts) {
 			p.dispose();
 		}
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		for (Rendered e : extras) {
 			rl.add(e, null);

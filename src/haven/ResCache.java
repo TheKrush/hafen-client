@@ -53,8 +53,10 @@ public interface ResCache {
 
 	public static class TestCache implements ResCache {
 
+		@Override
 		public OutputStream store(final String name) {
 			return (new ByteArrayOutputStream() {
+				@Override
 				public void close() {
 					byte[] res = toByteArray();
 					System.out.println(name + ": " + res.length);
@@ -62,6 +64,7 @@ public interface ResCache {
 			});
 		}
 
+		@Override
 		public InputStream fetch(String name) throws IOException {
 			throw (new FileNotFoundException());
 		}

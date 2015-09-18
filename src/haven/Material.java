@@ -37,10 +37,12 @@ public class Material extends GLState {
 	public final GLState[] states;
 
 	public static final GLState nofacecull = new GLState.StandAlone(Slot.Type.GEOM, PView.proj) {
+		@Override
 		public void apply(GOut g) {
 			g.gl.glDisable(GL.GL_CULL_FACE);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glEnable(GL.GL_CULL_FACE);
 		}
@@ -49,6 +51,7 @@ public class Material extends GLState {
 	@ResName("nofacecull")
 	public static class $nofacecull implements ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			return (nofacecull);
 		}
@@ -114,6 +117,7 @@ public class Material extends GLState {
 			this((Color) args[0], (Color) args[1], (Color) args[2], (Color) args[3], (Float) args[4]);
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glMaterialfv(GL.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, amb, 0);
@@ -123,6 +127,7 @@ public class Material extends GLState {
 			gl.glMaterialf(GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shine);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glMaterialfv(GL.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, defamb, 0);
@@ -132,6 +137,7 @@ public class Material extends GLState {
 			gl.glMaterialf(GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 0.0f);
 		}
 
+		@Override
 		public int capplyfrom(GLState from) {
 			if (from instanceof Colors) {
 				return (5);
@@ -139,12 +145,14 @@ public class Material extends GLState {
 			return (-1);
 		}
 
+		@Override
 		public void applyfrom(GOut g, GLState from) {
 			if (from instanceof Colors) {
 				apply(g);
 			}
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			Colors p = buf.get(colors);
 			if (p != null) {
@@ -162,6 +170,7 @@ public class Material extends GLState {
 							other.shine));
 		}
 
+		@Override
 		public String toString() {
 			return (String.format("(%.1f, %.1f, %.1f), (%.1f, %.1f, %.1f), (%.1f, %.1f, %.1f @ %.1f)",
 							amb[0], amb[1], amb[2], dif[0], dif[1], dif[2], spc[0], spc[1], spc[2], shine));
@@ -171,6 +180,7 @@ public class Material extends GLState {
 	@ResName("order")
 	public static class $order implements ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			String nm = (String) args[0];
 			if (nm.equals("first")) {
@@ -193,9 +203,11 @@ public class Material extends GLState {
 		}
 	}
 
+	@Override
 	public void apply(GOut g) {
 	}
 
+	@Override
 	public void unapply(GOut g) {
 	}
 
@@ -219,10 +231,12 @@ public class Material extends GLState {
 		this(Light.deflight, new Colors(), tex.draw(), tex.clip());
 	}
 
+	@Override
 	public String toString() {
 		return (Arrays.asList(states).toString());
 	}
 
+	@Override
 	public void prep(Buffer buf) {
 		for (GLState st : states) {
 			st.prep(buf);
@@ -256,6 +270,7 @@ public class Material extends GLState {
 						i.remove();
 					}
 					m = new Material(states.toArray(new GLState[0])) {
+						@Override
 						public String toString() {
 							return (super.toString() + "@" + getres().name);
 						}
@@ -265,6 +280,7 @@ public class Material extends GLState {
 			}
 		}
 
+		@Override
 		public void init() {
 			for (Resource.Image img : getres().layers(Resource.imgc)) {
 				TexGL tex = (TexGL) img.tex();
@@ -277,6 +293,7 @@ public class Material extends GLState {
 			}
 		}
 
+		@Override
 		public Integer layerid() {
 			return (id);
 		}
@@ -292,6 +309,7 @@ public class Material extends GLState {
 							(int) (buf.cpfloat() * 255.0)));
 		}
 
+		@Override
 		public Res cons(final Resource res, Message buf) {
 			int id = buf.uint16();
 			Res ret = new Res(res, id);
@@ -314,6 +332,7 @@ public class Material extends GLState {
 				} else if (thing == "tex") {
 					final int tid = buf.uint16();
 					ret.left.add(new Res.Resolver() {
+						@Override
 						public void resolve(Collection<GLState> buf) {
 							for (Resource.Image img : res.layers(Resource.imgc)) {
 								if (img.id == tid) {
@@ -330,6 +349,7 @@ public class Material extends GLState {
 					final int ver = buf.uint16();
 					final int tid = buf.uint16();
 					ret.left.add(new Res.Resolver() {
+						@Override
 						public void resolve(Collection<GLState> buf) {
 							Indir<Resource> tres = res.pool.load(nm, ver);
 							for (Resource.Image img : tres.get().layers(Resource.imgc)) {
@@ -367,10 +387,12 @@ public class Material extends GLState {
 	@ResName("mlink")
 	public static class $mlink implements ResCons2 {
 
+		@Override
 		public Res.Resolver cons(final Resource res, Object... args) {
 			final Indir<Resource> lres = res.pool.load((String) args[0], (Integer) args[1]);
 			final int id = (args.length > 2) ? (Integer) args[2] : -1;
 			return (new Res.Resolver() {
+				@Override
 				public void resolve(Collection<GLState> buf) {
 					if (id >= 0) {
 						Res mat = lres.get().layer(Res.class, id);
@@ -423,9 +445,11 @@ public class Material extends GLState {
 					throw (new Error(e));
 				}
 				rnames.put(nm, new ResCons2() {
+					@Override
 					public Res.Resolver cons(Resource res, Object... args) {
 						final GLState ret = scons.cons(res, args);
 						return (new Res.Resolver() {
+							@Override
 							public void resolve(Collection<GLState> buf) {
 								if (ret != null) {
 									buf.add(ret);
@@ -450,8 +474,10 @@ public class Material extends GLState {
 					throw (new Error("No proper constructor for res-consable GL state " + cl.getName(), e));
 				}
 				rnames.put(nm, new ResCons2() {
+					@Override
 					public Res.Resolver cons(final Resource res, final Object... args) {
 						return (new Res.Resolver() {
+							@Override
 							public void resolve(Collection<GLState> buf) {
 								buf.add(Utils.construct(cons, res, args));
 							}
@@ -467,6 +493,7 @@ public class Material extends GLState {
 	@Resource.LayerName("mat2")
 	public static class NewMat implements Resource.LayerFactory<Res> {
 
+		@Override
 		public Res cons(Resource res, Message buf) {
 			int id = buf.uint16();
 			Res ret = new Res(res, id);

@@ -54,6 +54,7 @@ public class Button extends SIWidget {
 	@RName("btn")
 	public static class $Btn implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Button((Integer) args[0], (String) args[1]));
 		}
@@ -62,6 +63,7 @@ public class Button extends SIWidget {
 	@RName("ltbtn")
 	public static class $LTBtn implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (wrapped((Integer) args[0], (String) args[1]));
 		}
@@ -104,6 +106,7 @@ public class Button extends SIWidget {
 		this.cont = cont;
 	}
 
+	@Override
 	public void draw(BufferedImage img) {
 		Graphics g = img.getGraphics();
 		int yo = lg ? ((hl - hs) / 2) : 0;
@@ -141,6 +144,7 @@ public class Button extends SIWidget {
 		wdgmsg("activate");
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "ch") {
 			if (args.length > 1) {
@@ -153,6 +157,7 @@ public class Button extends SIWidget {
 		}
 	}
 
+	@Override
 	public void mousemove(Coord c) {
 		if (d != null) {
 			boolean a = c.isect(Coord.z, sz);
@@ -171,6 +176,7 @@ public class Button extends SIWidget {
 		Audio.play(click);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
@@ -182,6 +188,7 @@ public class Button extends SIWidget {
 		return (true);
 	}
 
+	@Override
 	public boolean mouseup(Coord c, int button) {
 		if ((d != null) && button == 1) {
 			d.remove();

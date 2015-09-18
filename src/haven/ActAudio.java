@@ -38,6 +38,7 @@ public class ActAudio extends GLState.Abstract {
 	public final Channel amb = new Channel("amb");
 	private final Map<Global, Global> global = new HashMap<Global, Global>();
 
+	@Override
 	public void prep(Buffer st) {
 		st.put(slot, this);
 	}
@@ -123,6 +124,7 @@ public class ActAudio extends GLState.Abstract {
 			this(new VolAdjust(clip));
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.apply();
 			ActAudio list = g.st.cur(slot);
@@ -135,6 +137,7 @@ public class ActAudio extends GLState.Abstract {
 			}
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			return (true);
 		}
@@ -176,20 +179,24 @@ public class ActAudio extends GLState.Abstract {
 					throw (new RuntimeException("No ambient clip found in " + res));
 				}
 				this.clip = new VolAdjust(new Audio.Repeater() {
+					@Override
 					public CS cons() {
 						return (clip.stream());
 					}
 				});
 			}
 
+			@Override
 			public int hashCode() {
 				return (res.hashCode());
 			}
 
+			@Override
 			public boolean equals(Object other) {
 				return ((other instanceof Glob) && (((Glob) other).res == this.res));
 			}
 
+			@Override
 			public boolean cycle(ActAudio list) {
 				double now = System.currentTimeMillis() / 1000.0;
 				double td = Math.max(now - lastupd, 0.0);
@@ -214,6 +221,7 @@ public class ActAudio extends GLState.Abstract {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.apply();
 			if (glob == null) {
@@ -229,6 +237,7 @@ public class ActAudio extends GLState.Abstract {
 			glob.add(svol * bvol);
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			return (true);
 		}

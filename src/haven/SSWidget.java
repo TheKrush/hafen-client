@@ -39,6 +39,7 @@ public class SSWidget extends Widget {
 		surf = new TexIM(sz);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.image(surf, Coord.z);
 	}

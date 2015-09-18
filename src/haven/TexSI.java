@@ -36,22 +36,27 @@ public class TexSI extends Tex {
 		this.ul = ul;
 	}
 
+	@Override
 	public float tcx(int x) {
 		return (parent.tcx(x + ul.x));
 	}
 
+	@Override
 	public float tcy(int y) {
 		return (parent.tcy(y + ul.y));
 	}
 
+	@Override
 	public void render(GOut g, Coord c, Coord ul, Coord br, Coord sz) {
 		parent.render(g, c, this.ul.add(ul), this.ul.add(br), sz);
 	}
 
+	@Override
 	public GLState draw() {
 		return (parent.draw());
 	}
 
+	@Override
 	public GLState clip() {
 		return (parent.clip());
 	}

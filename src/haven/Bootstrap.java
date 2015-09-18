@@ -68,6 +68,7 @@ public class Bootstrap implements UI.Receiver, UI.Runner {
 		Utils.setpref(name + "@" + hostname, val);
 	}
 
+	@Override
 	public Session run(UI ui) throws InterruptedException {
 		ui.setreceiver(this);
 		ui.bind(ui.root.add(new LoginScreen()), 1);
@@ -239,6 +240,7 @@ public class Bootstrap implements UI.Receiver, UI.Runner {
 		//(new RemoteUI(sess, ui)).start();
 	}
 
+	@Override
 	public void rcvmsg(int widget, String msg, Object... args) {
 		synchronized (msgs) {
 			msgs.add(new Message(widget, msg, args));

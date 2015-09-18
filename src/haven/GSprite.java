@@ -57,6 +57,7 @@ public abstract class GSprite implements Drawn {
 			try {
 				final Constructor<? extends GSprite> cons = cl.getConstructor(Owner.class, Resource.class, Message.class);
 				return (new Factory() {
+					@Override
 					public GSprite create(Owner owner, Resource res, Message sdt) {
 						return (Utils.construct(cons, owner, res, sdt));
 					}
@@ -66,6 +67,7 @@ public abstract class GSprite implements Drawn {
 			throw (new RuntimeException("Could not find any suitable constructor for dynamic sprite"));
 		}
 
+		@Override
 		public Factory make(Class<?> cl) throws InstantiationException, IllegalAccessException {
 			if (Factory.class.isAssignableFrom(cl)) {
 				return (cl.asSubclass(Factory.class).newInstance());
@@ -99,6 +101,7 @@ public abstract class GSprite implements Drawn {
 		throw (new Sprite.ResourceException("Does not know how to draw resource " + res.name, res));
 	}
 
+	@Override
 	public abstract void draw(GOut g);
 
 	public abstract Coord sz();

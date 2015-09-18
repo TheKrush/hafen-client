@@ -55,6 +55,7 @@ public class Speedget extends Widget {
 	@RName("speedget")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			int cur = (Integer) args[0];
 			int max = (Integer) args[1];
@@ -68,6 +69,7 @@ public class Speedget extends Widget {
 		this.max = max;
 	}
 
+	@Override
 	public void draw(GOut g) {
 		int x = 0;
 		for (int i = 0; i < 4; i++) {
@@ -84,6 +86,7 @@ public class Speedget extends Widget {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "cur") {
 			cur = (Integer) args[0];
@@ -96,6 +99,7 @@ public class Speedget extends Widget {
 		wdgmsg("set", s);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		int x = 0;
 		for (int i = 0; i < 4; i++) {
@@ -108,6 +112,7 @@ public class Speedget extends Widget {
 		return (true);
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		if (max >= 0) {
 			set((cur + max + 1 + amount) % (max + 1));
@@ -115,6 +120,7 @@ public class Speedget extends Widget {
 		return (true);
 	}
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		if ((cur >= 0) && (cur < tips.length)) {
 			return (String.format("Selected speed: " + tips[cur]));
@@ -122,6 +128,7 @@ public class Speedget extends Widget {
 		return (null);
 	}
 
+	@Override
 	public boolean globtype(char key, KeyEvent ev) {
 		if (key == 18) {
 			if (max >= 0) {

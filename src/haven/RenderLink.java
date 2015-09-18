@@ -62,6 +62,7 @@ public interface RenderLink {
 				l = new RenderLink() {
 					Rendered res = null;
 
+					@Override
 					public Rendered make() {
 						if (res == null) {
 							FastMesh m = null;
@@ -94,6 +95,7 @@ public interface RenderLink {
 				int ver = buf.uint16();
 				final Indir<Resource> amb = res.pool.load(nm, ver);
 				l = new RenderLink() {
+					@Override
 					public Rendered make() {
 						return (new ActAudio.Ambience(amb.get()));
 					}
@@ -106,6 +108,7 @@ public interface RenderLink {
 				l = new RenderLink() {
 					Rendered res = null;
 
+					@Override
 					public Rendered make() {
 						if (res == null) {
 							ArrayList<Rendered> cl = new ArrayList<Rendered>();
@@ -116,9 +119,11 @@ public interface RenderLink {
 							}
 							final Rendered[] ca = cl.toArray(new Rendered[0]);
 							res = new Rendered() {
+								@Override
 								public void draw(GOut g) {
 								}
 
+								@Override
 								public boolean setup(RenderList ls) {
 									for (Rendered r : ca) {
 										ls.add(r, null);
@@ -135,9 +140,11 @@ public interface RenderLink {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 
+		@Override
 		public Integer layerid() {
 			return (id);
 		}

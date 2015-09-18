@@ -43,6 +43,7 @@ public class Makewindow extends Widget {
 	@RName("make")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Makewindow((String) args[0]));
 		}
@@ -80,6 +81,7 @@ public class Makewindow extends Widget {
 
 		private Random rnd = null;
 
+		@Override
 		public Random mkrandoom() {
 			if (rnd == null) {
 				rnd = new Random();
@@ -87,15 +89,18 @@ public class Makewindow extends Widget {
 			return (rnd);
 		}
 
+		@Override
 		public Resource getres() {
 			return (res.get());
 		}
 
+		@Override
 		public Glob glob() {
 			return (ui.sess.glob);
 		}
 	}
 
+	@Override
 	public void tick(double dt) {
 		for (Spec s : inputs) {
 			if (s.spr != null) {
@@ -118,6 +123,7 @@ public class Makewindow extends Widget {
 		adda(new Label(rcpnm, nmf), sz.x, 0, 1, 0);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "inpop") {
 			List<Spec> inputs = new LinkedList<Spec>();
@@ -148,6 +154,7 @@ public class Makewindow extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		Coord c = new Coord(xoff, 0);
 		for (Spec s : inputs) {
@@ -182,6 +189,7 @@ public class Makewindow extends Widget {
 	private Resource lasttip;
 	private Object stip, ltip;
 
+	@Override
 	public Object tooltip(Coord mc, Widget prev) {
 		Resource tres = null;
 		Coord c;
@@ -250,6 +258,7 @@ public class Makewindow extends Widget {
 		}
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == obtn) {
 			if (msg == "activate") {
@@ -266,6 +275,7 @@ public class Makewindow extends Widget {
 		super.wdgmsg(sender, msg, args);
 	}
 
+	@Override
 	public boolean globtype(char ch, java.awt.event.KeyEvent ev) {
 		if (ch == '\n') {
 			wdgmsg("make", ui.modctrl ? 1 : 0);
@@ -282,6 +292,7 @@ public class Makewindow extends Widget {
 			super(owner);
 		}
 
+		@Override
 		public Color olcol() {
 			return (olcol);
 		}

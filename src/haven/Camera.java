@@ -35,12 +35,15 @@ public class Camera extends Transform {
 		super(xf);
 	}
 
+	@Override
 	public void apply(GOut g) {
 	}
 
+	@Override
 	public void unapply(GOut g) {
 	}
 
+	@Override
 	public void prep(Buffer b) {
 		b.put(PView.cam, this);
 	}

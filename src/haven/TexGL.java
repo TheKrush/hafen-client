@@ -53,23 +53,27 @@ public abstract class TexGL extends Tex {
 			super(g);
 		}
 
+		@Override
 		public void create(GL2 gl) {
 			int[] buf = new int[1];
 			gl.glGenTextures(1, buf, 0);
 			this.id = buf[0];
 		}
 
+		@Override
 		protected void delete(BGL gl) {
 			BGL.ID[] buf = {this};
 			gl.glDeleteTextures(1, buf, 0);
 		}
 
+		@Override
 		public int glid() {
 			return (id);
 		}
 	}
 
 	public static final ShaderMacro mkcentroid = new ShaderMacro() {
+		@Override
 		public void modify(ProgramContext prog) {
 			Tex2D.get(prog).ipol = Varying.Interpol.CENTROID;
 		}
@@ -99,27 +103,32 @@ public abstract class TexGL extends Tex {
 			this.tex = tex;
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(slot, this);
 		}
 
+		@Override
 		public void reapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glUniform1i(g.st.prog.uniform(Tex2D.tex2d), sampler.id);
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			sampler = lbind(g, tex);
 			reapply(g);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			sampler.ufree(g);
 			sampler = null;
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			/* XXX: This combinatorial stuff does not seem quite right. */
 			if (tex.centroid) {
@@ -129,10 +138,12 @@ public abstract class TexGL extends Tex {
 			}
 		}
 
+		@Override
 		public int capply() {
 			return (100);
 		}
 
+		@Override
 		public int capplyfrom(GLState from) {
 			if (from instanceof TexDraw) {
 				return (99);
@@ -140,6 +151,7 @@ public abstract class TexGL extends Tex {
 			return (-1);
 		}
 
+		@Override
 		public void applyfrom(GOut g, GLState sfrom) {
 			BGL gl = g.gl;
 			TexDraw from = (TexDraw) sfrom;
@@ -153,12 +165,14 @@ public abstract class TexGL extends Tex {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return ("TexDraw(" + tex + ")");
 		}
 	}
 	private final TexDraw draw = new TexDraw(this);
 
+	@Override
 	public GLState draw() {
 		return (draw);
 	}
@@ -174,6 +188,7 @@ public abstract class TexGL extends Tex {
 			this.tex = tex;
 		}
 
+		@Override
 		public void apply(GOut g) {
 			TexDraw draw = g.st.get(TexDraw.slot);
 			if (draw == null) {
@@ -189,6 +204,7 @@ public abstract class TexGL extends Tex {
 			}
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			if (g.st.old(TexDraw.slot) == null) {
@@ -202,14 +218,17 @@ public abstract class TexGL extends Tex {
 			}
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
 
+		@Override
 		public int capply() {
 			return (100);
 		}
 
+		@Override
 		public int capplyfrom(GLState from) {
 			if (from instanceof TexClip) {
 				return (99);
@@ -217,6 +236,7 @@ public abstract class TexGL extends Tex {
 			return (-1);
 		}
 
+		@Override
 		public void applyfrom(GOut g, GLState sfrom) {
 			TexDraw draw = g.st.get(TexDraw.slot), old = g.st.old(TexDraw.slot);
 			if ((old != null) || (draw != null)) {
@@ -231,16 +251,19 @@ public abstract class TexGL extends Tex {
 			gl.glBindTexture(GL2.GL_TEXTURE_2D, glid);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(slot, this);
 		}
 
+		@Override
 		public String toString() {
 			return ("TexClip(" + tex + ")");
 		}
 	}
 	private final TexClip clip = new TexClip(this);
 
+	@Override
 	public GLState clip() {
 		return (clip);
 	}
@@ -300,10 +323,12 @@ public abstract class TexGL extends Tex {
 		}
 	}
 
+	@Override
 	public float tcx(int x) {
 		return (((float) x) / ((float) tdim.x));
 	}
 
+	@Override
 	public float tcy(int y) {
 		return (((float) y) / ((float) tdim.y));
 	}
@@ -350,6 +375,7 @@ public abstract class TexGL extends Tex {
 		}
 	}
 
+	@Override
 	public void render(GOut g, Coord c, Coord ul, Coord br, Coord sz) {
 		BGL gl = g.gl;
 		g.st.prep(draw);
@@ -374,6 +400,7 @@ public abstract class TexGL extends Tex {
 		}
 	}
 
+	@Override
 	public void dispose() {
 		synchronized (idmon) {
 			if (t != null) {
@@ -420,6 +447,7 @@ public abstract class TexGL extends Tex {
 	@Material.ResName("tex")
 	public static class $tex implements Material.ResCons2 {
 
+		@Override
 		public Material.Res.Resolver cons(final Resource res, Object... args) {
 			final Indir<Resource> tres;
 			final int tid;
@@ -443,6 +471,7 @@ public abstract class TexGL extends Tex {
 			final boolean clip = tclip; /* ¦] */
 
 			return (new Material.Res.Resolver() {
+				@Override
 				public void resolve(Collection<GLState> buf) {
 					Tex tex;
 					TexR rt = tres.get().layer(TexR.class, tid);
@@ -467,6 +496,7 @@ public abstract class TexGL extends Tex {
 
 	static {
 		Console.setscmd("texdis", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				disableall = (Integer.parseInt(args[1]) != 0);
 			}

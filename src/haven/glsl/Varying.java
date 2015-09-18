@@ -43,6 +43,7 @@ public class Varying extends Variable.Global {
 
 	private class Def extends Definition {
 
+		@Override
 		public void output(Output out) {
 			switch (ipol(out.ctx)) {
 				case FLAT: {
@@ -63,6 +64,7 @@ public class Varying extends Variable.Global {
 		}
 	}
 
+	@Override
 	public void use(Context ctx) {
 		if (!defined(ctx)) {
 			ctx.vardefs.add(new Def());

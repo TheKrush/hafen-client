@@ -104,11 +104,13 @@ public abstract class TexL extends TexGL {
 
 	private Future<Prepared> prepare() {
 		return (Defer.later(new Defer.Callable<Prepared>() {
+			@Override
 			public Prepared call() {
 				Prepared ret = new Prepared();
 				return (ret);
 			}
 
+			@Override
 			public String toString() {
 				String nm = loadname();
 				if (nm != null) {
@@ -124,6 +126,7 @@ public abstract class TexL extends TexGL {
 		return (null);
 	}
 
+	@Override
 	protected void fill(GOut g) {
 		if (decode == null) {
 			decode = prepare();

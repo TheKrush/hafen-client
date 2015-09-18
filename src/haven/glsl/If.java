@@ -40,6 +40,7 @@ public class If extends Statement {
 		this(cond, t, null);
 	}
 
+	@Override
 	public void walk(Walker w) {
 		w.el(cond);
 		w.el(t);
@@ -48,6 +49,7 @@ public class If extends Statement {
 		}
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("if(");
 		cond.output(out);

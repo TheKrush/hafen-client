@@ -42,10 +42,12 @@ public class BufView {
 
 	private class RenderState extends PView.RenderState {
 
+		@Override
 		public Coord ul() {
 			return (Coord.z);
 		}
 
+		@Override
 		public Coord sz() {
 			return (buf.sz);
 		}

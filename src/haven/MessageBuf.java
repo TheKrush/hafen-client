@@ -62,10 +62,12 @@ public class MessageBuf extends Message {
 		}
 	}
 
+	@Override
 	public boolean underflow(int hint) {
 		return (false);
 	}
 
+	@Override
 	public void overflow(int min) {
 		int cl = (wt == 0) ? 32 : wt;
 		while (cl - wh < min) {
@@ -77,6 +79,7 @@ public class MessageBuf extends Message {
 		wt = cl;
 	}
 
+	@Override
 	public boolean equals(Object o2) {
 		if (!(o2 instanceof MessageBuf)) {
 			return (false);
@@ -93,6 +96,7 @@ public class MessageBuf extends Message {
 		return (true);
 	}
 
+	@Override
 	public int hashCode() {
 		int ret = 192581;
 		for (int i = oh; i < rt; i++) {
@@ -109,6 +113,7 @@ public class MessageBuf extends Message {
 		rh = oh;
 	}
 
+	@Override
 	public MessageBuf clone() {
 		return (new MessageBuf(rbuf, oh, rt));
 	}

@@ -45,19 +45,23 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 		rev = new HashBMap<V, K>(rmap, fmap, this);
 	}
 
+	@Override
 	public boolean containsKey(Object k) {
 		return (fmap.containsKey(k));
 	}
 
 	private Set<Entry<K, V>> entries = null;
 
+	@Override
 	public Set<Entry<K, V>> entrySet() {
 		if (entries == null) {
 			entries = new AbstractSet<Entry<K, V>>() {
+				@Override
 				public int size() {
 					return (fmap.size());
 				}
 
+				@Override
 				public Iterator<Entry<K, V>> iterator() {
 					return (new Iterator<Entry<K, V>>() {
 						private final Iterator<Entry<K, V>> iter = fmap.entrySet().iterator();
@@ -73,27 +77,33 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 								this.v = v;
 							}
 
+							@Override
 							public K getKey() {
 								return (k);
 							}
 
+							@Override
 							public V getValue() {
 								return (v);
 							}
 
+							@Override
 							public boolean equals(Object o) {
 								return ((o instanceof IteredEntry) && (((IteredEntry) o).k == k) && (((IteredEntry) o).v == v));
 							}
 
+							@Override
 							public int hashCode() {
 								return (k.hashCode() ^ v.hashCode());
 							}
 
+							@Override
 							public V setValue(V nv) {
 								throw (new UnsupportedOperationException());
 							}
 						}
 
+						@Override
 						public boolean hasNext() {
 							if (next != null) {
 								return (true);
@@ -106,6 +116,7 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 							return (true);
 						}
 
+						@Override
 						public Entry<K, V> next() {
 							if (!hasNext()) {
 								throw (new NoSuchElementException());
@@ -115,6 +126,7 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 							return (ret);
 						}
 
+						@Override
 						public void remove() {
 							iter.remove();
 							if (rmap.remove(last.getValue()) != last.getKey()) {
@@ -124,6 +136,7 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 					});
 				}
 
+				@Override
 				public void clear() {
 					fmap.clear();
 					rmap.clear();
@@ -133,10 +146,12 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 		return (entries);
 	}
 
+	@Override
 	public V get(Object k) {
 		return (fmap.get(k));
 	}
 
+	@Override
 	public V put(K k, V v) {
 		if ((k == null) || (v == null)) {
 			throw (new NullPointerException());
@@ -146,12 +161,14 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 		return (old);
 	}
 
+	@Override
 	public V remove(Object k) {
 		V old = fmap.remove(k);
 		rmap.remove(old);
 		return (old);
 	}
 
+	@Override
 	public BMap<V, K> reverse() {
 		return (rev);
 	}

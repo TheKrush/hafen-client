@@ -37,6 +37,7 @@ public class For extends Statement {
 		this.body = body;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		if (init != null) {
 			w.el(init);
@@ -50,6 +51,7 @@ public class For extends Statement {
 		w.el(body);
 	}
 
+	@Override
 	public void output(Output out) {
 		out.write("for(");
 		if (init != null) {

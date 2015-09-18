@@ -44,6 +44,7 @@ public class AudioSprite {
 	}
 
 	public static final Sprite.Factory fact = new Sprite.Factory() {
+		@Override
 		public Sprite create(Sprite.Owner owner, Resource res, Message sdt) {
 			{
 				Resource.Audio clip = randoom(res, "cl");
@@ -74,6 +75,7 @@ public class AudioSprite {
 		public ClipSprite(Owner owner, Resource res, Resource.Audio clip) {
 			super(owner, res);
 			this.clip = new ActAudio.PosClip(new Audio.Monitor(clip.stream()) {
+				@Override
 				protected void eof() {
 					super.eof();
 					done = true;
@@ -81,11 +83,13 @@ public class AudioSprite {
 			});
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			r.add(clip, null);
 			return (false);
 		}
 
+		@Override
 		public boolean tick(int dt) {
 			return (done);
 		}
@@ -102,6 +106,7 @@ public class AudioSprite {
 			CS rep = new Audio.Repeater() {
 				private boolean f = true;
 
+				@Override
 				public CS cons() {
 					if (f && (beg != null)) {
 						f = false;
@@ -113,6 +118,7 @@ public class AudioSprite {
 			this.clip = new ActAudio.PosClip(rep);
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			if (clip != null) {
 				r.add(clip, null);
@@ -120,13 +126,16 @@ public class AudioSprite {
 			return (false);
 		}
 
+		@Override
 		public boolean tick(int dt) {
 			return (clip == null);
 		}
 
+		@Override
 		public void delete() {
 			if (end != null) {
 				clip = new ActAudio.PosClip(new Audio.Monitor(end.stream()) {
+					@Override
 					protected void eof() {
 						super.eof();
 						RepeatSprite.this.clip = null;
@@ -152,6 +161,7 @@ public class AudioSprite {
 			}
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			r.add(amb, null);
 			return (false);

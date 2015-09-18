@@ -53,6 +53,7 @@ public class StreamMessage extends Message implements Closeable, Flushable {
 		}
 	}
 
+	@Override
 	public boolean underflow(int hint) {
 		if (bkin == null) {
 			throw (new RuntimeException("No input stream"));
@@ -88,6 +89,7 @@ public class StreamMessage extends Message implements Closeable, Flushable {
 		return (behind + rh);
 	}
 
+	@Override
 	public void flush() {
 		try {
 			bkou.write(wbuf, 0, wh);
@@ -97,6 +99,7 @@ public class StreamMessage extends Message implements Closeable, Flushable {
 		wh = 0;
 	}
 
+	@Override
 	public void overflow(int min) {
 		if (bkou == null) {
 			throw (new RuntimeException("No output stream"));
@@ -116,6 +119,7 @@ public class StreamMessage extends Message implements Closeable, Flushable {
 		}
 	}
 
+	@Override
 	public void close() {
 		try {
 			try {

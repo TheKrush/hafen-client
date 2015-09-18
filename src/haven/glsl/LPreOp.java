@@ -35,12 +35,14 @@ public abstract class LPreOp extends Expression {
 		this.op = op;
 	}
 
+	@Override
 	public void walk(Walker w) {
 		w.el(op);
 	}
 
 	public abstract String form();
 
+	@Override
 	public void output(Output out) {
 		out.write("(");
 		out.write(form());
@@ -50,6 +52,7 @@ public abstract class LPreOp extends Expression {
 
 	public static class Inc extends LPreOp {
 
+		@Override
 		public String form() {
 			return ("++");
 		}
@@ -61,6 +64,7 @@ public abstract class LPreOp extends Expression {
 
 	public static class Dec extends LPreOp {
 
+		@Override
 		public String form() {
 			return ("--");
 		}

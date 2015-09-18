@@ -94,6 +94,7 @@ public class Fightview extends Widget {
 	@RName("frv")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Fightview());
 		}
@@ -103,6 +104,7 @@ public class Fightview extends Widget {
 		super(new Coord(width, (bg.sz().y + ymarg) * height));
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		if (args[0].equals("buff")) {
 			Widget p;
@@ -137,11 +139,13 @@ public class Fightview extends Widget {
 		current = rel;
 	}
 
+	@Override
 	public void destroy() {
 		setcur(null);
 		super.destroy();
 	}
 
+	@Override
 	public void draw(GOut g) {
 		int y = 10;
 		if (curava != null) {
@@ -182,6 +186,7 @@ public class Fightview extends Widget {
 		throw (new Notfound(gobid));
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == curava) {
 			wdgmsg("click", (int) current.gobid, args[0]);
@@ -215,6 +220,7 @@ public class Fightview extends Widget {
 		return (ui.sess.getres(num));
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "new") {
 			Relation rel = new Relation((Integer) args[0]);

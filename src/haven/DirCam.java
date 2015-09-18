@@ -40,6 +40,7 @@ public class DirCam extends Camera {
 		mat = compute(base, dir);
 	}
 
+	@Override
 	public Matrix4f fin(Matrix4f p) {
 		update(mat);
 		return (super.fin(p));

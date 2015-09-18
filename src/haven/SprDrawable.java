@@ -34,14 +34,17 @@ public class SprDrawable extends Drawable {
 		this.spr = spr;
 	}
 
+	@Override
 	public void setup(RenderList rl) {
 		rl.add(spr, null);
 	}
 
+	@Override
 	public void ctick(int dt) {
 		spr.tick(dt);
 	}
 
+	@Override
 	public Resource getres() {
 		return (null);
 	}

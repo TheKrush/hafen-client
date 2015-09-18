@@ -82,6 +82,7 @@ public abstract class Transform extends GLState {
 		return (m.trim3(1).transpose().mul1(makexlate(new Matrix4f(), new Coord3f(-m.m[12], -m.m[13], -m.m[14]))));
 	}
 
+	@Override
 	public String toString() {
 		return (this.getClass().getName() + "(" + xf + ")");
 	}

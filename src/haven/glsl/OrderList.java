@@ -42,6 +42,7 @@ public class OrderList<E> extends AbstractCollection<E> {
 			this.o = o;
 		}
 
+		@Override
 		public int compareTo(Element b) {
 			return (this.o - b.o);
 		}
@@ -53,10 +54,12 @@ public class OrderList<E> extends AbstractCollection<E> {
 		return (true);
 	}
 
+	@Override
 	public int size() {
 		return (bk.size());
 	}
 
+	@Override
 	public Iterator<E> iterator() {
 		if (!sorted) {
 			Collections.sort(bk);
@@ -65,14 +68,17 @@ public class OrderList<E> extends AbstractCollection<E> {
 		return (new Iterator<E>() {
 			private final Iterator<Element> bi = bk.iterator();
 
+			@Override
 			public boolean hasNext() {
 				return (bi.hasNext());
 			}
 
+			@Override
 			public E next() {
 				return (bi.next().e);
 			}
 
+			@Override
 			public void remove() {
 				bi.remove();
 			}

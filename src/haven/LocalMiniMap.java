@@ -37,6 +37,7 @@ public class LocalMiniMap extends Widget {
 	public final MapView mv;
 	private Coord cc = null;
 	private final Map<Coord, Defer.Future<MapTile>> cache = new LinkedHashMap<Coord, Defer.Future<MapTile>>(5, 0.75f, true) {
+		@Override
 		protected boolean removeEldestEntry(Map.Entry<Coord, Defer.Future<MapTile>> eldest) {
 			if (size() > 100) {
 				try {
@@ -272,6 +273,7 @@ public class LocalMiniMap extends Widget {
 		return (null);
 	}
 
+	@Override
 	public void tick(double dt) {
 		Gob pl = ui.sess.glob.oc.getgob(mv.plgob);
 		if (pl == null) {
@@ -281,6 +283,7 @@ public class LocalMiniMap extends Widget {
 		this.cc = pl.rc.div(tilesz);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if (cc == null) {
 			return;
@@ -302,6 +305,7 @@ public class LocalMiniMap extends Widget {
 					if (f == null && cur.manhattan2(plg) <= 1) {
 						final Coord tmp = new Coord(cur);
 						f = Defer.later(new Defer.Callable<MapTile>() {
+							@Override
 							public MapTile call() {
 								Coord ul = tmp.mul(cmaps);
 								BufferedImage drawmap = drawmap(ul, cmaps);
@@ -343,6 +347,7 @@ public class LocalMiniMap extends Widget {
 		drawicons(g);
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (cc == null) {
 			return (false);

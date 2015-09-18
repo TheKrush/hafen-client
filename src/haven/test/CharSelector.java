@@ -61,6 +61,7 @@ public class CharSelector extends Robot {
 		chrlist.wdgmsg("play", chr);
 	}
 
+	@Override
 	public void newwdg(int id, Widget w, Object... args) {
 		if (w instanceof Listbox) {
 			chrlist = (Charlist) w;
@@ -68,6 +69,7 @@ public class CharSelector extends Robot {
 		check();
 	}
 
+	@Override
 	public void dstwdg(int id, Widget w) {
 		if (w == chrlist) {
 			destroy();
@@ -75,6 +77,7 @@ public class CharSelector extends Robot {
 		}
 	}
 
+	@Override
 	public void uimsg(int id, Widget w, String msg, Object... args) {
 	}
 

@@ -66,18 +66,22 @@ public class RenderList {
 	}
 
 	private final Iterable<Slot> slotsi = new Iterable<Slot>() {
+		@Override
 		public Iterator<Slot> iterator() {
 			return (new Iterator<Slot>() {
 				private int i = 0;
 
+				@Override
 				public Slot next() {
 					return (list[i++]);
 				}
 
+				@Override
 				public boolean hasNext() {
 					return (i < cur);
 				}
 
+				@Override
 				public void remove() {
 					throw (new UnsupportedOperationException());
 				}
@@ -171,6 +175,7 @@ public class RenderList {
 
 	@SuppressWarnings("unchecked")
 	private static final Comparator<Slot> cmp = new Comparator<Slot>() {
+		@Override
 		public int compare(Slot a, Slot b) {
 			if (!a.d && !b.d) {
 				return (0);

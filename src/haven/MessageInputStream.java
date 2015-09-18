@@ -35,6 +35,7 @@ public class MessageInputStream extends InputStream {
 		this.bk = from;
 	}
 
+	@Override
 	public int read() {
 		while (bk.rt - bk.rh < 1) {
 			if (!bk.underflow(1)) {
@@ -44,6 +45,7 @@ public class MessageInputStream extends InputStream {
 		return (Utils.ub(bk.rbuf[bk.rh++]));
 	}
 
+	@Override
 	public int read(byte[] buf, int off, int len) {
 		int read = 0;
 		while (len > 0) {

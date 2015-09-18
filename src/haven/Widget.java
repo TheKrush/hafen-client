@@ -56,6 +56,7 @@ public class Widget {
 	@RName("cnt")
 	public static class $Cont implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Widget((Coord) args[0]));
 		}
@@ -64,12 +65,15 @@ public class Widget {
 	@RName("ccnt")
 	public static class $CCont implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Widget ret = new Widget((Coord) args[0]) {
+				@Override
 				public void presize() {
 					c = parent.sz.div(2).sub(sz.div(2));
 				}
 
+				@Override
 				protected void added() {
 					presize();
 				}
@@ -81,10 +85,12 @@ public class Widget {
 	@RName("fcnt")
 	public static class $FCont implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Widget ret = new Widget(parent.sz) {
 				Collection<Widget> fill = new ArrayList<Widget>();
 
+				@Override
 				public void presize() {
 					resize(parent.sz);
 					for (Widget ch : fill) {
@@ -92,10 +98,12 @@ public class Widget {
 					}
 				}
 
+				@Override
 				public void added() {
 					presize();
 				}
 
+				@Override
 				public void addchild(Widget child, Object... args) {
 					if ((args[0] instanceof String) && args[0].equals("fill")) {
 						child.resize(sz);
@@ -118,6 +126,7 @@ public class Widget {
 
 	public static class FactMaker implements Resource.PublishedCode.Instancer {
 
+		@Override
 		public Factory make(Class<?> cl) throws InstantiationException, IllegalAccessException {
 			if (Factory.class.isAssignableFrom(cl)) {
 				return (cl.asSubclass(Factory.class).newInstance());
@@ -127,6 +136,7 @@ public class Widget {
 				int mod = mkm.getModifiers();
 				if (Widget.class.isAssignableFrom(mkm.getReturnType()) && ((mod & Modifier.STATIC) != 0) && ((mod & Modifier.PUBLIC) != 0)) {
 					return (new Factory() {
+						@Override
 						public Widget create(Widget parent, Object[] args) {
 							try {
 								return ((Widget) mkm.invoke(null, parent, args));
@@ -594,6 +604,7 @@ public class Widget {
 				tooltip = new Indir<Tex>() {
 					Text t = null;
 
+					@Override
 					public Tex get() {
 						if (t == null) {
 							Resource.Pagina pag;
@@ -939,6 +950,7 @@ public class Widget {
 
 	public <T extends Widget> Set<T> children(final Class<T> cl) {
 		return (new AbstractSet<T>() {
+			@Override
 			public int size() {
 				int i = 0;
 				for (T w : this) {
@@ -947,6 +959,7 @@ public class Widget {
 				return (i);
 			}
 
+			@Override
 			public Iterator<T> iterator() {
 				return (new Iterator<T>() {
 					T cur = n(Widget.this);
@@ -973,6 +986,7 @@ public class Widget {
 						}
 					}
 
+					@Override
 					public T next() {
 						if (cur == null) {
 							throw (new NoSuchElementException());
@@ -982,10 +996,12 @@ public class Widget {
 						return (ret);
 					}
 
+					@Override
 					public boolean hasNext() {
 						return (cur != null);
 					}
 
+					@Override
 					public void remove() {
 						throw (new UnsupportedOperationException());
 					}
@@ -1135,6 +1151,7 @@ public class Widget {
 			this.s = 1.0 / s;
 		}
 
+		@Override
 		public boolean tick(double dt) {
 			a += dt;
 			double na = a * s;

@@ -35,6 +35,7 @@ import haven.glsl.ValBlock.Value;
 public abstract class MiscLib {
 
 	private static final AutoVarying frageyen = new AutoVarying(VEC3, "s_eyen") {
+		@Override
 		protected Expression root(VertexContext vctx) {
 			return (vctx.eyen.depref());
 		}
@@ -42,13 +43,16 @@ public abstract class MiscLib {
 
 	public static Value frageyen(final FragmentContext fctx) {
 		return (fctx.mainvals.ext(frageyen, new ValBlock.Factory() {
+			@Override
 			public Value make(ValBlock vals) {
 				Value ret = vals.new Value(VEC3, new Symbol.Gen("eyen")) {
+					@Override
 					public Expression root() {
 						return (frageyen.ref());
 					}
 				};
 				ret.mod(new Macro1<Expression>() {
+					@Override
 					public Expression expand(Expression in) {
 						return (normalize(in));
 					}
@@ -59,16 +63,19 @@ public abstract class MiscLib {
 	}
 
 	public static final AutoVarying fragobjv = new AutoVarying(VEC3, "s_objv") {
+		@Override
 		protected Expression root(VertexContext vctx) {
 			return (pick(vctx.objv.depref(), "xyz"));
 		}
 	};
 	public static final AutoVarying fragmapv = new AutoVarying(VEC3, "s_mapv") {
+		@Override
 		protected Expression root(VertexContext vctx) {
 			return (pick(vctx.mapv.depref(), "xyz"));
 		}
 	};
 	public static final AutoVarying frageyev = new AutoVarying(VEC3, "s_eyev") {
+		@Override
 		protected Expression root(VertexContext vctx) {
 			return (pick(vctx.eyev.depref(), "xyz"));
 		}
@@ -77,8 +84,10 @@ public abstract class MiscLib {
 
 	public static Value vertedir(final VertexContext vctx) {
 		return (vctx.mainvals.ext(vertedir_id, new ValBlock.Factory() {
+			@Override
 			public Value make(ValBlock vals) {
 				return (vals.new Value(VEC3, new Symbol.Gen("edir")) {
+					@Override
 					public Expression root() {
 						return (neg(normalize(pick(vctx.eyev.depref(), "xyz"))));
 					}
@@ -90,8 +99,10 @@ public abstract class MiscLib {
 
 	public static Value fragedir(final FragmentContext fctx) {
 		return (fctx.mainvals.ext(fragedir_id, new ValBlock.Factory() {
+			@Override
 			public Value make(ValBlock vals) {
 				return (vals.new Value(VEC3, new Symbol.Gen("edir")) {
+					@Override
 					public Expression root() {
 						return (neg(normalize(frageyev.ref())));
 					}
@@ -101,6 +112,7 @@ public abstract class MiscLib {
 	}
 
 	public static final Uniform maploc = new Uniform.AutoApply(VEC3, PView.loc) {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			Coord3f orig = PView.locxf(g).mul4(Coord3f.o);
 			orig.z = g.st.get(PView.ctx).glob().map.getcz(orig.x, -orig.y);
@@ -109,11 +121,13 @@ public abstract class MiscLib {
 	};
 
 	public static final Uniform time = new Uniform.AutoApply(FLOAT, "time") {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			g.gl.glUniform1f(loc, (System.currentTimeMillis() % 3000000L) / 1000f);
 		}
 	};
 	public static final Uniform globtime = new Uniform.AutoApply(FLOAT, "globtime") {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			Glob glob = g.st.cur(PView.ctx).glob();
 			g.gl.glUniform1f(loc, (glob.globtime() % 10000000L) / 1000f);
@@ -129,12 +143,14 @@ public abstract class MiscLib {
 		}
 	}
 	public static final Uniform pixelpitch = new Uniform.AutoApply(VEC2) {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			Coord sz = ssz(g);
 			g.gl.glUniform2f(loc, 1.0f / sz.x, 1.0f / sz.y);
 		}
 	};
 	public static final Uniform screensize = new Uniform.AutoApply(VEC2) {
+		@Override
 		public void apply(GOut g, VarID loc) {
 			Coord sz = ssz(g);
 			g.gl.glUniform2f(loc, sz.x, sz.y);

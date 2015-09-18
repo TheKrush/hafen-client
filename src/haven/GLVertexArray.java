@@ -35,17 +35,20 @@ public class GLVertexArray extends GLObject implements BGL.ID {
 		super(g);
 	}
 
+	@Override
 	public void create(GL2 gl) {
 		int[] buf = new int[1];
 		gl.glGenVertexArrays(1, buf, 0);
 		this.id = buf[0];
 	}
 
+	@Override
 	protected void delete(BGL gl) {
 		BGL.ID[] buf = {this};
 		gl.glDeleteVertexArrays(1, buf, 0);
 	}
 
+	@Override
 	public int glid() {
 		return (id);
 	}

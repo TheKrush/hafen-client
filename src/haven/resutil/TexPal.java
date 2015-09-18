@@ -44,8 +44,10 @@ public class TexPal extends GLState {
 
 	private static final Uniform ctex = new Uniform(SAMPLER2D);
 	private static final ShaderMacro[] shaders = {new ShaderMacro() {
+		@Override
 		public void modify(ProgramContext prog) {
 			Tex2D.tex2d(prog.fctx).mod(new Macro1<Expression>() {
+				@Override
 				public Expression expand(Expression in) {
 					return (texture2D(ctex.ref(), pick(in, "rg")));
 				}
@@ -53,26 +55,31 @@ public class TexPal extends GLState {
 		}
 	}};
 
+	@Override
 	public ShaderMacro[] shaders() {
 		return (shaders);
 	}
 
 	private TexUnit sampler;
 
+	@Override
 	public void reapply(GOut g) {
 		g.gl.glUniform1i(g.st.prog.uniform(ctex), sampler.id);
 	}
 
+	@Override
 	public void apply(GOut g) {
 		sampler = TexGL.lbind(g, tex);
 		reapply(g);
 	}
 
+	@Override
 	public void unapply(GOut g) {
 		sampler.ufree(g);
 		sampler = null;
 	}
 
+	@Override
 	public void prep(Buffer buf) {
 		buf.put(slot, this);
 	}
@@ -80,6 +87,7 @@ public class TexPal extends GLState {
 	@Material.ResName("pal")
 	public static class $res implements Material.ResCons2 {
 
+		@Override
 		public Material.Res.Resolver cons(final Resource res, Object... args) {
 			final Indir<Resource> tres;
 			final int tid;
@@ -94,6 +102,7 @@ public class TexPal extends GLState {
 				a += 1;
 			}
 			return (new Material.Res.Resolver() {
+				@Override
 				public void resolve(Collection<GLState> buf) {
 					TexR rt = tres.get().layer(TexR.class, tid);
 					if (rt == null) {

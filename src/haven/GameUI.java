@@ -82,6 +82,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				Coord mvc = map.rootxlate(ui.mc);
 				if (mvc.isect(Coord.z, map.sz)) {
 					map.delay(map.new Hittest(mvc) {
+						@Override
 						protected void hit(Coord pc, Coord mc, MapView.ClickInfo inf) {
 							if (inf == null) {
 								GameUI.this.wdgmsg("belt", slot, 1, ui.modflags(), mc);
@@ -90,6 +91,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 							}
 						}
 
+						@Override
 						protected void nohit(Coord pc) {
 							GameUI.this.wdgmsg("belt", slot, 1, ui.modflags());
 						}
@@ -102,6 +104,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	@RName("gameui")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			String chrid = (String) args[0];
 			int plid = (Integer) args[1];
@@ -124,12 +127,14 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		urpanel = add(new Hidepanel("gui-ur", null, new Coord(1, -1)));
 		blpanel = add(new Hidepanel("gui-bl", null, new Coord(-1, 1)));
 		brpanel = add(new Hidepanel("gui-br", null, new Coord(1, 1)) {
+			@Override
 			public void move(double a) {
 				super.move(a);
 				menupanel.move();
 			}
 		});
 		menupanel = add(new Hidepanel("menu", new Indir<Coord>() {
+			@Override
 			public Coord get() {
 				return (new Coord(GameUI.this.sz.x, Math.min(brpanel.c.y - 79, GameUI.this.sz.y - menupanel.sz.y)));
 			}
@@ -142,6 +147,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		mapbuttons();
 		foldbuttons();
 		portrait = ulpanel.add(new Avaview(Avaview.dasz, plid, "avacam") {
+			@Override
 			public boolean mousedown(Coord c, int button) {
 				return (true);
 			}
@@ -162,6 +168,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				tooltip = Text.render("Display personal claims");
 			}
 
+			@Override
 			public void click() {
 				if ((map != null) && !map.visol(0)) {
 					map.enol(0, 1);
@@ -175,6 +182,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				tooltip = Text.render("Display village claims");
 			}
 
+			@Override
 			public void click() {
 				if ((map != null) && !map.visol(2)) {
 					map.enol(2, 3);
@@ -239,48 +247,57 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		final Tex rdnbg = Resource.loadtex("gfx/hud/rbtn-maindwn");
 		final Tex rupbg = Resource.loadtex("gfx/hud/rbtn-upbg");
 		fold_br[0] = new IButton("gfx/hud/rbtn-dwn", "", "-d", "-h") {
+			@Override
 			public void draw(GOut g) {
 				g.image(rdnbg, Coord.z);
 				super.draw(g);
 			}
 
+			@Override
 			public void click() {
 				menupanel.cshow(false);
 				updfold(true);
 			}
 		};
 		fold_br[1] = new IButton("gfx/hud/rbtn-dwn", "", "-d", "-h") {
+			@Override
 			public void draw(GOut g) {
 				g.image(rdnbg, Coord.z);
 				super.draw(g);
 			}
 
+			@Override
 			public void click() {
 				brpanel.cshow(false);
 				updfold(true);
 			}
 		};
 		fold_br[2] = new IButton("gfx/hud/rbtn-up", "", "-d", "-h") {
+			@Override
 			public void draw(GOut g) {
 				g.image(rupbg, Coord.z);
 				super.draw(g);
 			}
 
+			@Override
 			public void click() {
 				menupanel.cshow(true);
 				updfold(true);
 			}
 
+			@Override
 			public void presize() {
 				this.c = parent.sz.sub(this.sz);
 			}
 		};
 		fold_br[3] = new IButton("gfx/hud/rbtn-dwn", "", "-d", "-h") {
+			@Override
 			public void draw(GOut g) {
 				g.image(rdnbg, Coord.z);
 				super.draw(g);
 			}
 
+			@Override
 			public void click() {
 				brpanel.cshow(true);
 				updfold(true);
@@ -296,22 +313,26 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 
 		final Tex lupbg = Resource.loadtex("gfx/hud/lbtn-upbg");
 		fold_bl[0] = new IButton("gfx/hud/lbtn-dwn", "", "-d", "-h") {
+			@Override
 			public void click() {
 				blpanel.cshow(false);
 				updfold(true);
 			}
 		};
 		fold_bl[1] = new IButton("gfx/hud/lbtn-up", "", "-d", "-h") {
+			@Override
 			public void draw(GOut g) {
 				g.image(lupbg, Coord.z);
 				super.draw(g);
 			}
 
+			@Override
 			public void click() {
 				blpanel.cshow(true);
 				updfold(true);
 			}
 
+			@Override
 			public void presize() {
 				this.c = new Coord(0, parent.sz.y - sz.y);
 			}
@@ -323,11 +344,13 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		updfold(false);
 	}
 
+	@Override
 	protected void added() {
 		resize(parent.sz);
 		ui.cons.out = new java.io.PrintWriter(new java.io.Writer() {
 			StringBuilder buf = new StringBuilder();
 
+			@Override
 			public void write(char[] src, int off, int len) {
 				buf.append(src, off, len);
 				int p;
@@ -337,9 +360,11 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}
 
+			@Override
 			public void close() {
 			}
 
+			@Override
 			public void flush() {
 			}
 		});
@@ -376,6 +401,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			cur = show(tvis = Utils.getprefb(id + "-visible", true)) ? 0 : 1;
 		}
 
+		@Override
 		public <T extends Widget> T add(T child) {
 			super.add(child);
 			pack();
@@ -413,6 +439,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			move(cur);
 		}
 
+		@Override
 		public void presize() {
 			move();
 		}
@@ -425,6 +452,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			new NormAnim(0.25) {
 				final double st = cur, f = vis ? 0 : 1;
 
+				@Override
 				public void ntick(double a) {
 					if ((a == 1.0) && !vis) {
 						hide();
@@ -449,6 +477,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (vis);
 		}
 
+		@Override
 		public void cdestroy(Widget w) {
 			parent.cdestroy(w);
 		}
@@ -464,6 +493,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			super(sz, cap);
 		}
 
+		@Override
 		public void wdgmsg(Widget sender, String msg, Object... args) {
 			if ((sender == this) && msg.equals("close")) {
 				this.hide();
@@ -492,6 +522,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}
 
+			@Override
 			public void draw(GOut g) {
 				if ((tab == null) && (inv != null)) {
 					g.image(inv, Coord.z);
@@ -500,6 +531,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}
 
+			@Override
 			public void click() {
 				if (tab != null) {
 					tabs.showtab(tab);
@@ -524,6 +556,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 
 		Tabs.Tab ntab(Widget ch, TButton btn) {
 			Tabs.Tab tab = add(tabs.new Tab() {
+				@Override
 				public void cresize(Widget ch) {
 					repack();
 				}
@@ -563,6 +596,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		String place = ((String) args[0]).intern();
 		Coord center = new Coord(c.x + (sz.x / 2), c.y + (sz.y / 2));
@@ -581,6 +615,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			add(child, Coord.z);
 		} else if (place == "inv") {
 			invwnd = new Hidewnd(Coord.z, "Inventory") {
+				@Override
 				public void cresize(Widget ch) {
 					pack();
 				}
@@ -610,6 +645,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				craftwnd.setMakewindow(mkwdg);
 			} else {
 				makewnd = new Window(Coord.z, "Crafting", true) {
+					@Override
 					public void wdgmsg(Widget sender, String msg, Object... args) {
 						if ((sender == this) && msg.equals("close")) {
 							mkwdg.wdgmsg("close");
@@ -618,6 +654,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 						super.wdgmsg(sender, msg, args);
 					}
 
+					@Override
 					public void cdestroy(Widget w) {
 						if (w == mkwdg) {
 							ui.destroy(this);
@@ -653,6 +690,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
+	@Override
 	public void cdestroy(Widget w) {
 		if (w instanceof GItem) {
 			for (Iterator<DraggedItem> i = hand.iterator(); i.hasNext();) {
@@ -737,6 +775,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		g.aimage(curprog, new Coord(sz.x / 2, (sz.y * 4) / 10), 0.5, 0.5);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		beltwdg.c = new Coord(chat.c.x, Math.min(chat.c.y - beltwdg.sz.y + 4, sz.y - beltwdg.sz.y));
 		super.draw(g);
@@ -767,6 +806,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
+	@Override
 	public void tick(double dt) {
 		super.tick(dt);
 		if (!afk && (System.currentTimeMillis() - ui.lastevent > 300000)) {
@@ -777,6 +817,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "err") {
 			String err = (String) args[0];
@@ -826,6 +867,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == menu) {
 			wdgmsg(msg, args);
@@ -865,9 +907,11 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			this.tooltip = RichText.render(tooltip, 0);
 		}
 
+		@Override
 		public void click() {
 		}
 
+		@Override
 		public boolean globtype(char key, KeyEvent ev) {
 			if ((gkey != -1) && (key == gkey)) {
 				click();
@@ -884,6 +928,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		public MainMenu() {
 			super(menubg.sz());
 			add(new MenuButton("rbtn-inv", 9, "Inventory ($col[255,255,0]{Tab})") {
+				@Override
 				public void click() {
 					if ((invwnd != null) && invwnd.show(!invwnd.visible)) {
 						invwnd.raise();
@@ -892,6 +937,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}, 0, 0);
 			add(new MenuButton("rbtn-equ", 5, "Equipment ($col[255,255,0]{Ctrl+E})") {
+				@Override
 				public void click() {
 					if ((equwnd != null) && equwnd.show(!equwnd.visible)) {
 						equwnd.raise();
@@ -900,6 +946,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}, 0, 0);
 			add(new MenuButton("rbtn-chr", 20, "Character Sheet ($col[255,255,0]{Ctrl+T})") {
+				@Override
 				public void click() {
 					if ((chrwdg != null) && chrwdg.show(!chrwdg.visible)) {
 						chrwdg.raise();
@@ -908,6 +955,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}, 0, 0);
 			add(new MenuButton("rbtn-bud", 2, "Kith & Kin ($col[255,255,0]{Ctrl+B})") {
+				@Override
 				public void click() {
 					if (zerg.show(!zerg.visible)) {
 						zerg.raise();
@@ -917,6 +965,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				}
 			}, 0, 0);
 			add(new MenuButton("rbtn-opt", 15, "Options ($col[255,255,0]{Ctrl+O})") {
+				@Override
 				public void click() {
 					if (opts.show(!opts.visible)) {
 						opts.raise();
@@ -927,12 +976,14 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			}, 0, 0);
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.image(menubg, Coord.z);
 			super.draw(g);
 		}
 	}
 
+	@Override
 	public boolean globtype(char key, KeyEvent ev) {
 		if (key == ':') {
 			entercmd();
@@ -968,6 +1019,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		return (super.globtype(key, ev));
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		return (super.mousedown(c, button));
 	}
@@ -1013,6 +1065,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		toggleui((uimode + 1) % 3);
 	}
 
+	@Override
 	public void resize(Coord sz) {
 		this.sz = sz;
 		chat.resize(sz.x - blpw - brpw);
@@ -1024,10 +1077,12 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		super.resize(sz);
 	}
 
+	@Override
 	public void presize() {
 		resize(parent.sz);
 	}
 
+	@Override
 	public void error(String msg) {
 		message(msg, MsgType.ERROR);
 	}
@@ -1107,6 +1162,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (-1);
 		}
 
+		@Override
 		public void draw(GOut g) {
 			for (int i = 0; i < 12; i++) {
 				int slot = i + (curbelt * 12);
@@ -1124,6 +1180,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			}
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			int slot = beltslot(c);
 			if (slot != -1) {
@@ -1138,6 +1195,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (false);
 		}
 
+		@Override
 		public boolean globtype(char key, KeyEvent ev) {
 			if (key != 0 || ui.modctrl) {
 				return (false);
@@ -1157,6 +1215,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (false);
 		}
 
+		@Override
 		public boolean drop(Coord c, Coord ul) {
 			int slot = beltslot(c);
 			if (slot != -1) {
@@ -1166,10 +1225,12 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (false);
 		}
 
+		@Override
 		public boolean iteminteract(Coord c, Coord ul) {
 			return (false);
 		}
 
+		@Override
 		public boolean dropthing(Coord c, Object thing) {
 			int slot = beltslot(c);
 			if (slot != -1) {
@@ -1202,6 +1263,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 					glow = new TexI(PUtils.rasterimg(PUtils.blurmask(up.getRaster(), 2, 2, Color.WHITE)));
 				}
 
+				@Override
 				public void click() {
 					if (chat.targeth == 0) {
 						chat.sresize(chat.savedh);
@@ -1212,6 +1274,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 					Utils.setprefb("chatvis", chat.targeth != 0);
 				}
 
+				@Override
 				public void draw(GOut g) {
 					super.draw(g);
 					Color urg = chat.urgcols[chat.urgency];
@@ -1237,6 +1300,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (-1);
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.image(nkeybg, Coord.z);
 			for (int i = 0; i < 10; i++) {
@@ -1256,6 +1320,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			super.draw(g);
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			int slot = beltslot(c);
 			if (slot != -1) {
@@ -1270,6 +1335,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (super.mousedown(c, button));
 		}
 
+		@Override
 		public boolean globtype(char key, KeyEvent ev) {
 			if (key != 0 || ui.modctrl) {
 				return (false);
@@ -1288,6 +1354,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (true);
 		}
 
+		@Override
 		public boolean drop(Coord c, Coord ul) {
 			int slot = beltslot(c);
 			if (slot != -1) {
@@ -1297,10 +1364,12 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			return (false);
 		}
 
+		@Override
 		public boolean iteminteract(Coord c, Coord ul) {
 			return (false);
 		}
 
+		@Override
 		public boolean dropthing(Coord c, Object thing) {
 			int slot = beltslot(c);
 			if (slot != -1) {
@@ -1331,12 +1400,14 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 
 	{
 		cmdmap.put("afk", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				afk = true;
 				wdgmsg("afk");
 			}
 		});
 		cmdmap.put("act", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				Object[] ad = new Object[args.length - 1];
 				System.arraycopy(args, 1, ad, 0, ad.length);
@@ -1344,6 +1415,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			}
 		});
 		cmdmap.put("belt", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				if (args[1].equals("f")) {
 					beltwdg.destroy();
@@ -1359,12 +1431,14 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			}
 		});
 		cmdmap.put("tool", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				add(gettype(args[1]).create(GameUI.this, new Object[0]), 200, 200);
 			}
 		});
 	}
 
+	@Override
 	public Map<String, Console.Command> findcmds() {
 		return (cmdmap);
 	}

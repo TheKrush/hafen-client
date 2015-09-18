@@ -62,6 +62,7 @@ public abstract class PView extends Widget {
 			return (ret);
 		}
 
+		@Override
 		public void prep(Buffer b) {
 			b.put(ctx, this);
 		}
@@ -78,11 +79,13 @@ public abstract class PView extends Widget {
 
 		protected abstract Coord sz();
 
+		@Override
 		public Global global(RenderList rl, Buffer ctx) {
 			return (glob);
 		}
 
 		private final Global glob = new Global() {
+			@Override
 			public void postsetup(RenderList rl) {
 				cfg.fin(cur);
 				cur = cfg;
@@ -96,9 +99,11 @@ public abstract class PView extends Widget {
 				}
 			}
 
+			@Override
 			public void prerender(RenderList rl, GOut g) {
 			}
 
+			@Override
 			public void postrender(RenderList rl, GOut g) {
 			}
 		};
@@ -106,10 +111,12 @@ public abstract class PView extends Widget {
 
 	public class WidgetContext extends ConfContext {
 
+		@Override
 		protected Coord sz() {
 			return (PView.this.sz);
 		}
 
+		@Override
 		public Glob glob() {
 			return (ui.sess.glob);
 		}
@@ -121,6 +128,7 @@ public abstract class PView extends Widget {
 
 	public static abstract class RenderState extends GLState {
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glScissor(g.ul.x, g.root().sz.y - g.ul.y - g.sz.y, g.sz.x, g.sz.y);
@@ -139,6 +147,7 @@ public abstract class PView extends Widget {
 			gl.glClearDepth(1.0);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 
@@ -150,6 +159,7 @@ public abstract class PView extends Widget {
 			gl.glScissor(g.root().ul.x, g.root().ul.y, g.root().sz.x, g.root().sz.y);
 		}
 
+		@Override
 		public void prep(Buffer b) {
 			b.put(wnd, this);
 		}
@@ -161,10 +171,12 @@ public abstract class PView extends Widget {
 
 	private class WidgetRenderState extends RenderState {
 
+		@Override
 		public Coord ul() {
 			return (rootpos());
 		}
 
+		@Override
 		public Coord sz() {
 			return (PView.this.sz);
 		}
@@ -201,15 +213,18 @@ public abstract class PView extends Widget {
 		return (Projection.frustum(-field, field, -aspect * field, aspect * field, 1, 5000));
 	}
 
+	@Override
 	public void resize(Coord sz) {
 		super.resize(sz);
 		pstate = makeproj();
 	}
 
 	private final Rendered scene = new Rendered() {
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			PView.this.setup(rl);
 			return (false);
@@ -220,6 +235,7 @@ public abstract class PView extends Widget {
 		return (Color.BLACK);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if ((g.sz.x < 1) || (g.sz.y < 1)) {
 			return;
@@ -308,9 +324,11 @@ public abstract class PView extends Widget {
 
 	public static abstract class Draw2D implements Render2D {
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			return (true);
 		}

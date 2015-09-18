@@ -43,6 +43,7 @@ public class Fightsess extends Widget {
 	@RName("fsess")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			int nact = (Integer) args[0];
 			return (new Fightsess(nact, parent.getparent(GameUI.class).fv));
@@ -57,11 +58,13 @@ public class Fightsess extends Widget {
 		this.dyn = new boolean[nact];
 	}
 
+	@Override
 	public void presize() {
 		resize(parent.sz);
 		pcc = sz.div(2);
 	}
 
+	@Override
 	protected void added() {
 		presize();
 	}
@@ -78,24 +81,29 @@ public class Fightsess extends Widget {
 
 	private static final Text.Furnace ipf = new PUtils.BlurFurn(new Text.Foundry(Text.serif, 18, new Color(128, 128, 255)).aa(true), 1, 1, new Color(48, 48, 96));
 	private final Text.UText<?> ip = new Text.UText<Integer>(ipf) {
+		@Override
 		public String text(Integer v) {
 			return ("IP: " + v);
 		}
 
+		@Override
 		public Integer value() {
 			return (fv.current.ip);
 		}
 	};
 	private final Text.UText<?> oip = new Text.UText<Integer>(ipf) {
+		@Override
 		public String text(Integer v) {
 			return ("IP: " + v);
 		}
 
+		@Override
 		public Integer value() {
 			return (fv.current.oip);
 		}
 	};
 
+	@Override
 	public void draw(GOut g) {
 		updatepos();
 		double now = System.currentTimeMillis() / 1000.0;
@@ -141,6 +149,7 @@ public class Fightsess extends Widget {
 
 	private Widget prevtt = null;
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		for (Buff buff : fv.buffs.children(Buff.class)) {
 			Coord dc = pcc.add(-buff.c.x - Buff.cframe.sz().x - 20, buff.c.y + pho - Buff.cframe.sz().y);
@@ -184,6 +193,7 @@ public class Fightsess extends Widget {
 		return (null);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "act") {
 			int n = (Integer) args[0];
@@ -203,6 +213,7 @@ public class Fightsess extends Widget {
 		}
 	}
 
+	@Override
 	public boolean globtype(char key, KeyEvent ev) {
 		int c = ev.getKeyChar();
 		if ((key == 0) && (c >= KeyEvent.VK_1) && (c < KeyEvent.VK_1 + actions.length)) {

@@ -46,6 +46,7 @@ public class Attribute extends Variable.Global {
 
 	private class Def extends Definition {
 
+		@Override
 		public void output(Output out) {
 			if (out.ctx instanceof ShaderContext) {
 				((ShaderContext) out.ctx).prog.attribs.add(Attribute.this);
@@ -55,6 +56,7 @@ public class Attribute extends Variable.Global {
 		}
 	}
 
+	@Override
 	public void use(Context ctx) {
 		if (!defined(ctx)) {
 			ctx.vardefs.add(new Def());

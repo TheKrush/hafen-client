@@ -58,11 +58,13 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 	private Comparator<Buddy> alphacmp = new Comparator<Buddy>() {
 		private Collator c = Collator.getInstance();
 
+		@Override
 		public int compare(Buddy a, Buddy b) {
 			return (c.compare(a.name, b.name));
 		}
 	};
 	private Comparator<Buddy> groupcmp = new Comparator<Buddy>() {
+		@Override
 		public int compare(Buddy a, Buddy b) {
 			if (a.group == b.group) {
 				return (alphacmp.compare(a, b));
@@ -72,6 +74,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		}
 	};
 	private Comparator<Buddy> statuscmp = new Comparator<Buddy>() {
+		@Override
 		public int compare(Buddy a, Buddy b) {
 			if (a.online == b.online) {
 				return (alphacmp.compare(a, b));
@@ -84,6 +87,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 	@RName("buddy")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new BuddyWnd());
 		}
@@ -138,6 +142,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		}
 	}
 
+	@Override
 	public Iterator<Buddy> iterator() {
 		synchronized (buddies) {
 			return (new ArrayList<Buddy>(buddies).iterator());
@@ -159,6 +164,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			this.group = group;
 		}
 
+		@Override
 		public void draw(GOut g) {
 			for (int i = 0; i < gc.length; i++) {
 				if (i == group) {
@@ -171,6 +177,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			g.chcolor();
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			if ((c.y >= 2) && (c.y < 17)) {
 				int g = (c.x - 2) / 20;
@@ -193,20 +200,24 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			super(w, h, 20);
 		}
 
+		@Override
 		public Buddy listitem(int idx) {
 			return (buddies.get(idx));
 		}
 
+		@Override
 		public int listitems() {
 			return (buddies.size());
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 			g.chcolor(0, 0, 0, 128);
 			g.frect(Coord.z, sz);
 			g.chcolor();
 		}
 
+		@Override
 		public void drawitem(GOut g, Buddy b, int idx) {
 			if (b.online == 1) {
 				g.image(online, Coord.z);
@@ -218,6 +229,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			g.chcolor();
 		}
 
+		@Override
 		public void draw(GOut g) {
 			super.draw(g);
 			if (buddies.size() == 0) {
@@ -225,6 +237,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			}
 		}
 
+		@Override
 		public void change(Buddy b) {
 			sel = b;
 			if (b == null) {
@@ -240,12 +253,14 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 							dshow = true;
 						}
 
+						@Override
 						public void activate(String text) {
 							editing.chname(text);
 							commit();
 						}
 					}, new Coord(5, 185));
 					BuddyWnd.this.adda(grpsel = new GroupSelector(0) {
+						@Override
 						public void changed(int group) {
 							editing.chgrp(group);
 						}
@@ -273,11 +288,13 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			}
 			if (menu == null) {
 				menu = new FlowerMenu(opts.toArray(new String[0])) {
+					@Override
 					public void destroy() {
 						menu = null;
 						super.destroy();
 					}
 
+					@Override
 					public void choose(Petal opt) {
 						if (opt != null) {
 							if (opt.name.equals("End kinship")) {
@@ -299,6 +316,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			}
 		}
 
+		@Override
 		public void itemclick(Buddy b, int button) {
 			if (button == 1) {
 				change(b);
@@ -322,16 +340,19 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		add(new Label("Sort by:"), new Coord(0, y));
 		y += 15;
 		sbstatus = add(new Button(60, "Status") {
+			@Override
 			public void click() {
 				setcmp(statuscmp);
 			}
 		}, new Coord(0, y));
 		sbgroup = add(new Button(60, "Group") {
+			@Override
 			public void click() {
 				setcmp(groupcmp);
 			}
 		}, new Coord(70, y));
 		sbalpha = add(new Button(60, "Name") {
+			@Override
 			public void click() {
 				setcmp(alphacmp);
 			}
@@ -359,12 +380,14 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 				dshow = true;
 			}
 
+			@Override
 			public void activate(String text) {
 				setpname(text);
 			}
 		}, new Coord(0, y));
 		y += 25;
 		add(new Button(75, "Set") {
+			@Override
 			public void click() {
 				setpname(pname.text);
 			}
@@ -378,22 +401,26 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 				dshow = true;
 			}
 
+			@Override
 			public void activate(String text) {
 				setpwd(text);
 			}
 		}, new Coord(0, y));
 		y += 25;
 		add(new Button(45, "Set") {
+			@Override
 			public void click() {
 				setpwd(charpass.text);
 			}
 		}, new Coord(0, y));
 		add(new Button(60, "Clear") {
+			@Override
 			public void click() {
 				setpwd("");
 			}
 		}, new Coord(55, y));
 		add(new Button(75, "Random") {
+			@Override
 			public void click() {
 				setpwd(randpwd());
 			}
@@ -403,6 +430,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		add(new Label("Make kin by hearth secret:"), new Coord(0, y));
 		y += 15;
 		opass = add(new TextEntry(200, "") {
+			@Override
 			public void activate(String text) {
 				BuddyWnd.this.wdgmsg("bypwd", text);
 				settext("");
@@ -410,6 +438,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		}, new Coord(0, y));
 		y += 25;
 		add(new Button(75, "Add kin") {
+			@Override
 			public void click() {
 				BuddyWnd.this.wdgmsg("bypwd", opass.text);
 				opass.settext("");
@@ -457,6 +486,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "add") {
 			int id = (Integer) args[0];
@@ -534,6 +564,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		}
 	}
 
+	@Override
 	public void hide() {
 		if (menu != null) {
 			ui.destroy(menu);
@@ -542,6 +573,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		super.hide();
 	}
 
+	@Override
 	public void destroy() {
 		if (menu != null) {
 			ui.destroy(menu);

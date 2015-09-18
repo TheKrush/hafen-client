@@ -57,20 +57,24 @@ public class MorphedMesh extends FastMesh {
 		super(mesh, buf(mesh.vert, pose));
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		((MorphedBuf) vert).update();
 		return (super.setup(rl));
 	}
 
+	@Override
 	public void cdraw(GOut g) {
 		((MorphedBuf) vert).update2(g);
 		super.cdraw(g);
 	}
 
+	@Override
 	protected boolean compile() {
 		return (false);
 	}
 
+	@Override
 	public String toString() {
 		return ("morphed(" + from + ")");
 	}
@@ -182,12 +186,14 @@ public class MorphedMesh extends FastMesh {
 
 	public static Morpher.Factory combine(final Morpher.Factory... parts) {
 		return (new Morpher.Factory() {
+			@Override
 			public Morpher create(MorphedBuf vb) {
 				final Morpher[] mparts = new Morpher[parts.length];
 				for (int i = 0; i < parts.length; i++) {
 					mparts[i] = parts[i].create(vb);
 				}
 				return (new Morpher() {
+					@Override
 					public boolean update() {
 						boolean ret = false;
 						for (Morpher p : mparts) {
@@ -198,6 +204,7 @@ public class MorphedMesh extends FastMesh {
 						return (ret);
 					}
 
+					@Override
 					public void morphp(FloatBuffer dst, FloatBuffer src) {
 						for (Morpher p : mparts) {
 							p.morphp(dst, src);
@@ -205,6 +212,7 @@ public class MorphedMesh extends FastMesh {
 						}
 					}
 
+					@Override
 					public void morphd(FloatBuffer dst, FloatBuffer src) {
 						for (Morpher p : mparts) {
 							p.morphd(dst, src);

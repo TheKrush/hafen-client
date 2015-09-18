@@ -87,6 +87,7 @@ public class CharWnd extends Window {
 				}
 			}
 
+			@Override
 			public void init() {
 			}
 		}
@@ -111,6 +112,7 @@ public class CharWnd extends Window {
 			}
 		}
 		public static final Comparator<El> dcmp = new Comparator<El>() {
+			@Override
 			public int compare(El a, El b) {
 				int c;
 				if ((c = (a.ev().sort - b.ev().sort)) != 0) {
@@ -157,6 +159,7 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		public void tick(double dt) {
 			if (enew != null) {
 				try {
@@ -178,6 +181,7 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			int d = (trtm > 0) ? ((int) (System.currentTimeMillis() - trtm)) : Integer.MAX_VALUE;
 			g.chcolor(0, 0, 0, 255);
@@ -216,6 +220,7 @@ public class CharWnd extends Window {
 
 		private Tex rtip = null;
 
+		@Override
 		public Object tooltip(Coord c, Widget prev) {
 			if (rtip == null) {
 				List<El> els = this.els;
@@ -254,6 +259,7 @@ public class CharWnd extends Window {
 			super(frame.sz());
 		}
 
+		@Override
 		public void draw(GOut g) {
 			Coord isz = sz.sub(marg.mul(2));
 			g.chcolor(bg);
@@ -277,6 +283,7 @@ public class CharWnd extends Window {
 
 		private Tex rtip = null;
 
+		@Override
 		public Object tooltip(Coord c, Widget prev) {
 			if (rtip == null) {
 				rtip = RichText.render(String.format("%s: %d%%\nFood efficacy: %d%%", lbl, Math.round((lglut) * 100), Math.round(gmod * 100)), -1).tex();
@@ -337,6 +344,7 @@ public class CharWnd extends Window {
 
 		private WItem.ItemTip lasttip = null;
 
+		@Override
 		public void draw(GOut g) {
 			WItem.ItemTip tip = null;
 			if (ui.lasttip instanceof WItem.ItemTip) {
@@ -364,6 +372,7 @@ public class CharWnd extends Window {
 		}
 
 		public static final Comparator<El> ecmp = new Comparator<El>() {
+			@Override
 			public int compare(El a, El b) {
 				if (a.a < b.a) {
 					return (-1);
@@ -378,17 +387,21 @@ public class CharWnd extends Window {
 			super(w, h, El.h);
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 		}
 
+		@Override
 		protected El listitem(int i) {
 			return (els.get(order[i]));
 		}
 
+		@Override
 		protected int listitems() {
 			return (order.length);
 		}
 
+		@Override
 		protected void drawitem(GOut g, El el, int idx) {
 			g.chcolor(el.hl ? hilit : (((idx % 2) == 0) ? every : other));
 			g.frect(Coord.z, g.sz);
@@ -408,6 +421,7 @@ public class CharWnd extends Window {
 				order[i] = i;
 			}
 			Arrays.sort(order, new Comparator<Integer>() {
+				@Override
 				public int compare(Integer a, Integer b) {
 					return (ecmp.compare(els.get(a), els.get(b)));
 				}
@@ -434,6 +448,7 @@ public class CharWnd extends Window {
 			order();
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			return (false);
 		}
@@ -462,6 +477,7 @@ public class CharWnd extends Window {
 			this.bg = bg;
 		}
 
+		@Override
 		public void tick(double dt) {
 			if ((attr.base != cbv) || (attr.comp != ccv)) {
 				cbv = attr.base;
@@ -483,6 +499,7 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			if (lvlt != 0.0) {
 				g.chcolor(Utils.blendcol(bg, new Color(128, 255, 128, 128), lvlt));
@@ -522,15 +539,18 @@ public class CharWnd extends Window {
 			this.attr = glob.cattr.get(attr);
 			this.bg = bg;
 			adda(new IButton("gfx/hud/buttons/add", "u", "d", null) {
+				@Override
 				public void click() {
 					adj(1);
 				}
 			}, sz.x - 5, sz.y / 2, 1, 0.5);
 			adda(new IButton("gfx/hud/buttons/sub", "u", "d", null) {
+				@Override
 				public void click() {
 					adj(-1);
 				}
 
+				@Override
 				public boolean mousewheel(Coord c, int a) {
 					adj(-a);
 					return (true);
@@ -538,6 +558,7 @@ public class CharWnd extends Window {
 			}, sz.x - 20, sz.y / 2, 1, 0.5);
 		}
 
+		@Override
 		public void tick(double dt) {
 			if ((attr.base != cbv) || (attr.comp != ccv)) {
 				cbv = attr.base;
@@ -564,6 +585,7 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.chcolor(bg);
 			g.frect(Coord.z, sz);
@@ -598,6 +620,7 @@ public class CharWnd extends Window {
 			updcost();
 		}
 
+		@Override
 		public boolean mousewheel(Coord c, int a) {
 			adj(-a);
 			return (true);
@@ -613,10 +636,12 @@ public class CharWnd extends Window {
 			this.oc = oc;
 		}
 
+		@Override
 		protected void added() {
 			this.c = oc.add(-sz.x, 0);
 		}
 
+		@Override
 		public void settext(String text) {
 			super.settext(text);
 			this.c = oc.add(-sz.x, 0);
@@ -632,6 +657,7 @@ public class CharWnd extends Window {
 			setcolor(new Color(192, 192, 255));
 		}
 
+		@Override
 		public void draw(GOut g) {
 			super.draw(g);
 			if (exp != cexp) {
@@ -649,6 +675,7 @@ public class CharWnd extends Window {
 			setcolor(new Color(255, 255, 192));
 		}
 
+		@Override
 		public void draw(GOut g) {
 			super.draw(g);
 			if (enc != cenc) {
@@ -662,24 +689,29 @@ public class CharWnd extends Window {
 		public Inventory study;
 		public int texp, tw, tenc;
 		private final Text.UText<?> texpt = new Text.UText<Integer>(Text.std) {
+			@Override
 			public Integer value() {
 				return (texp);
 			}
 
+			@Override
 			public String text(Integer v) {
 				return (Utils.thformat(v));
 			}
 		};
 		private final Text.UText<?> twt = new Text.UText<String>(Text.std) {
+			@Override
 			public String value() {
 				return (tw + "/" + ui.sess.glob.cattr.get("int").comp);
 			}
 		};
 		private final Text.UText<?> tenct = new Text.UText<Integer>(Text.std) {
+			@Override
 			public Integer value() {
 				return (tenc);
 			}
 
+			@Override
 			public String text(Integer v) {
 				return (Integer.toString(tenc));
 			}
@@ -720,6 +752,7 @@ public class CharWnd extends Window {
 			this.tenc = tenc;
 		}
 
+		@Override
 		public void draw(GOut g) {
 			upd();
 			super.draw(g);
@@ -748,6 +781,7 @@ public class CharWnd extends Window {
 			this.text = text;
 		}
 
+		@Override
 		public void draw(GOut g) {
 			if (text != null) {
 				try {
@@ -770,6 +804,7 @@ public class CharWnd extends Window {
 		private String sortkey;
 		private Tex small;
 		private final Text.UText<?> rnm = new Text.UText<String>(attrf) {
+			@Override
 			public String value() {
 				try {
 					return (res.get().layer(Resource.tooltip).t);
@@ -804,6 +839,7 @@ public class CharWnd extends Window {
 		private String sortkey = "\uffff";
 		private Tex small;
 		private final Text.UText<?> rnm = new Text.UText<String>(attrf) {
+			@Override
 			public String value() {
 				try {
 					return (res.get().layer(Resource.tooltip).t);
@@ -840,6 +876,7 @@ public class CharWnd extends Window {
 		private String sortkey = "\uffff";
 		private Tex small;
 		private final Text.UText<?> rnm = new Text.UText<String>(attrf) {
+			@Override
 			public String value() {
 				try {
 					return (res.get().layer(Resource.tooltip).t);
@@ -849,6 +886,7 @@ public class CharWnd extends Window {
 			}
 		};
 		private final Text.UText<?> rqd = new Text.UText<Object>(attrf) {
+			@Override
 			public Object value() {
 				return (qdata);
 			}
@@ -871,12 +909,14 @@ public class CharWnd extends Window {
 				this.id = id;
 				this.res = res;
 				settext(new Indir<String>() {
+					@Override
 					public String get() {
 						return (rendertext());
 					}
 				});
 			}
 
+			@Override
 			protected void added() {
 				resize(parent.sz);
 			}
@@ -890,6 +930,7 @@ public class CharWnd extends Window {
 				return (buf.toString());
 			}
 
+			@Override
 			public int woundid() {
 				return (id);
 			}
@@ -898,6 +939,7 @@ public class CharWnd extends Window {
 		@RName("wound")
 		public static class $wound implements Factory {
 
+			@Override
 			public Widget create(Widget parent, Object[] args) {
 				int id = (Integer) args[0];
 				Indir<Resource> res = parent.ui.sess.getres((Integer) args[1]);
@@ -917,6 +959,7 @@ public class CharWnd extends Window {
 		public boolean dav = false;
 		private boolean loading = false;
 		private final Comparator<Skill> skcomp = new Comparator<Skill>() {
+			@Override
 			public int compare(Skill a, Skill b) {
 				return (a.sortkey.compareTo(b.sortkey));
 			}
@@ -926,6 +969,7 @@ public class CharWnd extends Window {
 			super(w, h, attrf.height() + 2);
 		}
 
+		@Override
 		public void tick(double dt) {
 			if (loading) {
 				loading = false;
@@ -941,17 +985,21 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		protected Skill listitem(int idx) {
 			return (skills[idx]);
 		}
 
+		@Override
 		protected int listitems() {
 			return (skills.length);
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 		}
 
+		@Override
 		protected void drawitem(GOut g, Skill sk, int idx) {
 			g.chcolor((idx % 2 == 0) ? every : other);
 			g.frect(Coord.z, g.sz);
@@ -994,6 +1042,7 @@ public class CharWnd extends Window {
 		public Experience[] exps = new Experience[0];
 		private boolean loading = false;
 		private final Comparator<Experience> comp = new Comparator<Experience>() {
+			@Override
 			public int compare(Experience a, Experience b) {
 				return (a.sortkey.compareTo(b.sortkey));
 			}
@@ -1003,6 +1052,7 @@ public class CharWnd extends Window {
 			super(w, h, attrf.height() + 2);
 		}
 
+		@Override
 		public void tick(double dt) {
 			if (loading) {
 				loading = false;
@@ -1018,17 +1068,21 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		protected Experience listitem(int idx) {
 			return (exps[idx]);
 		}
 
+		@Override
 		protected int listitems() {
 			return (exps.length);
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 		}
 
+		@Override
 		protected void drawitem(GOut g, Experience exp, int idx) {
 			g.chcolor((idx % 2 == 0) ? every : other);
 			g.frect(Coord.z, g.sz);
@@ -1059,6 +1113,7 @@ public class CharWnd extends Window {
 		public List<Wound> wounds = new ArrayList<Wound>();
 		private boolean loading = false;
 		private final Comparator<Wound> wcomp = new Comparator<Wound>() {
+			@Override
 			public int compare(Wound a, Wound b) {
 				return (a.sortkey.compareTo(b.sortkey));
 			}
@@ -1068,6 +1123,7 @@ public class CharWnd extends Window {
 			super(w, h, attrf.height() + 2);
 		}
 
+		@Override
 		public void tick(double dt) {
 			if (loading) {
 				loading = false;
@@ -1083,17 +1139,21 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		protected Wound listitem(int idx) {
 			return (wounds.get(idx));
 		}
 
+		@Override
 		protected int listitems() {
 			return (wounds.size());
 		}
 
+		@Override
 		protected void drawbg(GOut g) {
 		}
 
+		@Override
 		protected void drawitem(GOut g, Wound w, int idx) {
 			if ((wound != null) && (wound.woundid() == w.id)) {
 				drawsel(g);
@@ -1116,6 +1176,7 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		protected void itemclick(Wound item, int button) {
 			if (button == 3) {
 				CharWnd.this.wdgmsg("wclick", item.id, button, ui.modflags());
@@ -1124,10 +1185,12 @@ public class CharWnd extends Window {
 			}
 		}
 
+		@Override
 		public boolean drop(Coord cc, Coord ul) {
 			return (false);
 		}
 
+		@Override
 		public boolean iteminteract(Coord cc, Coord ul) {
 			Wound w = itemat(cc);
 			if (w != null) {
@@ -1136,6 +1199,7 @@ public class CharWnd extends Window {
 			return (true);
 		}
 
+		@Override
 		public void change(Wound w) {
 			if (w == null) {
 				CharWnd.this.wdgmsg("wsel", (Object) null);
@@ -1172,6 +1236,7 @@ public class CharWnd extends Window {
 	@RName("chr")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new CharWnd(parent.ui.sess.glob));
 		}
@@ -1272,6 +1337,7 @@ public class CharWnd extends Window {
 			sattr.add(new RLabel(new Coord(rx, y + 40), "0") {
 				int cc;
 
+				@Override
 				public void draw(GOut g) {
 					if (cc > exp) {
 						g.chcolor(debuff);
@@ -1283,6 +1349,7 @@ public class CharWnd extends Window {
 				}
 			});
 			sattr.add(new Button(75, "Buy") {
+				@Override
 				public void click() {
 					ArrayList<Object> args = new ArrayList<Object>();
 					for (SAttr attr : skill) {
@@ -1295,6 +1362,7 @@ public class CharWnd extends Window {
 				}
 			}, new Coord(rx - 75, y + 55));
 			sattr.add(new Button(75, "Reset") {
+				@Override
 				public void click() {
 					for (SAttr attr : skill) {
 						attr.reset();
@@ -1322,6 +1390,7 @@ public class CharWnd extends Window {
 			Tabs.Tab nsk = lists.add();
 			{
 				this.nsk = nsk.add(new SkillList(lists.sz.x - wbox.bisz().x, 7) {
+					@Override
 					public void change(final Skill sk) {
 						Skill p = sel;
 						super.change(sk);
@@ -1329,6 +1398,7 @@ public class CharWnd extends Window {
 						CharWnd.this.exps.sel = null;
 						if (sk != null) {
 							info.settext(new Indir<String>() {
+								@Override
 								public String get() {
 									return (sk.rendertext());
 								}
@@ -1348,6 +1418,7 @@ public class CharWnd extends Window {
 				nsk.add(new RLabel(new Coord(rx, y + 25), "N/A") {
 					Integer cc = null;
 
+					@Override
 					public void draw(GOut g) {
 						if ((cc != null) && (cc > exp)) {
 							g.chcolor(debuff);
@@ -1363,6 +1434,7 @@ public class CharWnd extends Window {
 					}
 				});
 				nsk.add(new Button(75, "Buy") {
+					@Override
 					public void click() {
 						if (CharWnd.this.nsk.sel != null) {
 							CharWnd.this.wdgmsg("buy", CharWnd.this.nsk.sel.nm);
@@ -1373,6 +1445,7 @@ public class CharWnd extends Window {
 			Tabs.Tab csk = lists.add();
 			{
 				this.csk = csk.add(new SkillList(lists.sz.x - wbox.bisz().x, 11) {
+					@Override
 					public void change(final Skill sk) {
 						Skill p = sel;
 						super.change(sk);
@@ -1380,6 +1453,7 @@ public class CharWnd extends Window {
 						CharWnd.this.exps.sel = null;
 						if (sk != null) {
 							info.settext(new Indir<String>() {
+								@Override
 								public String get() {
 									return (sk.rendertext());
 								}
@@ -1394,6 +1468,7 @@ public class CharWnd extends Window {
 			Tabs.Tab exps = lists.add();
 			{
 				this.exps = exps.add(new ExperienceList(lists.sz.x - wbox.bisz().x, 11) {
+					@Override
 					public void change(final Experience exp) {
 						Experience p = sel;
 						super.change(exp);
@@ -1401,6 +1476,7 @@ public class CharWnd extends Window {
 						CharWnd.this.csk.sel = null;
 						if (exp != null) {
 							info.settext(new Indir<String>() {
+								@Override
 								public String get() {
 									return (exp.rendertext());
 								}
@@ -1428,6 +1504,7 @@ public class CharWnd extends Window {
 			this.wounds = wounds.add(new WoundList(attrw, 12), new Coord(260, 35).add(wbox.btloff()));
 			Frame.around(wounds, Collections.singletonList(this.wounds));
 			woundbox = wounds.add(new Widget(new Coord(attrw, this.wounds.sz.y)) {
+				@Override
 				public void draw(GOut g) {
 					g.chcolor(0, 0, 0, 128);
 					g.frect(Coord.z, sz);
@@ -1435,6 +1512,7 @@ public class CharWnd extends Window {
 					super.draw(g);
 				}
 
+				@Override
 				public void cdestroy(Widget w) {
 					if (w == wound) {
 						wound = null;
@@ -1456,14 +1534,17 @@ public class CharWnd extends Window {
 					this.tab = tab;
 				}
 
+				@Override
 				public void click() {
 					tabs.showtab(tab);
 				}
 
+				@Override
 				protected void depress() {
 					Audio.play(Button.lbtdown.stream());
 				}
 
+				@Override
 				protected void unpress() {
 					Audio.play(Button.lbtup.stream());
 				}
@@ -1488,6 +1569,7 @@ public class CharWnd extends Window {
 		resize(contentsz().add(15, 10));
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		String place = (args[0] instanceof String) ? (((String) args[0]).intern()) : null;
 		if (place == "study") {
@@ -1523,6 +1605,7 @@ public class CharWnd extends Window {
 		}
 	}
 
+	@Override
 	public void uimsg(String nm, Object... args) {
 		if (nm == "exp") {
 			exp = ((Number) args[0]).intValue();

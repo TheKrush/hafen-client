@@ -39,6 +39,7 @@ public class ArrayIdentity {
 			super(arr, cleanq);
 		}
 
+		@Override
 		public boolean equals(Object x) {
 			if (!(x instanceof Entry)) {
 				return (false);
@@ -63,6 +64,7 @@ public class ArrayIdentity {
 			return (true);
 		}
 
+		@Override
 		public int hashCode() {
 			T[] a = get();
 			if (a == null) {

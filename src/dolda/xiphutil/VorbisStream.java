@@ -192,6 +192,7 @@ public class VorbisStream {
 				return (true);
 			}
 
+			@Override
 			public int read() throws IOException {
 				byte[] rb = new byte[1];
 				int ret;
@@ -204,6 +205,7 @@ public class VorbisStream {
 				return (rb[0]);
 			}
 
+			@Override
 			public int read(byte[] dst, int off, int len) throws IOException {
 				if ((buf == null) && !convert()) {
 					return (-1);
@@ -218,6 +220,7 @@ public class VorbisStream {
 				return (len);
 			}
 
+			@Override
 			public void close() throws IOException {
 				VorbisStream.this.close();
 			}
@@ -227,6 +230,7 @@ public class VorbisStream {
 	/**
 	 * Returns a string description of this object.
 	 */
+	@Override
 	public String toString() {
 		return (String.format("Vorbis Stream (encoded by `%s', %d comments, %d channels, sampled at %d Hz)", vnd, uc.size(), chn, rate));
 	}

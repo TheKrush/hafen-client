@@ -35,6 +35,7 @@ public class RemoteUI implements UI.Receiver, UI.Runner {
 		Widget.initnames();
 	}
 
+	@Override
 	public void rcvmsg(int id, String name, Object... args) {
 		PMessage msg = new PMessage(RMessage.RMSG_WDGMSG);
 		msg.adduint16(id);
@@ -50,6 +51,7 @@ public class RemoteUI implements UI.Receiver, UI.Runner {
 		}
 	}
 
+	@Override
 	public Session run(UI ui) throws InterruptedException {
 		this.ui = ui;
 		ui.setreceiver(this);

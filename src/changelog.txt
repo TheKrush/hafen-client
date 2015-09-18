@@ -1,3 +1,12 @@
+$size[13]{$b{2015-09-18}}
+ - Auto-choose options are now stored in config.json
+ - Manually adding items in the config for various options automatically starts using them in-game as well
+  - This can be used to add missing/unhandled items to the following
+   - ui.minimap.boulders
+   - ui.minimap.bushes
+   - ui.minimap.trees
+   - ui.menu.flower.click.auto
+
 $size[13]{$b{2015-09-17}}
  - Added option to show object health
   - Alt+O to toggle it
@@ -15,7 +24,7 @@ $size[13]{$b{2015-09-17}}
  - Move map fingerprints to per session
  - Map saving no longer occurs on session thread
  - Added LP/XP to Curiosity tooltip
- - added autochoose menu options (Options->UI Settings) $i{(ender's client)}
+ - Added autochoose menu options (Options->UI Settings) $i{(ender's client)}
 
 $size[13]{$b{2015-09-16}}
  - Added options to display specific boulder/bush/tree on minimap $i{(romov's client)}

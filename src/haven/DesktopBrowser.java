@@ -52,6 +52,7 @@ public class DesktopBrowser extends WebBrowser {
 		}
 	}
 
+	@Override
 	public void show(URL url) {
 		try {
 			desktop.browse(url.toURI());

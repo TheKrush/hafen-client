@@ -33,6 +33,7 @@ public class Scrollport extends Widget {
 	@RName("scr")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Scrollport((Coord) args[0]));
 		}
@@ -41,11 +42,13 @@ public class Scrollport extends Widget {
 	public Scrollport(Coord sz) {
 		super(sz);
 		bar = adda(new Scrollbar(sz.y, 0, 0) {
+			@Override
 			public void changed() {
 				cont.sy = bar.val;
 			}
 		}, sz.x, 0, 1, 0);
 		cont = add(new Scrollcont(sz.sub(bar.sz.x, 0)) {
+			@Override
 			public void update() {
 				bar.max = Math.max(0, csz().y - sz.y);
 			}
@@ -76,11 +79,13 @@ public class Scrollport extends Widget {
 		public void update() {
 		}
 
+		@Override
 		public void addchild(Widget child, Object... args) {
 			super.addchild(child, args);
 			update();
 		}
 
+		@Override
 		public Coord xlate(Coord c, boolean in) {
 			if (in) {
 				return (c.add(0, -sy));
@@ -89,6 +94,7 @@ public class Scrollport extends Widget {
 			}
 		}
 
+		@Override
 		public void draw(GOut g) {
 			Widget next;
 
@@ -106,21 +112,25 @@ public class Scrollport extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		bar.ch(amount * 15);
 		return (true);
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		cont.addchild(child, args);
 	}
 
+	@Override
 	public void resize(Coord nsz) {
 		super.resize(nsz);
 		bar.c = new Coord(sz.x - bar.sz.x, 0);
 		cont.resize(sz.sub(bar.sz.x, 0));
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "wpack") {
 			resize(new Coord(cont.contentsz().x + bar.sz.x, sz.y));

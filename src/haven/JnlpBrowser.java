@@ -48,6 +48,7 @@ public class JnlpBrowser extends WebBrowser {
 		}
 	}
 
+	@Override
 	public void show(URL url) {
 		if (!basic.showDocument(url)) {
 			throw (new BrowserException("Could not launch browser"));

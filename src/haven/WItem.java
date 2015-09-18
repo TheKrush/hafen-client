@@ -81,6 +81,7 @@ public class WItem extends Widget implements DTarget {
 			return (item);
 		}
 
+		@Override
 		public Tex get() {
 			return (tex);
 		}
@@ -104,6 +105,7 @@ public class WItem extends Widget implements DTarget {
 	private ItemTip shorttip = null, longtip = null;
 	private List<ItemInfo> ttinfo = null;
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		long now = System.currentTimeMillis();
 		if (prev == this) {
@@ -164,6 +166,7 @@ public class WItem extends Widget implements DTarget {
 	}
 
 	public final AttrCache<Color> olcol = new AttrCache<Color>() {
+		@Override
 		protected Color find(List<ItemInfo> info) {
 			GItem.ColorInfo cinf = ItemInfo.find(GItem.ColorInfo.class, info);
 			return ((cinf == null) ? null : cinf.olcol());
@@ -171,6 +174,7 @@ public class WItem extends Widget implements DTarget {
 	};
 
 	public final AttrCache<Tex> itemnum = new AttrCache<Tex>() {
+		@Override
 		protected Tex find(List<ItemInfo> info) {
 			GItem.NumberInfo ninf = ItemInfo.find(GItem.NumberInfo.class, info);
 			if (ninf == null) {
@@ -190,6 +194,7 @@ public class WItem extends Widget implements DTarget {
 
 	private GSprite lspr = null;
 
+	@Override
 	public void tick(double dt) {
 		/* XXX: This is ugly and there should be a better way to
 		 * ensure the resizing happens as it should, but I can't think
@@ -208,6 +213,7 @@ public class WItem extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		GSprite spr = item.spr();
 		if (spr != null) {
@@ -284,6 +290,7 @@ public class WItem extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int btn) {
 		if (checkXfer(btn)) {
 			return true;
@@ -328,10 +335,12 @@ public class WItem extends Widget implements DTarget {
 		return (false);
 	}
 
+	@Override
 	public boolean drop(Coord cc, Coord ul) {
 		return (false);
 	}
 
+	@Override
 	public boolean iteminteract(Coord cc, Coord ul) {
 		item.wdgmsg("itemact", ui.modflags());
 		return (true);

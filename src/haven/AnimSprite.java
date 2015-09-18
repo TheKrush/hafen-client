@@ -33,6 +33,7 @@ public class AnimSprite extends Sprite {
 	private MeshAnim.Anim[] anims;
 
 	public static final Factory fact = new Factory() {
+		@Override
 		public Sprite create(Owner owner, Resource res, Message sdt) {
 			if (res.layer(MeshAnim.Res.class) == null) {
 				return (null);
@@ -72,6 +73,7 @@ public class AnimSprite extends Sprite {
 		parts = rl.toArray(new Rendered[0]);
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		for (Rendered p : parts) {
 			rl.add(p, null);
@@ -79,6 +81,7 @@ public class AnimSprite extends Sprite {
 		return (false);
 	}
 
+	@Override
 	public boolean tick(int idt) {
 		boolean ret = false;
 		float dt = idt / 1000.0f;

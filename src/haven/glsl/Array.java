@@ -39,6 +39,7 @@ public class Array extends Type {
 		this(el, 0);
 	}
 
+	@Override
 	public String name(Context ctx) {
 		if (sz > 0) {
 			return (el.name(ctx) + "[" + sz + "]");

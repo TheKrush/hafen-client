@@ -67,6 +67,7 @@ public class Resource implements Serializable {
 			this.ver = ver;
 		}
 
+		@Override
 		public boolean equals(Object other) {
 			if (!(other instanceof Named)) {
 				return (false);
@@ -75,6 +76,7 @@ public class Resource implements Serializable {
 			return (o.name.equals(this.name) && (o.ver == this.ver));
 		}
 
+		@Override
 		public int hashCode() {
 			int ret = name.hashCode();
 			ret = (ret * 31) + ver;
@@ -99,6 +101,7 @@ public class Resource implements Serializable {
 			return (pool.load(name, ver, prio).get());
 		}
 
+		@Override
 		public Resource get() {
 			return (get(0));
 		}
@@ -135,6 +138,7 @@ public class Resource implements Serializable {
 			this.back = back;
 		}
 
+		@Override
 		public InputStream get(String name) throws IOException {
 			StreamTee tee = new StreamTee(back.get(name));
 			tee.setncwe();
@@ -144,6 +148,7 @@ public class Resource implements Serializable {
 
 		public abstract OutputStream fork(String name) throws IOException;
 
+		@Override
 		public String toString() {
 			return ("forking source backed by " + back);
 		}
@@ -157,10 +162,12 @@ public class Resource implements Serializable {
 			this.cache = cache;
 		}
 
+		@Override
 		public InputStream get(String name) throws IOException {
 			return (cache.fetch("res/" + name));
 		}
 
+		@Override
 		public String toString() {
 			return ("cache source backed by " + cache);
 		}
@@ -174,6 +181,7 @@ public class Resource implements Serializable {
 			this.base = base;
 		}
 
+		@Override
 		public InputStream get(String name) throws FileNotFoundException {
 			File cur = base;
 			String[] parts = name.split("/");
@@ -188,6 +196,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return ("filesystem res source (" + base + ")");
 		}
@@ -195,6 +204,7 @@ public class Resource implements Serializable {
 
 	public static class JarSource implements ResSource, Serializable {
 
+		@Override
 		public InputStream get(String name) throws FileNotFoundException {
 			InputStream s = Resource.class.getResourceAsStream("/res/" + name + ".res");
 			if (s == null) {
@@ -203,6 +213,7 @@ public class Resource implements Serializable {
 			return (s);
 		}
 
+		@Override
 		public String toString() {
 			return ("local res source");
 		}
@@ -239,6 +250,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public InputStream get(String name) throws IOException {
 			URL resurl = encodeurl(new URL(baseurl, name + ".res"));
 			URLConnection c;
@@ -264,6 +276,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return ("HTTP res source (" + baseurl + ")");
 		}
@@ -278,14 +291,17 @@ public class Resource implements Serializable {
 			this.res = res;
 		}
 
+		@Override
 		public String toString() {
 			return ("#<Resource " + res.name + ">");
 		}
 
+		@Override
 		public boolean canwait() {
 			return (true);
 		}
 
+		@Override
 		public void waitfor() throws InterruptedException {
 			synchronized (res) {
 				while (!res.done) {
@@ -338,6 +354,7 @@ public class Resource implements Serializable {
 				this.prio = prio;
 			}
 
+			@Override
 			public int priority() {
 				return (prio);
 			}
@@ -352,6 +369,7 @@ public class Resource implements Serializable {
 				}
 			}
 
+			@Override
 			public Resource get() {
 				if (!done) {
 					boostprio(1);
@@ -503,6 +521,7 @@ public class Resource implements Serializable {
 				while (loaders.size() < Math.min(nloaders, qsz)) {
 					final Loader n = new Loader();
 					Thread th = java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Thread>() {
+						@Override
 						public Thread run() {
 							return (new HackThread(loadergroup, n, "Haven resource loader"));
 						}
@@ -525,6 +544,7 @@ public class Resource implements Serializable {
 
 			private boolean added = false;
 
+			@Override
 			public void run() {
 				synchronized (loaders) {
 					loaders.add(this);
@@ -693,6 +713,7 @@ public class Resource implements Serializable {
 					this.cache = cache;
 				}
 
+				@Override
 				public OutputStream fork(String name) throws IOException {
 					return (cache.store("res/" + name));
 				}
@@ -766,6 +787,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public T cons(Resource res, Message buf) {
 			try {
 				return (cons.newInstance(res, buf));
@@ -860,6 +882,7 @@ public class Resource implements Serializable {
 				return (tex);
 			}
 			tex = new TexI(img) {
+				@Override
 				public String toString() {
 					return ("TexI(" + Resource.this.name + ", " + id + ")");
 				}
@@ -885,14 +908,17 @@ public class Resource implements Serializable {
 			return (gay == 1);
 		}
 
+		@Override
 		public int compareTo(Image other) {
 			return (z - other.z);
 		}
 
+		@Override
 		public Integer layerid() {
 			return (id);
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -906,6 +932,7 @@ public class Resource implements Serializable {
 			t = new String(buf.bytes(), Utils.utf8);
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -940,6 +967,7 @@ public class Resource implements Serializable {
 			return (tex);
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -965,6 +993,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -985,6 +1014,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public void init() {
 			f = new Image[ids.length][];
 			Image[] typeinfo = new Image[0];
@@ -1099,6 +1129,7 @@ public class Resource implements Serializable {
 					centroid = true;
 				}
 
+				@Override
 				protected BufferedImage fill() {
 					BufferedImage buf = TexI.mkbuf(dim);
 					Graphics g = buf.createGraphics();
@@ -1109,10 +1140,12 @@ public class Resource implements Serializable {
 					return (buf);
 				}
 
+				@Override
 				public String toString() {
 					return ("TileTex(" + Resource.this.name + ")");
 				}
 
+				@Override
 				public String loadname() {
 					return ("tileset in " + Resource.this.name);
 				}
@@ -1134,6 +1167,7 @@ public class Resource implements Serializable {
 		}
 
 		@SuppressWarnings("unchecked")
+		@Override
 		public void init() {
 			WeightList<Tile> ground = new WeightList<Tile>();
 			WeightList<Tile>[] ctrans = new WeightList[15];
@@ -1181,6 +1215,7 @@ public class Resource implements Serializable {
 	@LayerName("tileset")
 	public static class OrigTileset implements LayerFactory<Tileset> {
 
+		@Override
 		public Tileset cons(Resource res, Message buf) {
 			Tileset ret = res.new Tileset();
 			int fl = buf.uint8();
@@ -1209,6 +1244,7 @@ public class Resource implements Serializable {
 			text = new String(buf.bytes(), Utils.utf8);
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -1243,6 +1279,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -1272,6 +1309,7 @@ public class Resource implements Serializable {
 			data = buf.bytes();
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -1286,6 +1324,7 @@ public class Resource implements Serializable {
 			return (Resource.this);
 		}
 
+		@Override
 		public String toString() {
 			return ("cl:" + Resource.this.toString());
 		}
@@ -1293,6 +1332,7 @@ public class Resource implements Serializable {
 
 	public static Resource classres(final Class<?> cl) {
 		return (java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Resource>() {
+			@Override
 			public Resource run() {
 				ClassLoader l = cl.getClassLoader();
 				if (l instanceof ResClassLoader) {
@@ -1323,6 +1363,7 @@ public class Resource implements Serializable {
 			this.classpath = classpath.toArray(new ClassLoader[0]);
 		}
 
+		@Override
 		public Class<?> findClass(String name) throws ClassNotFoundException {
 			for (ClassLoader lib : classpath) {
 				try {
@@ -1372,6 +1413,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public void init() {
 			for (Code c : layers(Code.class)) {
 				clmap.put(c.name, c);
@@ -1382,6 +1424,7 @@ public class Resource implements Serializable {
 			synchronized (CodeEntry.this) {
 				if (this.loader == null) {
 					this.loader = java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<ClassLoader>() {
+						@Override
 						public ClassLoader run() {
 							ClassLoader ret = Resource.class.getClassLoader();
 							if (classpath.size() > 0) {
@@ -1393,6 +1436,7 @@ public class Resource implements Serializable {
 							}
 							if (clmap.size() > 0) {
 								ret = new ResClassLoader(ret) {
+									@Override
 									public Class<?> findClass(String name) throws ClassNotFoundException {
 										Code c = clmap.get(name);
 										if (c == null) {
@@ -1517,6 +1561,7 @@ public class Resource implements Serializable {
 			this(buf.bytes(), "cl");
 		}
 
+		@Override
 		public void init() {
 		}
 
@@ -1528,6 +1573,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public String layerid() {
 			return (id);
 		}
@@ -1536,6 +1582,7 @@ public class Resource implements Serializable {
 	@LayerName("audio2")
 	public static class Audio2 implements LayerFactory<Audio> {
 
+		@Override
 		public Audio cons(Resource res, Message buf) {
 			int ver = buf.uint8();
 			if ((ver == 1) || (ver == 2)) {
@@ -1568,6 +1615,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -1595,6 +1643,7 @@ public class Resource implements Serializable {
 			}
 		}
 
+		@Override
 		public void init() {
 		}
 	}
@@ -1613,6 +1662,7 @@ public class Resource implements Serializable {
 	public <L extends Layer> Collection<L> layers(final Class<L> cl) {
 		used = true;
 		return (new AbstractCollection<L>() {
+			@Override
 			public int size() {
 				int s = 0;
 				for (L l : this) {
@@ -1621,6 +1671,7 @@ public class Resource implements Serializable {
 				return (s);
 			}
 
+			@Override
 			public Iterator<L> iterator() {
 				return (new Iterator<L>() {
 					Iterator<Layer> i = layers.iterator();
@@ -1636,10 +1687,12 @@ public class Resource implements Serializable {
 						return (null);
 					}
 
+					@Override
 					public boolean hasNext() {
 						return (c != null);
 					}
 
+					@Override
 					public L next() {
 						L ret = c;
 						if (ret == null) {
@@ -1649,6 +1702,7 @@ public class Resource implements Serializable {
 						return (ret);
 					}
 
+					@Override
 					public void remove() {
 						throw (new UnsupportedOperationException());
 					}
@@ -1680,6 +1734,7 @@ public class Resource implements Serializable {
 		return (null);
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof Resource)) {
 			return (false);
@@ -1731,10 +1786,12 @@ public class Resource implements Serializable {
 				super(name, ver);
 			}
 
+			@Override
 			public Resource get() {
 				return (Resource.this);
 			}
 
+			@Override
 			public String toString() {
 				return (name);
 			}
@@ -1751,6 +1808,7 @@ public class Resource implements Serializable {
 		return (local().loadwait(name).layer(imgc).tex());
 	}
 
+	@Override
 	public String toString() {
 		return (name + "(v" + ver + ")");
 	}
@@ -1782,6 +1840,7 @@ public class Resource implements Serializable {
 		PrintWriter out = new PrintWriter(dest);
 		List<Resource> sorted = new ArrayList<Resource>(list);
 		Collections.sort(sorted, new Comparator<Resource>() {
+			@Override
 			public int compare(Resource a, Resource b) {
 				return (a.name.compareTo(b.name));
 			}

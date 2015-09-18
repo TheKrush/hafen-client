@@ -85,10 +85,12 @@ public class OptWnd extends Window {
 			this.key = key;
 		}
 
+		@Override
 		public void click() {
 			chpanel(tgt);
 		}
 
+		@Override
 		public boolean type(char key, java.awt.event.KeyEvent ev) {
 			if ((this.key != -1) && (key == this.key)) {
 				click();
@@ -126,6 +128,7 @@ public class OptWnd extends Window {
 						a = cf.flight.val;
 					}
 
+					@Override
 					public void set(boolean val) {
 						if (val) {
 							try {
@@ -147,6 +150,7 @@ public class OptWnd extends Window {
 						a = cf.lshadow.val;
 					}
 
+					@Override
 					public void set(boolean val) {
 						if (val) {
 							try {
@@ -168,6 +172,7 @@ public class OptWnd extends Window {
 						a = cf.fsaa.val;
 					}
 
+					@Override
 					public void set(boolean val) {
 						try {
 							cf.fsaa.set(val);
@@ -186,6 +191,7 @@ public class OptWnd extends Window {
 				} else {
 					final Label dpy = add(new Label(""), new Coord(165, y + 15));
 					add(new HSlider(160, (int) (cf.anisotex.min() * 2), (int) (cf.anisotex.max() * 2), (int) (cf.anisotex.val * 2)) {
+						@Override
 						protected void added() {
 							dpy();
 							this.c.y = dpy.c.y + ((dpy.sz.y - this.sz.y) / 2);
@@ -199,6 +205,7 @@ public class OptWnd extends Window {
 							}
 						}
 
+						@Override
 						public void changed() {
 							try {
 								cf.anisotex.set(val / 2.0f);
@@ -213,6 +220,7 @@ public class OptWnd extends Window {
 				}
 				y += 35;
 				add(new Button(200, "Reset to defaults") {
+					@Override
 					public void click() {
 						cf.cfg.resetprefs();
 						curcf.destroy();
@@ -225,6 +233,7 @@ public class OptWnd extends Window {
 
 		private CPanel curcf = null;
 
+		@Override
 		public void draw(GOut g) {
 			if ((curcf == null) || (g.gc.pref != curcf.cf)) {
 				if (curcf != null) {

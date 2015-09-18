@@ -35,15 +35,18 @@ public class Projection extends Transform {
 		super(xf);
 	}
 
+	@Override
 	public void apply(GOut g) {
 		bk = g.st.proj;
 		g.st.proj = fin(Matrix4f.id);
 	}
 
+	@Override
 	public void unapply(GOut g) {
 		g.st.proj = bk;
 	}
 
+	@Override
 	public void prep(Buffer b) {
 		b.put(PView.proj, this);
 	}
@@ -110,6 +113,7 @@ public class Projection extends Transform {
 			this.bk = bk;
 		}
 
+		@Override
 		public Matrix4f fin(Matrix4f p) {
 			return (bk.fin(super.fin(p)));
 		}

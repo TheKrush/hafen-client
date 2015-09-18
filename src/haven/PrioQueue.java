@@ -29,6 +29,7 @@ import java.util.*;
 
 public class PrioQueue<E extends Prioritized> extends LinkedList<E> {
 
+	@Override
 	public E peek() {
 		E rv = null;
 		int mp = 0;
@@ -42,6 +43,7 @@ public class PrioQueue<E extends Prioritized> extends LinkedList<E> {
 		return (rv);
 	}
 
+	@Override
 	public E element() {
 		E rv;
 		if ((rv = peek()) == null) {
@@ -50,12 +52,14 @@ public class PrioQueue<E extends Prioritized> extends LinkedList<E> {
 		return (rv);
 	}
 
+	@Override
 	public E poll() {
 		E rv = peek();
 		removeid(rv);
 		return (rv);
 	}
 
+	@Override
 	public E remove() {
 		E rv;
 		if ((rv = poll()) == null) {

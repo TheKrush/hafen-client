@@ -51,12 +51,15 @@ public interface Rendered extends Drawn {
 
 		public abstract RComparator<? super T> cmp();
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(GLState.Buffer buf) {
 			buf.put(order, this);
 		}
@@ -69,16 +72,19 @@ public interface Rendered extends Drawn {
 				this.z = z;
 			}
 
+			@Override
 			public int mainz() {
 				return (z);
 			}
 
 			private final static RComparator<Rendered> cmp = new RComparator<Rendered>() {
+				@Override
 				public int compare(Rendered a, Rendered b, GLState.Buffer sa, GLState.Buffer sb) {
 					return (0);
 				}
 			};
 
+			@Override
 			public RComparator<Rendered> cmp() {
 				return (cmp);
 			}
@@ -98,6 +104,7 @@ public interface Rendered extends Drawn {
 		}
 
 		private static final RComparator<Rendered> cmp = new RComparator<Rendered>() {
+			@Override
 			public int compare(Rendered a, Rendered b, GLState.Buffer sa, GLState.Buffer sb) {
 				/* It would be nice to be able to cache these
 				 * results somewhere. */
@@ -119,6 +126,7 @@ public interface Rendered extends Drawn {
 			}
 		};
 
+		@Override
 		public RComparator<Rendered> cmp() {
 			return (cmp);
 		}
@@ -128,15 +136,18 @@ public interface Rendered extends Drawn {
 	public final static Order eeyesort = new EyeOrder(4500);
 
 	public final static GLState.StandAlone skip = new GLState.StandAlone(GLState.Slot.Type.GEOM, HavenPanel.global) {
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 	};
 
 	public static class Dot implements Rendered {
 
+		@Override
 		public void draw(GOut g) {
 			BGL gl = g.gl;
 			g.st.put(Light.lighting, null);
@@ -148,6 +159,7 @@ public interface Rendered extends Drawn {
 			gl.glEnd();
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			return (true);
 		}
@@ -165,6 +177,7 @@ public interface Rendered extends Drawn {
 			this(java.awt.Color.BLACK);
 		}
 
+		@Override
 		public void draw(GOut g) {
 			BGL gl = g.gl;
 			g.st.put(Light.lighting, null);
@@ -186,6 +199,7 @@ public interface Rendered extends Drawn {
 			gl.glEnd();
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			r.state().put(States.color, null);
 			return (true);
@@ -200,6 +214,7 @@ public interface Rendered extends Drawn {
 			this.end = end;
 		}
 
+		@Override
 		public void draw(GOut g) {
 			BGL gl = g.gl;
 			g.apply();
@@ -211,6 +226,7 @@ public interface Rendered extends Drawn {
 			gl.glEnd();
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			r.state().put(States.color, null);
 			r.state().put(Light.lighting, null);
@@ -220,6 +236,7 @@ public interface Rendered extends Drawn {
 
 	public static class Cube implements Rendered {
 
+		@Override
 		public void draw(GOut g) {
 			BGL gl = g.gl;
 			g.apply();
@@ -272,6 +289,7 @@ public interface Rendered extends Drawn {
 			gl.glDisable(GL2.GL_COLOR_MATERIAL);
 		}
 
+		@Override
 		public boolean setup(RenderList rls) {
 			rls.state().put(States.color, null);
 			return (true);
@@ -288,6 +306,7 @@ public interface Rendered extends Drawn {
 			this.bp = bp;
 		}
 
+		@Override
 		public void draw(GOut g) {
 			BGL gl = g.gl;
 
@@ -375,6 +394,7 @@ public interface Rendered extends Drawn {
 			gl.glEnd();
 		}
 
+		@Override
 		public boolean setup(RenderList rls) {
 			rls.state().put(States.color, null);
 			rls.prepo(eyesort);
@@ -397,6 +417,7 @@ public interface Rendered extends Drawn {
 			1, 1,
 			0, 1,}));
 		public static final GLState state = new GLState.Abstract() {
+			@Override
 			public void prep(Buffer buf) {
 				proj.prep(buf);
 				States.ndepthtest.prep(buf);
@@ -406,6 +427,7 @@ public interface Rendered extends Drawn {
 			}
 		};
 
+		@Override
 		public void draw(GOut g) {
 			BGL gl = g.gl;
 			g.apply();
@@ -416,6 +438,7 @@ public interface Rendered extends Drawn {
 			tex.unbind(g);
 		}
 
+		@Override
 		public boolean setup(RenderList rls) {
 			rls.prepo(state);
 			return (true);

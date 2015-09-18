@@ -39,6 +39,7 @@ public class LinMove extends Moving {
 		this.a = 0;
 	}
 
+	@Override
 	public Coord3f getc() {
 		float cx, cy;
 		cx = (float) (t.x - s.x) * (float) a;
@@ -48,6 +49,7 @@ public class LinMove extends Moving {
 		return (new Coord3f(cx, cy, gob.glob.map.getcz(cx, cy)));
 	}
 
+	@Override
 	public double getv() {
 		if (c == 0) {
 			return (0.0);
@@ -61,6 +63,7 @@ public class LinMove extends Moving {
 	 l++;
 	 }
 	 */
+	@Override
 	public void ctick(int dt) {
 		double da = ((double) dt / 1000) / (((double) c) * 0.06);
 		a += da * 0.9;

@@ -76,6 +76,7 @@ public class MiniMap extends Widget {
 			return (ResCache.global.fetch("mm/" + nm));
 		}
 
+		@Override
 		public void run() {
 			try {
 				while (true) {
@@ -151,6 +152,7 @@ public class MiniMap extends Widget {
 
 	public static Tex getgrid(final String nm) {
 		return (AccessController.doPrivileged(new PrivilegedAction<Tex>() {
+			@Override
 			public Tex run() {
 				synchronized (grids) {
 					if (grids.containsKey(nm)) {
@@ -164,6 +166,7 @@ public class MiniMap extends Widget {
 		}));
 	}
 
+	@Override
 	public void draw(GOut g) {
 		Coord tc = mv.cc.div(tilesz);
 		Coord ulg = tc.div(cmaps);

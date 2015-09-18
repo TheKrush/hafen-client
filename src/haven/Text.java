@@ -223,6 +223,7 @@ public class Text {
 			return (new Line(text, img, m));
 		}
 
+		@Override
 		public Line render(String text) {
 			return (render(text, defcol));
 		}
@@ -238,6 +239,7 @@ public class Text {
 
 		protected abstract BufferedImage proc(Text text);
 
+		@Override
 		public Text render(String text) {
 			return (new Text(text, proc(back.render(text))));
 		}
@@ -259,6 +261,7 @@ public class Text {
 
 		protected abstract T value();
 
+		@Override
 		public Text get() {
 			T value = value();
 			if (!Utils.eq(value, cv)) {
@@ -269,6 +272,7 @@ public class Text {
 
 		public Indir<Tex> tex() {
 			return (new Indir<Tex>() {
+				@Override
 				public Tex get() {
 					return (UText.this.get().tex());
 				}
@@ -283,6 +287,7 @@ public class Text {
 				throw (new RuntimeException(e));
 			}
 			return (new UText<Object>(fnd) {
+				@Override
 				public Object value() {
 					try {
 						return (f.get(obj));

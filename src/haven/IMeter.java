@@ -39,6 +39,7 @@ public class IMeter extends Widget {
 	@RName("im")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Indir<Resource> bg = parent.ui.sess.getres((Integer) args[0]);
 			List<Meter> meters = new LinkedList<Meter>();
@@ -66,6 +67,7 @@ public class IMeter extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		try {
 			Tex bg = this.bg.get().layer(Resource.imgc).tex();
@@ -84,6 +86,7 @@ public class IMeter extends Widget {
 		}
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "set") {
 			List<Meter> meters = new LinkedList<Meter>();

@@ -97,6 +97,7 @@ public class Server extends Thread {
 			return (ret);
 		}
 
+		@Override
 		public void run() {
 			try {
 				InputStream in;
@@ -166,6 +167,7 @@ public class Server extends Thread {
 		start();
 	}
 
+	@Override
 	public void run() {
 		try {
 			while (true) {

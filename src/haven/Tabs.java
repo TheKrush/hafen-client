@@ -54,6 +54,7 @@ public class Tabs {
 			tabs.add(this);
 		}
 
+		@Override
 		public void destroy() {
 			super.destroy();
 			tabs.remove(this);
@@ -73,6 +74,7 @@ public class Tabs {
 			this.tab = tab;
 		}
 
+		@Override
 		public void click() {
 			showtab(tab);
 		}

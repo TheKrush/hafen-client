@@ -38,11 +38,13 @@ public class Inventory extends Widget implements DTarget {
 	@RName("inv")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Inventory((Coord) args[0]));
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		Coord c = new Coord();
 		for (c.y = 0; c.y < isz.y; c.y++) {
@@ -58,6 +60,7 @@ public class Inventory extends Widget implements DTarget {
 		isz = sz;
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		if (locked) {
 			return (false);
@@ -80,6 +83,7 @@ public class Inventory extends Widget implements DTarget {
 		return !locked && super.mousedown(c, button);
 	}
 
+	@Override
 	public void addchild(Widget child, Object... args) {
 		add(child);
 		Coord c = (Coord) args[0];
@@ -89,6 +93,7 @@ public class Inventory extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public void cdestroy(Widget w) {
 		super.cdestroy(w);
 		if (w instanceof GItem) {
@@ -97,6 +102,7 @@ public class Inventory extends Widget implements DTarget {
 		}
 	}
 
+	@Override
 	public boolean drop(Coord cc, Coord ul) {
 		if (!locked) {
 			wdgmsg("drop", ul.add(sqsz.div(2)).div(invsq.sz()));
@@ -104,10 +110,12 @@ public class Inventory extends Widget implements DTarget {
 		return (true);
 	}
 
+	@Override
 	public boolean iteminteract(Coord cc, Coord ul) {
 		return (false);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg.equals("sz")) {
 			isz = (Coord) args[0];

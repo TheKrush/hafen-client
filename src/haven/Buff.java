@@ -48,6 +48,7 @@ public class Buff extends Widget {
 	@RName("buff")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Indir<Resource> res = parent.ui.sess.getres((Integer) args[0]);
 			return (new Buff(res));
@@ -66,6 +67,7 @@ public class Buff extends Widget {
 		return (ntext);
 	}
 
+	@Override
 	public void draw(GOut g) {
 		g.chcolor(255, 255, 255, a);
 		if (ameter >= 0) {
@@ -114,6 +116,7 @@ public class Buff extends Widget {
 	private long hoverstart;
 	private Text shorttip, longtip;
 
+	@Override
 	public Object tooltip(Coord c, Widget prev) {
 		long now = System.currentTimeMillis();
 		if (prev != this) {
@@ -141,11 +144,13 @@ public class Buff extends Widget {
 		}
 	}
 
+	@Override
 	public void reqdestroy() {
 		anims.clear();
 		final Coord o = this.c;
 		dest = true;
 		new NormAnim(0.5) {
+			@Override
 			public void ntick(double a) {
 				Buff.this.a = 255 - (int) (255 * a);
 				Buff.this.c = o.add(0, (int) (a * cframe.sz().y));
@@ -163,12 +168,14 @@ public class Buff extends Widget {
 		final Coord o = this.c;
 		final Coord d = c.sub(o);
 		new NormAnim(0.5) {
+			@Override
 			public void ntick(double a) {
 				Buff.this.c = o.add(d.mul(Utils.smoothstep(a)));
 			}
 		};
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "ch") {
 			this.res = ui.sess.getres((Integer) args[0]);
@@ -190,6 +197,7 @@ public class Buff extends Widget {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int btn) {
 		wdgmsg("cl", c.sub(imgoff), btn, ui.modflags());
 		return (true);

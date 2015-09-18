@@ -51,20 +51,24 @@ public abstract class States extends GLState {
 			this(Utils.clipcol(r, g, b, a));
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glColor4fv(ca, 0);
 		}
 
+		@Override
 		public int capply() {
 			return (1);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glColor3f(1, 1, 1);
 		}
 
+		@Override
 		public int capplyfrom(GLState o) {
 			if (o instanceof ColState) {
 				return (1);
@@ -72,34 +76,42 @@ public abstract class States extends GLState {
 			return (-1);
 		}
 
+		@Override
 		public void applyfrom(GOut g, GLState o) {
 			apply(g);
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (shaders);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(color, this);
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			return ((o instanceof ColState) && (((ColState) o).c == c));
 		}
 
+		@Override
 		public String toString() {
 			return ("ColState(" + c + ")");
 		}
 	}
 	public static final ColState vertexcolor = new ColState(0, 0, 0, 0) {
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			return (o == this);
 		}
 
+		@Override
 		public String toString() {
 			return ("ColState(vertex)");
 		}
@@ -108,16 +120,19 @@ public abstract class States extends GLState {
 	@Material.ResName("vcol")
 	public static class $vcol implements Material.ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			return (new States.ColState((Color) args[0]));
 		}
 	}
 
 	public static final StandAlone ndepthtest = new StandAlone(Slot.Type.GEOM, PView.proj) {
+		@Override
 		public void apply(GOut g) {
 			g.gl.glDisable(GL.GL_DEPTH_TEST);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glEnable(GL.GL_DEPTH_TEST);
 		}
@@ -126,10 +141,12 @@ public abstract class States extends GLState {
 	public static final GLState xray = compose(ndepthtest, Rendered.last);
 
 	public static final StandAlone fsaa = new StandAlone(Slot.Type.SYS, PView.proj) {
+		@Override
 		public void apply(GOut g) {
 			g.gl.glEnable(GL.GL_MULTISAMPLE);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glDisable(GL.GL_MULTISAMPLE);
 		}
@@ -147,38 +164,45 @@ public abstract class States extends GLState {
 			this.inv = inv;
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glEnable(GL.GL_SAMPLE_COVERAGE);
 			gl.glSampleCoverage(cov, inv);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glSampleCoverage(1.0f, false);
 			gl.glDisable(GL.GL_SAMPLE_COVERAGE);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(coverage, this);
 		}
 	};
 
 	public static final StandAlone presdepth = new StandAlone(Slot.Type.GEOM, PView.proj) {
+		@Override
 		public void apply(GOut g) {
 			g.gl.glDepthMask(false);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glDepthMask(true);
 		}
 	};
 
 	public static final StandAlone prescolor = new StandAlone(Slot.Type.DRAW, PView.proj) {
+		@Override
 		public void apply(GOut g) {
 			g.gl.glColorMask(false, false, false, false);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glColorMask(true, true, true, true);
 		}
@@ -187,6 +211,7 @@ public abstract class States extends GLState {
 	@Material.ResName("maskcol")
 	public static class $colmask implements Material.ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			return (prescolor);
 		}
@@ -207,6 +232,7 @@ public abstract class States extends GLState {
 			this.e = e;
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glFogi(GL2.GL_FOG_MODE, GL2.GL_LINEAR);
@@ -216,11 +242,13 @@ public abstract class States extends GLState {
 			gl.glEnable(GL2.GL_FOG);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glDisable(GL2.GL_FOG);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(fog, this);
 		}
@@ -243,17 +271,20 @@ public abstract class States extends GLState {
 			this(GL.GL_POLYGON_OFFSET_FILL, factor, units);
 		}
 
+		@Override
 		public void apply(GOut g) {
 			BGL gl = g.gl;
 			gl.glPolygonOffset(factor, units);
 			gl.glEnable(mode);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			BGL gl = g.gl;
 			gl.glDisable(mode);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(depthoffset, this);
 		}
@@ -268,14 +299,17 @@ public abstract class States extends GLState {
 			this.mode = mode;
 		}
 
+		@Override
 		public void apply(GOut g) {
 			g.gl.glPolygonMode(GL.GL_FRONT_AND_BACK, mode);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_FILL);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(slot, this);
 		}
@@ -284,12 +318,15 @@ public abstract class States extends GLState {
 	public static final StandAlone nullprog = new StandAlone(Slot.Type.DRAW, PView.proj) {
 		private final ShaderMacro[] sh = {};
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (sh);
 		}
@@ -309,16 +346,20 @@ public abstract class States extends GLState {
 			this(new ShaderMacro[]{sh});
 		}
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (sh);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(adhoc, this);
 		}
@@ -338,26 +379,32 @@ public abstract class States extends GLState {
 			this(new ShaderMacro[]{sh});
 		}
 
+		@Override
 		public void apply(GOut g) {
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (sh);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(adhocg, this);
 		}
 	}
 
 	public static final StandAlone normalize = new StandAlone(Slot.Type.GEOM, PView.proj) {
+		@Override
 		public void apply(GOut g) {
 			g.gl.glEnable(GL2.GL_NORMALIZE);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glDisable(GL2.GL_NORMALIZE);
 		}
@@ -373,13 +420,16 @@ public abstract class States extends GLState {
 			this.sz = sz;
 		}
 
+		@Override
 		public void apply(GOut g) {
 			g.gl.glPointSize(sz);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(pointsize, this);
 		}
@@ -391,6 +441,7 @@ public abstract class States extends GLState {
 
 		public ProgPointSize(final ShaderMacro sh) {
 			this.sh = new ShaderMacro[]{new ShaderMacro() {
+				@Override
 				public void modify(ProgramContext prog) {
 					prog.vctx.ptsz.force();
 					sh.modify(prog);
@@ -400,8 +451,10 @@ public abstract class States extends GLState {
 
 		public ProgPointSize(final Expression ptsz) {
 			this(new ShaderMacro() {
+				@Override
 				public void modify(ProgramContext prog) {
 					prog.vctx.ptsz.mod(new Macro1<Expression>() {
+						@Override
 						public Expression expand(Expression in) {
 							return (ptsz);
 						}
@@ -410,18 +463,22 @@ public abstract class States extends GLState {
 			});
 		}
 
+		@Override
 		public void apply(GOut g) {
 			g.gl.glEnable(GL3.GL_PROGRAM_POINT_SIZE);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 			g.gl.glDisable(GL3.GL_PROGRAM_POINT_SIZE);
 		}
 
+		@Override
 		public ShaderMacro[] shaders() {
 			return (sh);
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(pointsize, this);
 		}

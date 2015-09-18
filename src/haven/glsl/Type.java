@@ -35,10 +35,12 @@ public abstract class Type {
 			this.name = name;
 		}
 
+		@Override
 		public String name(Context ctx) {
 			return (name);
 		}
 
+		@Override
 		public String toString() {
 			return (name);
 		}

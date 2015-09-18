@@ -54,6 +54,7 @@ public abstract class ConsoleHost extends Widget {
 			kg.remove();
 		}
 
+		@Override
 		protected void done(String line) {
 			history.add(line);
 			try {
@@ -69,6 +70,7 @@ public abstract class ConsoleHost extends Widget {
 			cancel();
 		}
 
+		@Override
 		public boolean key(char c, int code, int mod) {
 			if (c == 27) {
 				cancel();
@@ -124,6 +126,7 @@ public abstract class ConsoleHost extends Widget {
 		cmdline = new CommandLine();
 	}
 
+	@Override
 	public boolean type(char ch, KeyEvent ev) {
 		if (cmdline == null) {
 			return (super.type(ch, ev));
@@ -133,6 +136,7 @@ public abstract class ConsoleHost extends Widget {
 		}
 	}
 
+	@Override
 	public boolean keydown(KeyEvent ev) {
 		if (cmdline != null) {
 			cmdline.key(ev);

@@ -88,12 +88,14 @@ public class ValBlock {
 
 		public Expression ref() {
 			return (new Expression() {
+				@Override
 				public void walk(Walker w) {
 					if (tgt != null) {
 						w.el(tgt);
 					}
 				}
 
+				@Override
 				public void output(Output out) {
 					if (tgt == null) {
 						throw (new IllegalStateException("Value reference output before being constructed"));
@@ -158,6 +160,7 @@ public class ValBlock {
 				this(type, new Symbol.Gen());
 			}
 
+			@Override
 			protected void cons1() {
 				if (state < 1) {
 					Group.this.cons1();
@@ -170,6 +173,7 @@ public class ValBlock {
 				}
 			}
 
+			@Override
 			protected void cons2(Block blk) {
 				if (state < 2) {
 					Group.this.cons2(blk);
@@ -183,6 +187,7 @@ public class ValBlock {
 				}
 			}
 
+			@Override
 			public final Expression root() {
 				throw (new RuntimeException("root() is not applicable for group values"));
 			}
@@ -191,6 +196,7 @@ public class ValBlock {
 				super.depend(dep);
 			}
 
+			@Override
 			public void depend(Value dep) {
 				Group.this.depend(dep);
 			}
@@ -199,6 +205,7 @@ public class ValBlock {
 				super.softdep(dep);
 			}
 
+			@Override
 			public void softdep(Value dep) {
 				Group.this.softdep(dep);
 			}

@@ -175,6 +175,7 @@ public class Coord3f {
 		return (new float[]{x, y, z, w});
 	}
 
+	@Override
 	public String toString() {
 		return (String.format("(%f, %f, %f)", x, y, z));
 	}

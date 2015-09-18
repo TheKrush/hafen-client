@@ -97,6 +97,7 @@ public class TexI extends TexGL {
 		return (-1);
 	}
 
+	@Override
 	protected void fill(GOut g) {
 		BGL gl = g.gl;
 		Coord sz = Utils.imgsz(back);

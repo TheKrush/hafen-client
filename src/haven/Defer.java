@@ -71,6 +71,7 @@ public class Defer extends ThreadGroup {
 			this.future = future;
 		}
 
+		@Override
 		public String getMessage() {
 			if (rec != null) {
 				String msg = rec.getMessage();
@@ -94,10 +95,12 @@ public class Defer extends ThreadGroup {
 			return (msg);
 		}
 
+		@Override
 		public boolean canwait() {
 			return (true);
 		}
 
+		@Override
 		public void waitfor() throws InterruptedException {
 			synchronized (future) {
 				while (!future.done()) {
@@ -141,6 +144,7 @@ public class Defer extends ThreadGroup {
 			}
 		}
 
+		@Override
 		public void run() {
 			synchronized (this) {
 				if (state == "done") {
@@ -151,6 +155,7 @@ public class Defer extends ThreadGroup {
 			try {
 				try {
 					val = AccessController.doPrivileged(new PrivilegedExceptionAction<T>() {
+						@Override
 						public T run() throws InterruptedException {
 							return (task.call());
 						}
@@ -207,6 +212,7 @@ public class Defer extends ThreadGroup {
 			}
 		}
 
+		@Override
 		public int priority() {
 			return (prio);
 		}
@@ -227,6 +233,7 @@ public class Defer extends ThreadGroup {
 			setDaemon(true);
 		}
 
+		@Override
 		public void run() {
 			try {
 				while (true) {
@@ -271,6 +278,7 @@ public class Defer extends ThreadGroup {
 			queue.notify();
 			if ((pool.isEmpty() || !e) && (pool.size() < maxthreads)) {
 				Thread n = AccessController.doPrivileged(new PrivilegedAction<Thread>() {
+					@Override
 					public Thread run() {
 						Thread ret = new Worker();
 						ret.start();
@@ -290,6 +298,7 @@ public class Defer extends ThreadGroup {
 
 	private static Defer getgroup() {
 		return (AccessController.doPrivileged(new PrivilegedAction<Defer>() {
+			@Override
 			public Defer run() {
 				ThreadGroup tg = Thread.currentThread().getThreadGroup();
 				if (tg instanceof Defer) {

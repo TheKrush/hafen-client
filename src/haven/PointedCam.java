@@ -36,6 +36,7 @@ public class PointedCam extends Camera {
 		super(Matrix4f.identity());
 	}
 
+	@Override
 	public Matrix4f fin(Matrix4f p) {
 		update(compute(base, dist, e, a));
 		return (super.fin(p));

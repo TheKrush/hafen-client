@@ -47,6 +47,7 @@ public class FlowerMenu extends Widget {
 	@RName("sm")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			String[] opts = new String[args.length];
 			for (int i = 0; i < args.length; i++) {
@@ -79,6 +80,7 @@ public class FlowerMenu extends Widget {
 			move(Coord.sc(a, r));
 		}
 
+		@Override
 		public void draw(GOut g) {
 			g.chcolor(new Color(255, 255, 255, (int) (255 * a)));
 			g.image(pbg, new Coord(3, 3), new Coord(3, 3), sz.add(new Coord(-6, -6)));
@@ -86,6 +88,7 @@ public class FlowerMenu extends Widget {
 			g.image(text.tex(), sz.div(2).sub(text.sz().div(2)));
 		}
 
+		@Override
 		public boolean mousedown(Coord c, int button) {
 			choose(this);
 			return (true);
@@ -106,6 +109,7 @@ public class FlowerMenu extends Widget {
 			super(0.25);
 		}
 
+		@Override
 		public void ntick(double s) {
 			for (Petal p : opts) {
 				p.move(p.ta + ((1 - s) * PI), p.tr * s);
@@ -123,6 +127,7 @@ public class FlowerMenu extends Widget {
 			chosen = c;
 		}
 
+		@Override
 		public void ntick(double s) {
 			for (Petal p : opts) {
 				if (p == chosen) {
@@ -151,6 +156,7 @@ public class FlowerMenu extends Widget {
 			super(0.25);
 		}
 
+		@Override
 		public void ntick(double s) {
 			for (Petal p : opts) {
 				p.move(p.ta + ((s) * PI), p.tr * (1 - s));
@@ -228,6 +234,7 @@ public class FlowerMenu extends Widget {
 		super.tick(dt);
 	}
 
+	@Override
 	protected void added() {
 		if (c.equals(-1, -1)) {
 			c = parent.ui.lcc;
@@ -238,6 +245,7 @@ public class FlowerMenu extends Widget {
 		new Opening();
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		if (!anims.isEmpty()) {
 			return (true);
@@ -248,6 +256,7 @@ public class FlowerMenu extends Widget {
 		return (true);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "cancel") {
 			new Cancel();
@@ -260,14 +269,17 @@ public class FlowerMenu extends Widget {
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		super.draw(g, false);
 	}
 
+	@Override
 	public boolean keydown(java.awt.event.KeyEvent ev) {
 		return (true);
 	}
 
+	@Override
 	public boolean type(char key, java.awt.event.KeyEvent ev) {
 		if ((key >= '0') && (key <= '9')) {
 			int opt = (key == '0') ? 10 : (key - '1');

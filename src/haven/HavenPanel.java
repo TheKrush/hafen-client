@@ -90,6 +90,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 		addGLEventListener(new GLEventListener() {
 			Debug.DumpGL dump = null;
 
+			@Override
 			public void display(GLAutoDrawable d) {
 				GL2 gl = d.getGL().getGL2();
 				/*
@@ -105,6 +106,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 				}
 			}
 
+			@Override
 			public void init(GLAutoDrawable d) {
 				GL gl = d.getGL();
 				glconf = GLConfig.fromgl(gl, d.getContext(), getChosenGLCapabilities());
@@ -119,6 +121,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 					h.lsetprop("gl.conf", glconf);
 				}
 				gstate = new GLState() {
+					@Override
 					public void apply(GOut g) {
 						BGL gl = g.gl;
 						gl.glColor3f(1, 1, 1);
@@ -140,25 +143,31 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 						GOut.checkerr(gl);
 					}
 
+					@Override
 					public void unapply(GOut g) {
 					}
 
+					@Override
 					public void prep(Buffer buf) {
 						buf.put(global, this);
 					}
 				};
 			}
 
+			@Override
 			public void reshape(GLAutoDrawable d, final int x, final int y, final int w, final int h) {
 				ostate = OrthoState.fixed(new Coord(w, h));
 				rtstate = new GLState() {
+					@Override
 					public void apply(GOut g) {
 						g.st.proj = Projection.makeortho(new Matrix4f(), 0, w, 0, h, -1, 1);
 					}
 
+					@Override
 					public void unapply(GOut g) {
 					}
 
+					@Override
 					public void prep(Buffer buf) {
 						buf.put(proj2d, this);
 					}
@@ -170,6 +179,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 			public void displayChanged(GLAutoDrawable d, boolean cp1, boolean cp2) {
 			}
 
+			@Override
 			public void dispose(GLAutoDrawable d) {
 			}
 		});
@@ -179,20 +189,24 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 
 		protected abstract Coord sz();
 
+		@Override
 		public void apply(GOut g) {
 			Coord sz = sz();
 			g.st.proj = Projection.makeortho(new Matrix4f(), 0, sz.x, sz.y, 0, -1, 1);
 		}
 
+		@Override
 		public void unapply(GOut g) {
 		}
 
+		@Override
 		public void prep(Buffer buf) {
 			buf.put(proj2d, this);
 		}
 
 		public static OrthoState fixed(final Coord sz) {
 			return (new OrthoState() {
+				@Override
 				protected Coord sz() {
 					return (sz);
 				}
@@ -204,6 +218,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 		setFocusTraversalKeysEnabled(false);
 		newui(null);
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent e) {
 				synchronized (events) {
 					events.add(e);
@@ -211,6 +226,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 				}
 			}
 
+			@Override
 			public void keyPressed(KeyEvent e) {
 				synchronized (events) {
 					events.add(e);
@@ -218,6 +234,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 				}
 			}
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				synchronized (events) {
 					events.add(e);
@@ -226,6 +243,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 			}
 		});
 		addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				synchronized (events) {
 					events.add(e);
@@ -233,6 +251,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 				}
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent e) {
 				synchronized (events) {
 					events.add(e);
@@ -241,12 +260,14 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 			}
 		});
 		addMouseMotionListener(new MouseMotionListener() {
+			@Override
 			public void mouseDragged(MouseEvent e) {
 				synchronized (events) {
 					mousemv = e;
 				}
 			}
 
+			@Override
 			public void mouseMoved(MouseEvent e) {
 				synchronized (events) {
 					mousemv = e;
@@ -254,6 +275,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 			}
 		});
 		addMouseWheelListener(new MouseWheelListener() {
+			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				synchronized (events) {
 					events.add(e);
@@ -489,6 +511,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 			}
 		}
 
+		@Override
 		public void run() {
 			try {
 				uglyjoglhack();
@@ -534,6 +557,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 		}
 	};
 
+	@Override
 	public void run() {
 		try {
 			Thread drawthread = new HackThread(drawfun, "Render thread");
@@ -641,17 +665,20 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 
 	{
 		cmdmap.put("hz", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				fd = 1000 / Integer.parseInt(args[1]);
 			}
 		});
 		cmdmap.put("bghz", new Console.Command() {
+			@Override
 			public void run(Console cons, String[] args) {
 				bgfd = 1000 / Integer.parseInt(args[1]);
 			}
 		});
 	}
 
+	@Override
 	public Map<String, Console.Command> findcmds() {
 		return (cmdmap);
 	}

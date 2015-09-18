@@ -33,6 +33,7 @@ public class Chatwindow extends Window {
 	@RName("chat")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Chatwindow((Coord) args[0]));
 		}
@@ -45,6 +46,7 @@ public class Chatwindow extends Window {
 		out = add(new Textlog(new Coord(sz.x, sz.y - 20)), Coord.z);
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "log") {
 			out.append((String) args[0]);
@@ -53,6 +55,7 @@ public class Chatwindow extends Window {
 		}
 	}
 
+	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == in) {
 			if (msg == "activate") {

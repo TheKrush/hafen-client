@@ -58,6 +58,7 @@ public abstract class GLObject {
 		}
 	}
 
+	@Override
 	protected void finalize() {
 		dispose();
 	}

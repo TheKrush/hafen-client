@@ -29,10 +29,12 @@ public abstract class Statement extends Element {
 
 	public static Statement expr(final Expression e) {
 		return (new Statement() {
+			@Override
 			public void walk(Walker w) {
 				w.el(e);
 			}
 
+			@Override
 			public void output(Output out) {
 				e.output(out);
 				out.write(";");

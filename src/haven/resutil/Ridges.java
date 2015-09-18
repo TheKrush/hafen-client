@@ -115,6 +115,7 @@ public class Ridges extends MapMesh.Hooks {
 			}
 		}
 
+		@Override
 		protected void mapvertices(MPart[] mparts, int[][] vmap) {
 			super.mapvertices(mparts, vmap);
 			RPart[] parts = (RPart[]) mparts;
@@ -663,6 +664,7 @@ public class Ridges extends MapMesh.Hooks {
 	static final Tiler.MCons testcons = new Tiler.MCons() {
 		GLState mat = GLState.compose(new Material.Colors(new java.awt.Color(255, 255, 255)), States.vertexcolor, Light.deflight);
 
+		@Override
 		public void faces(MapMesh m, MPart mdesc) {
 			RPart desc = (RPart) mdesc;
 			Model mod = Model.get(m, mat);
@@ -689,6 +691,7 @@ public class Ridges extends MapMesh.Hooks {
 			this.texh = texh;
 		}
 
+		@Override
 		public void faces(MapMesh m, MPart mdesc) {
 			RPart desc = (RPart) mdesc;
 			Model mod = Model.get(m, mat);
@@ -729,6 +732,7 @@ public class Ridges extends MapMesh.Hooks {
 		return (true);
 	}
 
+	@Override
 	public boolean clean() {
 		edgeo = new float[edgec.length * 2];
 		for (int i = 0; i < edgec.length; i++) {

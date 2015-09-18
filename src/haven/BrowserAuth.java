@@ -32,6 +32,7 @@ public abstract class BrowserAuth extends AuthClient.Credentials {
 
 	public abstract String method();
 
+	@Override
 	public String tryauth(AuthClient cl) throws IOException {
 		if (WebBrowser.self == null) {
 			throw (new AuthException("Could not find any web browser to launch"));

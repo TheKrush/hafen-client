@@ -45,6 +45,7 @@ public class RichTextBox extends Widget {
 		this(sz, text, new RichText.Foundry(attrs));
 	}
 
+	@Override
 	public void draw(GOut g) {
 		if (bg != null) {
 			g.chcolor(bg);
@@ -61,6 +62,7 @@ public class RichTextBox extends Widget {
 		sb.val = 0;
 	}
 
+	@Override
 	public boolean mousewheel(Coord c, int amount) {
 		sb.ch(amount * 20);
 		return (true);

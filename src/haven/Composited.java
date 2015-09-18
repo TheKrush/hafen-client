@@ -136,11 +136,13 @@ public class Composited implements Rendered {
 	}
 
 	private static final Rendered.Order modorder = new Rendered.Order<Model.Layer>() {
+		@Override
 		public int mainz() {
 			return (1);
 		}
 
 		private final Rendered.RComparator<Model.Layer> cmp = new Rendered.RComparator<Model.Layer>() {
+			@Override
 			public int compare(Model.Layer a, Model.Layer b, GLState.Buffer sa, GLState.Buffer sb) {
 				if (a.z1 != b.z1) {
 					return (a.z1 - b.z1);
@@ -149,6 +151,7 @@ public class Composited implements Rendered {
 			}
 		};
 
+		@Override
 		public Rendered.RComparator<Model.Layer> cmp() {
 			return (cmp);
 		}
@@ -170,16 +173,19 @@ public class Composited implements Rendered {
 				this.z2 = z2;
 			}
 
+			@Override
 			public void draw(GOut g) {
 				m.draw(g);
 			}
 
+			@Override
 			public void drawflat(GOut g) {
 				if (z2 == 0) {
 					m.drawflat(g);
 				}
 			}
 
+			@Override
 			public boolean setup(RenderList r) {
 				r.prepo(modorder);
 				r.prepo(mat);
@@ -196,9 +202,11 @@ public class Composited implements Rendered {
 			lay.add(new Layer(mat, z, lz++));
 		}
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList r) {
 			m.setup(r);
 			for (Layer lay : this.lay) {
@@ -217,14 +225,17 @@ public class Composited implements Rendered {
 			this.spr = Sprite.create(eqowner, ed.res.res.get(), ed.res.sdt.clone());
 		}
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			rl.add(spr, null);
 			return (false);
 		}
 
+		@Override
 		public void tick(int dt) {
 			spr.tick(dt);
 		}
@@ -239,9 +250,11 @@ public class Composited implements Rendered {
 			this.l = ed.res.res.get().layer(Light.Res.class).make();
 		}
 
+		@Override
 		public void draw(GOut g) {
 		}
 
+		@Override
 		public boolean setup(RenderList rl) {
 			rl.add(l, null);
 			return (false);
@@ -291,6 +304,7 @@ public class Composited implements Rendered {
 			this.tex = tex;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (!(o instanceof MD)) {
 				return (false);
@@ -299,6 +313,7 @@ public class Composited implements Rendered {
 			return (mod.equals(m.mod) && tex.equals(m.tex));
 		}
 
+		@Override
 		public MD clone() {
 			try {
 				MD ret = (MD) super.clone();
@@ -310,6 +325,7 @@ public class Composited implements Rendered {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return (mod + "+" + tex);
 		}
@@ -329,6 +345,7 @@ public class Composited implements Rendered {
 			this.off = off;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (!(o instanceof ED)) {
 				return (false);
@@ -345,6 +362,7 @@ public class Composited implements Rendered {
 			return ((t == e.t) && at.equals(e.at) && res.res.equals(e.res.res) && off.equals(e.off));
 		}
 
+		@Override
 		public ED clone() {
 			try {
 				ED ret = (ED) super.clone();
@@ -356,6 +374,7 @@ public class Composited implements Rendered {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return (String.format("<ED: %d \"%s\" %s(%s) %s>", t, at, res.res, res.sdt, off));
 		}
@@ -457,6 +476,7 @@ public class Composited implements Rendered {
 		changes(false);
 	}
 
+	@Override
 	public boolean setup(RenderList rl) {
 		changes();
 		for (Model mod : this.mod) {
@@ -468,6 +488,7 @@ public class Composited implements Rendered {
 		return (false);
 	}
 
+	@Override
 	public void draw(GOut g) {
 	}
 

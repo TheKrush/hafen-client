@@ -102,14 +102,17 @@ public class PosixArgs {
 
 	public Iterable<Character> parsed() {
 		return (new Iterable<Character>() {
+			@Override
 			public Iterator<Character> iterator() {
 				return (new Iterator<Character>() {
 					private int i = 0;
 
+					@Override
 					public boolean hasNext() {
 						return (i < parsed.size());
 					}
 
+					@Override
 					public Character next() {
 						if (i >= parsed.size()) {
 							throw (new NoSuchElementException());
@@ -119,6 +122,7 @@ public class PosixArgs {
 						return (a.ch);
 					}
 
+					@Override
 					public void remove() {
 						throw (new UnsupportedOperationException());
 					}

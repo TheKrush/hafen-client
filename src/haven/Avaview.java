@@ -42,6 +42,7 @@ public class Avaview extends PView {
 	@RName("av")
 	public static class $_ implements Factory {
 
+		@Override
 		public Widget create(Widget parent, Object[] args) {
 			return (new Avaview(dasz, (Integer) args[0], "avacam"));
 		}
@@ -53,6 +54,7 @@ public class Avaview extends PView {
 		this.avagob = avagob;
 	}
 
+	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "upd") {
 			this.avagob = (long) (Integer) args[0];
@@ -101,6 +103,7 @@ public class Avaview extends PView {
 
 	private Composite lgc = null;
 
+	@Override
 	protected Camera camera() {
 		Composite gc = getgcomp();
 		if (gc == null) {
@@ -113,6 +116,7 @@ public class Avaview extends PView {
 		return (cam);
 	}
 
+	@Override
 	protected void setup(RenderList rl) {
 		Composite gc = getgcomp();
 		if (gc == null) {
@@ -130,12 +134,14 @@ public class Avaview extends PView {
 		rl.add(new DirLight(Color.WHITE, Color.WHITE, Color.WHITE, new Coord3f(1, 1, 1).norm()), null);
 	}
 
+	@Override
 	public void tick(double dt) {
 		if (comp != null) {
 			comp.tick((int) (dt * 1000));
 		}
 	}
 
+	@Override
 	public void draw(GOut g) {
 		/*
 		 g.chcolor(Color.BLACK);
@@ -157,6 +163,7 @@ public class Avaview extends PView {
 		}
 	}
 
+	@Override
 	public boolean mousedown(Coord c, int button) {
 		wdgmsg("click", button);
 		return (true);

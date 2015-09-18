@@ -64,6 +64,7 @@ public class FileCache implements ResCache {
 		return (new File(res, comp[comp.length - 1] + ".cached"));
 	}
 
+	@Override
 	public OutputStream store(String name) throws IOException {
 		final File nm = forres(name);
 		File dir = nm.getParentFile();
@@ -71,6 +72,7 @@ public class FileCache implements ResCache {
 		dir.mkdirs();
 		tmp.delete();
 		OutputStream ret = new FilterOutputStream(new FileOutputStream(tmp)) {
+			@Override
 			public void close() throws IOException {
 				super.close();
 				if (!tmp.renameTo(nm)) {
@@ -84,10 +86,12 @@ public class FileCache implements ResCache {
 		return (ret);
 	}
 
+	@Override
 	public InputStream fetch(String name) throws IOException {
 		return (new FileInputStream(forres(name)));
 	}
 
+	@Override
 	public String toString() {
 		return ("FileCache(" + base + ")");
 	}

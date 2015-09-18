@@ -50,18 +50,22 @@ public class BumpMap extends GLState {
 	private static final ShaderMacro[] shaders = {
 		new ShaderMacro() {
 			final AutoVarying tanc = new AutoVarying(VEC3) {
+				@Override
 				protected Expression root(VertexContext vctx) {
 					return (vctx.nxf(tan.ref()));
 				}
 			};
 			final AutoVarying bitc = new AutoVarying(VEC3) {
+				@Override
 				protected Expression root(VertexContext vctx) {
 					return (vctx.nxf(bit.ref()));
 				}
 			};
 
+			@Override
 			public void modify(final ProgramContext prog) {
 				final ValBlock.Value nmod = prog.fctx.uniform.new Value(VEC3) {
+					@Override
 			public Expression root() {
 						return (mul(sub(pick(texture2D(ctex.ref(), Tex2D.texcoord(prog.fctx).ref()), "rgb"),
 										l(0.5)), l(2.0)));
@@ -69,6 +73,7 @@ public class BumpMap extends GLState {
 				};
 				nmod.force();
 				MiscLib.frageyen(prog.fctx).mod(new Macro1<Expression>() {
+					@Override
 					public Expression expand(Expression in) {
 						Expression m = nmod.ref();
 						return (add(mul(pick(m, "s"), tanc.ref()),
@@ -87,19 +92,23 @@ public class BumpMap extends GLState {
 		}
 	};
 
+	@Override
 	public ShaderMacro[] shaders() {
 		return (shaders);
 	}
 
+	@Override
 	public void reapply(GOut g) {
 		g.gl.glUniform1i(g.st.prog.uniform(ctex), sampler.id);
 	}
 
+	@Override
 	public void apply(GOut g) {
 		sampler = TexGL.lbind(g, tex);
 		reapply(g);
 	}
 
+	@Override
 	public void unapply(GOut g) {
 		BGL gl = g.gl;
 		sampler.act(g);
@@ -108,6 +117,7 @@ public class BumpMap extends GLState {
 		sampler = null;
 	}
 
+	@Override
 	public void prep(Buffer buf) {
 		if (buf.cfg.pref.flight.val) {
 			buf.put(slot, this);
@@ -120,6 +130,7 @@ public class BumpMap extends GLState {
 	@Material.ResName("bump")
 	public static class $bump implements Material.ResCons2 {
 
+		@Override
 		public Material.Res.Resolver cons(final Resource res, Object... args) {
 			final Indir<Resource> tres;
 			final int tid;
@@ -134,6 +145,7 @@ public class BumpMap extends GLState {
 				a += 1;
 			}
 			return (new Material.Res.Resolver() {
+				@Override
 				public void resolve(Collection<GLState> buf) {
 					TexR rt = tres.get().layer(TexR.class, tid);
 					if (rt == null) {
@@ -157,10 +169,12 @@ public class BumpMap extends GLState {
 			this(VertexBuf.loadbuf(Utils.wfbuf(nv * 3), buf));
 		}
 
+		@Override
 		public MorphedMesh.MorphType morphtype() {
 			return (MorphedMesh.MorphType.DIR);
 		}
 
+		@Override
 		public Tangents dup() {
 			return (new Tangents(Utils.bufcp(data)));
 		}
@@ -177,10 +191,12 @@ public class BumpMap extends GLState {
 			this(VertexBuf.loadbuf(Utils.wfbuf(nv * 3), buf));
 		}
 
+		@Override
 		public MorphedMesh.MorphType morphtype() {
 			return (MorphedMesh.MorphType.DIR);
 		}
 
+		@Override
 		public BiTangents dup() {
 			return (new BiTangents(Utils.bufcp(data)));
 		}

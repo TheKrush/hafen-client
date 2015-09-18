@@ -17,6 +17,7 @@ class Image extends Layer {
         this.img = var1;
     }
 
+		@Override
     void draw(GOut var1) {
         var1.image(this.img, Coord.z);
     }

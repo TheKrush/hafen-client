@@ -52,6 +52,7 @@ public class TestClient implements Runnable {
 		this.user = user;
 		this.cookie = new byte[64];
 		tg = new ThreadGroup(HackThread.tg(), "Test client") {
+			@Override
 			public void uncaughtException(Thread t, Throwable e) {
 				synchronized (errsync) {
 					System.err.println("Exception in test client: " + TestClient.this.user);
@@ -92,6 +93,7 @@ public class TestClient implements Runnable {
 			super(sz, sess, null);
 		}
 
+		@Override
 		public void newwidget(int id, String type, int parent, Object[] pargs, Object... cargs) throws InterruptedException {
 			super.newwidget(id, type, parent, pargs, cargs);
 			Widget w = widgets.get(id);
@@ -102,6 +104,7 @@ public class TestClient implements Runnable {
 			}
 		}
 
+		@Override
 		public void destroy(Widget w) {
 			int id;
 			if (!rwidgets.containsKey(w)) {
@@ -117,6 +120,7 @@ public class TestClient implements Runnable {
 			super.destroy(w);
 		}
 
+		@Override
 		public void uimsg(int id, String msg, Object... args) {
 			Widget w = widgets.get(id);
 			synchronized (robots) {
@@ -128,6 +132,7 @@ public class TestClient implements Runnable {
 		}
 	}
 
+	@Override
 	public void run() {
 		try {
 			try {
@@ -167,6 +172,7 @@ public class TestClient implements Runnable {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return ("Client " + user);
 	}

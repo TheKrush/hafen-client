@@ -37,10 +37,12 @@ public class PeekReader extends Reader {
 		this.back = back;
 	}
 
+	@Override
 	public void close() throws IOException {
 		back.close();
 	}
 
+	@Override
 	public int read() throws IOException {
 		if (p) {
 			p = false;
@@ -50,6 +52,7 @@ public class PeekReader extends Reader {
 		}
 	}
 
+	@Override
 	public int read(char[] b, int off, int len) throws IOException {
 		int r = 0;
 		while (r < len) {
@@ -62,6 +65,7 @@ public class PeekReader extends Reader {
 		return (r);
 	}
 
+	@Override
 	public boolean ready() throws IOException {
 		if (p) {
 			return (true);
