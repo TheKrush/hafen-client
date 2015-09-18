@@ -25,13 +25,8 @@
  */
 package haven;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.awt.Color;
-import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Math.PI;
@@ -44,40 +39,10 @@ public class FlowerMenu extends Widget {
 	public static final IBox pbox = Window.wbox;
 	public static final Tex pbg = Window.bg;
 	public static final int ph = 30, ppl = 8;
-	public static Map<String, Boolean> AUTOCHOOSE = null;
 	private final String[] options;
 	private Petal autochoose;
 	public Petal[] opts;
 	private UI.Grab mg, kg;
-
-	static {
-		loadAutochoose();
-	}
-
-	private static void loadAutochoose() {
-		String json = Config.loadFile("autochoose.json");
-		if (json != null) {
-			try {
-				Gson gson = (new GsonBuilder()).create();
-				Type collectionType = new TypeToken<HashMap<String, Boolean>>() {
-				}.getType();
-				AUTOCHOOSE = gson.fromJson(json, collectionType);
-			} catch (Exception ignored) {
-			}
-		}
-		if (AUTOCHOOSE == null) {
-			AUTOCHOOSE = new HashMap<>();
-			AUTOCHOOSE.put("Pick", false);
-		}
-	}
-
-	@SuppressWarnings("SynchronizeOnNonFinalField")
-	public static void saveAutochoose() {
-		synchronized (AUTOCHOOSE) {
-			Gson gson = (new GsonBuilder()).create();
-			Config.saveFile("autochoose.json", gson.toJson(AUTOCHOOSE));
-		}
-	}
 
 	@RName("sm")
 	public static class $_ implements Factory {
@@ -245,9 +210,9 @@ public class FlowerMenu extends Widget {
 			String name = options[i];
 			Petal p = add(new Petal(name));
 			p.num = i;
-			boolean auto = AUTOCHOOSE.containsKey(name) && AUTOCHOOSE.get(name);
-			boolean single = ui.modctrl && options.length == 1 && CFG.MENU_SINGLE_CTRL_CLICK.valb();
-			if (!ui.modshift && (auto || single)) {
+			boolean auto = ((Map<String, Boolean>) CFG.UI_MENU_FLOWER_CLICK_AUTO.valo()).containsKey(name) && ((Map<String, Boolean>) CFG.UI_MENU_FLOWER_CLICK_AUTO.valo()).get(name);
+			boolean single = ui.modctrl && options.length == 1 && CFG.UI_MENU_FLOWER_CLICK_SINGLE.valb();
+			if (!ui.modshift && (auto || single) && autochoose == null) {
 				autochoose = p;
 			}
 			opts[i] = p;

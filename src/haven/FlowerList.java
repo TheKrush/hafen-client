@@ -3,25 +3,34 @@ package haven;
 import java.awt.*;
 import java.util.*;
 
-import static haven.FlowerMenu.AUTOCHOOSE;
-
 public class FlowerList extends Scrollport {
 
 	public static final Color BGCOLOR = new Color(0, 0, 0, 64);
 	private final IBox box;
-
+	private Map<String, Boolean> items = null;
 
 	public FlowerList() {
 		this(new Coord(200, 250));
 	}
 
 	public FlowerList(Coord sz) {
+		this(new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER), sz);
+	}
+
+	public FlowerList(Map<String, Boolean> items) {
+		this(items, new Coord(200, 250));
+	}
+
+	public FlowerList(Map<String, Boolean> items, Coord sz) {
 		super(sz);
+		this.items = items;
 		box = new IBox("gfx/hud/box", "tl", "tr", "bl", "br", "extvl", "extvr", "extht", "exthb");
 
 		int i = 0;
-		for (Map.Entry<String, Boolean> entry : AUTOCHOOSE.entrySet()) {
-			cont.add(new Item(entry.getKey()), 0, 25 * i++);
+		if (this.items != null) {
+			for (Map.Entry<String, Boolean> entry : this.items.entrySet()) {
+				cont.add(new FlowerListItem(entry.getKey(), entry.getValue()), 0, 25 * i++);
+			}
 		}
 
 		update();
@@ -34,18 +43,18 @@ public class FlowerList extends Scrollport {
 			case "changed": {
 				String name = (String) args[0];
 				boolean val = (Boolean) args[1];
-				synchronized (AUTOCHOOSE) {
-					AUTOCHOOSE.put(name, val);
+				synchronized (items) {
+					items.put(name, val);
 				}
-				FlowerMenu.saveAutochoose();
+				change(name, val);
 				break;
 			}
 			case "delete": {
 				String name = (String) args[0];
-				synchronized (AUTOCHOOSE) {
-					AUTOCHOOSE.remove(name);
+				synchronized (items) {
+					items.remove(name);
 				}
-				FlowerMenu.saveAutochoose();
+				remove(name);
 				ui.destroy(sender);
 				update();
 				break;
@@ -56,23 +65,33 @@ public class FlowerList extends Scrollport {
 		}
 	}
 
-	@SuppressWarnings("SynchronizeOnNonFinalField")
 	public void add(String name) {
-		if (name != null && !name.isEmpty() && !AUTOCHOOSE.containsKey(name)) {
-			synchronized (AUTOCHOOSE) {
-				AUTOCHOOSE.put(name, true);
+		add(name, false);
+	}
+
+	@SuppressWarnings("SynchronizeOnNonFinalField")
+	public void add(String name, boolean checked) {
+		if (name != null && !name.isEmpty() && !items.containsKey(name)) {
+			synchronized (items) {
+				items.put(name, true);
 			}
-			FlowerMenu.saveAutochoose();
-			cont.add(new Item(name), new Coord());
+			change(name, checked);
+			cont.add(new FlowerListItem(name, checked), new Coord());
 			update();
 		}
 	}
 
+	protected void change(String name, boolean value) {
+	}
+
+	protected void remove(String name) {
+	}
+
 	private void update() {
-		LinkedList<String> order = new LinkedList<>(AUTOCHOOSE.keySet());
+		LinkedList<String> order = new LinkedList<>(items.keySet());
 		Collections.sort(order);
 		for (Widget wdg = cont.lchild; wdg != null; wdg = wdg.prev) {
-			int i = order.indexOf(((Item) wdg).name);
+			int i = order.indexOf(((FlowerListItem) wdg).name);
 			wdg.c.y = 25 * i;
 		}
 		cont.update();
@@ -87,7 +106,7 @@ public class FlowerList extends Scrollport {
 		box.draw(g, Coord.z, sz);
 	}
 
-	private static class Item extends Widget {
+	protected static class FlowerListItem extends Widget {
 
 		public final String name;
 		private final CheckBox cb;
@@ -95,12 +114,16 @@ public class FlowerList extends Scrollport {
 		private boolean a = false;
 		private UI.Grab grab;
 
-		public Item(String name) {
+		public FlowerListItem(String name) {
+			this(name, false);
+		}
+
+		public FlowerListItem(String name, boolean checked) {
 			super(new Coord(200, 25));
 			this.name = name;
 
 			cb = add(new CheckBox(name), 3, 3);
-			cb.a = AUTOCHOOSE.get(name);
+			cb.a = checked;
 			cb.canactivate = true;
 
 			add(new Button(24, "X"), 165, 0);

@@ -6,8 +6,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public enum CFG {
 
@@ -28,11 +28,10 @@ public enum CFG {
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
 	MINIMAP_FLOATING("ui.minimap.floating", false),
-	MINIMAP_BOULDERS("ui.minimap.boulders", new HashMap<String, Boolean>()),
-	MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
-	MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
+	MINIMAP_BOULDERS("ui.minimap.boulders", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
+	MINIMAP_BUSHES("ui.minimap.bushes", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
+	MINIMAP_TREES("ui.minimap.trees", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
 	MINIMAP_PLAYERS("ui.minimap.players", true),
-	MENU_SINGLE_CTRL_CLICK("ui.menu_single_ctrl_click", true),
 	UI_ACTION_PROGRESS_PERCENTAGE("ui.action.progress.percentage", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
@@ -43,8 +42,15 @@ public enum CFG {
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single average
 	UI_KIN_STATUS("ui.kin.status", true),
+	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
+	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
+	public final static String[] actions = new String[]{
+		"chop",
+		"eat",
+		"harvest",
+		"pick",};
 	public final static String[] boulders = new String[]{
 		"basalt",
 		"cassiterite",
@@ -135,7 +141,6 @@ public enum CFG {
 		"whitebeam",
 		"willow",
 		"yew",};
-
 	public final static String[] icons = new String[]{
 		"blueberry",
 		"chantrelle",
@@ -149,8 +154,8 @@ public enum CFG {
 
 	private static String CONFIG_JSON;
 	private static final int configVersion = 6;
-	private static Map<String, Object> cfg = new HashMap<String, Object>();
-	private static final Map<String, Object> cache = new HashMap<String, Object>();
+	private static Map<String, Object> cfg = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private static final Map<String, Object> cache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
 	private final String path;
 	public final Object def;
@@ -170,7 +175,7 @@ public enum CFG {
 
 	public static void loadConfig() {
 		String configJson = Globals.SettingFileString(Globals.USERNAME + "/config.json", true);
-		Map<String, Object> tmp = new HashMap<String, Object>();
+		Map<String, Object> tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		try {
 			Type type = new TypeToken<Map<Object, Object>>() {
 			}.getType();
@@ -192,20 +197,20 @@ public enum CFG {
 		cache.clear();
 		System.out.println("Using setting file: " + CONFIG_JSON);
 		if (tmp == null) {
-			tmp = new HashMap<String, Object>();
+			tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		}
 		// check config version
 		int version = ((Number) CFG.get(CFG.CONFIG_VERSION, tmp)).intValue();
 		if (version != configVersion) {
 			System.out.println("Config version mismatch... reseting config");
-			tmp = new HashMap<String, Object>();
+			tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		}
 		cfg = tmp;
 		CFG.CONFIG_VERSION.set(configVersion);
 	}
 
 	CFG(String path, Object def) {
-		this.path = path;
+		this.path = path.toLowerCase();
 		this.def = def;
 	}
 
@@ -291,7 +296,7 @@ public enum CFG {
 				if (map.containsKey(part)) {
 					cur = map.get(part);
 				} else {
-					cur = new HashMap<String, Object>();
+					cur = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 					map.put(part, cur);
 				}
 			}

@@ -29,6 +29,7 @@ package haven;
 import haven.CheckListbox.CheckListboxItem;
 import static haven.UI.mapSaver;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -803,11 +804,12 @@ public class OptWnd extends Window {
 		x += 225;
 		y = 0;
 
-		panel.add(new CFGCheckBox("Single item CTRL choose", CFG.MENU_SINGLE_CTRL_CLICK, "If checked, will automatically select single item menus if CTRL is pressed when menu is opened"), x, y);
+		panel.add(new CFGCheckBox("Single item CTRL choose", CFG.UI_MENU_FLOWER_CLICK_SINGLE, "If checked, will automatically select single item menus if CTRL is pressed when menu is opened"), x, y);
 		y += 25;
 		panel.add(new CFGLabel("Choose menu items to select automatically"), x, y);
 		y += 15;
-		final FlowerList autochooseList = panel.add(new FlowerList(), x, y);
+		final CFGFlowerList autochooseList = panel.add(new CFGFlowerList(CFG.UI_MENU_FLOWER_CLICK_AUTO), x, y);
+		autochooseList.additems(CFG.actions);
 		y += autochooseList.sz.y + 5;
 		final TextEntry autochooseValue = panel.add(new TextEntry(150, "") {
 			@Override
@@ -820,7 +822,11 @@ public class OptWnd extends Window {
 		panel.add(new Button(45, "Add") {
 			@Override
 			public void click() {
-				autochooseList.add(autochooseValue.text);
+				String text = autochooseValue.text;
+				if (text == null || text.isEmpty()) {
+					return;
+				}
+				autochooseList.add(autochooseValue.text.toLowerCase());
 				autochooseValue.settext("");
 			}
 		}, x, y - 2);
@@ -881,6 +887,67 @@ public class OptWnd extends Window {
 		public void set(boolean a) {
 			super.set(a);
 			cfg.set(a);
+		}
+	}
+
+	private class CFGFlowerList extends FlowerList {
+
+		protected final CFG cfg;
+
+		public CFGFlowerList(CFG cfg) {
+			this(cfg, new Coord(200, 250));
+		}
+
+		public CFGFlowerList(CFG cfg, Coord sz) {
+			super(sz);
+			this.cfg = cfg;
+
+			Map<String, Boolean> mapVal = cfg.valo();
+			Set<String> mapValKeys = mapVal.keySet();
+			additems(mapValKeys.toArray(new String[mapValKeys.size()]));
+		}
+
+		private boolean cfgVal(String name) {
+			Map<String, Boolean> mapVal = cfg.valo();
+			return mapVal.containsKey(name) ? mapVal.get(name) : false;
+		}
+
+		private void cfgVal(String name, boolean val) {
+			Map<String, Boolean> mapVal = cfg.valo();
+			mapVal.put(name, val);
+			cfg.set(mapVal);
+		}
+
+		public class CFGFlowerListItem extends FlowerListItem {
+
+			public CFGFlowerListItem(String name) {
+				super(name);
+			}
+
+			public CFGFlowerListItem(String name, boolean checked) {
+				super(name, checked);
+			}
+		}
+
+		public final void additems(String[] keys) {
+			Arrays.sort(keys);
+			for (String key : keys) {
+				add(key, cfgVal(key));
+			}
+		}
+
+		@Override
+		protected void change(String name, boolean value) {
+			super.change(name, value);
+			cfgVal(name, value);
+		}
+
+		@Override
+		protected void remove(String name) {
+			super.remove(name);
+			Map<String, Boolean> mapVal = cfg.valo();
+			mapVal.remove(name);
+			cfg.set(mapVal);
 		}
 	}
 
@@ -966,7 +1033,7 @@ public class OptWnd extends Window {
 		public CFGCheckListbox(CFG cfg, int w, int h) {
 			super(w, h);
 			this.cfg = cfg;
-			this.keys = new ArrayList<String>();
+			this.keys = new ArrayList<>();
 
 			Map<String, Boolean> mapVal = cfg.valo();
 			Set<String> mapValKeys = mapVal.keySet();
@@ -997,13 +1064,13 @@ public class OptWnd extends Window {
 			cfgVal(itm.name, itm.selected);
 		}
 
-		public void additems(String[] keys) {
+		public final void additems(String[] keys) {
 			for (String key : keys) {
 				if (this.keys.contains(key)) {
 					continue;
 				}
 				this.keys.add(key);
-				items.add(new CheckListbox.CheckListboxItem(key, cfgVal(key)));
+				items.add(new CFGCheckListboxItem(key, cfgVal(key)));
 			}
 			Collections.sort(items);
 		}
