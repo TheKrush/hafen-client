@@ -13,7 +13,7 @@ public class CheckListbox extends Listbox<CheckListboxItem> {
 		super(w, h, 18);
 	}
 
-	public class CheckListboxItem {
+	public class CheckListboxItem implements Comparable<CheckListboxItem> {
 
 		public String name;
 		public boolean selected;
@@ -25,6 +25,11 @@ public class CheckListbox extends Listbox<CheckListboxItem> {
 
 		public void setselected(boolean selected) {
 			this.selected = selected;
+		}
+
+		@Override
+		public int compareTo(CheckListboxItem o) {
+			return this.name.compareTo(o.name);
 		}
 	}
 

@@ -28,7 +28,12 @@ package haven;
 
 import haven.CheckListbox.CheckListboxItem;
 import static haven.UI.mapSaver;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class OptWnd extends Window {
 
@@ -778,7 +783,7 @@ public class OptWnd extends Window {
 		y += 15;
 		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 6, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
-		y+= 25;
+		y += 25;
 		panel.add(new CFGCheckBox("Show percentage above hourglass", CFG.UI_ACTION_PROGRESS_PERCENTAGE), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon"), new Coord(x, y));
@@ -802,21 +807,21 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGLabel("Choose menu items to select automatically"), x, y);
 		y += 15;
-		final FlowerList list = panel.add(new FlowerList(), x, y);
-		y += list.sz.y + 5;
-		final TextEntry value = panel.add(new TextEntry(150, "") {
+		final FlowerList autochooseList = panel.add(new FlowerList(), x, y);
+		y += autochooseList.sz.y + 5;
+		final TextEntry autochooseValue = panel.add(new TextEntry(150, "") {
 			@Override
 			public void activate(String text) {
-				list.add(text);
+				autochooseList.add(text);
 				settext("");
 			}
 		}, x, y);
-		x += value.sz.x + 5;
+		x += autochooseValue.sz.x + 5;
 		panel.add(new Button(45, "Add") {
 			@Override
 			public void click() {
-				list.add(value.text);
-				value.settext("");
+				autochooseList.add(autochooseValue.text);
+				autochooseValue.settext("");
 			}
 		}, x, y - 2);
 
@@ -956,10 +961,16 @@ public class OptWnd extends Window {
 	private class CFGCheckListbox extends CheckListbox {
 
 		protected final CFG cfg;
+		protected final List<String> keys;
 
 		public CFGCheckListbox(CFG cfg, int w, int h) {
 			super(w, h);
 			this.cfg = cfg;
+			this.keys = new ArrayList<String>();
+
+			Map<String, Boolean> mapVal = cfg.valo();
+			Set<String> mapValKeys = mapVal.keySet();
+			additems(mapValKeys.toArray(new String[mapValKeys.size()]));
 		}
 
 		private boolean cfgVal(String name) {
@@ -988,8 +999,13 @@ public class OptWnd extends Window {
 
 		public void additems(String[] keys) {
 			for (String key : keys) {
+				if (this.keys.contains(key)) {
+					continue;
+				}
+				this.keys.add(key);
 				items.add(new CheckListbox.CheckListboxItem(key, cfgVal(key)));
 			}
+			Collections.sort(items);
 		}
 	}
 
