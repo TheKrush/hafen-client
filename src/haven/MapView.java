@@ -529,9 +529,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		this.glob = glob;
 		this.cc = cc;
 		this.plgob = plgob;
-		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
 		setcanfocus(true);
-		updategrid();
+		initgrid();
 	}
 
 	public boolean visol(int ol) {
@@ -1141,7 +1140,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			partydraw(g);
 			glob.map.reqarea(cc.div(tilesz).sub(MCache.cutsz.mul(view + 1)),
 							cc.div(tilesz).add(MCache.cutsz.mul(view + 1)));
-			updategrid(false);
+			updategrid();
 		} catch (Loading e) {
 			lastload = e;
 			String text = e.getMessage();
@@ -1831,27 +1830,27 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public void togglegrid() {
 		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
 		if (CFG.DISPLAY_GRID.valb()) {
-			updategrid();
+			initgrid();
+		} else {
+			this.gridol = null;
 		}
 	}
 
-	public void updategrid() {
-		updategrid(true);
+	public final void initgrid() {
+		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
+		this.lasttc = Coord.z;
+		updategrid();
 	}
 
-	public void updategrid(boolean force) {
-		if (force) {
-			Coord tc = cc.div(tilesz);
-			lasttc = tc.div(MCache.cmaps);
+	public void updategrid() {
+		if (!CFG.DISPLAY_GRID.valb()) {
+			return;
+		}
+		Coord tc = cc.div(MCache.tilesz);
+		if (tc.manhattan2(lasttc) > 20 || lastGridUpdate < glob.map.lastMapUpdate) {
+			lasttc = tc;
 			lastGridUpdate = glob.map.lastMapUpdate;
 			gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
-		} else {
-			Coord tc = cc.div(MCache.tilesz);
-			if (tc.manhattan2(lasttc) > 20 || lastGridUpdate < glob.map.lastMapUpdate) {
-				lasttc = tc;
-				lastGridUpdate = glob.map.lastMapUpdate;
-				gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
-			}
 		}
 	}
 

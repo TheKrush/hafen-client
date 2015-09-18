@@ -42,17 +42,11 @@ public class GridOutline implements Rendered {
 		}
 
 		void putVertex(float x, float y, float z) {
-			try {
-				vertex.put(x).put(y).put(z);
-			} catch (BufferOverflowException e) {
-			}
+			vertex.put(x).put(y).put(z);
 		}
 
 		void putColor(float r, float g, float b, float a) {
-			try {
-				color.put(r).put(g).put(b).put(a);
-			} catch (BufferOverflowException e) {
-			}
+			color.put(r).put(g).put(b).put(a);
 		}
 	}
 
