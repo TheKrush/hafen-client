@@ -120,9 +120,7 @@ public class CompImage {
 		int[] _cs = new int[cells.length];
 		if (cs instanceof int[]) {
 			int[] $cs = (int[]) cs;
-			for (int i = 0; i < $cs.length; i++) {
-				_cs[i] = $cs[i];
-			}
+			System.arraycopy($cs, 0, _cs, 0, $cs.length);
 		} else {
 			for (int i = 0; i < _cs.length; i++) {
 				_cs[i] = ((Number) cs).intValue();

@@ -46,9 +46,7 @@ public class GLProgram implements java.io.Serializable {
 			if (shaders[i] == null) {
 				continue;
 			}
-			for (int o = 0; o < shaders[i].length; o++) {
-				sc.add(shaders[i][o]);
-			}
+			sc.addAll(Arrays.asList(shaders[i]));
 		}
 		return (sc);
 	}

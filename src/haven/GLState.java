@@ -802,9 +802,7 @@ public abstract class GLState {
 				if (shaders[i] == null) {
 					continue;
 				}
-				for (int o = 0; o < shaders[i].length; o++) {
-					mods.add(shaders[i][o]);
-				}
+				mods.addAll(Arrays.asList(shaders[i]));
 			}
 			ShaderMacro.Program prog = ShaderMacro.Program.build(mods);
 			SavedProg s = new SavedProg(hash, prog, shaders);

@@ -32,9 +32,7 @@ public class Block extends Statement {
 	public final List<Statement> stmts = new LinkedList<>();
 
 	public Block(Statement... stmts) {
-		for (Statement s : stmts) {
-			this.stmts.add(s);
-		}
+		this.stmts.addAll(Arrays.asList(stmts));
 	}
 
 	public final static class Local extends Variable {

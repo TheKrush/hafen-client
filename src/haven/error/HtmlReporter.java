@@ -295,9 +295,7 @@ public class HtmlReporter {
 		out.println("<h1>Error Index</h1>");
 
 		Set<String> props = new TreeSet<>();
-		for (String pn : idxprops) {
-			props.add(pn);
-		}
+		props.addAll(Arrays.asList(idxprops));
 
 		Map<ErrorIdentity, List<Map.Entry<File, Report>>> groups = new TreeMap<>();
 		for (Map.Entry<File, Report> rent : reports.entrySet()) {

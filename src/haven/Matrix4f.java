@@ -73,9 +73,7 @@ public class Matrix4f {
 	}
 
 	public Matrix4f load(Matrix4f o) {
-		for (int i = 0; i < 16; i++) {
-			m[i] = o.m[i];
-		}
+		System.arraycopy(o.m, 0, m, 0, 16);
 		return (this);
 	}
 

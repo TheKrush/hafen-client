@@ -327,9 +327,7 @@ public class Resource implements Serializable {
 
 		public Pool(Pool parent, ResSource... sources) {
 			this.parent = parent;
-			for (ResSource source : sources) {
-				this.sources.add(source);
-			}
+			this.sources.addAll(Arrays.asList(sources));
 		}
 
 		public Pool(ResSource... sources) {
