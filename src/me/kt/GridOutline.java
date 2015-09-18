@@ -36,7 +36,6 @@ public class GridOutline implements Rendered {
 			try {
 				vertex.put(x).put(y).put(z);
 			} catch (BufferOverflowException e) {
-
 			}
 		}
 
@@ -44,7 +43,6 @@ public class GridOutline implements Rendered {
 			try {
 				color.put(r).put(g).put(b).put(a);
 			} catch (BufferOverflowException e) {
-
 			}
 		}
 	}
