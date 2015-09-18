@@ -1,9 +1,16 @@
 package dolda.xiphutil;
 
-import java.util.*;
-import java.io.*;
 import com.jcraft.jogg.Packet;
-import com.jcraft.jorbis.*;
+import com.jcraft.jorbis.Block;
+import com.jcraft.jorbis.Comment;
+import com.jcraft.jorbis.DspState;
+import com.jcraft.jorbis.Info;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The <code>VorbisStream</code> class provides a convenient means of decoding

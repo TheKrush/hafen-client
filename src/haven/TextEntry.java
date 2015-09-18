@@ -25,7 +25,8 @@
  */
 package haven;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
@@ -90,18 +91,25 @@ public class TextEntry extends SIWidget {
 
 	@Override
 	public void uimsg(String name, Object... args) {
-		if (name == "settext") {
-			settext((String) args[0]);
-		} else if (name == "get") {
-			wdgmsg("text", buf.line);
-		} else if (name == "pw") {
-			pw = ((Integer) args[0]) != 0;
-		} else if (name == "dshow") {
-			dshow = ((Integer) args[0]) != 0;
-		} else if (name == "cmt") {
-			commit();
-		} else {
-			super.uimsg(name, args);
+		switch (name) {
+			case "settext":
+				settext((String) args[0]);
+				break;
+			case "get":
+				wdgmsg("text", buf.line);
+				break;
+			case "pw":
+				pw = ((Integer) args[0]) != 0;
+				break;
+			case "dshow":
+				dshow = ((Integer) args[0]) != 0;
+				break;
+			case "cmt":
+				commit();
+				break;
+			default:
+				super.uimsg(name, args);
+				break;
 		}
 	}
 

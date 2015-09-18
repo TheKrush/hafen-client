@@ -25,9 +25,10 @@
  */
 package haven;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 import java.net.URL;
-import javax.jnlp.*;
+import javax.jnlp.BasicService;
+import javax.jnlp.ServiceManager;
 
 public class JnlpBrowser extends WebBrowser {
 

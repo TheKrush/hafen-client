@@ -1,10 +1,19 @@
 package me.kt;
 
-import haven.*;
+import haven.BGL;
+import haven.Coord;
+import haven.Coord3f;
+import haven.GOut;
+import haven.Loading;
+import haven.Location;
+import haven.MCache;
+import haven.RenderList;
+import haven.Rendered;
+import haven.States;
+import haven.Utils;
 import java.nio.BufferOverflowException;
-
-import javax.media.opengl.GL2;
 import java.nio.FloatBuffer;
+import javax.media.opengl.GL2;
 
 public class GridOutline implements Rendered {
 

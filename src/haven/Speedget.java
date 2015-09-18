@@ -88,10 +88,13 @@ public class Speedget extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "cur") {
-			cur = (Integer) args[0];
-		} else if (msg == "max") {
-			max = (Integer) args[0];
+		switch (msg) {
+			case "cur":
+				cur = (Integer) args[0];
+				break;
+			case "max":
+				max = (Integer) args[0];
+				break;
 		}
 	}
 

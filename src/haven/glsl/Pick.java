@@ -25,8 +25,6 @@
  */
 package haven.glsl;
 
-import java.util.*;
-
 public class Pick extends Expression {
 
 	public static final String valid = "xyzwrgbastpq";

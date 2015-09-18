@@ -4,16 +4,15 @@
 //
 package haven.res.lib.plants;
 
+import haven.FastMesh.MeshRes;
 import haven.Gob;
 import haven.Message;
 import haven.Resource;
 import haven.Sprite;
-import haven.FastMesh.MeshRes;
 import haven.Sprite.Factory;
 import haven.Sprite.Owner;
 import haven.Sprite.ResourceException;
 import haven.resutil.CSprite;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -30,6 +29,7 @@ public class TrellisPlant implements Factory {
 		this(2);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Sprite create(Owner var1, Resource var2, Message var3) {
 		double var4 = -((Gob) var1).a;

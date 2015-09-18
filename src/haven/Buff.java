@@ -177,23 +177,30 @@ public class Buff extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "ch") {
-			this.res = ui.sess.getres((Integer) args[0]);
-		} else if (msg == "tip") {
-			String tt = (String) args[0];
-			this.tt = tt.isEmpty() ? null : tt;
-			shorttip = longtip = null;
-		} else if (msg == "am") {
-			this.ameter = (Integer) args[0];
-			shorttip = longtip = null;
-		} else if (msg == "nm") {
-			this.nmeter = (Integer) args[0];
-		} else if (msg == "cm") {
-			this.cmeter = (Integer) args[0];
-			this.cticks = (args.length > 1) ? ((Integer) args[1]) : -1;
-			gettime = System.currentTimeMillis();
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "ch":
+				this.res = ui.sess.getres((Integer) args[0]);
+				break;
+			case "tip":
+				String tt = (String) args[0];
+				this.tt = tt.isEmpty() ? null : tt;
+				shorttip = longtip = null;
+				break;
+			case "am":
+				this.ameter = (Integer) args[0];
+				shorttip = longtip = null;
+				break;
+			case "nm":
+				this.nmeter = (Integer) args[0];
+				break;
+			case "cm":
+				this.cmeter = (Integer) args[0];
+				this.cticks = (args.length > 1) ? ((Integer) args[1]) : -1;
+				gettime = System.currentTimeMillis();
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 

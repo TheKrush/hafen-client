@@ -25,7 +25,11 @@
  */
 package haven;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class StreamMessage extends Message implements Closeable, Flushable {
 

@@ -25,8 +25,6 @@
  */
 package haven;
 
-import java.awt.Color;
-
 public class Bufflist extends Widget {
 
 	static final int margin = 2;

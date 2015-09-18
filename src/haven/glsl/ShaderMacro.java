@@ -25,11 +25,19 @@
  */
 package haven.glsl;
 
-import haven.*;
-import java.util.*;
-import java.io.*;
-import haven.GLShader.VertexShader;
+import haven.GLBuffer;
+import haven.GLProgram;
+import haven.GLShader;
 import haven.GLShader.FragmentShader;
+import haven.GLShader.VertexShader;
+import haven.GLState;
+import haven.GOut;
+import java.io.StringWriter;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public interface ShaderMacro {
 

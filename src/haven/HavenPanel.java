@@ -25,15 +25,32 @@
  */
 package haven;
 
-import java.awt.GraphicsConfiguration;
 import java.awt.Cursor;
+import java.awt.GraphicsConfiguration;
 import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
-import java.awt.event.*;
-import java.util.*;
-import javax.media.opengl.*;
-import javax.media.opengl.awt.*;
-import javax.media.opengl.glu.GLU;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.TreeMap;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GL3;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLCapabilitiesChooser;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
 
 public class HavenPanel extends GLCanvas implements Runnable, Console.Directory {
 
@@ -395,18 +412,20 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 		ui.lasttip = tooltip;
 		Resource curs = ui.root.getcurs(mousepos);
 		if (curs != null) {
-			if (cursmode == "awt") {
-				if (curs != lastcursor) {
-					try {
-						setCursor(makeawtcurs(curs.layer(Resource.imgc).img, curs.layer(Resource.negc).cc));
-						lastcursor = curs;
-					} catch (Exception e) {
-						cursmode = "tex";
-					}
-				}
-			} else if (cursmode == "tex") {
-				Coord dc = mousepos.add(curs.layer(Resource.negc).cc.inv());
-				g.image(curs.layer(Resource.imgc), dc);
+			switch (cursmode) {
+				case "awt":
+					if (curs != lastcursor) {
+						try {
+							setCursor(makeawtcurs(curs.layer(Resource.imgc).img, curs.layer(Resource.negc).cc));
+							lastcursor = curs;
+						} catch (Exception e) {
+							cursmode = "tex";
+						}
+					}	break;
+				case "tex":
+					Coord dc = mousepos.add(curs.layer(Resource.negc).cc.inv());
+					g.image(curs.layer(Resource.imgc), dc);
+					break;
 			}
 		}
 		state.clean();

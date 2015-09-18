@@ -26,9 +26,9 @@
 package haven;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owner {
 
@@ -155,19 +155,23 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 
 	@Override
 	public void uimsg(String name, Object... args) {
-		if (name == "num") {
-			num = (Integer) args[0];
-		} else if (name == "chres") {
-			synchronized (this) {
-				res = ui.sess.getres((Integer) args[0]);
-				sdt = (args.length > 1) ? new MessageBuf((byte[]) args[1]) : MessageBuf.nil;
-				spr = null;
-			}
-		} else if (name == "tt") {
-			info = null;
-			rawinfo = args;
-		} else if (name == "meter") {
-			meter = (Integer) args[0];
+		switch (name) {
+			case "num":
+				num = (Integer) args[0];
+				break;
+			case "chres":
+				synchronized (this) {
+					res = ui.sess.getres((Integer) args[0]);
+					sdt = (args.length > 1) ? new MessageBuf((byte[]) args[1]) : MessageBuf.nil;
+					spr = null;
+				}	break;
+			case "tt":
+				info = null;
+				rawinfo = args;
+				break;
+			case "meter":
+				meter = (Integer) args[0];
+				break;
 		}
 	}
 }

@@ -25,7 +25,7 @@
  */
 package haven;
 
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 
 public abstract class SIWidget extends Widget {
 

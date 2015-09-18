@@ -25,7 +25,9 @@
  */
 package haven.test;
 
-import haven.*;
+import haven.Charlist;
+import haven.Listbox;
+import haven.Widget;
 
 public class CharSelector extends Robot {
 

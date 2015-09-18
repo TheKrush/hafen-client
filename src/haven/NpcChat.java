@@ -25,8 +25,9 @@
  */
 package haven;
 
-import java.util.*;
 import java.awt.Color;
+import java.util.LinkedList;
+import java.util.List;
 
 public class NpcChat extends Window {
 
@@ -49,31 +50,32 @@ public class NpcChat extends Window {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "log") {
-			Color col = null;
-			if (args.length > 1) {
-				col = (Color) args[1];
-			}
-			out.append((String) args[0], col);
-		} else if (msg == "btns") {
-			if (btns != null) {
-				for (Button b : btns) {
-					ui.destroy(b);
-				}
-				btns = null;
-			}
-			if (args.length > 0) {
-				int y = out.sz.y + 3;
-				btns = new LinkedList<>();
-				for (Object text : args) {
-					Button b = add(Button.wrapped(out.sz.x, (String) text), new Coord(0, y));
-					btns.add(b);
-					y += b.sz.y + 3;
-				}
-			}
-			pack();
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "log":
+				Color col = null;
+				if (args.length > 1) {
+					col = (Color) args[1];
+				}	out.append((String) args[0], col);
+				break;
+			case "btns":
+				if (btns != null) {
+					for (Button b : btns) {
+						ui.destroy(b);
+					}
+					btns = null;
+				}	if (args.length > 0) {
+					int y = out.sz.y + 3;
+					btns = new LinkedList<>();
+					for (Object text : args) {
+						Button b = add(Button.wrapped(out.sz.x, (String) text), new Coord(0, y));
+						btns.add(b);
+						y += b.sz.y + 3;
+					}
+			}	pack();
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 

@@ -25,7 +25,7 @@
  */
 package haven;
 
-import java.io.*;
+import java.io.InputStream;
 
 public class MessageInputStream extends InputStream {
 

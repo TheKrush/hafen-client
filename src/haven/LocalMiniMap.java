@@ -27,10 +27,11 @@ package haven;
 
 import static haven.MCache.cmaps;
 import static haven.MCache.tilesz;
+import haven.resutil.Ridges;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.*;
-import haven.resutil.Ridges;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class LocalMiniMap extends Widget {
 

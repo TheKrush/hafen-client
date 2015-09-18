@@ -25,13 +25,23 @@
  */
 package haven.resutil;
 
-import java.util.*;
-import haven.*;
-import haven.glsl.*;
-import static haven.glsl.Cons.*;
-import static haven.glsl.Function.PDir.*;
-import static haven.glsl.Type.*;
-import haven.glsl.ValBlock.Value;
+import haven.GLState;
+import haven.GOut;
+import haven.Indir;
+import haven.Material;
+import haven.Resource;
+import haven.TexGL;
+import haven.TexR;
+import static haven.glsl.Cons.pick;
+import static haven.glsl.Cons.texture2D;
+import haven.glsl.Expression;
+import haven.glsl.Macro1;
+import haven.glsl.ProgramContext;
+import haven.glsl.ShaderMacro;
+import haven.glsl.Tex2D;
+import static haven.glsl.Type.SAMPLER2D;
+import haven.glsl.Uniform;
+import java.util.Collection;
 
 public class TexPal extends GLState {
 

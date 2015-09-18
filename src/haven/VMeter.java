@@ -73,15 +73,18 @@ public class VMeter extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "set") {
-			amount = (Integer) args[0];
-			if (args.length > 1) {
-				cl = (Color) args[1];
-			}
-		} else if (msg == "col") {
-			cl = (Color) args[0];
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "set":
+				amount = (Integer) args[0];
+				if (args.length > 1) {
+					cl = (Color) args[1];
+				}	break;
+			case "col":
+				cl = (Color) args[0];
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 }

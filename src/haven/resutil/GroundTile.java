@@ -25,11 +25,23 @@
  */
 package haven.resutil;
 
-import java.awt.Color;
-import java.util.*;
-import haven.*;
+import haven.Coord;
+import haven.Coord3f;
+import haven.GLState;
+import haven.Light;
+import haven.MapMesh;
+import haven.Material;
+import haven.MeshBuf;
+import haven.Resource;
 import haven.Resource.Tile;
+import haven.Surface;
 import haven.Surface.MeshVertex;
+import haven.Tex;
+import haven.TexGL;
+import haven.TexSI;
+import haven.Tiler;
+import java.awt.Color;
+import java.util.Random;
 
 public class GroundTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 

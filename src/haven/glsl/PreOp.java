@@ -25,8 +25,6 @@
  */
 package haven.glsl;
 
-import java.util.*;
-
 public abstract class PreOp extends Expression {
 
 	public final Expression op;

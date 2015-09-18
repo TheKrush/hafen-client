@@ -25,10 +25,12 @@
  */
 package haven;
 
-import java.util.*;
-import java.nio.*;
-import haven.MorphedMesh.Morpher;
 import haven.MorphedMesh.MorphedBuf;
+import haven.MorphedMesh.Morpher;
+import java.nio.FloatBuffer;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class MeshAnim {
 

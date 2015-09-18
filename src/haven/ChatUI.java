@@ -25,23 +25,33 @@
  */
 package haven;
 
-import java.util.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextHitInfo;
 import java.awt.image.BufferedImage;
-import java.text.*;
-import java.text.AttributedCharacterIterator.Attribute;
-import java.net.URL;
-import java.util.regex.*;
-import java.io.IOException;
-import java.awt.datatransfer.*;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedCharacterIterator.Attribute;
+import java.text.CharacterIterator;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatUI extends Widget {
 
@@ -676,12 +686,16 @@ public class ChatUI extends Widget {
 
 		@Override
 		public void uimsg(String name, Object... args) {
-			if (name == "sel") {
-				select();
-			} else if (name == "dsp") {
-				display();
-			} else {
-				super.uimsg(name, args);
+			switch (name) {
+				case "sel":
+					select();
+					break;
+				case "dsp":
+					display();
+					break;
+				default:
+					super.uimsg(name, args);
+					break;
 			}
 		}
 
@@ -982,23 +996,30 @@ public class ChatUI extends Widget {
 
 		@Override
 		public void uimsg(String msg, Object... args) {
-			if (msg == "msg") {
-				String t = (String) args[0];
-				String line = (String) args[1];
-				if (t.equals("in")) {
-					Message cmsg = new InMessage(line, iw());
+			switch (msg) {
+				case "msg":
+					String t = (String) args[0];
+					String line = (String) args[1];
+					switch (t) {
+						case "in":
+							Message cmsg = new InMessage(line, iw());
+							append(cmsg);
+							notify(cmsg, 3);
+							break;
+						case "out":
+							append(new OutMessage(line, iw()));
+							break;
+					}
+					break;
+				case "err":
+					String err = (String) args[0];
+					Message cmsg = new SimpleMessage(err, Color.RED, iw());
 					append(cmsg);
 					notify(cmsg, 3);
-				} else if (t.equals("out")) {
-					append(new OutMessage(line, iw()));
-				}
-			} else if (msg == "err") {
-				String err = (String) args[0];
-				Message cmsg = new SimpleMessage(err, Color.RED, iw());
-				append(cmsg);
-				notify(cmsg, 3);
-			} else {
-				super.uimsg(msg, args);
+					break;
+				default:
+					super.uimsg(msg, args);
+					break;
 			}
 		}
 

@@ -25,10 +25,10 @@
  */
 package haven;
 
-import java.util.*;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Textlog extends Widget {
 

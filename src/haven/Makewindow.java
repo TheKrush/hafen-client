@@ -25,9 +25,12 @@
  */
 package haven;
 
-import java.util.*;
-import java.awt.Font;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class Makewindow extends Widget {
 
@@ -125,32 +128,34 @@ public class Makewindow extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "inpop") {
-			List<Spec> inputs = new LinkedList<>();
-			for (int i = 0; i < args.length;) {
-				int resid = (Integer) args[i++];
-				Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
-				int num = (Integer) args[i++];
-				inputs.add(new Spec(ui.sess.getres(resid), sdt, num));
-			}
-			this.inputs = inputs;
-		} else if (msg == "opop") {
-			List<Spec> outputs = new LinkedList<>();
-			for (int i = 0; i < args.length;) {
-				int resid = (Integer) args[i++];
-				Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
-				int num = (Integer) args[i++];
-				outputs.add(new Spec(ui.sess.getres(resid), sdt, num));
-			}
-			this.outputs = outputs;
-		} else if (msg == "qmod") {
-			List<Indir<Resource>> qmod = new ArrayList<>();
-			for (Object arg : args) {
-				qmod.add(ui.sess.getres((Integer) arg));
-			}
-			this.qmod = qmod;
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "inpop":
+				List<Spec> inputs = new LinkedList<>();
+				for (int i = 0; i < args.length;) {
+					int resid = (Integer) args[i++];
+					Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
+					int num = (Integer) args[i++];
+					inputs.add(new Spec(ui.sess.getres(resid), sdt, num));
+				}	this.inputs = inputs;
+				break;
+			case "opop":
+				List<Spec> outputs = new LinkedList<>();
+				for (int i = 0; i < args.length;) {
+					int resid = (Integer) args[i++];
+					Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
+					int num = (Integer) args[i++];
+					outputs.add(new Spec(ui.sess.getres(resid), sdt, num));
+			}	this.outputs = outputs;
+				break;
+			case "qmod":
+				List<Indir<Resource>> qmod = new ArrayList<>();
+				for (Object arg : args) {
+					qmod.add(ui.sess.getres((Integer) arg));
+			}	this.qmod = qmod;
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 

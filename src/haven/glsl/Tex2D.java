@@ -25,9 +25,13 @@
  */
 package haven.glsl;
 
-import static haven.glsl.Cons.*;
-import static haven.glsl.Function.PDir.*;
-import static haven.glsl.Type.*;
+import static haven.glsl.Cons.l;
+import static haven.glsl.Cons.lt;
+import static haven.glsl.Cons.mul;
+import static haven.glsl.Cons.pick;
+import static haven.glsl.Cons.texture2D;
+import static haven.glsl.Type.VEC2;
+import static haven.glsl.Type.VEC4;
 import haven.glsl.ValBlock.Value;
 
 public class Tex2D {

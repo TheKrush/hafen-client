@@ -26,13 +26,17 @@
 package haven;
 
 import static haven.MCache.tilesz;
-import java.util.*;
-import javax.media.opengl.*;
-import java.awt.Color;
+import haven.Surface.MeshVertex;
+import haven.Surface.Vertex;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import haven.Surface.Vertex;
-import haven.Surface.MeshVertex;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class MapMesh implements Rendered, Disposable {
 

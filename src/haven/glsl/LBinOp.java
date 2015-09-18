@@ -25,8 +25,6 @@
  */
 package haven.glsl;
 
-import java.util.*;
-
 public abstract class LBinOp extends Expression {
 
 	public final LValue lhs;

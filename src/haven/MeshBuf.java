@@ -27,8 +27,10 @@ package haven;
 
 import haven.glsl.Attribute;
 import java.awt.Color;
-import java.util.*;
-import java.nio.*;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class MeshBuf {
 

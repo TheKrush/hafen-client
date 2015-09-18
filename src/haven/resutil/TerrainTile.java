@@ -25,12 +25,29 @@
  */
 package haven.resutil;
 
-import haven.*;
-import java.util.*;
-import java.awt.Color;
+import haven.Coord;
+import haven.Coord3f;
+import haven.GLState;
+import haven.MapMesh;
 import haven.MapMesh.Scan;
+import haven.Material;
+import haven.MeshBuf;
+import haven.Resource;
 import haven.Resource.Tile;
 import haven.Resource.Tileset;
+import haven.SNoise3;
+import haven.States;
+import haven.Surface;
+import haven.Tex;
+import haven.TexGL;
+import haven.TexSI;
+import haven.Tiler;
+import java.awt.Color;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Random;
+import java.util.WeakHashMap;
 
 public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 
@@ -228,24 +245,31 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 			for (Object rdesc : set.ta) {
 				Object[] desc = (Object[]) rdesc;
 				String p = (String) desc[0];
-				if (p.equals("base")) {
-					int mid = (Integer) desc[1];
-					base = res.layer(Material.Res.class, mid).get();
-				} else if (p.equals("var")) {
-					int mid = (Integer) desc[1];
-					double thrl, thrh;
-					if (desc[2] instanceof Object[]) {
-						thrl = (Float) ((Object[]) desc[2])[0];
-						thrh = (Float) ((Object[]) desc[2])[1];
-					} else {
-						thrl = (Float) desc[2];
-						thrh = Double.MAX_VALUE;
-					}
-					double nz = (res.name.hashCode() * mid * 8129) % 10000;
-					var.add(new Var(res.layer(Material.Res.class, mid).get(), thrl, thrh, nz));
-				} else if (p.equals("trans")) {
-					Resource tres = set.getres().pool.load((String) desc[1], (Integer) desc[2]).get();
-					trans = tres.layer(Resource.tileset);
+				switch (p) {
+					case "base":
+						{
+							int mid = (Integer) desc[1];
+							base = res.layer(Material.Res.class, mid).get();
+							break;
+						}
+					case "var":
+						{
+							int mid = (Integer) desc[1];
+							double thrl, thrh;
+							if (desc[2] instanceof Object[]) {
+								thrl = (Float) ((Object[]) desc[2])[0];
+								thrh = (Float) ((Object[]) desc[2])[1];
+							} else {
+								thrl = (Float) desc[2];
+								thrh = Double.MAX_VALUE;
+							}		double nz = (res.name.hashCode() * mid * 8129) % 10000;
+							var.add(new Var(res.layer(Material.Res.class, mid).get(), thrl, thrh, nz));
+							break;
+						}
+					case "trans":
+						Resource tres = set.getres().pool.load((String) desc[1], (Integer) desc[2]).get();
+						trans = tres.layer(Resource.tileset);
+						break;
 				}
 			}
 			return (new TerrainTile(id, new SNoise3(res.name.hashCode()), base, var.toArray(new Var[var.size()]), trans));
@@ -388,14 +412,16 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 				for (Object rdesc : set.ta) {
 					Object[] desc = (Object[]) rdesc;
 					String p = (String) desc[0];
-					if (p.equals("rmat")) {
-						Resource mres = set.getres().pool.load((String) desc[1], (Integer) desc[2]).get();
-						mat = mres.layer(Material.Res.class).get();
-						if (desc.length > 3) {
-							texh = (Float) desc[3];
-						}
-					} else if (p.equals("rthres")) {
-						rth = (Integer) desc[1];
+					switch (p) {
+						case "rmat":
+							Resource mres = set.getres().pool.load((String) desc[1], (Integer) desc[2]).get();
+							mat = mres.layer(Material.Res.class).get();
+							if (desc.length > 3) {
+								texh = (Float) desc[3];
+							}	break;
+						case "rthres":
+							rth = (Integer) desc[1];
+							break;
 					}
 				}
 				if (mat == null) {

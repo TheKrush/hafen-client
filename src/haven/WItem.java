@@ -25,12 +25,11 @@
  */
 package haven;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.util.*;
-
 import static haven.Inventory.sqsz;
 import haven.QualityList.QualityType;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class WItem extends Widget implements DTarget {
 

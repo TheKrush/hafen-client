@@ -25,8 +25,6 @@
  */
 package haven.glsl;
 
-import java.util.*;
-
 public class FieldRef extends Expression {
 
 	public final Expression val;

@@ -25,11 +25,24 @@
  */
 package haven;
 
-import java.util.*;
-import java.lang.annotation.*;
-import java.lang.reflect.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeMap;
 
 public class Widget {
 
@@ -573,54 +586,60 @@ public class Widget {
 	}
 
 	public void uimsg(String msg, Object... args) {
-		if (msg == "tabfocus") {
-			setfocustab(((Integer) args[0] != 0));
-		} else if (msg == "act") {
-			canactivate = (Integer) args[0] != 0;
-		} else if (msg == "cancel") {
-			cancancel = (Integer) args[0] != 0;
-		} else if (msg == "autofocus") {
-			autofocus = (Integer) args[0] != 0;
-		} else if (msg == "focus") {
-			Widget w = ui.widgets.get((Integer) args[0]);
-			if (w != null) {
-				if (w.canfocus) {
-					setfocus(w);
-				}
-			}
-		} else if (msg == "curs") {
-			if (args.length == 0) {
-				cursor = null;
-			} else {
-				cursor = Resource.remote().load((String) args[0], (Integer) args[1]);
-			}
-		} else if (msg == "tip") {
-			int a = 0;
-			Object tt = args[a++];
-			if (tt instanceof String) {
-				tooltip = Text.render((String) tt);
-			} else if (tt instanceof Integer) {
-				final Indir<Resource> tres = ui.sess.getres((Integer) tt);
-				tooltip = new Indir<Tex>() {
-					Text t = null;
-
-					@Override
-					public Tex get() {
-						if (t == null) {
-							Resource.Pagina pag;
-							try {
-								pag = tres.get().layer(Resource.pagina);
-							} catch (Loading e) {
-								return (null);
-							}
-							t = RichText.render(pag.text, 300);
-						}
-						return (t.tex());
+		switch (msg) {
+			case "tabfocus":
+				setfocustab(((Integer) args[0] != 0));
+				break;
+			case "act":
+				canactivate = (Integer) args[0] != 0;
+				break;
+			case "cancel":
+				cancancel = (Integer) args[0] != 0;
+				break;
+			case "autofocus":
+				autofocus = (Integer) args[0] != 0;
+				break;
+			case "focus":
+				Widget w = ui.widgets.get((Integer) args[0]);
+				if (w != null) {
+					if (w.canfocus) {
+						setfocus(w);
 					}
-				};
-			}
-		} else {
-			System.err.println("Unhandled widget message: " + msg);
+				}	break;
+			case "curs":
+				if (args.length == 0) {
+					cursor = null;
+				} else {
+					cursor = Resource.remote().load((String) args[0], (Integer) args[1]);
+			}	break;
+			case "tip":
+				int a = 0;
+				Object tt = args[a++];
+				if (tt instanceof String) {
+					tooltip = Text.render((String) tt);
+				} else if (tt instanceof Integer) {
+					final Indir<Resource> tres = ui.sess.getres((Integer) tt);
+					tooltip = new Indir<Tex>() {
+						Text t = null;
+						
+						@Override
+						public Tex get() {
+							if (t == null) {
+								Resource.Pagina pag;
+								try {
+									pag = tres.get().layer(Resource.pagina);
+								} catch (Loading e) {
+									return (null);
+								}
+								t = RichText.render(pag.text, 300);
+							}
+							return (t.tex());
+						}
+					};
+				}	break;
+			default:
+				System.err.println("Unhandled widget message: " + msg);
+				break;
 		}
 	}
 

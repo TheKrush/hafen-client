@@ -25,11 +25,25 @@
  */
 package haven.glsl;
 
-import haven.*;
+import haven.Coord;
+import haven.Coord3f;
 import haven.GLProgram.VarID;
-import static haven.glsl.Cons.*;
-import static haven.glsl.Function.PDir.*;
-import static haven.glsl.Type.*;
+import haven.GOut;
+import haven.Glob;
+import haven.PView;
+import static haven.glsl.Cons.add;
+import static haven.glsl.Cons.l;
+import static haven.glsl.Cons.mul;
+import static haven.glsl.Cons.neg;
+import static haven.glsl.Cons.normalize;
+import static haven.glsl.Cons.pick;
+import static haven.glsl.Cons.sub;
+import static haven.glsl.Cons.vec4;
+import static haven.glsl.Function.PDir.IN;
+import static haven.glsl.Type.FLOAT;
+import static haven.glsl.Type.VEC2;
+import static haven.glsl.Type.VEC3;
+import static haven.glsl.Type.VEC4;
 import haven.glsl.ValBlock.Value;
 
 public abstract class MiscLib {

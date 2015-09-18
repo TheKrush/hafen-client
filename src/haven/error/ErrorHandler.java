@@ -25,9 +25,19 @@
  */
 package haven.error;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Queue;
 
 public class ErrorHandler extends ThreadGroup {
 
@@ -123,12 +133,15 @@ public class ErrorHandler extends ThreadGroup {
 				buf.write(dbuf, 0, len);
 			}
 			i.close();
-			if (ctype.equals("text/x-report-info")) {
-				status.done("text/x-report-info", buf.toString());
-			} else if (ctype.equals("text/x-report-error")) {
-				throw (new ReportException(buf.toString()));
-			} else {
-				status.done(null, null);
+			switch (ctype) {
+				case "text/x-report-info":
+					status.done("text/x-report-info", buf.toString());
+					break;
+				case "text/x-report-error":
+					throw (new ReportException(buf.toString()));
+				default:
+					status.done(null, null);
+					break;
 			}
 		}
 

@@ -25,10 +25,10 @@
  */
 package haven.glsl;
 
-import java.util.List;
-import haven.GOut;
 import haven.GLBuffer;
 import haven.GLState.Buffer;
+import haven.GOut;
+import java.util.List;
 
 public class Attribute extends Variable.Global {
 

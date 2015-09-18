@@ -25,9 +25,11 @@
  */
 package haven;
 
-import java.util.*;
-import java.lang.reflect.*;
-import javax.media.opengl.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
  * XXX: Hmmpf. This whole thing seems very overly complex, but I

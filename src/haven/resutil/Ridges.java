@@ -25,17 +25,27 @@
  */
 package haven.resutil;
 
-import java.util.*;
-import haven.*;
-import haven.MapMesh.Scan;
-import haven.MapMesh.Model;
-import haven.Surface.Vertex;
-import haven.Tiler.MPart;
-import haven.Tiler.SModel;
-import haven.Tiler.VertFactory;
-import haven.Surface.MeshVertex;
+import haven.Coord;
+import haven.Coord3f;
+import haven.GLState;
+import haven.Light;
+import haven.MCache;
 import static haven.MCache.tilesz;
+import haven.MapMesh;
+import haven.MapMesh.Model;
+import haven.MapMesh.Scan;
+import haven.Material;
+import haven.MeshBuf;
+import haven.States;
+import haven.Surface;
+import haven.Surface.MeshVertex;
+import haven.Surface.Vertex;
+import haven.Tiler;
+import haven.Tiler.MPart;
+import haven.Utils;
 import static haven.Utils.clip;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Ridges extends MapMesh.Hooks {
 

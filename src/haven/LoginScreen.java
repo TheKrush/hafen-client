@@ -330,20 +330,25 @@ public class LoginScreen extends Widget {
 	@Override
 	public void uimsg(String msg, Object... args) {
 		synchronized (ui) {
-			if (msg == "passwd") {
-				clear();
-				cur = new Pwbox((String) args[0], (Boolean) args[1]);
-				mklogin();
-			} else if (msg == "token") {
-				clear();
-				cur = new Tokenbox((String) args[0], (String) args[1]);
-				mklogin();
-			} else if (msg == "error") {
-				error((String) args[0]);
-			} else if (msg == "prg") {
-				error(null);
-				clear();
-				progress((String) args[0]);
+			switch (msg) {
+				case "passwd":
+					clear();
+					cur = new Pwbox((String) args[0], (Boolean) args[1]);
+					mklogin();
+					break;
+				case "token":
+					clear();
+					cur = new Tokenbox((String) args[0], (String) args[1]);
+					mklogin();
+					break;
+				case "error":
+					error((String) args[0]);
+					break;
+				case "prg":
+					error(null);
+					clear();
+					progress((String) args[0]);
+					break;
 			}
 		}
 	}

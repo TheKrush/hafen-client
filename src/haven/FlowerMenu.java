@@ -25,11 +25,9 @@
  */
 package haven;
 
-
 import java.awt.Color;
-import java.util.Map;
-
 import static java.lang.Math.PI;
+import java.util.Map;
 
 public class FlowerMenu extends Widget {
 
@@ -216,7 +214,7 @@ public class FlowerMenu extends Widget {
 			String name = options[i];
 			Petal p = add(new Petal(name));
 			p.num = i;
-			boolean auto = ((Map<String, Boolean>) CFG.UI_MENU_FLOWER_CLICK_AUTO.valo()).containsKey(name) && ((Map<String, Boolean>) CFG.UI_MENU_FLOWER_CLICK_AUTO.valo()).get(name);
+			boolean auto = CFG.UI_MENU_FLOWER_CLICK_AUTO.<Map<String, Boolean>>valo().containsKey(name) && CFG.UI_MENU_FLOWER_CLICK_AUTO.<Map<String, Boolean>>valo().get(name);
 			boolean single = ui.modctrl && options.length == 1 && CFG.UI_MENU_FLOWER_CLICK_SINGLE.valb();
 			if (!ui.modshift && (auto || single) && autochoose == null) {
 				autochoose = p;

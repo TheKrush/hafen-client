@@ -25,7 +25,7 @@
  */
 package haven;
 
-import java.util.*;
+import java.util.LinkedList;
 
 public class Fightview extends Widget {
 
@@ -222,51 +222,58 @@ public class Fightview extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "new") {
-			Relation rel = new Relation((Integer) args[0]);
-			rel.give((Integer) args[1]);
-			rel.ip = (Integer) args[2];
-			rel.oip = (Integer) args[3];
-			lsrel.addFirst(rel);
-			return;
-		} else if (msg == "del") {
-			Relation rel = getrel((Integer) args[0]);
-			rel.remove();
-			lsrel.remove(rel);
-			if (rel == current) {
-				setcur(null);
-			}
-			return;
-		} else if (msg == "upd") {
-			Relation rel = getrel((Integer) args[0]);
-			rel.give((Integer) args[1]);
-			rel.ip = (Integer) args[2];
-			rel.oip = (Integer) args[3];
-			return;
-		} else if (msg == "cur") {
-			try {
-				Relation rel = getrel((Integer) args[0]);
-				lsrel.remove(rel);
+		switch (msg) {
+			case "new":
+			{
+				Relation rel = new Relation((Integer) args[0]);
+				rel.give((Integer) args[1]);
+				rel.ip = (Integer) args[2];
+				rel.oip = (Integer) args[3];
 				lsrel.addFirst(rel);
-				setcur(rel);
-			} catch (Notfound e) {
-				setcur(null);
+				return;
 			}
-			return;
-		} else if (msg == "atkc") {
-			atkcs = System.currentTimeMillis() / 1000.0;
-			atkct = atkcs + (((Integer) args[0]) * 0.06);
-			return;
-		} else if (msg == "blk") {
-			blk = n2r((Integer) args[0]);
-			return;
-		} else if (msg == "atk") {
-			batk = n2r((Integer) args[0]);
-			iatk = n2r((Integer) args[1]);
-			return;
-		} else if (msg == "offdef") {
-			off = (Integer) args[0];
-			def = (Integer) args[1];
+			case "del":
+			{
+				Relation rel = getrel((Integer) args[0]);
+				rel.remove();
+				lsrel.remove(rel);
+				if (rel == current) {
+					setcur(null);
+				}
+				return;
+		}
+			case "upd":
+			{
+				Relation rel = getrel((Integer) args[0]);
+				rel.give((Integer) args[1]);
+				rel.ip = (Integer) args[2];
+				rel.oip = (Integer) args[3];
+				return;
+		}
+			case "cur":
+				try {
+					Relation rel = getrel((Integer) args[0]);
+					lsrel.remove(rel);
+					lsrel.addFirst(rel);
+					setcur(rel);
+				} catch (Notfound e) {
+					setcur(null);
+			}
+				return;
+			case "atkc":
+				atkcs = System.currentTimeMillis() / 1000.0;
+				atkct = atkcs + (((Integer) args[0]) * 0.06);
+				return;
+			case "blk":
+				blk = n2r((Integer) args[0]);
+				return;
+			case "atk":
+				batk = n2r((Integer) args[0]);
+				iatk = n2r((Integer) args[1]);
+				return;
+			case "offdef":
+				off = (Integer) args[0];
+				def = (Integer) args[1];
 			return;
 		}
 		super.uimsg(msg, args);

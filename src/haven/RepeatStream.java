@@ -25,7 +25,8 @@
  */
 package haven;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class RepeatStream extends InputStream {
 

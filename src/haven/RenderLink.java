@@ -25,7 +25,7 @@
  */
 package haven;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public interface RenderLink {
 

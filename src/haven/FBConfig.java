@@ -25,11 +25,21 @@
  */
 package haven;
 
-import java.util.*;
-import javax.media.opengl.*;
-import haven.glsl.*;
-import haven.GLProgram.VarID;
 import haven.GLFrameBuffer.Attachment;
+import haven.GLProgram.VarID;
+import haven.glsl.Cons;
+import haven.glsl.Expression;
+import haven.glsl.Macro1;
+import haven.glsl.MiscLib;
+import haven.glsl.ProgramContext;
+import haven.glsl.ShaderMacro;
+import haven.glsl.Tex2D;
+import haven.glsl.Type;
+import haven.glsl.Uniform;
+import java.util.Collection;
+import java.util.LinkedList;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public class FBConfig {
 

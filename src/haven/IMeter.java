@@ -26,7 +26,8 @@
 package haven;
 
 import java.awt.Color;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class IMeter extends Widget {
 

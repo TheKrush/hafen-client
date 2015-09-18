@@ -27,7 +27,10 @@ package haven;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Polity extends Widget {
 
@@ -150,30 +153,36 @@ public class Polity extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "auth") {
-			synchronized (this) {
-				auth = (Integer) args[0];
-				acap = (Integer) args[1];
-				adrain = (Integer) args[2];
-				offline = ((Integer) args[3]) != 0;
-				aseq++;
-			}
-		} else if (msg == "add") {
-			Integer id = (Integer) args[0];
-			Member pm = new Member(id);
-			synchronized (this) {
-				memb.add(pm);
-				idmap.put(id, pm);
-			}
-		} else if (msg == "rm") {
-			Integer id = (Integer) args[0];
-			synchronized (this) {
-				Member pm = idmap.get(id);
-				memb.remove(pm);
-				idmap.remove(id);
-			}
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "auth":
+				synchronized (this) {
+					auth = (Integer) args[0];
+					acap = (Integer) args[1];
+					adrain = (Integer) args[2];
+					offline = ((Integer) args[3]) != 0;
+					aseq++;
+				}	break;
+			case "add":
+			{
+				Integer id = (Integer) args[0];
+				Member pm = new Member(id);
+				synchronized (this) {
+					memb.add(pm);
+					idmap.put(id, pm);
+				}		break;
+				}
+			case "rm":
+				{
+					Integer id = (Integer) args[0];
+					synchronized (this) {
+						Member pm = idmap.get(id);
+						memb.remove(pm);
+						idmap.remove(id);
+			}		break;
+				}
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 

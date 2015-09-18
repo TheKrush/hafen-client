@@ -25,8 +25,8 @@
  */
 package haven;
 
-import java.net.*;
-import java.io.*;
+import java.io.IOException;
+import java.net.URL;
 
 public abstract class BrowserAuth extends AuthClient.Credentials {
 
@@ -40,12 +40,14 @@ public abstract class BrowserAuth extends AuthClient.Credentials {
 		Message rpl = cl.cmd("web", method());
 		String stat = rpl.string();
 		URL url;
-		if (stat.equals("ok")) {
-			url = new URL(rpl.string());
-		} else if (stat.equals("no")) {
-			throw (new AuthException(rpl.string()));
-		} else {
-			throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
+		switch (stat) {
+			case "ok":
+				url = new URL(rpl.string());
+				break;
+			case "no":
+				throw (new AuthException(rpl.string()));
+			default:
+				throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
 		}
 		try {
 			WebBrowser.self.show(url);
@@ -54,12 +56,13 @@ public abstract class BrowserAuth extends AuthClient.Credentials {
 		}
 		rpl = cl.cmd("wait");
 		stat = rpl.string();
-		if (stat.equals("ok")) {
-			return (rpl.string());
-		} else if (stat.equals("no")) {
-			throw (new AuthException(rpl.string()));
-		} else {
-			throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
+		switch (stat) {
+			case "ok":
+				return (rpl.string());
+			case "no":
+				throw (new AuthException(rpl.string()));
+			default:
+				throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
 		}
 	}
 }

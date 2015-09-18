@@ -25,12 +25,13 @@
  */
 package haven;
 
-import java.util.*;
-import java.lang.reflect.*;
+import haven.Composited.ED;
+import haven.Composited.MD;
 import haven.Skeleton.Pose;
 import haven.Skeleton.PoseMod;
-import static haven.Composited.ED;
-import static haven.Composited.MD;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Composite extends Drawable {
 

@@ -25,18 +25,19 @@
  */
 package haven;
 
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import static haven.PUtils.blurmask2;
+import static haven.PUtils.rasterimg;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
-import static haven.PUtils.*;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Window extends Widget implements DTarget {
 
@@ -315,15 +316,20 @@ public class Window extends Widget implements DTarget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "pack") {
-			pack();
-		} else if (msg == "dt") {
-			dt = (Integer) args[0] != 0;
-		} else if (msg == "cap") {
-			String cap = (String) args[0];
-			chcap(cap.isEmpty() ? null : cap);
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "pack":
+				pack();
+				break;
+			case "dt":
+				dt = (Integer) args[0] != 0;
+				break;
+			case "cap":
+				String cap = (String) args[0];
+				chcap(cap.isEmpty() ? null : cap);
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 

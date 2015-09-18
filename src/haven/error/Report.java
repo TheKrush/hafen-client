@@ -25,7 +25,8 @@
  */
 package haven.error;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Report implements java.io.Serializable {
 

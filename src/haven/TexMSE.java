@@ -25,7 +25,7 @@
  */
 package haven;
 
-import javax.media.opengl.*;
+import javax.media.opengl.GL3;
 
 public class TexMSE extends TexMS {
 

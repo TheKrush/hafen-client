@@ -25,8 +25,6 @@
  */
 package haven.glsl;
 
-import java.util.*;
-
 public abstract class Symbol {
 
 	public abstract String name(Context ctx);

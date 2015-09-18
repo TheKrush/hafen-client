@@ -1,15 +1,14 @@
 package haven.res.lib.plants;
 
 import haven.CFG;
+import haven.FastMesh.MeshRes;
 import haven.Message;
 import haven.Resource;
 import haven.Sprite;
-import haven.FastMesh.MeshRes;
 import haven.Sprite.Factory;
 import haven.Sprite.Owner;
 import haven.Sprite.ResourceException;
 import haven.resutil.CSprite;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -26,6 +25,7 @@ public class GrowingPlant implements Factory {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Sprite create(Owner var1, Resource var2, Message var3) {
 		int var4 = var3.uint8();

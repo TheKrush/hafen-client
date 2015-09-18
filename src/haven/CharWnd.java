@@ -25,14 +25,25 @@
  */
 package haven;
 
+import haven.PUtils.BlurFurn;
+import haven.PUtils.Convolution;
+import haven.PUtils.Hanning;
+import haven.PUtils.TexFurn;
+import static haven.PUtils.convolvedown;
+import static haven.PUtils.imgblur;
+import static haven.Window.wbox;
+import haven.resutil.FoodInfo;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.font.TextAttribute;
-import java.util.*;
-import static haven.Window.wbox;
-import static haven.PUtils.*;
-import haven.resutil.FoodInfo;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CharWnd extends Window {
 

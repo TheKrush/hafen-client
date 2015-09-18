@@ -25,10 +25,10 @@
  */
 package haven;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
-import java.util.*;
 import java.lang.reflect.Constructor;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public abstract class Sprite implements Rendered {
 

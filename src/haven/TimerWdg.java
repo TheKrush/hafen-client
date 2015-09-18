@@ -1,8 +1,7 @@
 package haven;
 
-import me.ender.timer.Timer;
-
 import java.util.Date;
+import me.ender.timer.Timer;
 
 public class TimerWdg extends Widget {
 

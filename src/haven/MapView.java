@@ -25,15 +25,21 @@
  */
 package haven;
 
-import static haven.MCache.tilesz;
 import haven.GLProgram.VarID;
-import me.kt.GridOutline;
-
+import static haven.MCache.tilesz;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.util.*;
-import java.lang.reflect.*;
-import javax.media.opengl.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.media.opengl.GL;
+import me.kt.GridOutline;
 
 public class MapView extends PView implements DTarget, Console.Directory {
 
@@ -1272,51 +1278,55 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "place") {
-			int a = 0;
-			Indir<Resource> res = ui.sess.getres((Integer) args[a++]);
-			Message sdt;
-			if ((args.length > a) && (args[a] instanceof byte[])) {
-				sdt = new MessageBuf((byte[]) args[a++]);
-			} else {
-				sdt = Message.nil;
-			}
-			placing = new Plob(res, sdt);
-			while (a < args.length) {
-				Indir<Resource> ores = ui.sess.getres((Integer) args[a++]);
-				Message odt;
+		switch (msg) {
+			case "place":
+				int a = 0;
+				Indir<Resource> res = ui.sess.getres((Integer) args[a++]);
+				Message sdt;
 				if ((args.length > a) && (args[a] instanceof byte[])) {
-					odt = new MessageBuf((byte[]) args[a++]);
+					sdt = new MessageBuf((byte[]) args[a++]);
 				} else {
-					odt = Message.nil;
+					sdt = Message.nil;
+				}	placing = new Plob(res, sdt);
+				while (a < args.length) {
+					Indir<Resource> ores = ui.sess.getres((Integer) args[a++]);
+					Message odt;
+					if ((args.length > a) && (args[a] instanceof byte[])) {
+						odt = new MessageBuf((byte[]) args[a++]);
+					} else {
+						odt = Message.nil;
+					}
+					placing.ols.add(new Gob.Overlay(-1, ores, odt));
+			}	break;
+			case "unplace":
+				placing = null;
+				break;
+			case "move":
+				cc = (Coord) args[0];
+				break;
+			case "flashol":
+				unflashol();
+				olflash = (Integer) args[0];
+				for (int i = 0; i < visol.length; i++) {
+					if ((olflash & (1 << i)) != 0) {
+						visol[i]++;
 				}
-				placing.ols.add(new Gob.Overlay(-1, ores, odt));
-			}
-		} else if (msg == "unplace") {
-			placing = null;
-		} else if (msg == "move") {
-			cc = (Coord) args[0];
-		} else if (msg == "flashol") {
-			unflashol();
-			olflash = (Integer) args[0];
-			for (int i = 0; i < visol.length; i++) {
-				if ((olflash & (1 << i)) != 0) {
-					visol[i]++;
-				}
-			}
-			olftimer = System.currentTimeMillis() + (Integer) args[1];
-		} else if (msg == "sel") {
-			boolean sel = ((Integer) args[0]) != 0;
-			if (sel && (selection == null)) {
-				selection = new Selector();
-			} else if (!sel && (selection != null)) {
-				selection.destroy();
-				selection = null;
-			}
-		} else if (msg == "shake") {
-			shake = ((Number) args[0]).doubleValue();
-		} else {
-			super.uimsg(msg, args);
+			}	olftimer = System.currentTimeMillis() + (Integer) args[1];
+				break;
+			case "sel":
+				boolean sel = ((Integer) args[0]) != 0;
+				if (sel && (selection == null)) {
+					selection = new Selector();
+				} else if (!sel && (selection != null)) {
+					selection.destroy();
+					selection = null;
+			}	break;
+			case "shake":
+				shake = ((Number) args[0]).doubleValue();
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 

@@ -25,7 +25,7 @@
  */
 package haven;
 
-import java.util.*;
+import java.util.Map;
 
 public interface BMap<K, V> extends Map<K, V> {
 

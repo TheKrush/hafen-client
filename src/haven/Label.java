@@ -87,12 +87,16 @@ public class Label extends Widget {
 
 	@Override
 	public void uimsg(String msg, Object... args) {
-		if (msg == "set") {
-			settext((String) args[0]);
-		} else if (msg == "col") {
-			setcolor((Color) args[0]);
-		} else {
-			super.uimsg(msg, args);
+		switch (msg) {
+			case "set":
+				settext((String) args[0]);
+				break;
+			case "col":
+				setcolor((Color) args[0]);
+				break;
+			default:
+				super.uimsg(msg, args);
+				break;
 		}
 	}
 }

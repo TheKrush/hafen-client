@@ -25,17 +25,38 @@
  */
 package haven;
 
-import java.awt.RenderingHints;
-import java.io.*;
-import java.nio.*;
-import java.net.URL;
-import java.lang.reflect.*;
-import java.text.SimpleDateFormat;
-import java.util.prefs.*;
-import java.util.*;
-import java.awt.Graphics;
 import java.awt.Color;
-import java.awt.image.*;
+import java.awt.Graphics;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.prefs.Preferences;
 
 public class Utils {
 
@@ -617,46 +638,49 @@ public class Utils {
 		int i = 0;
 		while (i < text.length()) {
 			char c = text.charAt(i);
-			if (st == "ws") {
-				if (!Character.isWhitespace(c)) {
-					st = "word";
-				} else {
+			switch (st) {
+				case "ws":
+					if (!Character.isWhitespace(c)) {
+						st = "word";
+					} else {
+						i++;
+					}	break;
+				case "word":
+					if (c == '"') {
+						st = "quote";
+						i++;
+					} else if (c == '\\') {
+						st = "squote";
+						i++;
+					} else if (Character.isWhitespace(c)) {
+						words.add(buf.toString());
+						buf = new StringBuilder();
+						st = "ws";
+					} else {
+						buf.append(c);
+						i++;
+					}	break;
+				case "quote":
+					if (c == '"') {
+						st = "word";
+						i++;
+					} else if (c == '\\') {
+						st = "sqquote";
+						i++;
+					} else {
+						buf.append(c);
 					i++;
-				}
-			} else if (st == "word") {
-				if (c == '"') {
+				}	break;
+				case "squote":
+					buf.append(c);
+					i++;
+					st = "word";
+					break;
+				case "sqquote":
+					buf.append(c);
+					i++;
 					st = "quote";
-					i++;
-				} else if (c == '\\') {
-					st = "squote";
-					i++;
-				} else if (Character.isWhitespace(c)) {
-					words.add(buf.toString());
-					buf = new StringBuilder();
-					st = "ws";
-				} else {
-					buf.append(c);
-					i++;
-				}
-			} else if (st == "quote") {
-				if (c == '"') {
-					st = "word";
-					i++;
-				} else if (c == '\\') {
-					st = "sqquote";
-					i++;
-				} else {
-					buf.append(c);
-					i++;
-				}
-			} else if (st == "squote") {
-				buf.append(c);
-				i++;
-				st = "word";
-			} else if (st == "sqquote") {
-				buf.append(c);
-				i++;
-				st = "quote";
+					break;
 			}
 		}
 		if (st == "word") {

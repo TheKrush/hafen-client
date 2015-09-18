@@ -25,15 +25,27 @@
  */
 package haven;
 
-import java.io.*;
-import java.util.*;
-import java.text.*;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.Font;
 import java.awt.Color;
-import java.awt.font.*;
-import static java.text.AttributedCharacterIterator.Attribute;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextHitInfo;
+import java.awt.font.TextLayout;
+import java.awt.font.TextMeasurer;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedCharacterIterator.Attribute;
+import java.text.AttributedString;
+import java.text.CharacterIterator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class RichText extends Text {
 
@@ -468,23 +480,30 @@ public class RichText extends Text {
 				return (new Image(res, id));
 			} else {
 				Map<Attribute, Object> na = new HashMap<>(attrs);
-				if (tn == "font") {
-					na.put(TextAttribute.FAMILY, args[0]);
-					if (args.length > 1) {
-						na.put(TextAttribute.SIZE, Float.parseFloat(args[1]));
-					}
-				} else if (tn == "size") {
-					na.put(TextAttribute.SIZE, Float.parseFloat(args[0]));
-				} else if (tn == "b") {
-					na.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
-				} else if (tn == "i") {
-					na.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
-				} else if (tn == "u") {
-					na.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-				} else if (tn == "col") {
-					na.put(TextAttribute.FOREGROUND, a2col(args));
-				} else if (tn == "bg") {
-					na.put(TextAttribute.BACKGROUND, a2col(args));
+				switch (tn) {
+					case "font":
+						na.put(TextAttribute.FAMILY, args[0]);
+						if (args.length > 1) {
+							na.put(TextAttribute.SIZE, Float.parseFloat(args[1]));
+						}	break;
+					case "size":
+						na.put(TextAttribute.SIZE, Float.parseFloat(args[0]));
+						break;
+					case "b":
+						na.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+						break;
+					case "i":
+						na.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
+						break;
+					case "u":
+						na.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+						break;
+					case "col":
+						na.put(TextAttribute.FOREGROUND, a2col(args));
+						break;
+					case "bg":
+						na.put(TextAttribute.BACKGROUND, a2col(args));
+						break;
 				}
 				if (s.in.peek(true) != '{') {
 					throw (new FormatException("Expected `{', got `" + (char) s.in.peek() + "'"));
@@ -763,50 +782,54 @@ public class RichText extends Text {
 
 	public static void main(String[] args) throws Exception {
 		String cmd = args[0].intern();
-		if (cmd == "render") {
-			Map<Attribute, Object> a = new HashMap<>(std.defattrs);
-			PosixArgs opt = PosixArgs.getopt(args, 1, "aw:f:s:");
-			boolean aa = false;
-			int width = 0;
-			for (char c : opt.parsed()) {
-				if (c == 'a') {
-					aa = true;
-				} else if (c == 'f') {
-					a.put(TextAttribute.FAMILY, opt.arg);
-				} else if (c == 'w') {
-					width = Integer.parseInt(opt.arg);
-				} else if (c == 's') {
-					a.put(TextAttribute.SIZE, Integer.parseInt(opt.arg));
+		switch (cmd) {
+			case "render":
+				{
+					Map<Attribute, Object> a = new HashMap<>(std.defattrs);
+					PosixArgs opt = PosixArgs.getopt(args, 1, "aw:f:s:");
+					boolean aa = false;
+					int width = 0;
+					for (char c : opt.parsed()) {
+						if (c == 'a') {
+							aa = true;
+						} else if (c == 'f') {
+							a.put(TextAttribute.FAMILY, opt.arg);
+						} else if (c == 'w') {
+							width = Integer.parseInt(opt.arg);
+						} else if (c == 's') {
+							a.put(TextAttribute.SIZE, Integer.parseInt(opt.arg));
+						}
+					}		Foundry fnd = new Foundry(a);
+					fnd.aa = aa;
+					RichText t = fnd.render(opt.rest[0], width);
+					java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
+					javax.imageio.ImageIO.write(t.img, "PNG", out);
+					out.close();
+					break;
 				}
-			}
-			Foundry fnd = new Foundry(a);
-			fnd.aa = aa;
-			RichText t = fnd.render(opt.rest[0], width);
-			java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
-			javax.imageio.ImageIO.write(t.img, "PNG", out);
-			out.close();
-		} else if (cmd == "pagina") {
-			PosixArgs opt = PosixArgs.getopt(args, 1, "aw:");
-			boolean aa = false;
-			int width = 0;
-			for (char c : opt.parsed()) {
-				if (c == 'a') {
-					aa = true;
-				} else if (c == 'w') {
-					width = Integer.parseInt(opt.arg);
+			case "pagina":
+			{
+				PosixArgs opt = PosixArgs.getopt(args, 1, "aw:");
+				boolean aa = false;
+				int width = 0;
+				for (char c : opt.parsed()) {
+					if (c == 'a') {
+						aa = true;
+					} else if (c == 'w') {
+						width = Integer.parseInt(opt.arg);
 				}
-			}
-			Foundry fnd = new Foundry();
-			fnd.aa = aa;
-			Resource res = Resource.local().loadwait(opt.rest[0]);
-			Resource.Pagina p = res.layer(Resource.pagina);
-			if (p == null) {
-				throw (new Exception("No pagina in " + res + ", loaded from " + res.source));
-			}
-			RichText t = fnd.render(p.text, width);
-			java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
-			javax.imageio.ImageIO.write(t.img, "PNG", out);
-			out.close();
+				}		Foundry fnd = new Foundry();
+				fnd.aa = aa;
+				Resource res = Resource.local().loadwait(opt.rest[0]);
+				Resource.Pagina p = res.layer(Resource.pagina);
+				if (p == null) {
+					throw (new Exception("No pagina in " + res + ", loaded from " + res.source));
+				}		RichText t = fnd.render(p.text, width);
+				java.io.OutputStream out = new java.io.FileOutputStream(opt.rest[1]);
+				javax.imageio.ImageIO.write(t.img, "PNG", out);
+				out.close();
+					break;
+				}
 		}
 	}
 }

@@ -25,8 +25,14 @@
  */
 package haven;
 
-import haven.glsl.*;
-import static haven.glsl.Cons.*;
+import static haven.glsl.Cons.add;
+import static haven.glsl.Cons.l;
+import static haven.glsl.Cons.mul;
+import static haven.glsl.Cons.vec4;
+import haven.glsl.Expression;
+import haven.glsl.MiscLib;
+import haven.glsl.ProgramContext;
+import haven.glsl.ShaderMacro;
 
 public class RenderedNormals extends FBConfig.RenderTarget {
 

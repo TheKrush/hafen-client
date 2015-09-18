@@ -25,8 +25,12 @@
  */
 package haven;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
 import java.security.MessageDigest;
 
 public class AuthClient {
@@ -65,26 +69,28 @@ public class AuthClient {
 	public String trypasswd(String user, byte[] phash) throws IOException {
 		Message rpl = cmd("pw", user, phash);
 		String stat = rpl.string();
-		if (stat.equals("ok")) {
-			String acct = rpl.string();
-			return (acct);
-		} else if (stat.equals("no")) {
-			return (null);
-		} else {
-			throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
+		switch (stat) {
+			case "ok":
+				String acct = rpl.string();
+				return (acct);
+			case "no":
+				return (null);
+			default:
+				throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
 		}
 	}
 
 	public String trytoken(String user, byte[] token) throws IOException {
 		Message rpl = cmd("token", user, token);
 		String stat = rpl.string();
-		if (stat.equals("ok")) {
-			String acct = rpl.string();
-			return (acct);
-		} else if (stat.equals("no")) {
-			return (null);
-		} else {
-			throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
+		switch (stat) {
+			case "ok":
+				String acct = rpl.string();
+				return (acct);
+			case "no":
+				return (null);
+			default:
+				throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
 		}
 	}
 
@@ -216,14 +222,15 @@ public class AuthClient {
 		public String tryauth(AuthClient cl) throws IOException {
 			Message rpl = cl.cmd("pw", username, phash);
 			String stat = rpl.string();
-			if (stat.equals("ok")) {
-				String acct = rpl.string();
-				return (acct);
-			} else if (stat.equals("no")) {
-				String err = rpl.string();
-				throw (new AuthException(err));
-			} else {
-				throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
+			switch (stat) {
+				case "ok":
+					String acct = rpl.string();
+					return (acct);
+				case "no":
+					String err = rpl.string();
+					throw (new AuthException(err));
+				default:
+					throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
 			}
 		}
 
@@ -259,14 +266,15 @@ public class AuthClient {
 		public String tryauth(AuthClient cl) throws IOException {
 			Message rpl = cl.cmd("token", acctname, token);
 			String stat = rpl.string();
-			if (stat.equals("ok")) {
-				String acct = rpl.string();
-				return (acct);
-			} else if (stat.equals("no")) {
-				String err = rpl.string();
-				throw (new AuthException(err));
-			} else {
-				throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
+			switch (stat) {
+				case "ok":
+					String acct = rpl.string();
+					return (acct);
+				case "no":
+					String err = rpl.string();
+					throw (new AuthException(err));
+				default:
+					throw (new RuntimeException("Unexpected reply `" + stat + "' from auth server"));
 			}
 		}
 	}

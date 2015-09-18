@@ -25,10 +25,13 @@
  */
 package haven;
 
-import java.util.*;
+import haven.MorphedMesh.Morpher;
 import haven.Skeleton.Pose;
 import haven.Skeleton.PoseMod;
-import haven.MorphedMesh.Morpher;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 

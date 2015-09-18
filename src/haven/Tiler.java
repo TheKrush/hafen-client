@@ -25,12 +25,16 @@
  */
 package haven;
 
-import java.util.*;
-import java.lang.reflect.*;
-import java.lang.annotation.*;
-import haven.Resource.Tile;
-import haven.Surface.Vertex;
 import haven.Surface.MeshVertex;
+import haven.Surface.Vertex;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Constructor;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
 
 public abstract class Tiler {
 

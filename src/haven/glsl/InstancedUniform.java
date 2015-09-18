@@ -25,13 +25,16 @@
  */
 package haven.glsl;
 
-import java.util.*;
-import java.nio.*;
-import javax.media.opengl.*;
-import haven.*;
-import haven.GLState.Slot;
-import haven.GLState.Buffer;
+import haven.BGL;
+import haven.GLBuffer;
 import haven.GLProgram.VarID;
+import haven.GLState.Buffer;
+import haven.GLState.Slot;
+import haven.GOut;
+import haven.Matrix4f;
+import java.nio.FloatBuffer;
+import java.util.List;
+import javax.media.opengl.GL;
 
 public abstract class InstancedUniform {
 

@@ -25,12 +25,22 @@
  */
 package haven;
 
-import java.awt.Color;
-import java.util.*;
-import java.lang.annotation.*;
-import java.lang.reflect.*;
-import javax.media.opengl.*;
 import static haven.Utils.c2fa;
+import java.awt.Color;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public class Material extends GLState {
 
@@ -183,22 +193,23 @@ public class Material extends GLState {
 		@Override
 		public GLState cons(Resource res, Object... args) {
 			String nm = (String) args[0];
-			if (nm.equals("first")) {
-				return (Rendered.first);
-			} else if (nm.equals("last")) {
-				return (Rendered.last);
-			} else if (nm.equals("pfx")) {
-				return (Rendered.postpfx);
-			} else if (nm.equals("eye")) {
-				return (Rendered.eyesort);
-			} else if (nm.equals("earlyeye")) {
-				return (Rendered.eeyesort);
-			} else if (nm.equals("premap")) {
-				return (MapMesh.premap);
-			} else if (nm.equals("postmap")) {
-				return (MapMesh.postmap);
-			} else {
-				throw (new Resource.LoadException("Unknown draw order: " + nm, res));
+			switch (nm) {
+				case "first":
+					return (Rendered.first);
+				case "last":
+					return (Rendered.last);
+				case "pfx":
+					return (Rendered.postpfx);
+				case "eye":
+					return (Rendered.eyesort);
+				case "earlyeye":
+					return (Rendered.eeyesort);
+				case "premap":
+					return (MapMesh.premap);
+				case "postmap":
+					return (MapMesh.postmap);
+				default:
+					throw (new Resource.LoadException("Unknown draw order: " + nm, res));
 			}
 		}
 	}
@@ -316,65 +327,79 @@ public class Material extends GLState {
 			GLState light = Light.deflight;
 			while (!buf.eom()) {
 				String thing = buf.string().intern();
-				if (thing == "col") {
-					Color amb = col(buf);
-					Color dif = col(buf);
-					Color spc = col(buf);
-					double shine = buf.cpfloat();
-					Color emi = col(buf);
-					ret.states.add(new Colors(amb, dif, spc, emi, (float) shine));
-				} else if (thing == "linear") {
-					ret.linear = true;
-				} else if (thing == "mipmap") {
-					ret.mipmap = true;
-				} else if (thing == "nofacecull") {
-					ret.states.add(nofacecull);
-				} else if (thing == "tex") {
-					final int tid = buf.uint16();
-					ret.left.add(new Res.Resolver() {
-						@Override
-						public void resolve(Collection<GLState> buf) {
-							for (Resource.Image img : res.layers(Resource.imgc)) {
-								if (img.id == tid) {
-									buf.add(img.tex().draw());
-									buf.add(img.tex().clip());
-									return;
+				switch (thing) {
+					case "col":
+						Color amb = col(buf);
+						Color dif = col(buf);
+						Color spc = col(buf);
+						double shine = buf.cpfloat();
+						Color emi = col(buf);
+						ret.states.add(new Colors(amb, dif, spc, emi, (float) shine));
+						break;
+					case "linear":
+						ret.linear = true;
+						break;
+					case "mipmap":
+						ret.mipmap = true;
+						break;
+					case "nofacecull":
+						ret.states.add(nofacecull);
+						break;
+					case "tex":
+						{
+							final int tid = buf.uint16();
+							ret.left.add(new Res.Resolver() {
+								@Override
+								public void resolve(Collection<GLState> buf) {
+									for (Resource.Image img : res.layers(Resource.imgc)) {
+										if (img.id == tid) {
+											buf.add(img.tex().draw());
+											buf.add(img.tex().clip());
+											return;
+										}
+									}
+									throw (new RuntimeException(String.format("Specified texture %d not found in %s", tid, res)));
 								}
-							}
-							throw (new RuntimeException(String.format("Specified texture %d not found in %s", tid, res)));
+							});	break;
 						}
-					});
-				} else if (thing == "texlink") {
-					final String nm = buf.string();
-					final int ver = buf.uint16();
-					final int tid = buf.uint16();
-					ret.left.add(new Res.Resolver() {
-						@Override
-						public void resolve(Collection<GLState> buf) {
-							Indir<Resource> tres = res.pool.load(nm, ver);
-							for (Resource.Image img : tres.get().layers(Resource.imgc)) {
-								if (img.id == tid) {
-									buf.add(img.tex().draw());
-									buf.add(img.tex().clip());
-									return;
+					case "texlink":
+					{
+						final String nm = buf.string();
+						final int ver = buf.uint16();
+						final int tid = buf.uint16();
+						ret.left.add(new Res.Resolver() {
+							@Override
+							public void resolve(Collection<GLState> buf) {
+								Indir<Resource> tres = res.pool.load(nm, ver);
+								for (Resource.Image img : tres.get().layers(Resource.imgc)) {
+									if (img.id == tid) {
+										buf.add(img.tex().draw());
+										buf.add(img.tex().clip());
+										return;
+									}
 								}
-							}
-							throw (new RuntimeException(String.format("Specified texture %d for %s not found in %s", tid, res, tres)));
+								throw (new RuntimeException(String.format("Specified texture %d for %s not found in %s", tid, res, tres)));
 						}
-					});
-				} else if (thing == "light") {
-					String l = buf.string();
-					if (l.equals("pv")) {
-						light = Light.vlights;
-					} else if (l.equals("pp")) {
-						light = Light.plights;
-					} else if (l.equals("n")) {
-						light = null;
-					} else {
-						throw (new Resource.LoadException("Unknown lighting type: " + thing, res));
+					});	break;
 					}
-				} else {
-					throw (new Resource.LoadException("Unknown material part: " + thing, res));
+					case "light":
+						String l = buf.string();
+						switch (l) {
+							case "pv":
+								light = Light.vlights;
+								break;
+							case "pp":
+								light = Light.plights;
+								break;
+							case "n":
+								light = null;
+								break;
+							default:
+								throw (new Resource.LoadException("Unknown lighting type: " + thing, res));
+						}
+						break;
+					default:
+						throw (new Resource.LoadException("Unknown material part: " + thing, res));
 				}
 			}
 			if (light != null) {
@@ -500,19 +525,22 @@ public class Material extends GLState {
 			while (!buf.eom()) {
 				String nm = buf.string();
 				Object[] args = buf.list();
-				if (nm.equals("linear")) {
-					/* XXX: These should very much be removed and
-					 * specified directly in the texture layer
-					 * instead. */
-					ret.linear = true;
-				} else if (nm.equals("mipmap")) {
-					ret.mipmap = true;
-				} else {
-					ResCons2 cons = rnames.get(nm);
-					if (cons == null) {
-						throw (new Resource.LoadException("Unknown material part name: " + nm, res));
-					}
-					ret.left.add(cons.cons(res, args));
+				switch (nm) {
+					case "linear":
+						/* XXX: These should very much be removed and
+						* specified directly in the texture layer
+						* instead. */
+						ret.linear = true;
+						break;
+					case "mipmap":
+						ret.mipmap = true;
+						break;
+					default:
+						ResCons2 cons = rnames.get(nm);
+						if (cons == null) {
+							throw (new Resource.LoadException("Unknown material part name: " + nm, res));
+						}	ret.left.add(cons.cons(res, args));
+						break;
 				}
 			}
 			return (ret);

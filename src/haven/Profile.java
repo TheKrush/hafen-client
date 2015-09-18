@@ -25,9 +25,8 @@
  */
 package haven;
 
-import java.awt.Graphics2D;
 import java.awt.Color;
-import java.util.*;
+import java.awt.Graphics2D;
 
 public abstract class Profile {
 

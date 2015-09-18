@@ -25,9 +25,10 @@
  */
 package haven;
 
-import java.util.*;
-import java.nio.*;
-import java.lang.ref.*;
+import java.nio.FloatBuffer;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class MorphedMesh extends FastMesh {
 

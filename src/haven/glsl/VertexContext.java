@@ -25,8 +25,11 @@
  */
 package haven.glsl;
 
-import haven.*;
 import haven.GLProgram.VarID;
+import haven.GLState;
+import haven.GOut;
+import haven.Matrix4f;
+import haven.PView;
 
 public class VertexContext extends ShaderContext {
 

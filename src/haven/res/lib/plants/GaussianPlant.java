@@ -4,14 +4,13 @@
 //
 package haven.res.lib.plants;
 
+import haven.FastMesh.MeshRes;
 import haven.Message;
 import haven.Resource;
 import haven.Sprite;
-import haven.FastMesh.MeshRes;
 import haven.Sprite.Factory;
 import haven.Sprite.Owner;
 import haven.resutil.CSprite;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -27,6 +26,7 @@ public class GaussianPlant implements Factory {
 		this.r = var3;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Sprite create(Owner var1, Resource var2, Message var3) {
 		ArrayList var4 = new ArrayList(var2.layers(MeshRes.class));

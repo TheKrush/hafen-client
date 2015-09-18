@@ -1,7 +1,9 @@
 package haven;
 
-import static haven.Inventory.*;
+import static haven.Inventory.invsq;
+import static haven.Inventory.invsz;
 import static haven.Inventory.sqoff;
+import static haven.Inventory.sqroff;
 import java.awt.Color;
 
 public class EquipProxy extends Widget implements DTarget {

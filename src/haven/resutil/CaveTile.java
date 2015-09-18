@@ -25,11 +25,17 @@
  */
 package haven.resutil;
 
-import java.util.*;
-import haven.*;
-import haven.Resource.Tile;
+import haven.Coord;
+import haven.Coord3f;
+import haven.MapMesh;
 import haven.MapMesh.Scan;
+import haven.Material;
+import haven.MeshBuf;
+import haven.Resource;
+import haven.Surface;
 import haven.Surface.Vertex;
+import haven.Tiler;
+import java.util.Random;
 
 public class CaveTile extends Tiler {
 

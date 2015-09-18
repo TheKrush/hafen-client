@@ -25,8 +25,6 @@
  */
 package haven;
 
-import javax.media.opengl.*;
-
 public class Projection extends Transform {
 
 	private Matrix4f bk;

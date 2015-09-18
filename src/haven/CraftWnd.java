@@ -1,8 +1,7 @@
 package haven;
 
 import haven.Glob.Pagina;
-
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.LinkedList;
