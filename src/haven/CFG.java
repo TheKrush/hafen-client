@@ -32,6 +32,7 @@ public enum CFG {
 	MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
 	MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
 	MINIMAP_PLAYERS("ui.minimap.players", true),
+	MENU_SINGLE_CTRL_CLICK("ui.menu_single_ctrl_click", true),
 	UI_ACTION_PROGRESS_PERCENTAGE("ui.action.progress.percentage", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
