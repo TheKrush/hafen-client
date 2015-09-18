@@ -529,9 +529,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		this.glob = glob;
 		this.cc = cc;
 		this.plgob = plgob;
-		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
 		setcanfocus(true);
-		updategrid();
+		initgrid();
 	}
 
 	public boolean visol(int ol) {
@@ -596,8 +595,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		private GLState olmat(int r, int g, int b, int a) {
 			return (new Material(Light.deflight,
-							new Material.Colors(Color.BLACK, new Color(0, 0, 0, a), Color.BLACK, new Color(r, g, b, 255), 0),
-							States.presdepth));
+					new Material.Colors(Color.BLACK, new Color(0, 0, 0, a), Color.BLACK, new Color(r, g, b, 255), 0),
+					States.presdepth));
 		}
 
 		@Override
@@ -822,8 +821,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		protected Color newcol(T t) {
 			int cr = ((i & 0x00000f) << 4) | ((i & 0x00f000) >> 12),
-							cg = ((i & 0x0000f0) << 0) | ((i & 0x0f0000) >> 16),
-							cb = ((i & 0x000f00) >> 4) | ((i & 0xf00000) >> 20);
+					cg = ((i & 0x0000f0) << 0) | ((i & 0x0f0000) >> 16),
+					cb = ((i & 0x000f00) >> 4) | ((i & 0xf00000) >> 20);
 			Color col = new Color(cr, cg, cb);
 			i++;
 			rmap.put(col, t);
@@ -1140,7 +1139,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			poldraw(g);
 			partydraw(g);
 			glob.map.reqarea(cc.div(tilesz).sub(MCache.cutsz.mul(view + 1)),
-							cc.div(tilesz).add(MCache.cutsz.mul(view + 1)));
+					cc.div(tilesz).add(MCache.cutsz.mul(view + 1)));
 			updategrid(false);
 		} catch (Loading e) {
 			lastload = e;
@@ -1831,15 +1830,24 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public void togglegrid() {
 		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
 		if (CFG.DISPLAY_GRID.valb()) {
-			updategrid();
+			initgrid();
+		} else {
+			this.gridol = null;
 		}
 	}
 
-	public void updategrid() {
+	public void initgrid() {
+		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
 		updategrid(true);
 	}
 
 	public void updategrid(boolean force) {
+		if (!CFG.DISPLAY_GRID.valb()) {
+			return;
+		}
+		if (this.gridol == null) {
+			initgrid();
+		}
 		if (force) {
 			Coord tc = cc.div(tilesz);
 			lasttc = tc.div(MCache.cmaps);
@@ -1847,7 +1855,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
 		} else {
 			Coord tc = cc.div(MCache.tilesz);
-			if (tc.manhattan2(lasttc) > 20 || lastGridUpdate < glob.map.lastMapUpdate) {
+			if (tc.manhattan2(lasttc) > 20) {// || lastGridUpdate < glob.map.lastMapUpdate) {
 				lasttc = tc;
 				lastGridUpdate = glob.map.lastMapUpdate;
 				gridol.update(tc.sub(MCache.cutsz.mul(view + 1)));
