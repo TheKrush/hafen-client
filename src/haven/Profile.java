@@ -69,9 +69,9 @@ public abstract class Profile {
 				if (i > 0) {
 					buf.append(", ");
 				}
-				buf.append(nm[i] + ": " + prt[i]);
+				buf.append(nm[i]).append(": ").append(prt[i]);
 			}
-			buf.append(", total: " + total);
+			buf.append(", total: ").append(total);
 			return (buf.toString());
 		}
 	}

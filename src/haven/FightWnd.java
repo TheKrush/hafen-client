@@ -58,8 +58,8 @@ public class FightWnd extends Widget {
 		public String rendertext() {
 			StringBuilder buf = new StringBuilder();
 			Resource res = this.res.get();
-			buf.append("$img[" + res.name + "]\n\n");
-			buf.append("$b{$font[serif,16]{" + res.layer(Resource.tooltip).t + "}}\n\n");
+			buf.append("$img[").append(res.name).append("]\n\n");
+			buf.append("$b{$font[serif,16]{").append(res.layer(Resource.tooltip).t).append("}}\n\n");
 			Resource.Pagina pag = res.layer(Resource.pagina);
 			if (pag != null) {
 				buf.append(pag.text);

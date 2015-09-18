@@ -161,7 +161,7 @@ public class HtmlReporter {
 		buf.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n");
 		buf.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\">\n");
 		buf.append("<head>\n");
-		buf.append("<title>" + title + "</title>\n");
+		buf.append("<title>").append(title).append("</title>\n");
 		buf.append("<link rel=\"stylesheet\" title=\"Haven error report\" type=\"text/css\" href=\"base.css\" />");
 		buf.append("</head>\n");
 		buf.append("<body>\n");
@@ -228,10 +228,10 @@ public class HtmlReporter {
 				buf.append("\"");
 			}
 			buf.append(">");
-			buf.append("<td>" + htmlq(e.getClassName()) + "</td>");
-			buf.append("<td>" + htmlq(e.getMethodName()) + "</td>");
-			buf.append("<td>" + htmlq(e.getFileName()) + "</td>");
-			buf.append("<td>" + htmlq(Integer.toString(e.getLineNumber())) + "</td>");
+			buf.append("<td>").append(htmlq(e.getClassName())).append("</td>");
+			buf.append("<td>").append(htmlq(e.getMethodName())).append("</td>");
+			buf.append("<td>").append(htmlq(e.getFileName())).append("</td>");
+			buf.append("<td>").append(htmlq(Integer.toString(e.getLineNumber()))).append("</td>");
 			buf.append("</tr>\n");
 		}
 		buf.append("<table>\n");

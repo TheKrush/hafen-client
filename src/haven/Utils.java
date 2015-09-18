@@ -1294,7 +1294,7 @@ public class Utils {
 							|| ((c >= '0') && (c <= '9')) || (c == '.')) {
 				buf.append((char) c);
 			} else {
-				buf.append("%" + Utils.num2hex((c & 0xf0) >> 4) + Utils.num2hex(c & 0x0f));
+				buf.append("%").append(Utils.num2hex((c & 0xf0) >> 4)).append(Utils.num2hex(c & 0x0f));
 			}
 		}
 		return (buf.toString());

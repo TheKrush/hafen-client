@@ -143,7 +143,7 @@ public abstract class GLShader implements java.io.Serializable {
 					d = d.intern();
 					directive(d, a);
 				} else {
-					buf.append(ln + "\n");
+					buf.append(ln).append("\n");
 				}
 			}
 		}

@@ -824,9 +824,9 @@ public class CharWnd extends Window {
 		public String rendertext() {
 			StringBuilder buf = new StringBuilder();
 			Resource res = this.res.get();
-			buf.append("$img[" + res.name + "]\n\n");
-			buf.append("$b{$font[serif,16]{" + res.layer(Resource.tooltip).t + "}}\n\n\n");
-			buf.append("Cost: " + cost + "\n\n");
+			buf.append("$img[").append(res.name).append("]\n\n");
+			buf.append("$b{$font[serif,16]{").append(res.layer(Resource.tooltip).t).append("}}\n\n\n");
+			buf.append("Cost: ").append(cost).append("\n\n");
 			buf.append(res.layer(Resource.pagina).text);
 			return (buf.toString());
 		}
@@ -858,10 +858,10 @@ public class CharWnd extends Window {
 		public String rendertext() {
 			StringBuilder buf = new StringBuilder();
 			Resource res = this.res.get();
-			buf.append("$img[" + res.name + "]\n\n");
-			buf.append("$b{$font[serif,16]{" + res.layer(Resource.tooltip).t + "}}\n\n\n");
+			buf.append("$img[").append(res.name).append("]\n\n");
+			buf.append("$b{$font[serif,16]{").append(res.layer(Resource.tooltip).t).append("}}\n\n\n");
 			if (score > 0) {
-				buf.append("Experience points: " + Utils.thformat(score) + "\n\n");
+				buf.append("Experience points: ").append(Utils.thformat(score)).append("\n\n");
 			}
 			buf.append(res.layer(Resource.pagina).text);
 			return (buf.toString());
@@ -924,8 +924,8 @@ public class CharWnd extends Window {
 			public String rendertext() {
 				StringBuilder buf = new StringBuilder();
 				Resource res = this.res.get();
-				buf.append("$img[" + res.name + "]\n\n");
-				buf.append("$b{$font[serif,16]{" + res.layer(Resource.tooltip).t + "}}\n\n\n");
+				buf.append("$img[").append(res.name).append("]\n\n");
+				buf.append("$b{$font[serif,16]{").append(res.layer(Resource.tooltip).t).append("}}\n\n\n");
 				buf.append(res.layer(Resource.pagina).text);
 				return (buf.toString());
 			}
