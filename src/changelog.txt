@@ -15,6 +15,7 @@ $size[13]{$b{2015-09-17}}
  - Move map fingerprints to per session
  - Map saving no longer occurs on session thread
  - Added LP/XP to Curiosity tooltip
+ - added autochoose menu options (Options->UI Settings) $i{(ender's client)}
 
 $size[13]{$b{2015-09-16}}
  - Added options to display specific boulder/bush/tree on minimap $i{(romov's client)}

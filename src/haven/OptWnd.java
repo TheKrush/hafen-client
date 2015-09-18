@@ -798,6 +798,31 @@ public class OptWnd extends Window {
 		y += 15;
 		panel.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
 
+		x += 225;
+		y = 0;
+
+		panel.add(new CFGCheckBox("Single item CTRL choose", CFG.MENU_SINGLE_CTRL_CLICK, "If checked, will automatically select single item menus if CTRL is pressed when menu is opened"), x, y);
+		y += 25;
+		panel.add(new CFGLabel("Choose menu items to select automatically"), x, y);
+		y += 15;
+		final FlowerList list = panel.add(new FlowerList(), x, y);
+		y += list.sz.y + 5;
+		final TextEntry value = panel.add(new TextEntry(150, "") {
+			@Override
+			public void activate(String text) {
+				list.add(text);
+				settext("");
+			}
+		}, x, y);
+		x += value.sz.x + 5;
+		panel.add(new Button(45, "Add") {
+			@Override
+			public void click() {
+				list.add(value.text);
+				value.settext("");
+			}
+		}, x, y - 2);
+
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
 		y = panel.sz.y + 35;
@@ -868,6 +893,10 @@ public class OptWnd extends Window {
 
 		public CFGHSlider(String lbl, CFG cfg, String tip) {
 			this(lbl, cfg, tip, 200, 0, 1000, 0);
+		}
+
+		public CFGHSlider(String lbl, CFG cfg, String tip, int w) {
+			this(lbl, cfg, tip, w, 0, 1000, 0);
 		}
 
 		public CFGHSlider(String lbl, CFG cfg, String tip, int w, int min, int max, int val) {
