@@ -288,7 +288,7 @@ public class MeshAnim {
 				id = buf.int16();
 				rnd = buf.uint8() != 0;
 				float len = buf.float32();
-				List<Frame> frames = new LinkedList<Frame>();
+				List<Frame> frames = new LinkedList<>();
 				while (true) {
 					int t = buf.uint8();
 					if (t == 0) {

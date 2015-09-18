@@ -30,7 +30,7 @@ import static haven.glsl.Cons.*;
 
 public class RenderedNormals extends FBConfig.RenderTarget {
 
-	private static final IntMap<ShaderMacro[]> shcache = new IntMap<ShaderMacro[]>();
+	private static final IntMap<ShaderMacro[]> shcache = new IntMap<>();
 
 	private static ShaderMacro[] code(final int id) {
 		ShaderMacro[] ret = shcache.get(id);
@@ -54,7 +54,7 @@ public class RenderedNormals extends FBConfig.RenderTarget {
 		return (ret);
 	}
 
-	public static final GLState.Slot<GLState> slot = new GLState.Slot<GLState>(GLState.Slot.Type.SYS, GLState.class, GLFrameBuffer.slot, States.presdepth.slot);
+	public static final GLState.Slot<GLState> slot = new GLState.Slot<>(GLState.Slot.Type.SYS, GLState.class, GLFrameBuffer.slot, States.presdepth.slot);
 
 	@Override
 	public GLState state(final FBConfig cfg, final int id) {

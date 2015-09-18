@@ -35,7 +35,7 @@ public class RenderList {
 	private int cur = 0;
 	private Slot curp = null;
 	private GLState.Global[] gstates = new GLState.Global[0];
-	private static final ThreadLocal<RenderList> curref = new ThreadLocal<RenderList>();
+	private static final ThreadLocal<RenderList> curref = new ThreadLocal<>();
 
 	public class Slot {
 
@@ -205,7 +205,7 @@ public class RenderList {
 
 	private GLState.Global[] getgstates() {
 		/* This is probably a fast way to intern the states. */
-		IdentityHashMap<GLState.Global, GLState.Global> gstates = new IdentityHashMap<GLState.Global, GLState.Global>(this.gstates.length);
+		IdentityHashMap<GLState.Global, GLState.Global> gstates = new IdentityHashMap<>(this.gstates.length);
 		for (int i = 0; i < dbc.length; i++) {
 			dbc[i] = null;
 		}
@@ -299,7 +299,7 @@ public class RenderList {
 	}
 
 	public int drawn, instanced, instancified;
-	private final List<GLState.Buffer> instbuf = new ArrayList<GLState.Buffer>();
+	private final List<GLState.Buffer> instbuf = new ArrayList<>();
 
 	public void render(GOut g) {
 		for (GLState.Global gs : gstates) {

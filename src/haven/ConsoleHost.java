@@ -34,7 +34,7 @@ public abstract class ConsoleHost extends Widget {
 	LineEdit cmdline = null;
 	private Text.Line cmdtext = null;
 	private String cmdtextf = null;
-	private List<String> history = new ArrayList<String>();
+	private List<String> history = new ArrayList<>();
 	private int hpos = history.size();
 	private String hcurrent;
 	private UI.Grab kg;

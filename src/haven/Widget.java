@@ -43,7 +43,7 @@ public class Widget {
 	public Indir<Resource> cursor = null;
 	public Object tooltip = null;
 	private Widget prevtt;
-	static Map<String, Factory> types = new TreeMap<String, Factory>();
+	static Map<String, Factory> types = new TreeMap<>();
 
 	@dolda.jglob.Discoverable
 	@Target(ElementType.TYPE)
@@ -88,7 +88,7 @@ public class Widget {
 		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Widget ret = new Widget(parent.sz) {
-				Collection<Widget> fill = new ArrayList<Widget>();
+				Collection<Widget> fill = new ArrayList<>();
 
 				@Override
 				public void presize() {
@@ -277,7 +277,7 @@ public class Widget {
 
 	private Coord relpos(String spec, Object self, Object[] args, int off) {
 		int i = 0;
-		Stack<Object> st = new Stack<Object>();
+		Stack<Object> st = new Stack<>();
 		while (i < spec.length()) {
 			char op = spec.charAt(i++);
 			if (Character.isDigit(op)) {
@@ -1106,8 +1106,8 @@ public class Widget {
 		return (true);
 	}
 
-	public final Collection<Anim> anims = new LinkedList<Anim>();
-	public final Collection<Anim> nanims = new LinkedList<Anim>();
+	public final Collection<Anim> anims = new LinkedList<>();
+	public final Collection<Anim> nanims = new LinkedList<>();
 
 	public <T extends Anim> void clearanims(Class<T> type) {
 		for (Iterator<Anim> i = nanims.iterator(); i.hasNext();) {

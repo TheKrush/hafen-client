@@ -128,7 +128,7 @@ public class PoseMorph implements Morpher.Factory {
 			}
 			FloatBuffer bw = Utils.wfbuf(nv * mba);
 			byte[] na = new byte[nv];
-			List<String> bones = new LinkedList<String>();
+			List<String> bones = new LinkedList<>();
 			while (true) {
 				String bone = buf.string();
 				if (bone.length() == 0) {

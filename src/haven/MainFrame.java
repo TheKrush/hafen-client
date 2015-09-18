@@ -109,7 +109,7 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		return (prefs != null);
 	}
 
-	private Map<String, Console.Command> cmdmap = new TreeMap<String, Console.Command>();
+	private Map<String, Console.Command> cmdmap = new TreeMap<>();
 
 	{
 		cmdmap.put("sz", new Console.Command() {
@@ -360,8 +360,8 @@ public class MainFrame extends java.awt.Frame implements Runnable, Console.Direc
 		}
 		cblf.setAccessible(true);
 		lf.setAccessible(true);
-		Set<Object> loaders = new HashSet<Object>();
-		Stack<Object> open = new Stack<Object>();
+		Set<Object> loaders = new HashSet<>();
+		Stack<Object> open = new Stack<>();
 		open.push(cl);
 		while (!open.empty()) {
 			Object cur = open.pop();

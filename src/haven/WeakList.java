@@ -30,7 +30,7 @@ import java.lang.ref.*;
 
 public class WeakList<T> extends AbstractCollection<T> {
 
-	private final ReferenceQueue<T> cleanq = new ReferenceQueue<T>();
+	private final ReferenceQueue<T> cleanq = new ReferenceQueue<>();
 	private Entry<T> head = null;
 
 	private void clean() {
@@ -85,7 +85,7 @@ public class WeakList<T> extends AbstractCollection<T> {
 
 	public Entry<T> add2(T e) {
 		clean();
-		Entry<T> n = new Entry<T>(e, this);
+		Entry<T> n = new Entry<>(e, this);
 		n.link();
 		return (n);
 	}

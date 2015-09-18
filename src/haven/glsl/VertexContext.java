@@ -36,7 +36,7 @@ public class VertexContext extends ShaderContext {
 
 	public final Function.Def main = new Function.Def(Type.VOID, new Symbol.Fix("main"));
 	public final ValBlock mainvals = new ValBlock();
-	private final OrderList<CodeMacro> code = new OrderList<CodeMacro>();
+	private final OrderList<CodeMacro> code = new OrderList<>();
 
 	{
 		code.add(new CodeMacro() {

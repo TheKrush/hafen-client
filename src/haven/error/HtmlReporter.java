@@ -200,7 +200,7 @@ public class HtmlReporter {
 		buf.append("<table class=\"bt\">\n");
 		buf.append("<tr><th>Class</th><th>Function</th><th>File</th><th>Line</th></tr>\n");
 		for (StackTraceElement e : bt) {
-			List<String> classes = new LinkedList<String>();
+			List<String> classes = new LinkedList<>();
 			String pkg = e.getClassName();
 			if (pkg != null) {
 				if (pkg.startsWith("javax.media.opengl.") || pkg.startsWith("com.sun.opengl.")) {
@@ -247,7 +247,7 @@ public class HtmlReporter {
 		out.println("<h2>Properties</h2>");
 		out.println("<table>");
 		out.println("<tr><th>Name</th><th>Value</th>");
-		SortedSet<String> keys = new TreeSet<String>(rep.props.keySet());
+		SortedSet<String> keys = new TreeSet<>(rep.props.keySet());
 		for (String key : keys) {
 			Object val = rep.props.get(key);
 			String vals;
@@ -294,12 +294,12 @@ public class HtmlReporter {
 		out.print(htmlhead("Error Index"));
 		out.println("<h1>Error Index</h1>");
 
-		Set<String> props = new TreeSet<String>();
+		Set<String> props = new TreeSet<>();
 		for (String pn : idxprops) {
 			props.add(pn);
 		}
 
-		Map<ErrorIdentity, List<Map.Entry<File, Report>>> groups = new TreeMap<ErrorIdentity, List<Map.Entry<File, Report>>>();
+		Map<ErrorIdentity, List<Map.Entry<File, Report>>> groups = new TreeMap<>();
 		for (Map.Entry<File, Report> rent : reports.entrySet()) {
 			ErrorIdentity id = new ErrorIdentity(rent.getValue());
 			if (groups.get(id) == null) {
@@ -372,8 +372,8 @@ public class HtmlReporter {
 	public static void main(String[] args) throws Exception {
 		File indir = new File("/srv/haven/errors");
 		File outdir = new File("/srv/www/haven/errors");
-		Map<File, Report> reports = new HashMap<File, Report>();
-		Map<File, Exception> failed = new HashMap<File, Exception>();
+		Map<File, Report> reports = new HashMap<>();
+		Map<File, Exception> failed = new HashMap<>();
 
 		for (File f : indir.listFiles()) {
 			if (f.getName().startsWith("err")) {

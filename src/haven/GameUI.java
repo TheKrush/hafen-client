@@ -45,7 +45,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public LocalMiniMap mmap;
 	public MiniMapPanel mmappanel;
 	public Fightview fv;
-	private List<Widget> meters = new LinkedList<Widget>();
+	private List<Widget> meters = new LinkedList<>();
 	private Text lasterr;
 	private long errtime;
 	private Window invwnd, equwnd, makewnd;
@@ -59,7 +59,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public Polity polity;
 	public HelpWnd help;
 	public OptWnd opts;
-	public Collection<DraggedItem> hand = new LinkedList<DraggedItem>();
+	public Collection<DraggedItem> hand = new LinkedList<>();
 	private WItem vhand;
 	public ChatUI chat;
 	public ChatUI.Channel syslog;
@@ -1396,7 +1396,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
-	private Map<String, Console.Command> cmdmap = new TreeMap<String, Console.Command>();
+	private Map<String, Console.Command> cmdmap = new TreeMap<>();
 
 	{
 		cmdmap.put("afk", new Console.Command() {

@@ -31,7 +31,7 @@ import static haven.GOut.checkerr;
 
 public abstract class GLObject {
 
-	private static final Map<CurrentGL, Collection<GLObject>> disposed = new HashMap<CurrentGL, Collection<GLObject>>();
+	private static final Map<CurrentGL, Collection<GLObject>> disposed = new HashMap<>();
 	private boolean del;
 	public final CurrentGL cur;
 
@@ -49,7 +49,7 @@ public abstract class GLObject {
 			del = true;
 			can = disposed.get(cur);
 			if (can == null) {
-				can = new LinkedList<GLObject>();
+				can = new LinkedList<>();
 				disposed.put(cur, can);
 			}
 		}
@@ -77,7 +77,7 @@ public abstract class GLObject {
 		}
 		Collection<GLObject> copy;
 		synchronized (can) {
-			copy = new ArrayList<GLObject>(can);
+			copy = new ArrayList<>(can);
 			can.clear();
 		}
 		for (GLObject obj : copy) {

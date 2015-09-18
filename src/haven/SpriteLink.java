@@ -103,7 +103,7 @@ public class SpriteLink extends Resource.Layer {
 		if (ver != 1) {
 			throw (new Resource.LoadException("Unknown spritelink version: " + ver, getres()));
 		}
-		Map<Integer, Factory> refs = new IntMap<Factory>(16);
+		Map<Integer, Factory> refs = new IntMap<>(16);
 		while (true) {
 			int id = buf.int16();
 			if (id < 0) {

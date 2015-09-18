@@ -42,7 +42,7 @@ public class IMeter extends Widget {
 		@Override
 		public Widget create(Widget parent, Object[] args) {
 			Indir<Resource> bg = parent.ui.sess.getres((Integer) args[0]);
-			List<Meter> meters = new LinkedList<Meter>();
+			List<Meter> meters = new LinkedList<>();
 			for (int i = 1; i < args.length; i += 2) {
 				meters.add(new Meter((Color) args[i], (Integer) args[i + 1]));
 			}
@@ -89,7 +89,7 @@ public class IMeter extends Widget {
 	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "set") {
-			List<Meter> meters = new LinkedList<Meter>();
+			List<Meter> meters = new LinkedList<>();
 			for (int i = 0; i < args.length; i += 2) {
 				meters.add(new Meter((Color) args[i], (Integer) args[i + 1]));
 			}

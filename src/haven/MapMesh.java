@@ -39,11 +39,11 @@ public class MapMesh implements Rendered, Disposable {
 	public final Coord ul, sz;
 	public final MCache map;
 	private final long rnd;
-	private Map<Tex, GLState[]> texmap = new HashMap<Tex, GLState[]>();
-	private Map<DataID, Object> data = new LinkedHashMap<DataID, Object>();
-	private List<Rendered> extras = new ArrayList<Rendered>();
+	private Map<Tex, GLState[]> texmap = new HashMap<>();
+	private Map<DataID, Object> data = new LinkedHashMap<>();
+	private List<Rendered> extras = new ArrayList<>();
 	private FastMesh[] flats;
-	private List<Disposable> dparts = new ArrayList<Disposable>();
+	private List<Disposable> dparts = new ArrayList<>();
 
 	public interface DataID<T> {
 
@@ -440,7 +440,7 @@ public class MapMesh implements Rendered, Disposable {
 
 			Tiler.MCons cons = new Tiler.MCons() {
 				final MeshBuf.Tex ta = buf.layer(MeshBuf.tex);
-				final Map<Vertex, MeshVertex> cv = new HashMap<Vertex, MeshVertex>();
+				final Map<Vertex, MeshVertex> cv = new HashMap<>();
 
 				@Override
 				public void faces(MapMesh m, Tiler.MPart d) {

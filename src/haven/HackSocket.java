@@ -53,7 +53,7 @@ public class HackSocket extends Socket {
 
 	private InputStream in = null;
 	private OutputStream out = null;
-	private ThreadLocal<InterruptAction> ia = new ThreadLocal<InterruptAction>();
+	private ThreadLocal<InterruptAction> ia = new ThreadLocal<>();
 
 	private class InterruptAction implements Runnable {
 

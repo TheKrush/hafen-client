@@ -129,17 +129,17 @@ public class AvaRender {
 			String camnm = (String) args[2];
 			Object[] amod = (Object[]) args[3];
 			Object[] aequ = (Object[]) args[4];
-			List<MD> mod = new LinkedList<MD>();
+			List<MD> mod = new LinkedList<>();
 			for (int i = 0; i < amod.length; i += 2) {
 				Indir<Resource> mr = Resource.local().load((String) amod[i]);
 				Object[] atex = (Object[]) amod[i + 1];
-				List<Indir<Resource>> tex = new LinkedList<Indir<Resource>>();
+				List<Indir<Resource>> tex = new LinkedList<>();
 				for (int o = 0; o < atex.length; o++) {
 					tex.add(Resource.local().load((String) atex[o]));
 				}
 				mod.add(new MD(mr, tex));
 			}
-			List<ED> equ = new LinkedList<ED>();
+			List<ED> equ = new LinkedList<>();
 			for (int i = 0; i < aequ.length;) {
 				if (aequ[i] instanceof Object[]) {
 					Object[] cequ = (Object[]) aequ[i];
@@ -173,7 +173,7 @@ public class AvaRender {
 	public static void main(String[] args) throws Exception {
 		Indir<Resource> base = Resource.local().load("gfx/borka/body");
 		List<MD> mod = Arrays.asList(new MD(Resource.local().load("gfx/borka/male"), Arrays.asList(Resource.local().load("gfx/borka/male"))));
-		List<ED> equ = new LinkedList<ED>();
+		List<ED> equ = new LinkedList<>();
 		BufferedImage img = render(new Coord(512, 512), base, "avacam", mod, equ);
 		img = PUtils.convolvedown(img, new Coord(128, 128), new PUtils.Lanczos(2));
 		javax.imageio.ImageIO.write(img, "PNG", new java.io.File("/tmp/bard.png"));

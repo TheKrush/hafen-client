@@ -30,8 +30,8 @@ import java.lang.ref.*;
 
 public class IDSet<T> {
 
-	private final HashMap<WRef<T>, WRef<T>> bk = new HashMap<WRef<T>, WRef<T>>();
-	private final ReferenceQueue<T> queue = new ReferenceQueue<T>();
+	private final HashMap<WRef<T>, WRef<T>> bk = new HashMap<>();
+	private final ReferenceQueue<T> queue = new ReferenceQueue<>();
 
 	private static class WRef<T> extends WeakReference<T> {
 
@@ -67,7 +67,7 @@ public class IDSet<T> {
 	public T intern(T ob) {
 		synchronized (bk) {
 			clean();
-			WRef<T> ref = new WRef<T>(ob, queue);
+			WRef<T> ref = new WRef<>(ob, queue);
 			WRef<T> old = bk.get(ref);
 			if (old == null) {
 				bk.put(ref, ref);

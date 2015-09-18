@@ -87,7 +87,7 @@ public class PostProc implements Walker {
 	}
 
 	public static void autoproc(Context ctx) {
-		final Collection<AutoID> closed = new ArrayList<AutoID>();
+		final Collection<AutoID> closed = new ArrayList<>();
 		final int[] curo = {Integer.MIN_VALUE};
 		while (true) {
 			final int[] mino = {0};

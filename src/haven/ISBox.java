@@ -213,7 +213,7 @@ public class ISBox extends Widget implements DTarget {
 
 	private static class Value extends TextEntry {
 
-		private static final Set<Integer> ALLOWED_KEYS = new HashSet<Integer>(Arrays.asList(
+		private static final Set<Integer> ALLOWED_KEYS = new HashSet<>(Arrays.asList(
 						KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
 						KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9,
 						KeyEvent.VK_NUMPAD0, KeyEvent.VK_NUMPAD1, KeyEvent.VK_NUMPAD2, KeyEvent.VK_NUMPAD3, KeyEvent.VK_NUMPAD4,

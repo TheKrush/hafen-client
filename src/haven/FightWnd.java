@@ -35,7 +35,7 @@ public class FightWnd extends Widget {
 	public final int nsave;
 	public final Actions actlist;
 	public final Savelist savelist;
-	public List<Action> acts = new ArrayList<Action>();
+	public List<Action> acts = new ArrayList<>();
 	public int usesave;
 	private final Text[] saves;
 	private final CharWnd.LoadingTextBox info;
@@ -275,7 +275,7 @@ public class FightWnd extends Widget {
 	}
 
 	public void save(int n) {
-		List<Object> args = new LinkedList<Object>();
+		List<Object> args = new LinkedList<>();
 		args.add(n);
 		for (Action act : acts) {
 			args.add(act.id);
@@ -357,7 +357,7 @@ public class FightWnd extends Widget {
 	@Override
 	public void uimsg(String nm, Object... args) {
 		if (nm == "act") {
-			List<Action> acts = new ArrayList<Action>();
+			List<Action> acts = new ArrayList<>();
 			int a = 0;
 			while (true) {
 				int resid = (Integer) args[a++];

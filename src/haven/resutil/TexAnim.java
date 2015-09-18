@@ -36,7 +36,7 @@ import haven.glsl.ValBlock.Value;
 @Material.ResName("texrot")
 public class TexAnim extends GLState {
 
-	public static final Slot<TexAnim> slot = new Slot<TexAnim>(Slot.Type.DRAW, TexAnim.class);
+	public static final Slot<TexAnim> slot = new Slot<>(Slot.Type.DRAW, TexAnim.class);
 	public final Coord3f ax;
 
 	public TexAnim(Coord3f ax) {

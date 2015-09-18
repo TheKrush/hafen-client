@@ -62,8 +62,8 @@ public abstract class ItemInfo {
 
 	public static class Layout {
 
-		private final List<Tip> tips = new ArrayList<Tip>();
-		private final Map<ID, Tip> itab = new HashMap<ID, Tip>();
+		private final List<Tip> tips = new ArrayList<>();
+		private final Map<ID, Tip> itab = new HashMap<>();
 		public final CompImage cmp = new CompImage();
 
 		public interface ID<T extends Tip> {
@@ -319,7 +319,7 @@ public abstract class ItemInfo {
 	}
 
 	public static List<ItemInfo> findall(String cl, List<ItemInfo> il) {
-		List<ItemInfo> ret = new LinkedList<ItemInfo>();
+		List<ItemInfo> ret = new LinkedList<>();
 		for (ItemInfo inf : il) {
 			String name = inf.getClass().getName();
 			if (cl.equals(name)) {
@@ -330,7 +330,7 @@ public abstract class ItemInfo {
 	}
 
 	public static List<ItemInfo> buildinfo(Owner owner, Object[] rawinfo) {
-		List<ItemInfo> ret = new ArrayList<ItemInfo>();
+		List<ItemInfo> ret = new ArrayList<>();
 		for (Object o : rawinfo) {
 			if (o instanceof Object[]) {
 				Object[] a = (Object[]) o;

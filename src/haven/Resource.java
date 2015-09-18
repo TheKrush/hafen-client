@@ -39,7 +39,7 @@ public class Resource implements Serializable {
 
 	private static ResCache prscache;
 	public static ThreadGroup loadergroup = null;
-	private static Map<String, LayerFactory<?>> ltypes = new TreeMap<String, LayerFactory<?>>();
+	private static Map<String, LayerFactory<?>> ltypes = new TreeMap<>();
 	public static Class<Image> imgc = Image.class;
 	public static Class<Tile> tile = Tile.class;
 	public static Class<Neg> negc = Neg.class;
@@ -50,7 +50,7 @@ public class Resource implements Serializable {
 	public static Class<Audio> audio = Audio.class;
 	public static Class<Tooltip> tooltip = Tooltip.class;
 
-	private Collection<Layer> layers = new LinkedList<Layer>();
+	private Collection<Layer> layers = new LinkedList<>();
 	public final String name;
 	public int ver;
 	public ResSource source;
@@ -318,11 +318,11 @@ public class Resource implements Serializable {
 	public static class Pool {
 
 		public int nloaders = 2;
-		private final Collection<Loader> loaders = new LinkedList<Loader>();
-		private final List<ResSource> sources = new LinkedList<ResSource>();
-		private final Map<String, Resource> cache = new CacheMap<String, Resource>();
-		private final PrioQueue<Queued> queue = new PrioQueue<Queued>();
-		private final Map<String, Queued> queued = new HashMap<String, Queued>();
+		private final Collection<Loader> loaders = new LinkedList<>();
+		private final List<ResSource> sources = new LinkedList<>();
+		private final Map<String, Resource> cache = new CacheMap<>();
+		private final PrioQueue<Queued> queue = new PrioQueue<>();
+		private final Map<String, Queued> queued = new HashMap<>();
 		private final Pool parent;
 
 		public Pool(Pool parent, ResSource... sources) {
@@ -343,7 +343,7 @@ public class Resource implements Serializable {
 		private class Queued extends Named implements Prioritized, Serializable {
 
 			volatile int prio;
-			transient final Collection<Queued> rdep = new LinkedList<Queued>();
+			transient final Collection<Queued> rdep = new LinkedList<>();
 			Queued awaiting;
 			volatile boolean done = false;
 			Resource res;
@@ -598,7 +598,7 @@ public class Resource implements Serializable {
 		}
 
 		public Collection<Resource> cached() {
-			Set<Resource> ret = new HashSet<Resource>();
+			Set<Resource> ret = new HashSet<>();
 			if (parent != null) {
 				ret.addAll(parent.cached());
 			}
@@ -619,10 +619,10 @@ public class Resource implements Serializable {
 			return (ret);
 		}
 
-		private final Set<Resource> loadwaited = new HashSet<Resource>();
+		private final Set<Resource> loadwaited = new HashSet<>();
 
 		public Collection<Resource> loadwaited() {
-			Set<Resource> ret = new HashSet<Resource>();
+			Set<Resource> ret = new HashSet<>();
 			if (parent != null) {
 				ret.addAll(parent.loadwaited());
 			}
@@ -811,7 +811,7 @@ public class Resource implements Serializable {
 	}
 
 	public static <T extends Layer> void addltype(String name, Class<T> cl) {
-		addltype(name, new LayerConstructor<T>(cl));
+		addltype(name, new LayerConstructor<>(cl));
 	}
 
 	@dolda.jglob.Discoverable
@@ -1019,7 +1019,7 @@ public class Resource implements Serializable {
 			f = new Image[ids.length][];
 			Image[] typeinfo = new Image[0];
 			for (int i = 0; i < ids.length; i++) {
-				LinkedList<Image> buf = new LinkedList<Image>();
+				LinkedList<Image> buf = new LinkedList<>();
 				for (Image img : layers(Image.class)) {
 					if (img.id == ids[i]) {
 						buf.add(img);
@@ -1037,7 +1037,7 @@ public class Resource implements Serializable {
 		public String[] tags = {};
 		public Object[] ta = new Object[0];
 		private transient Tiler.Factory tfac;
-		public WeightList<Indir<Resource>> flavobjs = new WeightList<Indir<Resource>>();
+		public WeightList<Indir<Resource>> flavobjs = new WeightList<>();
 		public WeightList<Tile> ground;
 		public WeightList<Tile>[] ctrans, btrans;
 		public int flavprob;
@@ -1169,15 +1169,15 @@ public class Resource implements Serializable {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void init() {
-			WeightList<Tile> ground = new WeightList<Tile>();
+			WeightList<Tile> ground = new WeightList<>();
 			WeightList<Tile>[] ctrans = new WeightList[15];
 			WeightList<Tile>[] btrans = new WeightList[15];
 			for (int i = 0; i < 15; i++) {
-				ctrans[i] = new WeightList<Tile>();
-				btrans[i] = new WeightList<Tile>();
+				ctrans[i] = new WeightList<>();
+				btrans[i] = new WeightList<>();
 			}
 			int cn = 0, bn = 0;
-			Collection<Tile> tiles = new LinkedList<Tile>();
+			Collection<Tile> tiles = new LinkedList<>();
 			Coord tsz = null;
 			for (Tile t : layers(Tile.class)) {
 				if (t.t == 'g') {
@@ -1379,12 +1379,12 @@ public class Resource implements Serializable {
 	public class CodeEntry extends Layer {
 
 		private String clnm;
-		private Map<String, Code> clmap = new TreeMap<String, Code>();
-		private Map<String, String> pe = new TreeMap<String, String>();
-		private Collection<Indir<Resource>> classpath = new LinkedList<Indir<Resource>>();
+		private Map<String, Code> clmap = new TreeMap<>();
+		private Map<String, String> pe = new TreeMap<>();
+		private Collection<Indir<Resource>> classpath = new LinkedList<>();
 		transient private ClassLoader loader;
 		transient private Map<String, Class<?>> lpe = null;
-		transient private Map<Class<?>, Object> ipe = new HashMap<Class<?>, Object>();
+		transient private Map<Class<?>, Object> ipe = new HashMap<>();
 
 		public CodeEntry(Message buf) {
 			while (!buf.eom()) {
@@ -1428,7 +1428,7 @@ public class Resource implements Serializable {
 						public ClassLoader run() {
 							ClassLoader ret = Resource.class.getClassLoader();
 							if (classpath.size() > 0) {
-								Collection<ClassLoader> loaders = new LinkedList<ClassLoader>();
+								Collection<ClassLoader> loaders = new LinkedList<>();
 								for (Indir<Resource> res : classpath) {
 									loaders.add((wait ? Loading.waitfor(res) : res.get()).layer(CodeEntry.class).loader(wait));
 								}
@@ -1460,7 +1460,7 @@ public class Resource implements Serializable {
 					return;
 				}
 				ClassLoader loader = loader(false);
-				lpe = new TreeMap<String, Class<?>>();
+				lpe = new TreeMap<>();
 				try {
 					for (Map.Entry<String, String> e : pe.entrySet()) {
 						String name = e.getKey();
@@ -1750,7 +1750,7 @@ public class Resource implements Serializable {
 			throw (new LoadException("Invalid res signature", this));
 		}
 		int ver = in.uint16();
-		List<Layer> layers = new LinkedList<Layer>();
+		List<Layer> layers = new LinkedList<>();
 		if (this.ver == -1) {
 			this.ver = ver;
 		} else if (ver != this.ver) {
@@ -1838,7 +1838,7 @@ public class Resource implements Serializable {
 
 	public static void dumplist(Collection<Resource> list, Writer dest) {
 		PrintWriter out = new PrintWriter(dest);
-		List<Resource> sorted = new ArrayList<Resource>(list);
+		List<Resource> sorted = new ArrayList<>(list);
 		Collections.sort(sorted, new Comparator<Resource>() {
 			@Override
 			public int compare(Resource a, Resource b) {
@@ -1852,7 +1852,7 @@ public class Resource implements Serializable {
 
 	public static void updateloadlist(File file, File resdir) throws Exception {
 		BufferedReader r = new BufferedReader(new FileReader(file));
-		Map<String, Integer> orig = new HashMap<String, Integer>();
+		Map<String, Integer> orig = new HashMap<>();
 		String ln;
 		while ((ln = r.readLine()) != null) {
 			int pos = ln.indexOf(':');
@@ -1878,7 +1878,7 @@ public class Resource implements Serializable {
 			Thread.sleep(500);
 		}
 		System.out.println();
-		Collection<Resource> cur = new LinkedList<Resource>();
+		Collection<Resource> cur = new LinkedList<>();
 		for (Map.Entry<String, Integer> e : orig.entrySet()) {
 			String nm = e.getKey();
 			int ver = e.getValue();

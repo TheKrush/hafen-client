@@ -108,7 +108,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 	}
 
 	private void chparts(int mask) {
-		Collection<Rendered> rl = new LinkedList<Rendered>();
+		Collection<Rendered> rl = new LinkedList<>();
 		for (FastMesh.MeshRes mr : res.layers(FastMesh.MeshRes.class)) {
 			if ((mr.mat != null) && ((mr.id < 0) || (((1 << mr.id) & mask) != 0))) {
 				rl.add(animwrap(mr.mat.get().apply(mr.m)));
@@ -139,7 +139,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 	}
 
 	private void chmanims(int mask) {
-		Collection<MeshAnim.Anim> anims = new LinkedList<MeshAnim.Anim>();
+		Collection<MeshAnim.Anim> anims = new LinkedList<>();
 		for (MeshAnim.Res ar : res.layers(MeshAnim.Res.class)) {
 			if ((ar.id < 0) || (((1 << ar.id) & mask) != 0)) {
 				anims.add(ar.make());
@@ -149,7 +149,7 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 		this.mmorph = MorphedMesh.combine(this.manims);
 	}
 
-	private Map<Skeleton.ResPose, PoseMod> modids = new HashMap<Skeleton.ResPose, PoseMod>();
+	private Map<Skeleton.ResPose, PoseMod> modids = new HashMap<>();
 
 	private void chposes(int mask, boolean old) {
 		chmanims(mask);
@@ -157,10 +157,10 @@ public class SkelSprite extends Sprite implements Gob.Overlay.CUpd {
 			this.oldpose = skel.new Pose(pose);
 			this.ipold = 1.0f;
 		}
-		Collection<PoseMod> poses = new LinkedList<PoseMod>();
+		Collection<PoseMod> poses = new LinkedList<>();
 		stat = true;
 		Skeleton.ModOwner mo = (owner instanceof Skeleton.ModOwner) ? (Skeleton.ModOwner) owner : Skeleton.ModOwner.nil;
-		Map<Skeleton.ResPose, PoseMod> newids = new HashMap<Skeleton.ResPose, PoseMod>();
+		Map<Skeleton.ResPose, PoseMod> newids = new HashMap<>();
 		for (Skeleton.ResPose p : res.layers(Skeleton.ResPose.class)) {
 			if ((p.id < 0) || ((mask & (1 << p.id)) != 0)) {
 				Skeleton.PoseMod mod;

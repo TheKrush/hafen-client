@@ -30,7 +30,7 @@ import javax.media.opengl.*;
 
 public class GPUProfile extends Profile {
 
-	private Collection<Frame> waiting = new LinkedList<Frame>();
+	private Collection<Frame> waiting = new LinkedList<>();
 
 	public GPUProfile(int hl) {
 		super(hl);
@@ -38,8 +38,8 @@ public class GPUProfile extends Profile {
 
 	public class Frame extends Profile.Frame {
 
-		private List<String> nw = new LinkedList<String>();
-		private List<Integer> queries = new LinkedList<Integer>();
+		private List<String> nw = new LinkedList<>();
+		private List<Integer> queries = new LinkedList<>();
 		private GL3 gl;
 
 		public Frame(GL3 gl) {

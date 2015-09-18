@@ -81,13 +81,13 @@ public class Session {
 	int tseq = 0, rseq = 0;
 	int ackseq;
 	long acktime = -1;
-	LinkedList<PMessage> uimsgs = new LinkedList<PMessage>();
-	Map<Integer, PMessage> waiting = new TreeMap<Integer, PMessage>();
-	LinkedList<RMessage> pending = new LinkedList<RMessage>();
-	Map<Long, ObjAck> objacks = new TreeMap<Long, ObjAck>();
+	LinkedList<PMessage> uimsgs = new LinkedList<>();
+	Map<Integer, PMessage> waiting = new TreeMap<>();
+	LinkedList<RMessage> pending = new LinkedList<>();
+	Map<Long, ObjAck> objacks = new TreeMap<>();
 	String username;
 	byte[] cookie;
-	final Map<Integer, CachedRes> rescache = new TreeMap<Integer, CachedRes>();
+	final Map<Integer, CachedRes> rescache = new TreeMap<>();
 	public final Glob glob;
 	public byte[] sesskey;
 
@@ -171,7 +171,7 @@ public class Session {
 		private Ref get() {
 			Ref ind = (this.ind == null) ? null : (this.ind.get());
 			if (ind == null) {
-				this.ind = new WeakReference<Ref>(ind = new Ref());
+				this.ind = new WeakReference<>(ind = new Ref());
 			}
 			return (ind);
 		}
@@ -330,7 +330,7 @@ public class Session {
 							int seq = msg.uint8();
 							boolean interp = (pfl & 1) != 0;
 							if ((pfl & 2) != 0) {
-								poses = new LinkedList<ResData>();
+								poses = new LinkedList<>();
 								while (true) {
 									int resid = msg.uint16();
 									if (resid == 65535) {
@@ -346,7 +346,7 @@ public class Session {
 							}
 							float ttime = 0;
 							if ((pfl & 4) != 0) {
-								tposes = new LinkedList<ResData>();
+								tposes = new LinkedList<>();
 								while (true) {
 									int resid = msg.uint16();
 									if (resid == 65535) {
@@ -365,14 +365,14 @@ public class Session {
 								oc.cmppose(gob, seq, poses, tposes, interp, ttime);
 							}
 						} else if (type == OD_CMPMOD) {
-							List<Composited.MD> mod = new LinkedList<Composited.MD>();
+							List<Composited.MD> mod = new LinkedList<>();
 							while (true) {
 								int modid = msg.uint16();
 								if (modid == 65535) {
 									break;
 								}
 								Indir<Resource> modr = getres(modid);
-								List<Indir<Resource>> tex = new LinkedList<Indir<Resource>>();
+								List<Indir<Resource>> tex = new LinkedList<>();
 								while (true) {
 									int resid = msg.uint16();
 									if (resid == 65535) {
@@ -386,7 +386,7 @@ public class Session {
 								oc.cmpmod(gob, mod);
 							}
 						} else if (type == OD_CMPEQU) {
-							List<Composited.ED> equ = new LinkedList<Composited.ED>();
+							List<Composited.ED> equ = new LinkedList<>();
 							while (true) {
 								int h = msg.uint8();
 								if (h == 255) {
@@ -428,7 +428,7 @@ public class Session {
 								oc.lumin(gob, off, sz, str);
 							}
 						} else if (type == OD_AVATAR) {
-							List<Indir<Resource>> layers = new LinkedList<Indir<Resource>>();
+							List<Indir<Resource>> layers = new LinkedList<>();
 							while (true) {
 								int layer = msg.uint16();
 								if (layer == 65535) {

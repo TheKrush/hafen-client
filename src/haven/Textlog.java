@@ -88,7 +88,7 @@ public class Textlog extends Widget {
 
 	public Textlog(Coord sz) {
 		super(sz);
-		lines = new LinkedList<Text>();
+		lines = new LinkedList<>();
 		maxy = cury = 0;
 		foundry = fnd;
 	}

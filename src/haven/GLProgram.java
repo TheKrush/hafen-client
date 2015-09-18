@@ -36,12 +36,12 @@ public class GLProgram implements java.io.Serializable {
 	private transient ProgOb glp;
 
 	public GLProgram(Collection<GLShader> shaders) {
-		this.shaders = new ArrayList<GLShader>(shaders);
+		this.shaders = new ArrayList<>(shaders);
 	}
 
 	/* Meaningful function is meaningful. :-P */
 	private static Collection<GLShader> collapse(GLShader[][] shaders) {
-		Collection<GLShader> sc = new ArrayList<GLShader>();
+		Collection<GLShader> sc = new ArrayList<>();
 		for (int i = 0; i < shaders.length; i++) {
 			if (shaders[i] == null) {
 				continue;
@@ -207,7 +207,7 @@ public class GLProgram implements java.io.Serializable {
 		}
 	}
 
-	private final Map<String, VarID> umap = new IdentityHashMap<String, VarID>();
+	private final Map<String, VarID> umap = new IdentityHashMap<>();
 
 	public VarID uniform(GOut g, String name) {
 		VarID r = umap.get(name);
@@ -227,7 +227,7 @@ public class GLProgram implements java.io.Serializable {
 		return (r);
 	}
 
-	private final Map<String, VarID> amap = new IdentityHashMap<String, VarID>();
+	private final Map<String, VarID> amap = new IdentityHashMap<>();
 
 	public VarID attrib(GOut g, String name) {
 		VarID r = amap.get(name);

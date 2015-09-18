@@ -31,7 +31,7 @@ import javax.media.opengl.*;
 
 public class FastMesh implements FRendered, Rendered.Instanced, Disposable {
 
-	public static final GLState.Slot<GLState> vstate = new GLState.Slot<GLState>(GLState.Slot.Type.SYS, GLState.class);
+	public static final GLState.Slot<GLState> vstate = new GLState.Slot<>(GLState.Slot.Type.SYS, GLState.class);
 	public final VertexBuf vert;
 	public final ShortBuffer indb;
 	public final int num, lo, hi;
@@ -89,7 +89,7 @@ public class FastMesh implements FRendered, Rendered.Instanced, Disposable {
 		private Object[] ids = new Object[0];
 
 		private Object[] getid(GOut g) {
-			ArrayList<Object> id = new ArrayList<Object>();
+			ArrayList<Object> id = new ArrayList<>();
 			for (int i = 0; i < vert.bufs.length; i++) {
 				if (vert.bufs[i] instanceof VertexBuf.GLArray) {
 					id.add(((VertexBuf.GLArray) vert.bufs[i]).progid(g));

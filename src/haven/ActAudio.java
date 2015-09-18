@@ -33,10 +33,10 @@ import haven.Audio.VolAdjust;
 
 public class ActAudio extends GLState.Abstract {
 
-	public static final GLState.Slot<ActAudio> slot = new GLState.Slot<ActAudio>(GLState.Slot.Type.SYS, ActAudio.class);
+	public static final GLState.Slot<ActAudio> slot = new GLState.Slot<>(GLState.Slot.Type.SYS, ActAudio.class);
 	public final Channel pos = new Channel("pos");
 	public final Channel amb = new Channel("amb");
-	private final Map<Global, Global> global = new HashMap<Global, Global>();
+	private final Map<Global, Global> global = new HashMap<>();
 
 	@Override
 	public void prep(Buffer st) {
@@ -49,7 +49,7 @@ public class ActAudio extends GLState.Abstract {
 		public double volume;
 		private Audio.VolAdjust volc = null;
 		private Audio.Mixer mixer = null;
-		private final Collection<CS> clips = new ArrayList<CS>();
+		private final Collection<CS> clips = new ArrayList<>();
 
 		private Channel(String name) {
 			this.name = name;

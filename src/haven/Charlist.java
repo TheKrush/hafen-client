@@ -32,7 +32,7 @@ public class Charlist extends Widget {
 	public static final Tex bg = Resource.loadtex("gfx/hud/avakort");
 	public static final int margin = 6;
 	public int height, y, sel = 0;
-	public List<Char> chars = new ArrayList<Char>();
+	public List<Char> chars = new ArrayList<>();
 
 	public static class Char {
 
@@ -138,7 +138,7 @@ public class Charlist extends Widget {
 	public void uimsg(String msg, Object... args) {
 		if (msg == "add") {
 			Char c = new Char((String) args[0]);
-			List<Indir<Resource>> resl = new LinkedList<Indir<Resource>>();
+			List<Indir<Resource>> resl = new LinkedList<>();
 			for (int i = 1; i < args.length; i++) {
 				resl.add(ui.sess.getres((Integer) args[i]));
 			}

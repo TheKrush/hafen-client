@@ -29,9 +29,9 @@ import java.util.*;
 
 public class ValBlock {
 
-	private static final ThreadLocal<Value> processing = new ThreadLocal<Value>();
-	private final Collection<Value> values = new LinkedList<Value>();
-	private final Map<Object, Value> ext = new IdentityHashMap<Object, Value>();
+	private static final ThreadLocal<Value> processing = new ThreadLocal<>();
+	private final Collection<Value> values = new LinkedList<>();
+	private final Map<Object, Value> ext = new IdentityHashMap<>();
 
 	public interface Factory {
 
@@ -45,9 +45,9 @@ public class ValBlock {
 		public boolean used;
 		public LValue tgt;
 		protected Expression init;
-		private final Collection<Value> deps = new LinkedList<Value>();
-		private final Collection<Value> sdeps = new LinkedList<Value>();
-		private final OrderList<Macro1<Expression>> mods = new OrderList<Macro1<Expression>>();
+		private final Collection<Value> deps = new LinkedList<>();
+		private final Collection<Value> sdeps = new LinkedList<>();
+		private final OrderList<Macro1<Expression>> mods = new OrderList<>();
 		private boolean forced;
 
 		public Value(Type type, Symbol name) {
@@ -132,9 +132,9 @@ public class ValBlock {
 
 	public abstract class Group {
 
-		private final Collection<GValue> values = new LinkedList<GValue>();
-		private final Collection<Value> deps = new LinkedList<Value>();
-		private final Collection<Value> sdeps = new LinkedList<Value>();
+		private final Collection<GValue> values = new LinkedList<>();
+		private final Collection<Value> deps = new LinkedList<>();
+		private final Collection<Value> sdeps = new LinkedList<>();
 		private int state = 0;
 
 		protected abstract void cons1();
@@ -268,8 +268,8 @@ public class ValBlock {
 				use(val);
 			}
 		}
-		List<Value> used = new LinkedList<Value>();
-		List<Value> closed = new LinkedList<Value>();
+		List<Value> used = new LinkedList<>();
+		List<Value> closed = new LinkedList<>();
 		for (Value val : values) {
 			if (val.used) {
 				add(used, closed, val);

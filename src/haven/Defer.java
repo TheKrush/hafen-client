@@ -30,9 +30,9 @@ import java.security.*;
 
 public class Defer extends ThreadGroup {
 
-	private static final Map<ThreadGroup, Defer> groups = new WeakHashMap<ThreadGroup, Defer>();
-	private final Queue<Future<?>> queue = new PrioQueue<Future<?>>();
-	private final Collection<Thread> pool = new LinkedList<Thread>();
+	private static final Map<ThreadGroup, Defer> groups = new WeakHashMap<>();
+	private final Queue<Future<?>> queue = new PrioQueue<>();
+	private final Collection<Thread> pool = new LinkedList<>();
 	private final int maxthreads = 2;
 
 	public interface Callable<T> {
@@ -291,7 +291,7 @@ public class Defer extends ThreadGroup {
 	}
 
 	public <T> Future<T> defer(Callable<T> task) {
-		Future<T> f = new Future<T>(task);
+		Future<T> f = new Future<>(task);
 		defer(f);
 		return (f);
 	}

@@ -30,8 +30,8 @@ import java.lang.ref.*;
 
 public class IDRef {
 
-	private static Map<Object, WRef> map = new HashMap<Object, WRef>();
-	private static ReferenceQueue<IDRef> queue = new ReferenceQueue<IDRef>();
+	private static Map<Object, WRef> map = new HashMap<>();
+	private static ReferenceQueue<IDRef> queue = new ReferenceQueue<>();
 	private static int nextseq = 0;
 	/* Just for debugging */
 	private final Object val;

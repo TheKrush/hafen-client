@@ -12,7 +12,7 @@ import static haven.Utils.setpref;
 public class AccountList extends Widget {
 
 	private static final String ACCOUNTS_JSON = Globals.SettingFileString("accounts.json", true);
-	private static final Map<String, String> accountmap = new HashMap<String, String>();
+	private static final Map<String, String> accountmap = new HashMap<>();
 	private static final Coord SZ = new Coord(230, 30);
 	private static final Comparator<Account> accountComparator = new Comparator<Account>() {
 		@Override
@@ -26,7 +26,7 @@ public class AccountList extends Widget {
 	}
 
 	public int height, y;
-	public final List<Account> accounts = new ArrayList<Account>();
+	public final List<Account> accounts = new ArrayList<>();
 
 	static void loadAccounts() {
 		String json = Config.loadFile(ACCOUNTS_JSON);

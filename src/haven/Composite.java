@@ -69,7 +69,7 @@ public class Composite extends Drawable {
 	}
 
 	private List<PoseMod> loadposes(Collection<ResData> rl, Skeleton skel, boolean old) {
-		List<PoseMod> mods = new ArrayList<PoseMod>(rl.size());
+		List<PoseMod> mods = new ArrayList<>(rl.size());
 		for (ResData dat : rl) {
 			PoseMod mod = skel.mkposemod(gob, dat.res.get(), dat.sdt);
 			if (old) {
@@ -81,7 +81,7 @@ public class Composite extends Drawable {
 	}
 
 	private List<PoseMod> loadposes(Collection<ResData> rl, Skeleton skel, WrapMode mode) {
-		List<PoseMod> mods = new ArrayList<PoseMod>(rl.size());
+		List<PoseMod> mods = new ArrayList<>(rl.size());
 		for (ResData dat : rl) {
 			for (Skeleton.ResPose p : dat.res.get().layers(Skeleton.ResPose.class)) {
 				mods.add(p.forskel(gob, skel, (mode == null) ? p.defmode : mode));

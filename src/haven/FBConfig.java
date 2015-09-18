@@ -70,10 +70,10 @@ public class FBConfig {
 	private static final ShaderMacro[] nosh = new ShaderMacro[0];
 
 	private void create() {
-		Collection<Attachment> color = new LinkedList<Attachment>();
+		Collection<Attachment> color = new LinkedList<>();
 		Attachment depth;
-		Collection<ShaderMacro> shb = new LinkedList<ShaderMacro>();
-		Collection<GLState> stb = new LinkedList<GLState>();
+		Collection<ShaderMacro> shb = new LinkedList<>();
+		Collection<GLState> stb = new LinkedList<>();
 		{
 			int fmt = hdr ? GL.GL_RGBA16F : GL.GL_RGBA;
 			if (ms <= 1) {

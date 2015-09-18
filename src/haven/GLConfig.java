@@ -131,7 +131,7 @@ public class GLConfig implements java.io.Serializable, Console.Directory {
 		pref.dirty = true;
 	}
 
-	private transient Map<String, Console.Command> cmdmap = new TreeMap<String, Console.Command>();
+	private transient Map<String, Console.Command> cmdmap = new TreeMap<>();
 
 	{
 		cmdmap.put("gl", new Console.Command() {

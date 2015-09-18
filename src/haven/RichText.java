@@ -42,7 +42,7 @@ public class RichText extends Text {
 	public final Part parts;
 
 	static {
-		Map<Attribute, Object> a = new HashMap<Attribute, Object>();
+		Map<Attribute, Object> a = new HashMap<>();
 		a.put(TextAttribute.FAMILY, "SansSerif");
 		a.put(TextAttribute.SIZE, 10);
 		std = new Parser(a);
@@ -358,9 +358,9 @@ public class RichText extends Text {
 	public static Map<? extends Attribute, ?> fillattrs2(Map<? extends Attribute, ?> def, Object... attrs) {
 		Map<Attribute, Object> a;
 		if (def == null) {
-			a = new HashMap<Attribute, Object>();
+			a = new HashMap<>();
 		} else {
-			a = new HashMap<Attribute, Object>(def);
+			a = new HashMap<>(def);
 		}
 		for (int i = 0; i < attrs.length; i += 2) {
 			a.put((Attribute) attrs[i], attrs[i + 1]);
@@ -383,7 +383,7 @@ public class RichText extends Text {
 	 * the ugliness of conversion in itself.
 	 */
 	private static Map<? extends Attribute, ?> fixattrs(Map<? extends Attribute, ?> attrs) {
-		Map<Attribute, Object> ret = new HashMap<Attribute, Object>();
+		Map<Attribute, Object> ret = new HashMap<>();
 		for (Map.Entry<? extends Attribute, ?> e : attrs.entrySet()) {
 			if (e.getKey() == TextAttribute.SIZE) {
 				ret.put(e.getKey(), ((Number) e.getValue()).floatValue());
@@ -467,7 +467,7 @@ public class RichText extends Text {
 				}
 				return (new Image(res, id));
 			} else {
-				Map<Attribute, Object> na = new HashMap<Attribute, Object>(attrs);
+				Map<Attribute, Object> na = new HashMap<>(attrs);
 				if (tn == "font") {
 					na.put(TextAttribute.FAMILY, args[0]);
 					if (args.length > 1) {
@@ -566,7 +566,7 @@ public class RichText extends Text {
 		public Part parse(Reader in, Map<? extends Attribute, ?> extra) throws IOException {
 			PState s = new PState(new PeekReader(in));
 			if (extra != null) {
-				Map<Attribute, Object> attrs = new HashMap<Attribute, Object>();
+				Map<Attribute, Object> attrs = new HashMap<>();
 				attrs.putAll(defattrs);
 				attrs.putAll(extra);
 				return (parse(s, attrs));
@@ -636,7 +636,7 @@ public class RichText extends Text {
 		}
 
 		private static Map<? extends Attribute, ?> xlate(Font f, Color defcol) {
-			Map<Attribute, Object> attrs = new HashMap<Attribute, Object>();
+			Map<Attribute, Object> attrs = new HashMap<>();
 			attrs.put(TextAttribute.FONT, f);
 			attrs.put(TextAttribute.FOREGROUND, defcol);
 			return (attrs);
@@ -665,7 +665,7 @@ public class RichText extends Text {
 		}
 
 		private static Part layout(Part fp, int w) {
-			List<Part> line = new LinkedList<Part>();
+			List<Part> line = new LinkedList<>();
 			int x = 0, y = 0;
 			int mw = 0, lh = 0;
 			Part lp = null;
@@ -704,7 +704,7 @@ public class RichText extends Text {
 					x = 0;
 					y += lh;
 					lh = 0;
-					line = new LinkedList<Part>();
+					line = new LinkedList<>();
 				}
 			}
 			aline(line, y);
@@ -764,7 +764,7 @@ public class RichText extends Text {
 	public static void main(String[] args) throws Exception {
 		String cmd = args[0].intern();
 		if (cmd == "render") {
-			Map<Attribute, Object> a = new HashMap<Attribute, Object>(std.defattrs);
+			Map<Attribute, Object> a = new HashMap<>(std.defattrs);
 			PosixArgs opt = PosixArgs.getopt(args, 1, "aw:f:s:");
 			boolean aa = false;
 			int width = 0;

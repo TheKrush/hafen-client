@@ -30,8 +30,8 @@ import java.lang.ref.*;
 
 public class ArrayIdentity {
 
-	private static HashMap<Entry<?>, Entry<?>> set = new HashMap<Entry<?>, Entry<?>>();
-	private static ReferenceQueue<Object> cleanq = new ReferenceQueue<Object>();
+	private static HashMap<Entry<?>, Entry<?>> set = new HashMap<>();
+	private static ReferenceQueue<Object> cleanq = new ReferenceQueue<>();
 
 	private static class Entry<T> extends WeakReference<T[]> {
 
@@ -91,7 +91,7 @@ public class ArrayIdentity {
 	}
 
 	public static <T> T[] intern(T[] arr) {
-		Entry<T> e = new Entry<T>(arr);
+		Entry<T> e = new Entry<>(arr);
 		synchronized (ArrayIdentity.class) {
 			clean();
 			Entry<T> e2 = getcanon(e);

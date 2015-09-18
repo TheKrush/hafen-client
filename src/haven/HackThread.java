@@ -51,7 +51,7 @@ public class HackThread extends Thread {
 	 * interrupt normally uninterruptible stuff like Sockets. For a
 	 * more thorough explanation why this is necessary, see
 	 * HackSocket. */
-	private Set<Runnable> ils = new HashSet<Runnable>();
+	private Set<Runnable> ils = new HashSet<>();
 
 	public void addil(Runnable r) {
 		synchronized (ils) {

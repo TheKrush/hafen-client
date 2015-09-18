@@ -41,10 +41,10 @@ public class Glob {
 	public MCache map;
 	public Session sess;
 	public Party party;
-	public Set<Pagina> paginae = new HashSet<Pagina>();
+	public Set<Pagina> paginae = new HashSet<>();
 	public int pagseq = 0;
-	public Map<Resource.Named, Pagina> pmap = new WeakHashMap<Resource.Named, Pagina>();
-	public Map<String, CAttr> cattr = new HashMap<String, CAttr>();
+	public Map<Resource.Named, Pagina> pmap = new WeakHashMap<>();
+	public Map<String, CAttr> cattr = new HashMap<>();
 	public Color lightamb = null, lightdif = null, lightspc = null;
 	public Color olightamb = null, olightdif = null, olightspc = null;
 	public Color tlightamb = null, tlightdif = null, tlightspc = null;
@@ -56,7 +56,7 @@ public class Glob {
 	public long lchange = -1;
 	public Indir<Resource> sky1 = null, sky2 = null;
 	public double skyblend = 0.0;
-	private Map<Indir<Resource>, Object> wmap = new HashMap<Indir<Resource>, Object>();
+	private Map<Indir<Resource>, Object> wmap = new HashMap<>();
 
 	public Glob(Session sess) {
 		this.sess = sess;

@@ -31,14 +31,14 @@ import java.lang.ref.*;
 
 public class MorphedMesh extends FastMesh {
 
-	private static Map<Morpher.Factory, Collection<MorphedBuf>> bufs = new CacheMap<Morpher.Factory, Collection<MorphedBuf>>(CacheMap.RefType.WEAK);
+	private static Map<Morpher.Factory, Collection<MorphedBuf>> bufs = new CacheMap<>(CacheMap.RefType.WEAK);
 
 	private static MorphedBuf buf(VertexBuf buf, Morpher.Factory morph) {
 		Collection<MorphedBuf> bl;
 		synchronized (bufs) {
 			bl = bufs.get(morph);
 			if (bl == null) {
-				bufs.put(morph, bl = new LinkedList<MorphedBuf>());
+				bufs.put(morph, bl = new LinkedList<>());
 			}
 		}
 		synchronized (bl) {

@@ -45,13 +45,13 @@ public class PosixArgs {
 	}
 
 	private PosixArgs() {
-		parsed = new ArrayList<Arg>();
+		parsed = new ArrayList<>();
 	}
 
 	public static PosixArgs getopt(String[] argv, int start, String desc) {
 		PosixArgs ret = new PosixArgs();
-		List<Character> fl = new ArrayList<Character>(), fla = new ArrayList<Character>();
-		List<String> rest = new ArrayList<String>();
+		List<Character> fl = new ArrayList<>(), fla = new ArrayList<>();
+		List<String> rest = new ArrayList<>();
 		for (int i = 0; i < desc.length();) {
 			char ch = desc.charAt(i++);
 			if ((i < desc.length()) && (desc.charAt(i) == ':')) {

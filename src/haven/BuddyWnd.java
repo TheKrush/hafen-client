@@ -31,8 +31,8 @@ import java.text.Collator;
 
 public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 
-	private List<Buddy> buddies = new ArrayList<Buddy>();
-	private Map<Integer, Buddy> idmap = new HashMap<Integer, Buddy>();
+	private List<Buddy> buddies = new ArrayList<>();
+	private Map<Integer, Buddy> idmap = new HashMap<>();
 	private BuddyList bl;
 	private Button sbalpha;
 	private Button sbgroup;
@@ -145,7 +145,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 	@Override
 	public Iterator<Buddy> iterator() {
 		synchronized (buddies) {
-			return (new ArrayList<Buddy>(buddies).iterator());
+			return (new ArrayList<>(buddies).iterator());
 		}
 	}
 
@@ -276,7 +276,7 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 		}
 
 		public void opts(final Buddy b, Coord c) {
-			List<String> opts = new ArrayList<String>();
+			List<String> opts = new ArrayList<>();
 			if (b.online >= 0) {
 				opts.add("Chat");
 				if (b.online == 1) {

@@ -80,9 +80,9 @@ public class Profiler {
 
 		public final String cl, nm;
 		public int dticks, iticks;
-		public Map<Function, Integer> tticks = new HashMap<Function, Integer>();
-		public Map<Function, Integer> fticks = new HashMap<Function, Integer>();
-		public Map<Integer, Integer> lticks = new HashMap<Integer, Integer>();
+		public Map<Function, Integer> tticks = new HashMap<>();
+		public Map<Function, Integer> fticks = new HashMap<>();
+		public Map<Integer, Integer> lticks = new HashMap<>();
 
 		public Function(String cl, String nm) {
 			this.cl = cl;
@@ -113,7 +113,7 @@ public class Profiler {
 		}
 	}
 
-	private Map<Function, Function> funs = new HashMap<Function, Function>();
+	private Map<Function, Function> funs = new HashMap<>();
 	private int nticks = 0;
 
 	private Function getfun(StackTraceElement f) {
@@ -161,7 +161,7 @@ public class Profiler {
 		}
 		Map<Integer, Integer> lt = fn.lticks;
 		PrintStream p = new PrintStream(out);
-		List<Integer> lines = new ArrayList<Integer>(lt.keySet());
+		List<Integer> lines = new ArrayList<>(lt.keySet());
 		Collections.sort(lines);
 		for (int ln : lines) {
 			p.printf("%d: %d\n", ln, lt.get(ln));
@@ -171,7 +171,7 @@ public class Profiler {
 
 	public void output(OutputStream out) {
 		PrintStream p = new PrintStream(out);
-		List<Function> funs = new ArrayList<Function>(this.funs.keySet());
+		List<Function> funs = new ArrayList<>(this.funs.keySet());
 		Collections.sort(funs, new Comparator<Function>() {
 			@Override
 			public int compare(Function a, Function b) {
@@ -214,7 +214,7 @@ public class Profiler {
 		p.println("Per-function time spent in callees:");
 		for (Function fn : funs) {
 			p.printf("  %s.%s\n", fn.cl, fn.nm);
-			List<Map.Entry<Function, Integer>> cfs = new ArrayList<Map.Entry<Function, Integer>>(fn.tticks.entrySet());
+			List<Map.Entry<Function, Integer>> cfs = new ArrayList<>(fn.tticks.entrySet());
 			if (fn.dticks > 0) {
 				cfs.add(new AbstractMap.SimpleEntry<Function, Integer>(null, fn.dticks));
 			}
@@ -245,7 +245,7 @@ public class Profiler {
 		p.println("Per-function time spent by caller:");
 		for (Function fn : funs) {
 			p.printf("  %s.%s\n", fn.cl, fn.nm);
-			List<Map.Entry<Function, Integer>> cfs = new ArrayList<Map.Entry<Function, Integer>>(fn.fticks.entrySet());
+			List<Map.Entry<Function, Integer>> cfs = new ArrayList<>(fn.fticks.entrySet());
 			Collections.sort(cfs, new Comparator<Map.Entry<Function, Integer>>() {
 				@Override
 				public int compare(Map.Entry<Function, Integer> a, Map.Entry<Function, Integer> b) {
@@ -281,7 +281,7 @@ public class Profiler {
 
 	private static class Loop extends HackThread {
 
-		private Collection<Profiler> current = new LinkedList<Profiler>();
+		private Collection<Profiler> current = new LinkedList<>();
 
 		Loop() {
 			super("Profiling thread");
@@ -295,7 +295,7 @@ public class Profiler {
 					Thread.sleep(100);
 					Collection<Profiler> copy;
 					synchronized (current) {
-						copy = new ArrayList<Profiler>(current);
+						copy = new ArrayList<>(current);
 					}
 					for (Profiler p : copy) {
 						StackTraceElement[] bt = p.th.getStackTrace();

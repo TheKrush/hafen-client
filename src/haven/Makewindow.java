@@ -126,7 +126,7 @@ public class Makewindow extends Widget {
 	@Override
 	public void uimsg(String msg, Object... args) {
 		if (msg == "inpop") {
-			List<Spec> inputs = new LinkedList<Spec>();
+			List<Spec> inputs = new LinkedList<>();
 			for (int i = 0; i < args.length;) {
 				int resid = (Integer) args[i++];
 				Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
@@ -135,7 +135,7 @@ public class Makewindow extends Widget {
 			}
 			this.inputs = inputs;
 		} else if (msg == "opop") {
-			List<Spec> outputs = new LinkedList<Spec>();
+			List<Spec> outputs = new LinkedList<>();
 			for (int i = 0; i < args.length;) {
 				int resid = (Integer) args[i++];
 				Message sdt = (args[i] instanceof byte[]) ? new MessageBuf((byte[]) args[i++]) : MessageBuf.nil;
@@ -144,7 +144,7 @@ public class Makewindow extends Widget {
 			}
 			this.outputs = outputs;
 		} else if (msg == "qmod") {
-			List<Indir<Resource>> qmod = new ArrayList<Indir<Resource>>();
+			List<Indir<Resource>> qmod = new ArrayList<>();
 			for (Object arg : args) {
 				qmod.add(ui.sess.getres((Integer) arg));
 			}

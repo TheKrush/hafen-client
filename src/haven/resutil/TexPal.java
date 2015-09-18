@@ -35,7 +35,7 @@ import haven.glsl.ValBlock.Value;
 
 public class TexPal extends GLState {
 
-	public static final Slot<TexPal> slot = new Slot<TexPal>(Slot.Type.DRAW, TexPal.class);
+	public static final Slot<TexPal> slot = new Slot<>(Slot.Type.DRAW, TexPal.class);
 	public final TexGL tex;
 
 	public TexPal(TexGL tex) {

@@ -48,7 +48,7 @@ public class MenuGrid extends Widget {
 	private int curoff = 0;
 	private int pagseq = 0;
 	private boolean loading = true;
-	private Map<Character, Pagina> hotmap = new TreeMap<Character, Pagina>();
+	private Map<Character, Pagina> hotmap = new TreeMap<>();
 
 	@RName("scm")
 	public static class $_ implements Factory {
@@ -71,9 +71,9 @@ public class MenuGrid extends Widget {
 
 	public boolean cons(Pagina p, Collection<Pagina> buf) {
 		Pagina[] cp = new Pagina[0];
-		Collection<Pagina> open, close = new HashSet<Pagina>();
+		Collection<Pagina> open, close = new HashSet<>();
 		synchronized (ui.sess.glob.paginae) {
-			open = new LinkedList<Pagina>();
+			open = new LinkedList<>();
 			for (Pagina pag : ui.sess.glob.paginae) {
 				if (pag.newp == 2) {
 					pag.newp = 0;
@@ -144,7 +144,7 @@ public class MenuGrid extends Widget {
 
 	private void updlayout() {
 		synchronized (ui.sess.glob.paginae) {
-			List<Pagina> cur = new ArrayList<Pagina>();
+			List<Pagina> cur = new ArrayList<>();
 			loading = !cons(this.cur, cur);
 			Collections.sort(cur, sorter);
 			int i = curoff;
@@ -195,7 +195,7 @@ public class MenuGrid extends Widget {
 		return (ttfnd.render(tt, 300));
 	}
 
-	private static Map<Pagina, Tex> glowmasks = new WeakHashMap<Pagina, Tex>();
+	private static Map<Pagina, Tex> glowmasks = new WeakHashMap<>();
 
 	private Tex glowmask(Pagina pag) {
 		Tex ret = glowmasks.get(pag);
@@ -323,8 +323,8 @@ public class MenuGrid extends Widget {
 	}
 
 	public void use(Pagina r, boolean reset) {
-		Collection<Pagina> sub = new LinkedList<Pagina>(),
-						cur = new LinkedList<Pagina>();
+		Collection<Pagina> sub = new LinkedList<>(),
+						cur = new LinkedList<>();
 		cons(r, sub);
 		cons(this.cur, cur);
 		selectCraft(r);

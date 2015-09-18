@@ -37,7 +37,7 @@ public class Fightview extends Widget {
 	static Coord cavac = new Coord(width - Avaview.dasz.x - 10, 10);
 	static Coord cgivec = new Coord(cavac.x - 35, cavac.y);
 	static Coord cpursc = new Coord(cavac.x - 75, cgivec.y + 35);
-	LinkedList<Relation> lsrel = new LinkedList<Relation>();
+	LinkedList<Relation> lsrel = new LinkedList<>();
 	public Relation current = null;
 	public Indir<Resource> blk, batk, iatk;
 	public double atkcs, atkct;

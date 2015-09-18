@@ -7,7 +7,7 @@ import java.util.List;
 public class CheckListbox extends Listbox<CheckListboxItem> {
 
 	private static final Tex chk = Resource.loadtex("gfx/hud/chkmarks");
-	public List<CheckListboxItem> items = new ArrayList<CheckListboxItem>();
+	public List<CheckListboxItem> items = new ArrayList<>();
 
 	public CheckListbox(int w, int h) {
 		super(w, h, 18);
@@ -70,7 +70,7 @@ public class CheckListbox extends Listbox<CheckListboxItem> {
 	}
 
 	public String[] getselected() {
-		List<String> sitems = new ArrayList<String>();
+		List<String> sitems = new ArrayList<>();
 		for (CheckListboxItem itm : items) {
 			if (itm.selected) {
 				sitems.add(itm.name);

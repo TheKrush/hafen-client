@@ -32,8 +32,8 @@ import java.nio.*;
 
 public class MeshBuf {
 
-	public final Collection<Vertex> v = new ArrayList<Vertex>();
-	public final Collection<Face> f = new ArrayList<Face>();
+	public final Collection<Vertex> v = new ArrayList<>();
+	public final Collection<Face> f = new ArrayList<>();
 	private VertexBuf vbuf = null;
 	private int nextid = 0;
 	private Layer<?>[] layers = new Layer<?>[0];
@@ -118,7 +118,7 @@ public class MeshBuf {
 			}
 		}
 	}
-	public static final LayerID<Tex> tex = new CLayerID<Tex>(Tex.class);
+	public static final LayerID<Tex> tex = new CLayerID<>(Tex.class);
 
 	public class Col extends Layer<Color> {
 
@@ -134,7 +134,7 @@ public class MeshBuf {
 			return (new VertexBuf.ColorArray(data));
 		}
 	}
-	public static final LayerID<Col> col = new CLayerID<Col>(Col.class);
+	public static final LayerID<Col> col = new CLayerID<>(Col.class);
 
 	public abstract class AttribLayer<T> extends Layer<T> {
 

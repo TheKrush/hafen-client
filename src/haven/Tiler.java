@@ -282,7 +282,7 @@ public abstract class Tiler {
 		public String value();
 	}
 
-	private static final Map<String, Factory> rnames = new TreeMap<String, Factory>();
+	private static final Map<String, Factory> rnames = new TreeMap<>();
 
 	static {
 		java.security.AccessController.doPrivileged(new java.security.PrivilegedAction<Object>() {

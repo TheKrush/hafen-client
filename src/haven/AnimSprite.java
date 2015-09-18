@@ -45,7 +45,7 @@ public class AnimSprite extends Sprite {
 	private AnimSprite(Owner owner, Resource res, Message sdt) {
 		super(owner, res);
 		int mask = sdt.eom() ? 0xffff0000 : decnum(sdt);
-		Collection<MeshAnim.Anim> anims = new LinkedList<MeshAnim.Anim>();
+		Collection<MeshAnim.Anim> anims = new LinkedList<>();
 		for (MeshAnim.Res ar : res.layers(MeshAnim.Res.class)) {
 			if ((ar.id < 0) || (((1 << ar.id) & mask) != 0)) {
 				anims.add(ar.make());
@@ -53,7 +53,7 @@ public class AnimSprite extends Sprite {
 		}
 		this.anims = anims.toArray(new MeshAnim.Anim[0]);
 		MorphedMesh.Morpher.Factory morph = MorphedMesh.combine(this.anims);
-		Collection<Rendered> rl = new LinkedList<Rendered>();
+		Collection<Rendered> rl = new LinkedList<>();
 		for (FastMesh.MeshRes mr : res.layers(FastMesh.MeshRes.class)) {
 			if ((mr.mat != null) && ((mr.id < 0) || (((1 << mr.id) & mask) != 0))) {
 				boolean stat = true;

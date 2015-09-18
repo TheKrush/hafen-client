@@ -36,7 +36,7 @@ import javax.media.opengl.*;
 
 public class BumpMap extends GLState {
 
-	public static final Slot<BumpMap> slot = new Slot<BumpMap>(Slot.Type.DRAW, BumpMap.class);
+	public static final Slot<BumpMap> slot = new Slot<>(Slot.Type.DRAW, BumpMap.class);
 	public static final Attribute tan = new Attribute(VEC3);
 	public static final Attribute bit = new Attribute(VEC3);
 	private static final Uniform ctex = new Uniform(SAMPLER2D);

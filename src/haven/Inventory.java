@@ -33,7 +33,7 @@ public class Inventory extends Widget implements DTarget {
 	public static final Coord sqsz = new Coord(33, 33);
 	public boolean locked = false;
 	Coord isz;
-	Map<GItem, WItem> wmap = new HashMap<GItem, WItem>();
+	Map<GItem, WItem> wmap = new HashMap<>();
 
 	@RName("inv")
 	public static class $_ implements Factory {
@@ -142,7 +142,7 @@ public class Inventory extends Widget implements DTarget {
 
 	@SuppressWarnings("UnusedParameters")
 	private List<WItem> getSame(String name, Boolean ascending) {
-		List<WItem> items = new ArrayList<WItem>();
+		List<WItem> items = new ArrayList<>();
 		for (Widget wdg = lchild; wdg != null; wdg = wdg.prev) {
 			if (wdg.visible && wdg instanceof WItem) {
 				if (((WItem) wdg).item.resname().equals(name)) {

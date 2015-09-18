@@ -55,7 +55,7 @@ public class Audio {
 	public static class Mixer implements CS {
 
 		public final boolean cont;
-		private final Collection<CS> clips = new LinkedList<CS>();
+		private final Collection<CS> clips = new LinkedList<>();
 
 		public Mixer(boolean continuous) {
 			this.cont = continuous;
@@ -146,7 +146,7 @@ public class Audio {
 
 		public Collection<CS> current() {
 			synchronized (clips) {
-				return (new ArrayList<CS>(clips));
+				return (new ArrayList<>(clips));
 			}
 		}
 
@@ -448,7 +448,7 @@ public class Audio {
 		private final CS stream;
 		private final int nch;
 		private final Object queuemon = new Object();
-		private Collection<Runnable> queue = new LinkedList<Runnable>();
+		private Collection<Runnable> queue = new LinkedList<>();
 
 		Player(CS stream) {
 			super("Haven audio player");
@@ -509,7 +509,7 @@ public class Audio {
 					synchronized (queuemon) {
 						Collection<Runnable> queue = this.queue;
 						if (queue.size() > 0) {
-							this.queue = new LinkedList<Runnable>();
+							this.queue = new LinkedList<>();
 							for (Runnable r : queue) {
 								r.run();
 							}
@@ -575,7 +575,7 @@ public class Audio {
 		}
 	}
 
-	private static Map<Resource, Resource.Audio> reslastc = new HashMap<Resource, Resource.Audio>();
+	private static Map<Resource, Resource.Audio> reslastc = new HashMap<>();
 
 	public static CS fromres(Resource res) {
 		Collection<Resource.Audio> clips = res.layers(Resource.audio);
@@ -618,7 +618,7 @@ public class Audio {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Collection<Monitor> clips = new LinkedList<Monitor>();
+		Collection<Monitor> clips = new LinkedList<>();
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-b")) {
 				bufsize = Integer.parseInt(args[++i]);

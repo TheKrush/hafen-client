@@ -62,7 +62,7 @@ public class CharWnd extends Window {
 		public static final Tex frame = Resource.loadtex("gfx/hud/chr/foodm");
 		public static final Coord marg = new Coord(5, 5), trmg = new Coord(10, 10);
 		public double cap;
-		public List<El> els = new LinkedList<El>();
+		public List<El> els = new LinkedList<>();
 		private List<El> enew = null, etr = null;
 		private Indir<Resource> trev = null;
 		private Tex trol;
@@ -204,7 +204,7 @@ public class CharWnd extends Window {
 		public void update(Object... args) {
 			int n = 0;
 			this.cap = (Float) args[n++];
-			List<El> enew = new LinkedList<El>();
+			List<El> enew = new LinkedList<>();
 			while (n < args.length) {
 				Indir<Resource> res = ui.sess.getres((Integer) args[n++]);
 				double a = (Float) args[n++];
@@ -298,7 +298,7 @@ public class CharWnd extends Window {
 		public static final Text.Foundry elf = attrf;
 		public static final Convolution tflt = new Hanning(1);
 		public static final Color full = new Color(250, 230, 64), none = new Color(250, 19, 43);
-		public final List<El> els = new ArrayList<El>();
+		public final List<El> els = new ArrayList<>();
 		private Integer[] order = {};
 
 		public static class El {
@@ -1110,7 +1110,7 @@ public class CharWnd extends Window {
 
 	public class WoundList extends Listbox<Wound> implements DTarget {
 
-		public List<Wound> wounds = new ArrayList<Wound>();
+		public List<Wound> wounds = new ArrayList<>();
 		private boolean loading = false;
 		private final Comparator<Wound> wcomp = new Comparator<Wound>() {
 			@Override
@@ -1253,7 +1253,7 @@ public class CharWnd extends Window {
 			battr = tabs.add();
 			battr.add(new Img(catf.render("Base Attributes").tex()), new Coord(x - 5, y));
 			y += 35;
-			base = new ArrayList<Attr>();
+			base = new ArrayList<>();
 			Attr aw;
 			base.add(aw = battr.add(new Attr(glob, "str", every), wbox.btloff().add(x, y)));
 			y += aw.sz.y;
@@ -1296,7 +1296,7 @@ public class CharWnd extends Window {
 			sattr = tabs.add();
 			sattr.add(new Img(catf.render("Abilities").tex()), new Coord(x - 5, y));
 			y += 35;
-			skill = new ArrayList<SAttr>();
+			skill = new ArrayList<>();
 			SAttr aw;
 			skill.add(aw = sattr.add(new SAttr(glob, "unarmed", every), wbox.btloff().add(x, y)));
 			y += aw.sz.y;
@@ -1351,7 +1351,7 @@ public class CharWnd extends Window {
 			sattr.add(new Button(75, "Buy") {
 				@Override
 				public void click() {
-					ArrayList<Object> args = new ArrayList<Object>();
+					ArrayList<Object> args = new ArrayList<>();
 					for (SAttr attr : skill) {
 						if (attr.tbv > attr.attr.base) {
 							args.add(attr.attr.nm);
@@ -1635,17 +1635,17 @@ public class CharWnd extends Window {
 			/* One *could* argue that rmessages should have some
 			 * built-in fragmentation scheme. ^^ */
 			boolean rst = ((Integer) args[0]) != 0;
-			Collection<Skill> buf = rst ? new ArrayList<Skill>() : new ArrayList<Skill>(Arrays.asList(csk.skills));
+			Collection<Skill> buf = rst ? new ArrayList<Skill>() : new ArrayList<>(Arrays.asList(csk.skills));
 			decsklist(buf, args, 1);
 			csk.pop(buf);
 		} else if (nm == "nsk") {
 			boolean rst = ((Integer) args[0]) != 0;
-			Collection<Skill> buf = rst ? new ArrayList<Skill>() : new ArrayList<Skill>(Arrays.asList(nsk.skills));
+			Collection<Skill> buf = rst ? new ArrayList<Skill>() : new ArrayList<>(Arrays.asList(nsk.skills));
 			decsklist(buf, args, 1);
 			nsk.pop(buf);
 		} else if (nm == "exps") {
 			boolean rst = ((Integer) args[0]) != 0;
-			Collection<Experience> buf = rst ? new ArrayList<Experience>() : new ArrayList<Experience>(Arrays.asList(exps.exps));
+			Collection<Experience> buf = rst ? new ArrayList<Experience>() : new ArrayList<>(Arrays.asList(exps.exps));
 			decexplist(buf, args, 1);
 			exps.pop(buf);
 		} else if (nm == "wounds") {

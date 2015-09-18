@@ -35,7 +35,7 @@ import static haven.glsl.Type.*;
 
 public class CloudShadow extends GLState {
 
-	public static final Slot<CloudShadow> slot = new Slot<CloudShadow>(Slot.Type.DRAW, CloudShadow.class, Light.lighting);
+	public static final Slot<CloudShadow> slot = new Slot<>(Slot.Type.DRAW, CloudShadow.class, Light.lighting);
 	public final TexGL tex;
 	public DirLight light;
 	public Coord3f vel;

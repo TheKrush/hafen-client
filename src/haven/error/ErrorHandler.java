@@ -39,7 +39,7 @@ public class ErrorHandler extends ThreadGroup {
 		"os.arch",
 		"os.version",};
 	private final ThreadGroup initial;
-	private Map<String, Object> props = new HashMap<String, Object>();
+	private Map<String, Object> props = new HashMap<>();
 	private Reporter reporter;
 
 	public static ErrorHandler find() {
@@ -64,7 +64,7 @@ public class ErrorHandler extends ThreadGroup {
 
 	private class Reporter extends Thread {
 
-		private Queue<Report> errors = new LinkedList<Report>();
+		private Queue<Report> errors = new LinkedList<>();
 		private ErrorStatus status;
 
 		public Reporter(ErrorStatus status) {

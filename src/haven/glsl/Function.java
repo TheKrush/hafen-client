@@ -30,7 +30,7 @@ import java.util.*;
 public abstract class Function {
 
 	public final Symbol name;
-	public final List<Parameter> pars = new LinkedList<Parameter>();
+	public final List<Parameter> pars = new LinkedList<>();
 
 	public Function(Symbol name) {
 		this.name = name;

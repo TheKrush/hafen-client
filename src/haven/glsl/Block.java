@@ -29,7 +29,7 @@ import java.util.*;
 
 public class Block extends Statement {
 
-	public final List<Statement> stmts = new LinkedList<Statement>();
+	public final List<Statement> stmts = new LinkedList<>();
 
 	public Block(Statement... stmts) {
 		for (Statement s : stmts) {

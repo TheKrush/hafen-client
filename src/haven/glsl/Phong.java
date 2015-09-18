@@ -95,7 +95,7 @@ public class Phong extends ValBlock.Group {
 		public final Value lvl, dir, dl, sl;
 		public final ValBlock dvals = new ValBlock();
 		public final ValBlock svals = new ValBlock();
-		private final OrderList<Runnable> mods = new OrderList<Runnable>();
+		private final OrderList<Runnable> mods = new OrderList<>();
 		public Block dcalc, scalc;
 		public Statement dcurs, scurs;
 

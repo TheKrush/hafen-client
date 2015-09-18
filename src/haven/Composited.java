@@ -34,11 +34,11 @@ public class Composited implements Rendered {
 	public final Skeleton skel;
 	public final Pose pose;
 	private final PoseMorph morph;
-	public Collection<Model> mod = new LinkedList<Model>();
-	public Collection<Equ> equ = new LinkedList<Equ>();
+	public Collection<Model> mod = new LinkedList<>();
+	public Collection<Equ> equ = new LinkedList<>();
 	public Poses poses = new Poses();
-	public List<MD> nmod = null, cmod = new LinkedList<MD>();
-	public List<ED> nequ = null, cequ = new LinkedList<ED>();
+	public List<MD> nmod = null, cmod = new LinkedList<>();
+	public List<ED> nequ = null, cequ = new LinkedList<>();
 	public Sprite.Owner eqowner = null;
 
 	public class Poses {
@@ -192,7 +192,7 @@ public class Composited implements Rendered {
 				return (true);
 			}
 		}
-		public final List<Layer> lay = new ArrayList<Layer>();
+		public final List<Layer> lay = new ArrayList<>();
 
 		private Model(FastMesh m) {
 			this.m = new MorphedMesh(m, morph);
@@ -317,7 +317,7 @@ public class Composited implements Rendered {
 		public MD clone() {
 			try {
 				MD ret = (MD) super.clone();
-				ret.tex = new LinkedList<Indir<Resource>>(tex);
+				ret.tex = new LinkedList<>(tex);
 				return (ret);
 			} catch (CloneNotSupportedException e) {
 				/* This is ridiculous. */
@@ -510,12 +510,12 @@ public class Composited implements Rendered {
 		if (mod.equals(cmod)) {
 			return;
 		}
-		this.mod = new LinkedList<Model>();
-		nmod = new LinkedList<MD>();
+		this.mod = new LinkedList<>();
+		nmod = new LinkedList<>();
 		for (MD md : mod) {
 			nmod.add(md.clone());
 		}
-		cmod = new ArrayList<MD>(mod);
+		cmod = new ArrayList<>(mod);
 	}
 
 	public void chequ(List<ED> equ) {
@@ -525,10 +525,10 @@ public class Composited implements Rendered {
 		for (Equ oequ : this.equ) {
 			oequ.matched = false;
 		}
-		nequ = new LinkedList<ED>();
+		nequ = new LinkedList<>();
 		for (ED ed : equ) {
 			nequ.add(ed.clone());
 		}
-		cequ = new ArrayList<ED>(equ);
+		cequ = new ArrayList<>(equ);
 	}
 }

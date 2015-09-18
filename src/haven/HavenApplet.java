@@ -34,7 +34,7 @@ import java.io.*;
 
 public class HavenApplet extends Applet {
 
-	public static Map<ThreadGroup, HavenApplet> applets = new HashMap<ThreadGroup, HavenApplet>();
+	public static Map<ThreadGroup, HavenApplet> applets = new HashMap<>();
 	ThreadGroup p;
 	HavenPanel h;
 	boolean running = false;

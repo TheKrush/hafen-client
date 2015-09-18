@@ -40,9 +40,9 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 	}
 
 	public HashBMap() {
-		fmap = new HashMap<K, V>();
-		rmap = new HashMap<V, K>();
-		rev = new HashBMap<V, K>(rmap, fmap, this);
+		fmap = new HashMap<>();
+		rmap = new HashMap<>();
+		rev = new HashBMap<>(rmap, fmap, this);
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class HashBMap<K, V> extends AbstractMap<K, V> implements BMap<K, V> {
 								return (false);
 							}
 							Entry<K, V> e = iter.next();
-							next = new IteredEntry<K, V>(e.getKey(), e.getValue());
+							next = new IteredEntry<>(e.getKey(), e.getValue());
 							return (true);
 						}
 

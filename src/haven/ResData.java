@@ -52,7 +52,7 @@ public class ResData {
 	}
 
 	public static List<ResData> wrap(List<? extends Indir<Resource>> in) {
-		List<ResData> ret = new ArrayList<ResData>(in.size());
+		List<ResData> ret = new ArrayList<>(in.size());
 		for (Indir<Resource> res : in) {
 			ret.add(new ResData(res, Message.nil));
 		}

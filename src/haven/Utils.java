@@ -611,7 +611,7 @@ public class Utils {
 	}
 
 	public static String[] splitwords(String text) {
-		ArrayList<String> words = new ArrayList<String>();
+		ArrayList<String> words = new ArrayList<>();
 		StringBuilder buf = new StringBuilder();
 		String st = "ws";
 		int i = 0;
@@ -669,7 +669,7 @@ public class Utils {
 	}
 
 	public static String[] splitlines(String text) {
-		ArrayList<String> ret = new ArrayList<String>();
+		ArrayList<String> ret = new ArrayList<>();
 		int p = 0;
 		while (true) {
 			int p2 = text.indexOf('\n', p);

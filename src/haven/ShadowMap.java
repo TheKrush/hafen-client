@@ -35,7 +35,7 @@ import static haven.glsl.Type.*;
 
 public class ShadowMap extends GLState implements GLState.GlobalState, GLState.Global {
 
-	public final static Slot<ShadowMap> smap = new Slot<ShadowMap>(Slot.Type.DRAW, ShadowMap.class, Light.lighting);
+	public final static Slot<ShadowMap> smap = new Slot<>(Slot.Type.DRAW, ShadowMap.class, Light.lighting);
 	public DirLight light;
 	public final TexE lbuf;
 	private final Projection lproj;
@@ -45,7 +45,7 @@ public class ShadowMap extends GLState implements GLState.GlobalState, GLState.G
 					0.0f, 0.5f, 0.0f, 0.5f,
 					0.0f, 0.0f, 0.5f, 0.5f,
 					0.0f, 0.0f, 0.0f, 1.0f);
-	private final List<RenderList.Slot> parts = new ArrayList<RenderList.Slot>();
+	private final List<RenderList.Slot> parts = new ArrayList<>();
 	private int slidx;
 	private Matrix4f txf;
 

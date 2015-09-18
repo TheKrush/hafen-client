@@ -93,7 +93,7 @@ public class Text {
 	}
 
 	public static int[] findspaces(String text) {
-		java.util.List<Integer> l = new ArrayList<Integer>();
+		java.util.List<Integer> l = new ArrayList<>();
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
 			if (Character.isWhitespace(c)) {

@@ -82,7 +82,7 @@ public class VorbisStream {
 			}
 		}
 		vnd = new String(cmt.vendor, 0, cmt.vendor.length - 1, "UTF-8");
-		HashMap<String, String> uc = new HashMap<String, String>();
+		HashMap<String, String> uc = new HashMap<>();
 		for (int i = 0; i < cmt.user_comments.length - 1; i++) {
 			byte[] cb = cmt.user_comments[i];
 			String cs = new String(cb, 0, cb.length - 1, "UTF-8");

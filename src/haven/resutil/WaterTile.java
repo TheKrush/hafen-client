@@ -190,7 +190,7 @@ public class WaterTile extends Tiler {
 		nrm.magfilter(GL.GL_LINEAR);
 	}
 
-	private static final GLState.Slot<GLState> surfslot = new GLState.Slot<GLState>(GLState.Slot.Type.DRAW, GLState.class, PView.cam, HavenPanel.global);
+	private static final GLState.Slot<GLState> surfslot = new GLState.Slot<>(GLState.Slot.Type.DRAW, GLState.class, PView.cam, HavenPanel.global);
 	private static final States.DepthOffset surfoff = new States.DepthOffset(2, 2);
 
 	public static class BetterSurface extends GLState {

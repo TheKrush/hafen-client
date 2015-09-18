@@ -64,7 +64,7 @@ public class NpcChat extends Window {
 			}
 			if (args.length > 0) {
 				int y = out.sz.y + 3;
-				btns = new LinkedList<Button>();
+				btns = new LinkedList<>();
 				for (Object text : args) {
 					Button b = add(Button.wrapped(out.sz.x, (String) text), new Coord(0, y));
 					btns.add(b);

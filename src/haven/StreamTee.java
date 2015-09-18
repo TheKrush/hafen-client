@@ -31,7 +31,7 @@ import java.util.*;
 public class StreamTee extends InputStream {
 
 	private InputStream in;
-	private List<OutputStream> forked = new LinkedList<OutputStream>();
+	private List<OutputStream> forked = new LinkedList<>();
 	private boolean readeof = false;
 	private boolean ncwe = false; /* NCWE = No Close Without EOF */
 

@@ -29,7 +29,7 @@ import java.util.*;
 
 public class OrderList<E> extends AbstractCollection<E> {
 
-	private final List<Element> bk = new ArrayList<Element>();
+	private final List<Element> bk = new ArrayList<>();
 	private boolean sorted;
 
 	class Element implements Comparable<Element> {

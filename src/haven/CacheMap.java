@@ -31,7 +31,7 @@ import java.util.*;
 public class CacheMap<K, V> extends AbstractMap<K, V> {
 
 	private final Map<K, Reference<V>> back;
-	private final ReferenceQueue<V> cleanq = new ReferenceQueue<V>();
+	private final ReferenceQueue<V> cleanq = new ReferenceQueue<>();
 	private final RefType reftype;
 
 	/* Because multiple inheritence would be too good. */
@@ -75,12 +75,12 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 		SOFT {
 							@Override
 							public <K, V> Reference<V> mkref(K k, V v, ReferenceQueue<V> cleanq) {
-								return (new SRef<K, V>(k, v, cleanq));
+								return (new SRef<>(k, v, cleanq));
 							}
 						}, WEAK {
 							@Override
 							public <K, V> Reference<V> mkref(K k, V v, ReferenceQueue<V> cleanq) {
-								return (new WRef<K, V>(k, v, cleanq));
+								return (new WRef<>(k, v, cleanq));
 							}
 						};
 
@@ -89,7 +89,7 @@ public class CacheMap<K, V> extends AbstractMap<K, V> {
 
 	public CacheMap(RefType type) {
 		this.reftype = type;
-		this.back = new HashMap<K, Reference<V>>();
+		this.back = new HashMap<>();
 	}
 
 	public CacheMap() {

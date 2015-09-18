@@ -62,7 +62,7 @@ public class Material extends GLState {
 	public static final float[] defspc = {0.0f, 0.0f, 0.0f, 1.0f};
 	public static final float[] defemi = {0.0f, 0.0f, 0.0f, 1.0f};
 
-	public static final GLState.Slot<Colors> colors = new GLState.Slot<Colors>(Slot.Type.DRAW, Colors.class);
+	public static final GLState.Slot<Colors> colors = new GLState.Slot<>(Slot.Type.DRAW, Colors.class);
 
 	@ResName("col")
 	public static class Colors extends GLState {
@@ -246,8 +246,8 @@ public class Material extends GLState {
 	public static class Res extends Resource.Layer implements Resource.IDLayer<Integer> {
 
 		public final int id;
-		private transient List<GLState> states = new LinkedList<GLState>();
-		private transient List<Resolver> left = new LinkedList<Resolver>();
+		private transient List<GLState> states = new LinkedList<>();
+		private transient List<Resolver> left = new LinkedList<>();
 		private transient Material m;
 		private boolean mipmap = false, linear = false;
 
@@ -430,7 +430,7 @@ public class Material extends GLState {
 		public Res.Resolver cons(Resource res, Object... args);
 	}
 
-	private static final Map<String, ResCons2> rnames = new TreeMap<String, ResCons2>();
+	private static final Map<String, ResCons2> rnames = new TreeMap<>();
 
 	static {
 		for (Class<?> cl : dolda.jglob.Loader.get(ResName.class).classes()) {

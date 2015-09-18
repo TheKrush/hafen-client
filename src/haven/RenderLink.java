@@ -111,7 +111,7 @@ public interface RenderLink {
 					@Override
 					public Rendered make() {
 						if (res == null) {
-							ArrayList<Rendered> cl = new ArrayList<Rendered>();
+							ArrayList<Rendered> cl = new ArrayList<>();
 							for (FastMesh.MeshRes mr : lres.get().layers(FastMesh.MeshRes.class)) {
 								if (((meshid >= 0) && (mr.id < 0)) || (mr.id == meshid)) {
 									cl.add(mr.mat.get().apply(mr.m));

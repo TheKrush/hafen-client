@@ -34,7 +34,7 @@ public abstract class States extends GLState {
 	private States() {
 	}
 
-	public static final Slot<ColState> color = new Slot<ColState>(Slot.Type.DRAW, ColState.class, HavenPanel.global);
+	public static final Slot<ColState> color = new Slot<>(Slot.Type.DRAW, ColState.class, HavenPanel.global);
 
 	public static class ColState extends GLState {
 
@@ -152,7 +152,7 @@ public abstract class States extends GLState {
 		}
 	};
 
-	public static final Slot<Coverage> coverage = new Slot<Coverage>(Slot.Type.DRAW, Coverage.class, PView.proj);
+	public static final Slot<Coverage> coverage = new Slot<>(Slot.Type.DRAW, Coverage.class, PView.proj);
 
 	public static class Coverage extends GLState {
 
@@ -217,7 +217,7 @@ public abstract class States extends GLState {
 		}
 	}
 
-	public static final Slot<Fog> fog = new Slot<Fog>(Slot.Type.DRAW, Fog.class, PView.proj);
+	public static final Slot<Fog> fog = new Slot<>(Slot.Type.DRAW, Fog.class, PView.proj);
 
 	public static class Fog extends GLState {
 
@@ -254,7 +254,7 @@ public abstract class States extends GLState {
 		}
 	}
 
-	public static final Slot<DepthOffset> depthoffset = new Slot<DepthOffset>(Slot.Type.GEOM, DepthOffset.class, PView.proj);
+	public static final Slot<DepthOffset> depthoffset = new Slot<>(Slot.Type.GEOM, DepthOffset.class, PView.proj);
 
 	public static class DepthOffset extends GLState {
 
@@ -292,7 +292,7 @@ public abstract class States extends GLState {
 
 	public static class PolygonMode extends GLState {
 
-		public static final Slot<PolygonMode> slot = new Slot<PolygonMode>(Slot.Type.GEOM, PolygonMode.class, PView.proj);
+		public static final Slot<PolygonMode> slot = new Slot<>(Slot.Type.GEOM, PolygonMode.class, PView.proj);
 		public final int mode;
 
 		public PolygonMode(int mode) {
@@ -332,7 +332,7 @@ public abstract class States extends GLState {
 		}
 	};
 
-	public static final Slot<GLState> adhoc = new Slot<GLState>(Slot.Type.DRAW, GLState.class, PView.wnd);
+	public static final Slot<GLState> adhoc = new Slot<>(Slot.Type.DRAW, GLState.class, PView.wnd);
 
 	public static class AdHoc extends GLState {
 
@@ -365,7 +365,7 @@ public abstract class States extends GLState {
 		}
 	}
 
-	public static final Slot<GLState> adhocg = new Slot<GLState>(Slot.Type.GEOM, GLState.class, PView.wnd);
+	public static final Slot<GLState> adhocg = new Slot<>(Slot.Type.GEOM, GLState.class, PView.wnd);
 
 	public static class GeomAdHoc extends GLState {
 
@@ -410,7 +410,7 @@ public abstract class States extends GLState {
 		}
 	};
 
-	public static final Slot<GLState> pointsize = new Slot<GLState>(Slot.Type.GEOM, GLState.class, HavenPanel.global);
+	public static final Slot<GLState> pointsize = new Slot<>(Slot.Type.GEOM, GLState.class, HavenPanel.global);
 
 	public static class PointSize extends GLState {
 

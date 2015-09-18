@@ -32,7 +32,7 @@ public class Tabs {
 	public Widget parent;
 	public Coord c, sz;
 	public Tab curtab = null;
-	public Collection<Tab> tabs = new LinkedList<Tab>();
+	public Collection<Tab> tabs = new LinkedList<>();
 
 	public Tabs(Coord c, Coord sz, Widget parent) {
 		this.c = c;

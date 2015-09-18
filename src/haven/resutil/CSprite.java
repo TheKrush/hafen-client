@@ -31,7 +31,7 @@ import java.util.*;
 public class CSprite extends Sprite {
 
 	private final Coord3f cc;
-	private final List<Rendered> parts = new ArrayList<Rendered>();
+	private final List<Rendered> parts = new ArrayList<>();
 	private final Random rnd;
 
 	public CSprite(Owner owner, Resource res) {

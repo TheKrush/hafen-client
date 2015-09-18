@@ -47,7 +47,7 @@ public interface ShaderMacro {
 		public final transient GLBuffer[] curinst;
 
 		private static Collection<GLShader> build(ProgramContext prog) {
-			Collection<GLShader> ret = new LinkedList<GLShader>();
+			Collection<GLShader> ret = new LinkedList<>();
 			StringWriter fbuf = new StringWriter();
 			prog.fctx.construct(fbuf);
 			ret.add(new FragmentShader(fbuf.toString()));
@@ -62,7 +62,7 @@ public interface ShaderMacro {
 			super(build(ctx));
 			this.built = ctx;
 			{
-				List<Uniform.AutoApply> auto = new LinkedList<Uniform.AutoApply>();
+				List<Uniform.AutoApply> auto = new LinkedList<>();
 				for (Uniform var : ctx.uniforms) {
 					if (var instanceof Uniform.AutoApply) {
 						auto.add((Uniform.AutoApply) var);
@@ -82,7 +82,7 @@ public interface ShaderMacro {
 				for (int i = 0; i < auto.length; i++) {
 					for (GLState.Slot slot : auto[i].deps) {
 						if (buf[slot.id] == null) {
-							buf[slot.id] = new LinkedList<Integer>();
+							buf[slot.id] = new LinkedList<>();
 						}
 						buf[slot.id].add(i);
 					}
@@ -101,7 +101,7 @@ public interface ShaderMacro {
 				}
 			}
 			{
-				List<Attribute.AutoInstanced> autoinst = new LinkedList<Attribute.AutoInstanced>();
+				List<Attribute.AutoInstanced> autoinst = new LinkedList<>();
 				for (Attribute var : ctx.attribs) {
 					if (var instanceof Attribute.AutoInstanced) {
 						autoinst.add((Attribute.AutoInstanced) var);
@@ -184,7 +184,7 @@ public interface ShaderMacro {
 		}
 
 		/* XXX: It would be terribly nice to replace these with some faster operation. */
-		private final transient Map<Uniform, VarID> umap = new IdentityHashMap<Uniform, VarID>();
+		private final transient Map<Uniform, VarID> umap = new IdentityHashMap<>();
 
 		public VarID cuniform(Uniform var) {
 			return (umap.get(var));
@@ -197,7 +197,7 @@ public interface ShaderMacro {
 			}
 			return (r);
 		}
-		private final transient Map<Attribute, VarID> amap = new IdentityHashMap<Attribute, VarID>();
+		private final transient Map<Attribute, VarID> amap = new IdentityHashMap<>();
 
 		public VarID cattrib(Attribute var) {
 			return (amap.get(var));

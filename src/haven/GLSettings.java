@@ -38,7 +38,7 @@ public class GLSettings implements java.io.Serializable {
 
 	public final GLConfig cfg;
 	public boolean dirty = false;
-	private final List<Setting<?>> settings = new ArrayList<Setting<?>>();
+	private final List<Setting<?>> settings = new ArrayList<>();
 
 	private GLSettings(GLConfig cfg) {
 		this.cfg = cfg;
@@ -327,7 +327,7 @@ public class GLSettings implements java.io.Serializable {
 	}
 
 	public Object savedata() {
-		Map<String, Object> ret = new HashMap<String, Object>();
+		Map<String, Object> ret = new HashMap<>();
 		for (Setting<?> s : settings) {
 			ret.put(s.nm, s.val);
 		}

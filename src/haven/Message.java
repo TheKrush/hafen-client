@@ -237,7 +237,7 @@ public abstract class Message {
 	}
 
 	public Object[] list() {
-		ArrayList<Object> ret = new ArrayList<Object>();
+		ArrayList<Object> ret = new ArrayList<>();
 		list:
 		while (true) {
 			if (eom()) {

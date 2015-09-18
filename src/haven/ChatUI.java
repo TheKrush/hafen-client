@@ -59,7 +59,7 @@ public class ChatUI extends Widget {
 	private final Selector chansel;
 	private Coord base = Coord.z;
 	private QuickLine qline = null;
-	private final LinkedList<Notification> notifs = new LinkedList<Notification>();
+	private final LinkedList<Notification> notifs = new LinkedList<>();
 	private UI.Grab qgrab;
 
 	public ChatUI(int w, int h) {
@@ -137,7 +137,7 @@ public class ChatUI extends Widget {
 				} else {
 					ret.append(lead);
 				}
-				Map<Attribute, Object> na = new HashMap<Attribute, Object>(attrs);
+				Map<Attribute, Object> na = new HashMap<>(attrs);
 				na.putAll(urlstyle);
 				na.put(ChatAttribute.HYPERLINK, new FuckMeGentlyWithAChainsaw(url));
 				ret.append(new RichText.TextPart(text.substring(m.start(), m.end()), na));
@@ -154,7 +154,7 @@ public class ChatUI extends Widget {
 
 	public static abstract class Channel extends Widget {
 
-		public final List<Message> msgs = new LinkedList<Message>();
+		public final List<Message> msgs = new LinkedList<>();
 		private final Scrollbar sb;
 		private final IButton cb;
 		public int urgency = 0;
@@ -715,7 +715,7 @@ public class ChatUI extends Widget {
 	public static abstract class EntryChannel extends Channel {
 
 		private final TextEntry in;
-		private List<String> history = new ArrayList<String>();
+		private List<String> history = new ArrayList<>();
 		private int hpos = 0;
 		private String hcurrent;
 
@@ -820,7 +820,7 @@ public class ChatUI extends Widget {
 
 		public final int urgency;
 		private final String name;
-		private final Map<Integer, Color> pc = new HashMap<Integer, Color>();
+		private final Map<Integer, Color> pc = new HashMap<>();
 
 		public class NamedMessage extends Message {
 
@@ -1096,7 +1096,7 @@ public class ChatUI extends Widget {
 			new PUtils.BlurFurn(new PUtils.TexFurn(tf, ctex), 1, 1, new Color(0, 128, 255)),
 			new PUtils.BlurFurn(new PUtils.TexFurn(tf, ctex), 1, 1, new Color(255, 128, 0)),
 			new PUtils.BlurFurn(new PUtils.TexFurn(tf, ctex), 1, 1, new Color(255, 0, 0)),};
-		private final List<DarkChannel> chls = new ArrayList<DarkChannel>();
+		private final List<DarkChannel> chls = new ArrayList<>();
 		private int s = 0;
 
 		private class DarkChannel {

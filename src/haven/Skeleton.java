@@ -30,13 +30,13 @@ import javax.media.opengl.*;
 
 public class Skeleton {
 
-	public final Map<String, Bone> bones = new HashMap<String, Bone>();
+	public final Map<String, Bone> bones = new HashMap<>();
 	public final Bone[] blist; /* Topologically sorted */
 
 	public final Pose bindpose;
 
 	public Skeleton(Collection<Bone> bones) {
-		Set<Bone> bset = new HashSet<Bone>(bones);
+		Set<Bone> bset = new HashSet<>(bones);
 		blist = new Bone[bones.size()];
 		int idx = 0;
 		for (Bone b : bones) {
@@ -566,7 +566,7 @@ public class Skeleton {
 			@Override
 			public PoseMod create(Skeleton skel, ModOwner owner, Resource res, Message sdt) {
 				int mask = Sprite.decnum(sdt);
-				Collection<PoseMod> poses = new ArrayList<PoseMod>(16);
+				Collection<PoseMod> poses = new ArrayList<>(16);
 				for (ResPose p : res.layers(ResPose.class)) {
 					if ((p.id < 0) || ((mask & (1 << p.id)) != 0)) {
 						poses.add(p.forskel(owner, skel, p.defmode));
@@ -598,8 +598,8 @@ public class Skeleton {
 
 		public Res(Resource res, Message buf) {
 			res.super();
-			Map<String, Bone> bones = new HashMap<String, Bone>();
-			Map<Bone, String> pm = new HashMap<Bone, String>();
+			Map<String, Bone> bones = new HashMap<>();
+			Map<Bone, String> pm = new HashMap<>();
 			while (!buf.eom()) {
 				String bnm = buf.string();
 				Coord3f pos = new Coord3f((float) buf.cpfloat(), (float) buf.cpfloat(), (float) buf.cpfloat());
@@ -639,7 +639,7 @@ public class Skeleton {
 
 		public final Track[] tracks;
 		public final FxTrack[] effects;
-		private final Collection<FxTrack.EventListener> cbl = new ArrayList<FxTrack.EventListener>(0);
+		private final Collection<FxTrack.EventListener> cbl = new ArrayList<>(0);
 		public final float len;
 		public final WrapMode mode;
 		private final boolean stat;
@@ -1002,8 +1002,8 @@ public class Skeleton {
 			} else {
 				nspeed = -1;
 			}
-			Collection<Track> tracks = new LinkedList<Track>();
-			Collection<FxTrack> fx = new LinkedList<FxTrack>();
+			Collection<Track> tracks = new LinkedList<>();
+			Collection<FxTrack> fx = new LinkedList<>();
 			while (!buf.eom()) {
 				String bnm = buf.string();
 				if (bnm.equals("{ctl}")) {
@@ -1157,7 +1157,7 @@ public class Skeleton {
 		public BoneOffset(Resource res, Message buf) {
 			res.super();
 			this.nm = buf.string();
-			List<Command> cbuf = new LinkedList<Command>();
+			List<Command> cbuf = new LinkedList<>();
 			while (!buf.eom()) {
 				cbuf.add(opcodes[buf.uint8()].make(buf));
 			}

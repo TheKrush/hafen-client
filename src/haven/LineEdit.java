@@ -126,8 +126,8 @@ public class LineEdit {
 
 		private int mark, yankpos, undopos;
 		private String last = "";
-		private List<String> yanklist = new ArrayList<String>();
-		private List<UndoState> undolist = new ArrayList<UndoState>();
+		private List<String> yanklist = new ArrayList<>();
+		private List<UndoState> undolist = new ArrayList<>();
 
 		{
 			undolist.add(new UndoState());

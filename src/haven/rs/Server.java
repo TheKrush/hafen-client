@@ -35,7 +35,7 @@ import haven.Composited.ED;
 
 public class Server extends Thread {
 
-	public static final Map<String, Command> commands = new HashMap<String, Command>();
+	public static final Map<String, Command> commands = new HashMap<>();
 	private final ServerSocket sk;
 	private final Random rng;
 	private final byte[] key;

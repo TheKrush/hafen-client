@@ -101,7 +101,7 @@ public class Window extends Widget implements DTarget {
 	protected Coord doff;
 	protected WindowCFG cfg = null;
 	public boolean justclose = false;
-	private final Collection<Widget> twdgs = new LinkedList<Widget>();
+	private final Collection<Widget> twdgs = new LinkedList<>();
 
 	@RName("wnd")
 	public static class $_ implements Factory {
@@ -438,7 +438,7 @@ public class Window extends Widget implements DTarget {
 
 		private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
 		private static String CONFIG_JSON;
-		public static Map<String, WindowCFG> cfg = new HashMap<String, WindowCFG>();
+		public static Map<String, WindowCFG> cfg = new HashMap<>();
 		public Coord c, sz;
 
 		static {
@@ -447,7 +447,7 @@ public class Window extends Widget implements DTarget {
 
 		public static void loadConfig() {
 			String configJson = Globals.SettingFileString(Globals.USERNAME + "/windows.json", true);
-			Map<String, WindowCFG> tmp = new HashMap<String, WindowCFG>();
+			Map<String, WindowCFG> tmp = new HashMap<>();
 			try {
 				Type type = new TypeToken<Map<String, WindowCFG>>() {
 				}.getType();
@@ -467,7 +467,7 @@ public class Window extends Widget implements DTarget {
 			}
 			CONFIG_JSON = configJson;
 			if (tmp == null) {
-				tmp = new HashMap<String, WindowCFG>();
+				tmp = new HashMap<>();
 			}
 			cfg = tmp;
 		}

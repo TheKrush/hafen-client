@@ -34,8 +34,8 @@ public class Polity extends Widget {
 	public final String cap, name;
 	public int auth, acap, adrain, aseq;
 	public boolean offline;
-	public final List<Member> memb = new ArrayList<Member>();
-	public final Map<Integer, Member> idmap = new HashMap<Integer, Member>();
+	public final List<Member> memb = new ArrayList<>();
+	public final Map<Integer, Member> idmap = new HashMap<>();
 	protected Widget mw;
 
 	public class Member {

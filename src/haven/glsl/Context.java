@@ -29,12 +29,12 @@ import java.util.*;
 
 public class Context {
 
-	public final Map<Symbol, String> symtab = new HashMap<Symbol, String>();
-	public final Map<String, Symbol> rsymtab = new HashMap<String, Symbol>();
+	public final Map<Symbol, String> symtab = new HashMap<>();
+	public final Map<String, Symbol> rsymtab = new HashMap<>();
 	public int symgen = 1;
-	public List<Toplevel> vardefs = new LinkedList<Toplevel>();
-	public List<Toplevel> fundefs = new LinkedList<Toplevel>();
-	public Set<String> exts = new HashSet<String>();
+	public List<Toplevel> vardefs = new LinkedList<>();
+	public List<Toplevel> fundefs = new LinkedList<>();
+	public Set<String> exts = new HashSet<>();
 
 	public void walk(Walker w) {
 		for (Toplevel el : vardefs) {

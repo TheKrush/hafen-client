@@ -29,7 +29,7 @@ import java.util.*;
 
 public class MultiClient extends BaseTest {
 
-	public Collection<TestClient> clients = new HashSet<TestClient>();
+	public Collection<TestClient> clients = new HashSet<>();
 	public int num, delay;
 	public int started;
 

@@ -83,9 +83,9 @@ public class Light implements Rendered {
 		gl.glDisable(GL2.GL_LIGHT0 + idx);
 	}
 
-	public static final GLState.Slot<LightList> lights = new GLState.Slot<LightList>(GLState.Slot.Type.DRAW, LightList.class, PView.cam);
-	public static final GLState.Slot<Model> model = new GLState.Slot<Model>(GLState.Slot.Type.DRAW, Model.class, PView.proj);
-	public static final GLState.Slot<GLState> lighting = new GLState.Slot<GLState>(GLState.Slot.Type.DRAW, GLState.class, model, lights);
+	public static final GLState.Slot<LightList> lights = new GLState.Slot<>(GLState.Slot.Type.DRAW, LightList.class, PView.cam);
+	public static final GLState.Slot<Model> model = new GLState.Slot<>(GLState.Slot.Type.DRAW, Model.class, PView.proj);
+	public static final GLState.Slot<GLState> lighting = new GLState.Slot<>(GLState.Slot.Type.DRAW, GLState.class, model, lights);
 
 	public static class BaseLights extends GLState {
 
@@ -139,7 +139,7 @@ public class Light implements Rendered {
 
 	public static class CelShade extends GLState {
 
-		public static final Slot<CelShade> slot = new Slot<CelShade>(Slot.Type.DRAW, CelShade.class, lighting);
+		public static final Slot<CelShade> slot = new Slot<>(Slot.Type.DRAW, CelShade.class, lighting);
 
 		public CelShade(boolean dif, boolean spc) {
 			shaders = new ShaderMacro[]{new Phong.CelShade(dif, spc)};
@@ -227,9 +227,9 @@ public class Light implements Rendered {
 
 	public static class LightList extends GLState {
 
-		public final List<Light> ll = new ArrayList<Light>();
-		public final List<Matrix4f> vl = new ArrayList<Matrix4f>();
-		private final List<Light> en = new ArrayList<Light>();
+		public final List<Light> ll = new ArrayList<>();
+		public final List<Matrix4f> vl = new ArrayList<>();
+		private final List<Light> en = new ArrayList<>();
 		public int nlights = 0;
 
 		@Override

@@ -33,7 +33,7 @@ public class Bootstrap implements UI.Receiver, UI.Runner {
 	Session sess;
 	String hostname;
 	int port;
-	final Queue<Message> msgs = new LinkedList<Message>();
+	final Queue<Message> msgs = new LinkedList<>();
 	String inituser = null;
 	byte[] initcookie = null;
 

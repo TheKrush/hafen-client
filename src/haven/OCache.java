@@ -30,9 +30,9 @@ import java.util.*;
 public class OCache implements Iterable<Gob> {
 	/* XXX: Use weak refs */
 
-	private Collection<Collection<Gob>> local = new LinkedList<Collection<Gob>>();
-	private Map<Long, Gob> objs = new TreeMap<Long, Gob>();
-	private Map<Long, Integer> deleted = new TreeMap<Long, Integer>();
+	private Collection<Collection<Gob>> local = new LinkedList<>();
+	private Map<Long, Gob> objs = new TreeMap<>();
+	private Map<Long, Integer> deleted = new TreeMap<>();
 	private Glob glob;
 
 	public OCache(Glob glob) {
@@ -61,7 +61,7 @@ public class OCache implements Iterable<Gob> {
 
 	public void ctick(int dt) {
 		synchronized (this) {
-			ArrayList<Gob> copy = new ArrayList<Gob>();
+			ArrayList<Gob> copy = new ArrayList<>();
 			for (Gob g : this) {
 				copy.add(g);
 			}
@@ -74,11 +74,11 @@ public class OCache implements Iterable<Gob> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<Gob> iterator() {
-		Collection<Iterator<Gob>> is = new LinkedList<Iterator<Gob>>();
+		Collection<Iterator<Gob>> is = new LinkedList<>();
 		for (Collection<Gob> gc : local) {
 			is.add(gc.iterator());
 		}
-		return (new I2<Gob>(objs.values().iterator(), new I2<Gob>(is)));
+		return (new I2<>(objs.values().iterator(), new I2<>(is)));
 	}
 
 	public synchronized void ladd(Collection<Gob> gob) {

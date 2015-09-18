@@ -36,8 +36,8 @@ import javax.imageio.ImageIO;
 
 public class MiniMap extends Widget {
 
-	static Map<String, Tex> grids = new WeakHashMap<String, Tex>();
-	static Set<String> loading = new HashSet<String>();
+	static Map<String, Tex> grids = new WeakHashMap<>();
+	static Set<String> loading = new HashSet<>();
 	static Loader loader = new Loader();
 	public static final Tex bg = Resource.loadtex("gfx/hud/mmap/ptex");
 	public static final Tex nomap = Resource.loadtex("gfx/hud/mmap/nomap");

@@ -40,7 +40,7 @@ public class TestClient implements Runnable {
 	public Thread me;
 	public UI ui;
 	public boolean loop = false;
-	public Collection<Robot> robots = new HashSet<Robot>();
+	public Collection<Robot> robots = new HashSet<>();
 	private static Object errsync = new Object();
 
 	public TestClient(String user) {

@@ -16,7 +16,7 @@ public abstract class Breadcrumbs<T> extends Widget {
 	super(sz.add(0, border.x*2));
 	int d = sz.y;
 	SZ = new Coord(d, d);
-	buttons = new LinkedList<IButton>();
+	buttons = new LinkedList<>();
     }
 
     public void setCrumbs(List<Crumb<T>> crumbs){

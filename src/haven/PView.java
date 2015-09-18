@@ -33,11 +33,11 @@ import javax.media.opengl.*;
 public abstract class PView extends Widget {
 
 	public RenderList rls;
-	public static final GLState.Slot<RenderContext> ctx = new GLState.Slot<RenderContext>(GLState.Slot.Type.SYS, RenderContext.class);
-	public static final GLState.Slot<RenderState> wnd = new GLState.Slot<RenderState>(GLState.Slot.Type.SYS, RenderState.class, HavenPanel.proj2d, GLFrameBuffer.slot);
-	public static final GLState.Slot<Projection> proj = new GLState.Slot<Projection>(GLState.Slot.Type.SYS, Projection.class, wnd);
-	public static final GLState.Slot<Camera> cam = new GLState.Slot<Camera>(GLState.Slot.Type.SYS, Camera.class, proj);
-	public static final GLState.Slot<Location.Chain> loc = new GLState.Slot<Location.Chain>(GLState.Slot.Type.GEOM, Location.Chain.class, cam).instanced(Location.Chain.instancer);
+	public static final GLState.Slot<RenderContext> ctx = new GLState.Slot<>(GLState.Slot.Type.SYS, RenderContext.class);
+	public static final GLState.Slot<RenderState> wnd = new GLState.Slot<>(GLState.Slot.Type.SYS, RenderState.class, HavenPanel.proj2d, GLFrameBuffer.slot);
+	public static final GLState.Slot<Projection> proj = new GLState.Slot<>(GLState.Slot.Type.SYS, Projection.class, wnd);
+	public static final GLState.Slot<Camera> cam = new GLState.Slot<>(GLState.Slot.Type.SYS, Camera.class, proj);
+	public static final GLState.Slot<Location.Chain> loc = new GLState.Slot<>(GLState.Slot.Type.GEOM, Location.Chain.class, cam).instanced(Location.Chain.instancer);
 	public CPUProfile prof = new CPUProfile(300);
 	protected Light.Model lm;
 	private final WidgetContext cstate = new WidgetContext();
@@ -46,7 +46,7 @@ public abstract class PView extends Widget {
 
 	public static class RenderContext extends GLState.Abstract {
 
-		private Map<DataID, Object> data = new CacheMap<DataID, Object>(CacheMap.RefType.WEAK);
+		private Map<DataID, Object> data = new CacheMap<>(CacheMap.RefType.WEAK);
 
 		public interface DataID<T> {
 

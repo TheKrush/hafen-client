@@ -62,7 +62,7 @@ public abstract class TexL extends TexGL {
 				throw (new RuntimeException("Generated TexL image from " + TexL.this + " does not match declared size"));
 			}
 			ifmt = TexI.detectfmt(img);
-			LinkedList<byte[]> data = new LinkedList<byte[]>();
+			LinkedList<byte[]> data = new LinkedList<>();
 			if ((ifmt == GL.GL_RGB) || (ifmt == GL2.GL_BGR)) {
 				if ((mipmap != null) && !(mipmap instanceof Mipmapper.Mipmapper3)) {
 					ifmt = -1;

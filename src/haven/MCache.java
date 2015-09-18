@@ -42,13 +42,13 @@ public class MCache {
 	private final Reference<Tileset>[] csets = new Reference[256];
 	@SuppressWarnings("unchecked")
 	private final Reference<Tiler>[] tiles = new Reference[256];
-	Map<Coord, Request> req = new HashMap<Coord, Request>();
-	Map<Coord, Grid> grids = new HashMap<Coord, Grid>();
+	Map<Coord, Request> req = new HashMap<>();
+	Map<Coord, Grid> grids = new HashMap<>();
 	Session sess;
-	Set<Overlay> ols = new HashSet<Overlay>();
+	Set<Overlay> ols = new HashSet<>();
 	public int olseq = 0;
 	Random gen = new Random();
-	Map<Integer, Defrag> fragbufs = new TreeMap<Integer, Defrag>();
+	Map<Integer, Defrag> fragbufs = new TreeMap<>();
 	public long lastMapUpdate = -1;
 
 	public static class LoadingMap extends Loading {
@@ -156,7 +156,7 @@ public class MCache {
 			@SuppressWarnings("unchecked")
 			Collection<Gob>[] fo = (Collection<Gob>[]) new Collection[cutn.x * cutn.y];
 			for (int i = 0; i < fo.length; i++) {
-				fo[i] = new LinkedList<Gob>();
+				fo[i] = new LinkedList<>();
 			}
 			Coord c = new Coord(0, 0);
 			Coord tc = gc.mul(cmaps);
@@ -537,7 +537,7 @@ public class MCache {
 					return (null);
 				}
 				res = nsets[i].get();
-				sets[i] = new SoftReference<Resource>(res);
+				sets[i] = new SoftReference<>(res);
 			}
 			return (res);
 		}
@@ -556,7 +556,7 @@ public class MCache {
 				} catch (Loading e) {
 					throw (new LoadingMap(e));
 				}
-				csets[i] = new SoftReference<Tileset>(cset);
+				csets[i] = new SoftReference<>(cset);
 			}
 			return (cset);
 		}
@@ -571,7 +571,7 @@ public class MCache {
 					return (null);
 				}
 				tile = set.tfac().create(i, set);
-				tiles[i] = new SoftReference<Tiler>(tile);
+				tiles[i] = new SoftReference<>(tile);
 			}
 			return (tile);
 		}

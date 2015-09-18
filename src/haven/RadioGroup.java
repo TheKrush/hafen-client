@@ -37,9 +37,9 @@ public class RadioGroup {
 
 	public RadioGroup(Widget parent) {
 		this.parent = parent;
-		btns = new ArrayList<RadioButton>();
-		map = new HashMap<String, RadioButton>();
-		rmap = new HashMap<RadioButton, String>();
+		btns = new ArrayList<>();
+		map = new HashMap<>();
+		rmap = new HashMap<>();
 	}
 
 	public class RadioButton extends CheckBox {

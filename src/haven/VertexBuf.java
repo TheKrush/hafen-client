@@ -33,7 +33,7 @@ import haven.GLProgram.VarID;
 
 public class VertexBuf {
 
-	public static final GLState.Slot<Binding> bound = new GLState.Slot<Binding>(GLState.Slot.Type.GEOM, Binding.class);
+	public static final GLState.Slot<Binding> bound = new GLState.Slot<>(GLState.Slot.Type.GEOM, Binding.class);
 	public final AttribArray[] bufs;
 	public final int num;
 
@@ -505,7 +505,7 @@ public class VertexBuf {
 		return (dst);
 	}
 
-	private static final Map<String, ArrayCons> rnames = new TreeMap<String, ArrayCons>();
+	private static final Map<String, ArrayCons> rnames = new TreeMap<>();
 
 	static {
 		for (Class<?> cl : dolda.jglob.Loader.get(ResName.class).classes()) {
@@ -549,7 +549,7 @@ public class VertexBuf {
 
 		public VertexRes(Resource res, Message buf) {
 			res.super();
-			List<AttribArray> bufs = new LinkedList<AttribArray>();
+			List<AttribArray> bufs = new LinkedList<>();
 			int fl = buf.uint8();
 			int num = buf.uint16();
 			while (!buf.eom()) {
@@ -573,7 +573,7 @@ public class VertexBuf {
 
 		@Override
 		public VertexRes cons(Resource res, Message buf) {
-			ArrayList<AttribArray> bufs = new ArrayList<AttribArray>();
+			ArrayList<AttribArray> bufs = new ArrayList<>();
 			int fl = buf.uint8();
 			int num = buf.uint16();
 			while (!buf.eom()) {
@@ -605,7 +605,7 @@ public class VertexBuf {
 					ba.rewind();
 					FloatBuffer bw = Utils.wfbuf(num * mba);
 					int[] na = new int[num];
-					List<String> bones = new ArrayList<String>();
+					List<String> bones = new ArrayList<>();
 					while (true) {
 						String bone = buf.string();
 						if (bone.length() == 0) {

@@ -43,7 +43,7 @@ public interface Rendered extends Drawn {
 		public int compare(T a, T b, GLState.Buffer sa, GLState.Buffer sb);
 	}
 
-	public static final GLState.Slot<Order> order = new GLState.Slot<Order>(GLState.Slot.Type.GEOM, Order.class, HavenPanel.global);
+	public static final GLState.Slot<Order> order = new GLState.Slot<>(GLState.Slot.Type.GEOM, Order.class, HavenPanel.global);
 
 	public static abstract class Order<T extends Rendered> extends GLState {
 

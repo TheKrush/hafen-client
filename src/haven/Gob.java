@@ -38,8 +38,8 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public long id;
 	public int frame;
 	public final Glob glob;
-	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<Class<? extends GAttrib>, GAttrib>();
-	public Collection<Overlay> ols = new LinkedList<Overlay>();
+	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<>();
+	public Collection<Overlay> ols = new LinkedList<>();
 
 	private static final Tex[] gobhp = new Tex[]{
 		Text.renderstroked("25%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),

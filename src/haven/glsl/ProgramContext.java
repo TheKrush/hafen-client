@@ -31,14 +31,14 @@ public class ProgramContext {
 
 	public final VertexContext vctx;
 	public final FragmentContext fctx;
-	public final Set<Uniform> uniforms = new HashSet<Uniform>();
-	public final Set<Attribute> attribs = new HashSet<Attribute>();
-	public final Map<Symbol, String> symtab = new HashMap<Symbol, String>();
-	public final Map<String, Symbol> rsymtab = new HashMap<String, Symbol>();
+	public final Set<Uniform> uniforms = new HashSet<>();
+	public final Set<Attribute> attribs = new HashSet<>();
+	public final Map<Symbol, String> symtab = new HashMap<>();
+	public final Map<String, Symbol> rsymtab = new HashMap<>();
 	public int symgen = 1;
 	public boolean dump = false;
 	public boolean instanced = false;
-	private final Collection<Object> mods = new LinkedList<Object>();
+	private final Collection<Object> mods = new LinkedList<>();
 
 	public static final Variable gl_LightSource = new Variable.Implicit(new Array(Struct.gl_LightSourceParameters), new Symbol.Fix("gl_LightSource"));
 	public static final Variable gl_FrontMaterial = new Variable.Implicit(Struct.gl_MaterialParameters, new Symbol.Fix("gl_FrontMaterial"));

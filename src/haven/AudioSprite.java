@@ -31,7 +31,7 @@ import haven.Audio.CS;
 public class AudioSprite {
 
 	public static Resource.Audio randoom(Resource res, String id) {
-		List<Resource.Audio> cl = new ArrayList<Resource.Audio>();
+		List<Resource.Audio> cl = new ArrayList<>();
 		for (Resource.Audio clip : res.layers(Resource.audio)) {
 			if (clip.id == id) {
 				cl.add(clip);

@@ -86,7 +86,7 @@ public abstract class GLState {
 	public static class Slot<T extends GLState> {
 
 		private static boolean dirty = false;
-		private static Collection<Slot<?>> all = new LinkedList<Slot<?>>();
+		private static Collection<Slot<?>> all = new LinkedList<>();
 		public final Type type;
 		public final int id;
 		public final Class<T> scl;
@@ -144,7 +144,7 @@ public abstract class GLState {
 		}
 
 		private static void makedeps(Collection<Slot<?>> slots) {
-			Map<Slot<?>, Set<Slot<?>>> lrdep = new HashMap<Slot<?>, Set<Slot<?>>>();
+			Map<Slot<?>, Set<Slot<?>>> lrdep = new HashMap<>();
 			for (Slot<?> s : slots) {
 				lrdep.put(s, new HashSet<Slot<?>>());
 			}
@@ -154,8 +154,8 @@ public abstract class GLState {
 					lrdep.get(ds).add(s);
 				}
 			}
-			Set<Slot<?>> left = new HashSet<Slot<?>>(slots);
-			final Map<Slot<?>, Integer> order = new HashMap<Slot<?>, Integer>();
+			Set<Slot<?>> left = new HashSet<>(slots);
+			final Map<Slot<?>, Integer> order = new HashMap<>();
 			int id = left.size() - 1;
 			Slot<?>[] cp = new Slot<?>[0];
 			while (!left.isEmpty()) {
@@ -170,7 +170,7 @@ public abstract class GLState {
 					}
 					err = false;
 					order.put(s, s.depid = id--);
-					Set<Slot<?>> grdep = new HashSet<Slot<?>>();
+					Set<Slot<?>> grdep = new HashSet<>();
 					for (Slot<?> ds : lrdep.get(s)) {
 						grdep.add(ds);
 						for (Slot<?> ds2 : ds.grdep) {
@@ -797,7 +797,7 @@ public abstract class GLState {
 				s.used = true;
 				return (s.prog);
 			}
-			Collection<ShaderMacro> mods = new LinkedList<ShaderMacro>();
+			Collection<ShaderMacro> mods = new LinkedList<>();
 			for (int i = 0; i < shaders.length; i++) {
 				if (shaders[i] == null) {
 					continue;
@@ -996,7 +996,7 @@ public abstract class GLState {
 		public final Slot<StandAlone> slot;
 
 		public StandAlone(Slot.Type type, Slot<?>... dep) {
-			slot = new Slot<StandAlone>(type, StandAlone.class, dep);
+			slot = new Slot<>(type, StandAlone.class, dep);
 		}
 
 		@Override

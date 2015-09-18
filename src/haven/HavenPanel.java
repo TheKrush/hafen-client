@@ -43,15 +43,15 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 	public boolean bgmode = false;
 	long fd = 10, bgfd = 200, fps = 0;
 	double uidle = 0.0, ridle = 0.0;
-	Queue<InputEvent> events = new LinkedList<InputEvent>();
+	Queue<InputEvent> events = new LinkedList<>();
 	private String cursmode = "tex";
 	private Resource lastcursor = null;
 	public Coord mousepos = new Coord(0, 0);
 	private MouseEvent mousemv = null;
 	public CPUProfile uprof = new CPUProfile(300), rprof = new CPUProfile(300);
 	public GPUProfile gprof = new GPUProfile(300);
-	public static final GLState.Slot<GLState> global = new GLState.Slot<GLState>(GLState.Slot.Type.SYS, GLState.class);
-	public static final GLState.Slot<GLState> proj2d = new GLState.Slot<GLState>(GLState.Slot.Type.SYS, GLState.class, global);
+	public static final GLState.Slot<GLState> global = new GLState.Slot<>(GLState.Slot.Type.SYS, GLState.class);
+	public static final GLState.Slot<GLState> proj2d = new GLState.Slot<>(GLState.Slot.Type.SYS, GLState.class, global);
 	private GLState gstate, rtstate, ostate;
 	private GLState.Applier state = null;
 	private GLConfig glconf = null;
@@ -661,7 +661,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 		return (getGraphicsConfiguration());
 	}
 
-	private Map<String, Console.Command> cmdmap = new TreeMap<String, Console.Command>();
+	private Map<String, Console.Command> cmdmap = new TreeMap<>();
 
 	{
 		cmdmap.put("hz", new Console.Command() {

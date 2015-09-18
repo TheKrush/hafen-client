@@ -30,9 +30,9 @@ import java.io.*;
 
 public class Console {
 
-	static private Map<String, Command> scommands = new TreeMap<String, Command>();
-	private Map<String, Command> commands = new TreeMap<String, Command>();
-	private Collection<Directory> dirs = new LinkedList<Directory>();
+	static private Map<String, Command> scommands = new TreeMap<>();
+	private Map<String, Command> commands = new TreeMap<>();
+	private Collection<Directory> dirs = new LinkedList<>();
 	public PrintWriter out;
 
 	{
@@ -62,7 +62,7 @@ public class Console {
 	}
 
 	public Map<String, Command> findcmds() {
-		Map<String, Command> ret = new TreeMap<String, Command>();
+		Map<String, Command> ret = new TreeMap<>();
 		synchronized (scommands) {
 			ret.putAll(scommands);
 		}

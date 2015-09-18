@@ -31,7 +31,7 @@ import static haven.glsl.Type.*;
 
 public class ColorMask extends GLState {
 
-	public static final Slot<ColorMask> slot = new Slot<ColorMask>(Slot.Type.DRAW, ColorMask.class);
+	public static final Slot<ColorMask> slot = new Slot<>(Slot.Type.DRAW, ColorMask.class);
 	public static final Uniform ccol = new Uniform(VEC4);
 	private final float[] col;
 

@@ -36,9 +36,9 @@ public class UI {
 
 	private final HavenPanel panel;
 	public RootWidget root;
-	final private LinkedList<Grab> keygrab = new LinkedList<Grab>(), mousegrab = new LinkedList<Grab>();
-	public Map<Integer, Widget> widgets = new TreeMap<Integer, Widget>();
-	public Map<Widget, Integer> rwidgets = new HashMap<Widget, Integer>();
+	final private LinkedList<Grab> keygrab = new LinkedList<>(), mousegrab = new LinkedList<>();
+	public Map<Integer, Widget> widgets = new TreeMap<>();
+	public Map<Widget, Integer> rwidgets = new HashMap<>();
 	Receiver rcvr;
 	public Coord mc = Coord.z, lcc = Coord.z;
 	public Session sess;
@@ -47,7 +47,7 @@ public class UI {
 	long lastevent, lasttick;
 	public Widget mouseon;
 	public Console cons = new WidgetConsole();
-	private Collection<AfterDraw> afterdraws = new LinkedList<AfterDraw>();
+	private Collection<AfterDraw> afterdraws = new LinkedList<>();
 	public final ActAudio audio = new ActAudio();
 	public static MapSaver mapSaver;
 	public GameUI gui = null;

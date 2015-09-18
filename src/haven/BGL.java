@@ -1192,7 +1192,7 @@ public class BGL {
 
 		public final List<DCmd> list;
 		public final DCmd mark;
-		private final transient Map<Object, Dummy> dummies = new IdentityHashMap<Object, Dummy>();
+		private final transient Map<Object, Dummy> dummies = new IdentityHashMap<>();
 
 		public static class Dummy implements Serializable {
 
@@ -1352,7 +1352,7 @@ public class BGL {
 
 		public Dump(BGL buf, Command mark) {
 			int n = buf.n;
-			this.list = new ArrayList<DCmd>(n);
+			this.list = new ArrayList<>(n);
 			DCmd marked = null;
 			for (int i = 0; i < n; i++) {
 				DCmd cmd = new DCmd(this, buf.list[i]);

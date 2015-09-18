@@ -34,7 +34,7 @@ public class TestView extends PView {
 
 	static {
 		Resource res = Resource.local().loadwait("gfx/borka/male");
-		List<FastMesh> l = new ArrayList<FastMesh>();
+		List<FastMesh> l = new ArrayList<>();
 		for (FastMesh.MeshRes m : res.layers(FastMesh.MeshRes.class)) {
 			l.add(m.m);
 		}

@@ -55,7 +55,7 @@ public class TimerController {
 
 	private void load() {
 		String configJson = Globals.SettingFileString(Globals.USERNAME + "/timers.json", true);
-		Map<String, Object> tmp = new HashMap<String, Object>();
+		Map<String, Object> tmp = new HashMap<>();
 		try {
 			Type type = new TypeToken<List<Timer>>() {
 			}.getType();
@@ -75,7 +75,7 @@ public class TimerController {
 		}
 		CONFIG_JSON = configJson;
 		if (timers == null) {
-			timers = new LinkedList<Timer>();
+			timers = new LinkedList<>();
 		}
 	}
 

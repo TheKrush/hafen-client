@@ -41,9 +41,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	public Coord cc;
 	private final Glob glob;
 	private int view = 2;
-	private Collection<Delayed> delayed = new LinkedList<Delayed>();
-	private Collection<Delayed> delayed2 = new LinkedList<Delayed>();
-	private Collection<Rendered> extradraw = new LinkedList<Rendered>();
+	private Collection<Delayed> delayed = new LinkedList<>();
+	private Collection<Delayed> delayed2 = new LinkedList<>();
+	private Collection<Rendered> extradraw = new LinkedList<>();
 	public Camera camera = restorecam();
 	private Plob placing = null;
 	private int[] visol = new int[32];
@@ -51,7 +51,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	private Selector selection;
 	private Coord3f camoff = new Coord3f(Coord3f.o);
 	public double shake = 0.0;
-	private static final Map<String, Class<? extends Camera>> camtypes = new HashMap<String, Class<? extends Camera>>();
+	private static final Map<String, Class<? extends Camera>> camtypes = new HashMap<>();
 
 	private long lastMouseWalkTick = Long.MIN_VALUE;
 	private boolean mouseIsDown = false;
@@ -802,7 +802,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	private abstract static class Clicklist<T> extends RenderList {
 
-		private Map<Color, T> rmap = new HashMap<Color, T>();
+		private Map<Color, T> rmap = new HashMap<>();
 		private int i = 1;
 		private GLState.Buffer plain, bk;
 
@@ -1778,7 +1778,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		}
 	}
 
-	private Map<String, Console.Command> cmdmap = new TreeMap<String, Console.Command>();
+	private Map<String, Console.Command> cmdmap = new TreeMap<>();
 
 	{
 		cmdmap.put("cam", new Console.Command() {

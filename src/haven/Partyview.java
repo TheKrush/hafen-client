@@ -36,7 +36,7 @@ public class Partyview extends Widget {
 	Party party;
 	Map<Long, Member> om = null;
 	Member ol = null;
-	Map<Member, Avaview> avs = new HashMap<Member, Avaview>();
+	Map<Member, Avaview> avs = new HashMap<>();
 	Button leave = null;
 
 	@RName("pv")
@@ -61,7 +61,7 @@ public class Partyview extends Widget {
 
 	private void update() {
 		if (party.memb != om) {
-			Collection<Member> old = new HashSet<Member>(avs.keySet());
+			Collection<Member> old = new HashSet<>(avs.keySet());
 			for (final Member m : (om = party.memb).values()) {
 				if (m.gobid == ign) {
 					continue;
@@ -93,7 +93,7 @@ public class Partyview extends Widget {
 				ui.destroy(avs.get(m));
 				avs.remove(m);
 			}
-			List<Map.Entry<Member, Avaview>> wl = new ArrayList<Map.Entry<Member, Avaview>>(avs.entrySet());
+			List<Map.Entry<Member, Avaview>> wl = new ArrayList<>(avs.entrySet());
 			Collections.sort(wl, new Comparator<Map.Entry<Member, Avaview>>() {
 				@Override
 				public int compare(Entry<Member, Avaview> a, Entry<Member, Avaview> b) {

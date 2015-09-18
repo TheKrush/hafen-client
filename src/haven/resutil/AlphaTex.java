@@ -35,7 +35,7 @@ import haven.glsl.ValBlock.Value;
 
 public class AlphaTex extends GLState {
 
-	public static final Slot<AlphaTex> slot = new Slot<AlphaTex>(Slot.Type.DRAW, AlphaTex.class);
+	public static final Slot<AlphaTex> slot = new Slot<>(Slot.Type.DRAW, AlphaTex.class);
 	public static final Attribute clipc = new Attribute(VEC2);
 	public static final MeshBuf.LayerID<MeshBuf.Vec2Layer> lclip = new MeshBuf.V2LayerID(clipc);
 	private static final Uniform ctex = new Uniform(SAMPLER2D);

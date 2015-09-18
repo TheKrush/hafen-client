@@ -30,7 +30,7 @@ import java.awt.Color;
 
 public class Party {
 
-	Map<Long, Member> memb = new TreeMap<Long, Member>();
+	Map<Long, Member> memb = new TreeMap<>();
 	Member leader = null;
 	public static final int PD_LIST = 0;
 	public static final int PD_LEADER = 1;
@@ -67,7 +67,7 @@ public class Party {
 		while (!msg.eom()) {
 			int type = msg.uint8();
 			if (type == PD_LIST) {
-				ArrayList<Long> ids = new ArrayList<Long>();
+				ArrayList<Long> ids = new ArrayList<>();
 				while (true) {
 					long id = msg.int32();
 					if (id < 0) {
@@ -75,7 +75,7 @@ public class Party {
 					}
 					ids.add(id);
 				}
-				Map<Long, Member> nmemb = new TreeMap<Long, Member>();
+				Map<Long, Member> nmemb = new TreeMap<>();
 				for (long id : ids) {
 					Member m = memb.get(id);
 					if (m == null) {

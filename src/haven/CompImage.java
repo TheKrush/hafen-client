@@ -32,7 +32,7 @@ import java.awt.image.BufferedImage;
 public class CompImage {
 
 	public Coord sz;
-	private final Collection<Placed> cont = new LinkedList<Placed>();
+	private final Collection<Placed> cont = new LinkedList<>();
 
 	public interface Image {
 

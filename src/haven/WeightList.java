@@ -34,8 +34,8 @@ public class WeightList<T> implements java.io.Serializable {
 	int tw = 0;
 
 	public WeightList() {
-		c = new ArrayList<T>();
-		w = new ArrayList<Integer>();
+		c = new ArrayList<>();
+		w = new ArrayList<>();
 	}
 
 	public void add(T c, int w) {

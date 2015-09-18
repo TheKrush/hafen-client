@@ -224,7 +224,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 			Resource res = set.getres();
 			Tileset trans = null;
 			Material base = null;
-			Collection<Var> var = new LinkedList<Var>();
+			Collection<Var> var = new LinkedList<>();
 			for (Object rdesc : set.ta) {
 				Object[] desc = (Object[]) rdesc;
 				String p = (String) desc[0];
@@ -286,7 +286,7 @@ public class TerrainTile extends Tiler implements Tiler.MCons, Tiler.CTrans {
 		}
 	}
 
-	private final static Map<TexGL, AlphaTex> transtex = new WeakHashMap<TexGL, AlphaTex>();
+	private final static Map<TexGL, AlphaTex> transtex = new WeakHashMap<>();
 
 	/* XXX: Some strange javac bug seems to make it resolve the
 	 * trans() references to the wrong signature, thus the name

@@ -35,8 +35,8 @@ public class CPUProfile extends Profile {
 
 	public class Frame extends Profile.Frame {
 
-		private List<Long> pw = new LinkedList<Long>();
-		private List<String> nw = new LinkedList<String>();
+		private List<Long> pw = new LinkedList<>();
+		private List<String> nw = new LinkedList<>();
 		private long then, last;
 
 		public Frame() {
