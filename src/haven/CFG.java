@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public enum CFG {
 
@@ -22,14 +24,15 @@ public enum CFG {
 	DISPLAY_OBJECT_HEALTH("display.object.health", false),
 	DISPLAY_WEATHER("display.weather", true),
 	GENERAL_CHAT_SAVE("general.chat.save", true),
+	GENERAL_DATA_SAVE("general.data.save", false),
 	GENERAL_MAP_SAVE("general.map.save", true),
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
 	MINIMAP_FLOATING("ui.minimap.floating", false),
-	MINIMAP_BOULDERS("ui.minimap.boulders", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
-	MINIMAP_BUSHES("ui.minimap.bushes", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
-	MINIMAP_TREES("ui.minimap.trees", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
+	MINIMAP_BUMLINGS("ui.minimap.bumlings", new HashMap<String, Boolean>()),
+	MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
+	MINIMAP_TREES("ui.minimap.trees", new HashMap<String, Boolean>()),
 	MINIMAP_PLAYERS("ui.minimap.players", true),
 	UI_ACTION_PROGRESS_PERCENTAGE("ui.action.progress.percentage", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
@@ -41,31 +44,31 @@ public enum CFG {
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single average
 	UI_KIN_STATUS("ui.kin.status", true),
-	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER)),
+	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new HashMap<String, Boolean>()),
 	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", true),
 	UI_STUDYLOCK("ui.studylock", false);
 
 	private static String CONFIG_JSON;
 	private static final int configVersion = 6;
-	private static Map<String, Object> cfg = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	private static final Map<String, Object> cache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, Object> cfg = new HashMap<>();
+	private static final Map<String, Object> cache = new HashMap<>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
 	private final String path;
 	public final Object def;
-	private Observer observer;
+	private List<CFGObserver> observers;
 
 	static {
 		loadConfig();
 	}
 
-	public static interface Observer {
+	public static interface CFGObserver {
 
-		void updated(CFG cfg);
+		void cfgUpdated(CFG cfg);
 	}
 
 	public static void loadConfig() {
 		String configJson = Globals.SettingFileString(Globals.USERNAME + "/config.json", true);
-		Map<String, Object> tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		Map<String, Object> tmp = new HashMap<>();
 		try {
 			Type type = new TypeToken<Map<Object, Object>>() {
 			}.getType();
@@ -87,21 +90,30 @@ public enum CFG {
 		cache.clear();
 		System.out.println("Using setting file: " + CONFIG_JSON);
 		if (tmp == null) {
-			tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			tmp = new HashMap<>();
 		}
 		// check config version
 		int version = ((Number) CFG.get(CFG.CONFIG_VERSION, tmp)).intValue();
 		if (version != configVersion) {
 			System.out.println("Config version mismatch... reseting config");
-			tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			tmp = new HashMap<>();
 		}
 		cfg = tmp;
 		CFG.CONFIG_VERSION.set(configVersion);
 	}
 
+	private static synchronized void saveConfig() {
+		try {
+			Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 	CFG(String path, Object def) {
 		this.path = path.toLowerCase();
 		this.def = def;
+		observers = new ArrayList<>();
 	}
 
 	public Object val() {
@@ -126,21 +138,30 @@ public enum CFG {
 	}
 
 	public void set(Object value) {
-		CFG.set(this, value);
-		if (observer != null) {
-			observer.updated(this);
-		}
+		set(value, false);
 	}
 
 	public void set(Object value, boolean observe) {
-		set(value);
-		if (observe && observer != null) {
-			observer.updated(this);
+		CFG.set(this, value);
+		if (observe) {
+			for (CFGObserver observer : observers) {
+				observer.cfgUpdated(this);
+			}
 		}
 	}
 
-	public void setObserver(Observer observer) {
-		this.observer = observer;
+	public synchronized void addObserver(CFGObserver observer) {
+		if (observer == null) {
+			return;
+		}
+		observers.add(observer);
+	}
+
+	public synchronized void remObserver(CFGObserver observer) {
+		if (observer == null) {
+			return;
+		}
+		observers.remove(observer);
 	}
 
 	public static synchronized Object get(CFG name) {
@@ -186,7 +207,7 @@ public enum CFG {
 				if (map.containsKey(part)) {
 					cur = map.get(part);
 				} else {
-					cur = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+					cur = new HashMap<>();
 					map.put(part, cur);
 				}
 			}
@@ -195,15 +216,7 @@ public enum CFG {
 			Map<Object, Object> map = (Map) cur;
 			map.put(parts[parts.length - 1], value);
 		}
-		store();
-	}
-
-	private static synchronized void store() {
-		try {
-			Config.saveFile(CONFIG_JSON, gson.toJson(cfg));
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		saveConfig();
 	}
 
 	private static Object retrieve(CFG name) {

@@ -14,7 +14,7 @@ public class FlowerList extends Scrollport {
 	}
 
 	public FlowerList(Coord sz) {
-		this(new TreeMap<String, Boolean>(String.CASE_INSENSITIVE_ORDER), sz);
+		this(new HashMap<String, Boolean>(), sz);
 	}
 
 	public FlowerList(Map<String, Boolean> items) {
@@ -172,6 +172,10 @@ public class FlowerList extends Scrollport {
 				return (true);
 			}
 			return (false);
+		}
+
+		public void set(boolean a) {
+			cb.a = a;
 		}
 
 		private void click() {

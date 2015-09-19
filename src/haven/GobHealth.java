@@ -49,7 +49,7 @@ public class GobHealth extends GAttrib {
 		if (hp >= 4) {
 			return null;
 		}
-		final String[] hpstr = new String[]{"25%", "50%", "75%"};
+		final String[] hpstr = new String[]{"25%", "50%", "75%", "100%"};
 		return hpstr[hp - 1];
 	}
 

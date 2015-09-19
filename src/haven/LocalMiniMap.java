@@ -152,8 +152,9 @@ public class LocalMiniMap extends Widget {
 		synchronized (oc) {
 			for (Gob gob : oc) {
 				try {
-					GobIcon icon = gob.getattr(GobIcon.class);
 					Resource res = gob.getres();
+
+					GobIcon icon = gob.getattr(GobIcon.class);
 					Coord gc = p2c(gob.rc);
 					if (icon != null) {
 						Tex tex = icon.tex();
@@ -172,79 +173,19 @@ public class LocalMiniMap extends Widget {
 								}
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
-							boolean recognized = false;
-							Map<String, Boolean> mapVal = CFG.MINIMAP_BOULDERS.valo();
-							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
-								boolean drawobj = false;
-								for (String boulderName : Globals.Data.boulders) {
-									if (res.basename().startsWith(boulderName)) {
-										recognized = true;
-										if (mapVal.containsKey(boulderName) && mapVal.get(boulderName)) {
-											drawobj = true;
-										}
-										break;
-									}
-								}
-								Color color = Color.CYAN;
-								if (!recognized) {
-									System.out.println("Unrecognized boulder: " + res.name);
-									color = Color.RED;
-								}
-								if (drawobj || !recognized) {
-									g.atextstroked("\u25C6", gc, color, Color.BLACK);
-								}
+							Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.valo();
+							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) { // only bother with the rest if any are turned on
+								g.atextstroked("\u25C6", gc, Color.CYAN, Color.BLACK);
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
-							boolean recognized = false;
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.valo();
-							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
-								boolean drawobj = false;
-								for (String bushName : Globals.Data.bushes) {
-									if (res.basename().startsWith(bushName)) {
-										recognized = true;
-										if (mapVal.containsKey(bushName) && mapVal.get(bushName)) {
-											drawobj = true;
-										}
-										break;
-									}
-								}
-								Color color = Color.CYAN;
-								if (!recognized) {
-									System.out.println("Unrecognized bush: " + res.name);
-									color = Color.RED;
-								}
-								if (drawobj || !recognized) {
-									g.atextstroked("\u2605", gc, color, Color.BLACK);
-								}
+							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) {
+								g.atextstroked("\u2605", gc, Color.CYAN, Color.BLACK);
 							}
 						} else if (res.name.startsWith("gfx/terobjs/trees")) {
-							if (res.basename().endsWith("fall")
-											|| res.basename().endsWith("log")
-											|| res.basename().endsWith("stump")
-											|| res.basename().endsWith("trunk")) {
-								continue;
-							}
-							boolean recognized = false;
 							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.valo();
-							if (mapVal.containsValue(true)) { // only bother with the rest if any are turned on
-								boolean drawobj = false;
-								for (String treeName : Globals.Data.trees) {
-									if (res.basename().startsWith(treeName)) {
-										recognized = true;
-										if (mapVal.containsKey(treeName) && mapVal.get(treeName)) {
-											drawobj = true;
-										}
-										break;
-									}
-								}
-								Color color = Color.CYAN;
-								if (!recognized) {
-									System.out.println("Unrecognized tree: " + res.name);
-									color = Color.RED;
-								}
-								if (drawobj || !recognized) {
-									g.atextstroked("\u25B2", gc, color, Color.BLACK);
-								}
+							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) {
+								g.atextstroked("\u25B2", gc, Color.CYAN, Color.BLACK);
 							}
 						}
 					}

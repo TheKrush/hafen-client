@@ -1,22 +1,31 @@
 package haven;
 
-import haven.Window.WindowCFG;
-
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import haven.Window.WindowCFG;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.StringWriter;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Map.Entry;
+import java.util.List;
+import java.util.Set;
+import org.apache.commons.io.IOUtils;
 
 public class Globals {
 
@@ -45,120 +54,148 @@ public class Globals {
 
 	public static class Data {
 
-		public final static String[] actions = new String[]{
-			"chop",
-			"eat",
-			"harvest",
-			"pick",};
-		public final static String[] boulders = new String[]{
-			"basalt",
-			"cassiterite",
-			"chalcopyrite",
-			"cinnabar",
-			"dolomite",
-			"feldspar",
-			"flint",
-			"gneiss",
-			"granite",
-			"hematite",
-			"ilmenite",
-			"limestone",
-			"limonite",
-			"magnetite",
-			"malachite",
-			"marble",
-			"porphyry",
-			"quartz",
-			"ras",
-			"sandstone",
-			"schist",};
-		public final static String[] bushes = new String[]{
-			"arrowwood",
-			"blackberrybush",
-			"blackcurrant",
-			"blackthorn",
-			"bogmyrtle",
-			"boxwood",
-			"bsnightshade",
-			"caprifole",
-			"crampbark",
-			"dogrose",
-			"elderberrybush",
-			"gooseberrybush",
-			"hawthorn",
-			"holly",
-			"raspberrybush",
-			"redcurrant",
-			"sandthorn",
-			"spindlebush",
-			"teabush",
-			"tibast",
-			"tundrarose",
-			"woodbine",};
-		public final static String[] trees = new String[]{
-			"alder",
-			"juniper",
-			"appletree",
-			"ash",
-			"aspen",
-			"baywillow",
-			"beech",
-			"birch",
-			"birdcherrytree",
-			"buckthorn",
-			"cedar",
-			"cherry",
-			"chestnuttree",
-			"conkertree",
-			"corkoak",
-			"crabappletree",
-			"cypress",
-			"elm",
-			"fir",
-			"goldenchain",
-			"hazel",
-			"hornbeam",
-			"kingsoak",
-			"larch",
-			"laurel",
-			"linden",
-			"maple",
-			"mirkwood",
-			"mulberry",
-			"oak",
-			"olivetree",
-			"peartree",
-			"pine",
-			"planetree",
-			"plumtree",
-			"poplar",
-			"rowan",
-			"sallow",
-			"spruce",
-			"sweetgum",
-			"walnuttree",
-			"whitebeam",
-			"willow",
-			"yew",};
-		public final static String[] icons = new String[]{
-			"blueberry",
-			"chantrelle",
-			"chick",
-			"chicken",
-			"dandelion",
-			"dragonfly",
-			"rat",
-			"spindlytaproot",
-			"stingingnettle",};
+		private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
+
+		private static String CONFIG_JSON;
+		private static Map<String, HashSet<String>> data;
+		private static final Map<String, Set<DataObserver>> observers = new HashMap<>();
 
 		static {
-			Arrays.sort(boulders);
-			Arrays.sort(bushes);
-			Arrays.sort(trees);
+			loadConfig();
+		}
+
+		public static interface DataObserver {
+
+			void dataUpdated(String name);
+		}
+
+		private static void loadConfig() {
+			String configJson = Globals.DataFileString("data.json", true);
+			Map<String, List<String>> tmp = new HashMap<>();
+			try {
+				Type type = new TypeToken<Map<String, List<String>>>() {
+				}.getType();
+				String json = Config.loadFile(configJson);
+				if (json != null) {
+					tmp = gson.fromJson(json, type);
+				}
+			} catch (Exception e) {
+			}
+			CONFIG_JSON = configJson;
+			if (tmp == null) {
+				tmp = new HashMap<>();
+			}
+
+			data = new HashMap<>();
+			for (Entry<String, List<String>> entry : tmp.entrySet()) {
+				data.put(entry.getKey(), new HashSet<>(entry.getValue()));
+			}
+
+			// now add the base data
+			tmp = new HashMap<>();
+			try {
+				InputStream inputStream = Data.class.getResourceAsStream("/data.json");
+				StringWriter writer = new StringWriter();
+				IOUtils.copy(inputStream, writer, StandardCharsets.UTF_8);
+
+				Type type = new TypeToken<Map<String, List<String>>>() {
+				}.getType();
+				String json = writer.toString();
+				if (json != null) {
+					tmp = gson.fromJson(json, type);
+				}
+			} catch (IOException | JsonSyntaxException e) {
+			}
+			try {
+			} catch (Exception e) {
+			}
+			if (tmp == null) {
+				tmp = new HashMap<>();
+			}
+			for (Entry<String, List<String>> entry : tmp.entrySet()) {
+				HashSet<String> set = data.get(entry.getKey());
+				if (set == null) {
+					set = new HashSet<>();
+				}
+				set.addAll(entry.getValue());
+				data.put(entry.getKey(), set);
+			}
+		}
+
+		private static synchronized void saveConfig() {
+			Map<String, List<String>> data2 = new HashMap<>();
+			for (Entry<String, HashSet<String>> entry : data.entrySet()) {
+				List<String> dList = new ArrayList<>(entry.getValue());
+				Collections.sort(dList);
+				data2.put(entry.getKey(), dList);
+			}
+			Config.saveFile(CONFIG_JSON, gson.toJson(data2));
+		}
+
+		public static synchronized void addObserver(String name, DataObserver observer) {
+			if (observer == null) {
+				return;
+			}
+			if (observers.get(name) == null) {
+				observers.put(name, new HashSet<DataObserver>());
+			}
+			Set<DataObserver> obs = observers.get(name);
+			obs.add(observer);
+			observers.put(name, obs);
+		}
+
+		public static synchronized void remObserver(String name, DataObserver observer) {
+			if (observer == null || observers.get(name) == null) {
+				return;
+			}
+			Set<DataObserver> obs = observers.get(name);
+			obs.remove(observer);
+			observers.put(name, obs);
+		}
+
+		public static synchronized List<String> get(String name) {
+			return get(name, "");
+		}
+
+		@SuppressWarnings("unchecked")
+		public static synchronized List<String> get(String name, String startsWith) {
+			if (data.get(name) == null) {
+				return new ArrayList<>();
+			}
+			if (startsWith.isEmpty()) {
+				return new ArrayList(data.get(name));
+			}
+			ArrayList<String> dataList = new ArrayList();
+			for (String value : data.get(name)) {
+				if (value.startsWith(startsWith)) {
+					dataList.add(value.substring(startsWith.length()));
+				}
+			}
+			Collections.sort(dataList);
+			return dataList;
+		}
+
+		public static synchronized void set(String name, String value) {
+			try {
+				value = value.toLowerCase();
+				if (data.get(name) == null) {
+					data.put(name, new HashSet<String>());
+				}
+				if (data.get(name).contains(value)) {
+					return;
+				}
+				data.get(name).add(value);
+				for (DataObserver observer : observers.get(name)) {
+					observer.dataUpdated(name);
+				}
+				saveConfig();
+			} catch (Exception ex) {
+			}
 		}
 	}
 
 	private final static String chatFolder = "chat";
+	private final static String dataFolder = "data";
 	private final static String logFolder = "log";
 	private final static String mapFolder = "map";
 	private final static String settingFolder = "setting";
@@ -263,6 +300,39 @@ public class Globals {
 
 	public static String ChatFileString(String fileName, boolean useDefault) {
 		return CustomFileString(chatFolder, fileName, useDefault);
+	}
+
+	// Data functions
+	public static File DataFolder() {
+		return DataFolder(false);
+	}
+
+	public static File DataFolder(boolean useDefault) {
+		return CustomFolder(dataFolder, useDefault);
+	}
+
+	public static String DataFolderString() {
+		return DataFolderString(false);
+	}
+
+	public static String DataFolderString(boolean useDefault) {
+		return CustomFolderString(dataFolder, useDefault);
+	}
+
+	public static File DataFile(String fileName) {
+		return DataFile(fileName, false);
+	}
+
+	public static File DataFile(String fileName, boolean useDefault) {
+		return CustomFile(dataFolder, fileName, useDefault);
+	}
+
+	public static String DataFileString(String fileName) {
+		return DataFileString(fileName, false);
+	}
+
+	public static String DataFileString(String fileName, boolean useDefault) {
+		return CustomFileString(dataFolder, fileName, useDefault);
 	}
 
 	// Log functions

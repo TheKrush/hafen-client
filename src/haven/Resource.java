@@ -111,6 +111,10 @@ public class Resource implements Serializable {
 		this.pool = pool;
 		this.name = name;
 		this.ver = ver;
+
+		if (CFG.GENERAL_DATA_SAVE.valb()) {
+			Globals.Data.set("resource", name);
+		}
 	}
 
 	public static void setcache(ResCache cache) {

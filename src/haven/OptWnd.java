@@ -26,7 +26,9 @@
  */
 package haven;
 
+import haven.CFG.CFGObserver;
 import haven.CheckListbox.CheckListboxItem;
+import haven.Globals.Data.DataObserver;
 import static haven.UI.mapSaver;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -419,7 +421,7 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("Display Settings", 'd', panel, buttonX, buttonY);
 
-		panel.add(new Label("Brighten view"), new Coord(x, y));
+		panel.add(new CFGLabel("Brighten view"), new Coord(x, y));
 		y += 15;
 		panel.add(new CFGHSlider(null, CFG.DISPLAY_BRIGHTNESS) {
 			@Override
@@ -433,30 +435,13 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
 			{
-				CFG.DISPLAY_GRID.setObserver(new CFG.Observer() {
-					@Override
-					public void updated(CFG cfg) {
-						update(cfg);
-					}
-				});
-			}
-
-			@Override
-			public void set(boolean a) {
-				super.set(a);
-				if (a && ui != null && ui.gui != null) {
-					ui.gui.map.initgrid();
-				}
+				CFG.DISPLAY_GRID.addObserver(this);
 			}
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_GRID.setObserver(null);
+				CFG.DISPLAY_GRID.remObserver(this);
 				super.destroy();
-			}
-
-			private void update(CFG cfg) {
-				a = cfg.valb();
 			}
 		}, new Coord(x, y));
 		y += 25;
@@ -468,22 +453,13 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show crop grow stage", CFG.DISPLAY_CROPS_GROWTH) {
 			{
-				CFG.DISPLAY_CROPS_GROWTH.setObserver(new CFG.Observer() {
-					@Override
-					public void updated(CFG cfg) {
-						update(cfg);
-					}
-				});
+				CFG.DISPLAY_CROPS_GROWTH.addObserver(this);
 			}
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_CROPS_GROWTH.setObserver(null);
+				CFG.DISPLAY_CROPS_GROWTH.remObserver(this);
 				super.destroy();
-			}
-
-			private void update(CFG cfg) {
-				a = cfg.valb();
 			}
 		}, new Coord(x, y));
 		y += 25;
@@ -491,22 +467,13 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show object health", CFG.DISPLAY_OBJECT_HEALTH) {
 			{
-				CFG.DISPLAY_OBJECT_HEALTH.setObserver(new CFG.Observer() {
-					@Override
-					public void updated(CFG cfg) {
-						update(cfg);
-					}
-				});
+				CFG.DISPLAY_OBJECT_HEALTH.addObserver(this);
 			}
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_OBJECT_HEALTH.setObserver(null);
+				CFG.DISPLAY_OBJECT_HEALTH.remObserver(this);
 				super.destroy();
-			}
-
-			private void update(CFG cfg) {
-				a = cfg.valb();
 			}
 		}, new Coord(x, y));
 
@@ -522,6 +489,8 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("General Settings", 'g', panel, buttonX, buttonY);
 
+		panel.add(new CFGCheckBox("Store general game data", CFG.GENERAL_DATA_SAVE, "Data is stored in 'data' folder and is used to automaticaly update options menus, but can make the game laggy"), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Store chat logs", CFG.GENERAL_CHAT_SAVE, "Logs are stored in 'chat' folder"), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Store minimap tiles", CFG.GENERAL_MAP_SAVE, "Tiles are stored in 'map' folder") {
@@ -695,12 +664,13 @@ public class OptWnd extends Window {
 
 		panel.add(new CFGCheckBox("Undock minimap", CFG.MINIMAP_FLOATING) {
 			{
-				CFG.MINIMAP_FLOATING.setObserver(new CFG.Observer() {
-					@Override
-					public void updated(CFG cfg) {
-						update(cfg);
-					}
-				});
+				CFG.MINIMAP_FLOATING.addObserver(this);
+			}
+
+			@Override
+			public void destroy() {
+				CFG.MINIMAP_FLOATING.remObserver(this);
+				super.destroy();
 			}
 
 			@Override
@@ -709,16 +679,6 @@ public class OptWnd extends Window {
 				if (ui != null && ui.gui != null) {
 					ui.gui.showmmappanel(a);
 				}
-			}
-
-			@Override
-			public void destroy() {
-				CFG.MINIMAP_FLOATING.setObserver(null);
-				super.destroy();
-			}
-
-			private void update(CFG cfg) {
-				a = cfg.valb();
 			}
 		}, new Coord(x, y));
 		y += 25;
@@ -735,24 +695,90 @@ public class OptWnd extends Window {
 		y = my;
 
 		int curY = my;
-		panel.add(new Label("Show boulders"), new Coord(x, y));
+		panel.add(new CFGLabel("Show bumlings"), new Coord(x, y));
 		y += 15;
-		CFGCheckListbox bouldersCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BOULDERS, 130, 5);
-		bouldersCheckListbox.additems(Globals.Data.boulders);
-		panel.add(bouldersCheckListbox, new Coord(x, y));
-		x += bouldersCheckListbox.sz.x + 10;
+		CFGCheckListbox bumlingsCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BUMLINGS, 130, 10) {
+			private DataObserver observer;
+
+			{
+				CFG.MINIMAP_BUMLINGS.addObserver(this);
+				Globals.Data.addObserver("resource", observer = new DataObserver() {
+					@Override
+					public void dataUpdated(String name) {
+						if (!"resource".equals(name)) {
+							return;
+						}
+						additems(Globals.Data.get(name, "gfx/terobjs/bumlings/"));
+					}
+				});
+			}
+
+			@Override
+			public void destroy() {
+				CFG.MINIMAP_BUMLINGS.remObserver(this);
+				Globals.Data.remObserver("resource", observer);
+				super.destroy();
+			}
+		};
+		bumlingsCheckListbox.additems(Globals.Data.get("resource", "gfx/terobjs/bumlings/"));
+		panel.add(bumlingsCheckListbox, new Coord(x, y));
+		x += bumlingsCheckListbox.sz.x + 10;
 		y = curY;
-		panel.add(new Label("Show bushes"), new Coord(x, y));
+		panel.add(new CFGLabel("Show bushes"), new Coord(x, y));
 		y += 15;
-		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BUSHES, 130, 5);
-		bushesCheckListbox.additems(Globals.Data.bushes);
+		CFGCheckListbox bushesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_BUSHES, 130, 10) {
+			private DataObserver observer;
+
+			{
+				CFG.MINIMAP_BUSHES.addObserver(this);
+				Globals.Data.addObserver("resource", observer = new DataObserver() {
+					@Override
+					public void dataUpdated(String name) {
+						if (!"resource".equals(name)) {
+							return;
+						}
+						additems(Globals.Data.get(name, "gfx/terobjs/bushes/"));
+					}
+				});
+			}
+
+			@Override
+			public void destroy() {
+				CFG.MINIMAP_BUSHES.remObserver(this);
+				Globals.Data.remObserver("resource", observer);
+				super.destroy();
+			}
+		};
+		bushesCheckListbox.additems(Globals.Data.get("resource", "gfx/terobjs/bushes/"));
 		panel.add(bushesCheckListbox, new Coord(x, y));
 		x += bushesCheckListbox.sz.x + 10;
 		y = curY;
-		panel.add(new Label("Show trees"), new Coord(x, y));
+		panel.add(new CFGLabel("Show trees"), new Coord(x, y));
 		y += 15;
-		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_TREES, 130, 5);
-		treesCheckListbox.additems(Globals.Data.trees);
+		CFGCheckListbox treesCheckListbox = new CFGCheckListbox(CFG.MINIMAP_TREES, 130, 10) {
+			private DataObserver observer;
+
+			{
+				CFG.MINIMAP_TREES.addObserver(this);
+				Globals.Data.addObserver("resource", observer = new DataObserver() {
+					@Override
+					public void dataUpdated(String name) {
+						if (!"resource".equals(name)) {
+							return;
+						}
+						additems(Globals.Data.get(name, "gfx/terobjs/trees/"));
+					}
+				});
+			}
+
+			@Override
+			public void destroy() {
+				CFG.MINIMAP_TREES.remObserver(this);
+				Globals.Data.remObserver("resource", observer);
+				super.destroy();
+			}
+		};
+		treesCheckListbox.additems(Globals.Data.get("resource", "gfx/terobjs/trees/"));
 		panel.add(treesCheckListbox, new Coord(x, y));
 		x += treesCheckListbox.sz.x + 10;
 
@@ -814,30 +840,33 @@ public class OptWnd extends Window {
 
 		panel.add(new CFGCheckBox("Single item CTRL choose", CFG.UI_MENU_FLOWER_CLICK_SINGLE, "If checked, will automatically select single item menus if CTRL is pressed when menu is opened"), x, y);
 		y += 25;
-		panel.add(new CFGLabel("Choose menu items to select automatically"), x, y);
+		panel.add(new CFGLabel("Choose menu items to select automatically"), new Coord(x, y));
 		y += 15;
-		final CFGFlowerList autochooseList = panel.add(new CFGFlowerList(CFG.UI_MENU_FLOWER_CLICK_AUTO), x, y);
-		autochooseList.additems(Globals.Data.actions);
-		y += autochooseList.sz.y + 5;
-		final TextEntry autochooseValue = panel.add(new TextEntry(150, "") {
-			@Override
-			public void activate(String text) {
-				autochooseList.add(text);
-				settext("");
+		CFGCheckListbox actionsCheckListbox = new CFGCheckListbox(CFG.UI_MENU_FLOWER_CLICK_AUTO, 200, 15) {
+			private DataObserver observer;
+
+			{
+				CFG.UI_MENU_FLOWER_CLICK_SINGLE.addObserver(this);
+				Globals.Data.addObserver("action", observer = new DataObserver() {
+					@Override
+					public void dataUpdated(String name) {
+						if (!"action".equals(name)) {
+							return;
+						}
+						additems(Globals.Data.get(name));
+					}
+				});
 			}
-		}, x, y);
-		x += autochooseValue.sz.x + 5;
-		panel.add(new Button(45, "Add") {
+
 			@Override
-			public void click() {
-				String text = autochooseValue.text;
-				if (text == null || text.isEmpty()) {
-					return;
-				}
-				autochooseList.add(autochooseValue.text.toLowerCase());
-				autochooseValue.settext("");
+			public void destroy() {
+				CFG.UI_MENU_FLOWER_CLICK_SINGLE.remObserver(this);
+				Globals.Data.remObserver("action", observer);
+				super.destroy();
 			}
-		}, x, y - 2);
+		};
+		actionsCheckListbox.additems(Globals.Data.get("action"));
+		panel.add(actionsCheckListbox, new Coord(x, y));
 
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
@@ -869,7 +898,7 @@ public class OptWnd extends Window {
 		super.show();
 	}
 
-	private class CFGCheckBox extends CheckBox {
+	private class CFGCheckBox extends CheckBox implements CFGObserver {
 
 		protected final CFG cfg;
 
@@ -896,9 +925,14 @@ public class OptWnd extends Window {
 			super.set(a);
 			cfg.set(a);
 		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			super.set(cfg.valb());
+		}
 	}
 
-	private class CFGFlowerList extends FlowerList {
+	private class CFGFlowerList extends FlowerList implements CFGObserver {
 
 		protected final CFG cfg;
 
@@ -937,6 +971,10 @@ public class OptWnd extends Window {
 			}
 		}
 
+		public final void additems(List<String> names) {
+			additems(names.toArray(new String[names.size()]));
+		}
+
 		public final void additems(String[] keys) {
 			Arrays.sort(keys);
 			for (String key : keys) {
@@ -957,9 +995,20 @@ public class OptWnd extends Window {
 			mapVal.remove(name);
 			cfg.set(mapVal);
 		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			Map<String, Boolean> mapVal = cfg.valo();
+			additems(mapVal.keySet().toArray(new String[mapVal.keySet().size()]));
+
+			for (Widget wdg = cont.lchild; wdg != null; wdg = wdg.prev) {
+				FlowerListItem item = ((FlowerListItem) wdg);
+				item.set(cfgVal(item.name));
+			}
+		}
 	}
 
-	private class CFGHSlider extends HSlider {
+	private class CFGHSlider extends HSlider implements CFGObserver {
 
 		protected final CFG cfg;
 		Text lbl;
@@ -1016,9 +1065,14 @@ public class OptWnd extends Window {
 				super.draw(g);
 			}
 		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			val = (int) (1000 * cfg.valf());
+		}
 	}
 
-	private class CFGLabel extends Label {
+	private class CFGLabel extends Label implements CFGObserver {
 
 		public CFGLabel(String lbl) {
 			this(lbl, null);
@@ -1031,9 +1085,14 @@ public class OptWnd extends Window {
 				tooltip = Text.render(tip).tex();
 			}
 		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			// TODO
+		}
 	}
 
-	private class CFGCheckListbox extends CheckListbox {
+	private class CFGCheckListbox extends CheckListbox implements CFGObserver {
 
 		protected final CFG cfg;
 		protected final List<String> keys;
@@ -1072,6 +1131,10 @@ public class OptWnd extends Window {
 			cfgVal(itm.name, itm.selected);
 		}
 
+		public final void additems(List<String> names) {
+			additems(names.toArray(new String[names.size()]));
+		}
+
 		public final void additems(String[] names) {
 			for (String name : names) {
 				additem(name);
@@ -1087,6 +1150,15 @@ public class OptWnd extends Window {
 			items.add(new CFGCheckListboxItem(name, cfgVal(name)));
 			Collections.sort(items);
 		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			Map<String, Boolean> mapVal = cfg.valo();
+			additems(mapVal.keySet().toArray(new String[mapVal.keySet().size()]));
+			for (CheckListboxItem item : items) {
+				item.selected = cfgVal(item.name);
+			}
+		}
 	}
 
 	private class CFGRadioGroup extends RadioGroup {
@@ -1095,7 +1167,7 @@ public class OptWnd extends Window {
 			super(parent);
 		}
 
-		public class CFGRadioButton extends RadioButton {
+		public class CFGRadioButton extends RadioButton implements CFGObserver {
 
 			protected final CFG cfg;
 			protected final int cfgVal;
@@ -1111,6 +1183,13 @@ public class OptWnd extends Window {
 				this.cfgVal = val;
 				if (tip != null) {
 					tooltip = Text.render(tip).tex();
+				}
+			}
+
+			@Override
+			public void cfgUpdated(CFG cfg) {
+				if (cfg.vali() == cfgVal) {
+					check(this);
 				}
 			}
 		}
@@ -1135,7 +1214,9 @@ public class OptWnd extends Window {
 		public void changed(int btn, String lbl) {
 			super.changed(btn, lbl);
 			CFGRadioButton radioButton = (CFGRadioButton) btns.get(btn);
-			radioButton.cfg.set(radioButton.cfgVal);
+			if (radioButton.cfg.vali() != radioButton.cfgVal) {
+				radioButton.cfg.set(radioButton.cfgVal);
+			}
 		}
 	}
 }

@@ -204,6 +204,11 @@ public class FlowerMenu extends Widget {
 	public FlowerMenu(String... options) {
 		super(Coord.z);
 		this.options = options;
+		if (CFG.GENERAL_DATA_SAVE.valb()) {
+			for (String name : options) {
+				Globals.Data.set("action", name);
+			}
+		}
 	}
 
 	@Override
@@ -214,6 +219,7 @@ public class FlowerMenu extends Widget {
 			String name = options[i];
 			Petal p = add(new Petal(name));
 			p.num = i;
+			name = name.toLowerCase();
 			boolean auto = CFG.UI_MENU_FLOWER_CLICK_AUTO.<Map<String, Boolean>>valo().containsKey(name) && CFG.UI_MENU_FLOWER_CLICK_AUTO.<Map<String, Boolean>>valo().get(name);
 			boolean single = ui.modctrl && options.length == 1 && CFG.UI_MENU_FLOWER_CLICK_SINGLE.valb();
 			if (!ui.modshift && (auto || single) && autochoose == null) {

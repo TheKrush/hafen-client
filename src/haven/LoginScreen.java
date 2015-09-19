@@ -99,8 +99,6 @@ public class LoginScreen extends Widget {
 		try {
 			InputStream in = LoginScreen.class.getResourceAsStream("/changelog.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-			File f = Config.getFile("changelog.txt");
-			FileOutputStream out = new FileOutputStream(f);
 			String strLine;
 			int count = 0;
 			while ((count < maxlines) && (strLine = br.readLine()) != null) {
@@ -108,11 +106,9 @@ public class LoginScreen extends Widget {
 					strLine = " ";
 				}
 				txt.append(strLine);
-				out.write((strLine + "\n").getBytes());
 				count++;
 			}
 			br.close();
-			out.close();
 			in.close();
 		} catch (FileNotFoundException ignored) {
 		} catch (IOException ignored) {
