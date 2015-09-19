@@ -40,18 +40,9 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public final Glob glob;
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<>();
 	public Collection<Overlay> ols = new LinkedList<>();
-
-	private static final Tex[] gobhp = new Tex[]{
-		Text.renderstroked("25%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
-		Text.renderstroked("50%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
-		Text.renderstroked("75%", Color.WHITE, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex()
-	};
-	private static final Tex[] cropstg = new Tex[]{
-		Text.renderstroked("2", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
-		Text.renderstroked("3", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
-		Text.renderstroked("4", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex(),
-		Text.renderstroked("5", Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex() // just in case..
-	};
+	private static final Map<String, Tex> hpTex = new HashMap<>();
+	private static final Map<String, Tex> plantTex = new HashMap<>();
+	private static final Map<String, Tex> treeTex = new HashMap<>();
 
 	public static class Overlay implements Rendered {
 
@@ -235,13 +226,18 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		final GobHealth hlt = getattr(GobHealth.class);
 		if (hlt != null) {
 			rl.prepc(hlt.getfx());
-			if (CFG.DISPLAY_OBJECT_HEALTH.valb()) {
+			if (CFG.DISPLAY_OBJECT_DAMAGE.valb()) {
 				PView.Draw2D d = new PView.Draw2D() {
 					@Override
 					public void draw2d(GOut g) {
 						String gobhpstr = hlt.getstr();
-						if (gobhpstr != null && sc != null) {
-							g.image(gobhp[hlt.hp - 1], sc.sub(15, 10));
+						if (gobhpstr != null && sc != null && hlt.hp < 4) {
+							String str = String.format("%.0f%%", (1f - hlt.hp / 4f) * 100f);
+							if (!hpTex.containsKey(str)) {
+								hpTex.put(str, Text.renderstroked(String.format("%.0f%%", (1f - hlt.hp / 4f) * 100f), Color.RED, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex());
+							}
+							Tex tex = hpTex.get(str);
+							g.image(tex, sc.sub(tex.sz().div(2)));
 						}
 					}
 				};
@@ -252,23 +248,52 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		Drawable d = getattr(Drawable.class);
 		if (d != null) {
 			d.setup(rl);
-			if (CFG.DISPLAY_CROPS_GROWTH.valb()) {
+			if (CFG.DISPLAY_PLANT_GROWTH.valb()) {
 				try {
 					Resource res = getres();
-					if (res != null && res.name.startsWith("gfx/terobjs/plants") && !res.name.endsWith("trellis")) {
+					if (res != null) {
 						GAttrib rd = getattr(ResDrawable.class);
 						if (rd != null) {
 							try {
 								final int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
-								PView.Draw2D staged = new PView.Draw2D() {
-									@Override
-									public void draw2d(GOut g) {
-										if (sc != null && stage > 0 && stage < 5) {
-											g.image(cropstg[stage - 1], sc);
+								if (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis")) {
+									int maxStage = 0;
+									for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
+										if (layer.id / 10 > maxStage) {
+											maxStage = layer.id / 10;
 										}
 									}
-								};
-								rl.add(staged, null);
+									final int stageMax = maxStage;
+									PView.Draw2D staged = new PView.Draw2D() {
+										@Override
+										public void draw2d(GOut g) {
+											if (sc != null) {
+												String str = String.format("%d/%d", new Object[]{stage, stageMax});
+												if (!plantTex.containsKey(str)) {
+													plantTex.put(str, Text.renderstroked(str, stage >= stageMax ? Color.GREEN : Color.RED, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex());
+												}
+												Tex tex = plantTex.get(str);
+												g.image(tex, sc.sub(tex.sz().div(2)));
+											}
+										}
+									};
+									rl.add(staged, null);
+								} else if (res.name.startsWith("gfx/terobjs/trees/")) {
+									PView.Draw2D staged = new PView.Draw2D() {
+										@Override
+										public void draw2d(GOut g) {
+											if (sc != null && stage < 100) {
+												String str = String.format("%d%%", new Object[]{stage});
+												if (!treeTex.containsKey(str)) {
+													treeTex.put(str, Text.renderstroked(str, Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex());
+												}
+												Tex tex = treeTex.get(str);
+												g.image(tex, sc.sub(tex.sz().div(2)));
+											}
+										}
+									};
+									rl.add(staged, null);
+								}
 							} catch (ArrayIndexOutOfBoundsException e) { // ignored
 							}
 						}

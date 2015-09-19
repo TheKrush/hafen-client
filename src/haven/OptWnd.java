@@ -451,28 +451,28 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Show crop grow stage", CFG.DISPLAY_CROPS_GROWTH) {
+		panel.add(new CFGCheckBox("Show plant growth", CFG.DISPLAY_PLANT_GROWTH) {
 			{
-				CFG.DISPLAY_CROPS_GROWTH.addObserver(this);
+				CFG.DISPLAY_PLANT_GROWTH.addObserver(this);
 			}
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_CROPS_GROWTH.remObserver(this);
+				CFG.DISPLAY_PLANT_GROWTH.remObserver(this);
 				super.destroy();
 			}
 		}, new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KIN_NAMES), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Show object health", CFG.DISPLAY_OBJECT_HEALTH) {
+		panel.add(new CFGCheckBox("Show object damage", CFG.DISPLAY_OBJECT_DAMAGE) {
 			{
-				CFG.DISPLAY_OBJECT_HEALTH.addObserver(this);
+				CFG.DISPLAY_OBJECT_DAMAGE.addObserver(this);
 			}
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_OBJECT_HEALTH.remObserver(this);
+				CFG.DISPLAY_OBJECT_DAMAGE.remObserver(this);
 				super.destroy();
 			}
 		}, new Coord(x, y));

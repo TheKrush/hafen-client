@@ -78,7 +78,7 @@ public class RootWidget extends ConsoleHost {
 				}
 			} else if (ALT && code == KeyEvent.VK_O) {
 				if (ui.gui != null && ui.gui.map != null) {
-					ui.gui.map.togglegobhealth();
+					ui.gui.map.togglegobdamage();
 				}
 			} else if (ALT && code == KeyEvent.VK_P) {
 				if (ui.gui != null && ui.gui.map != null) {
