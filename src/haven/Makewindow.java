@@ -179,6 +179,15 @@ public class Makewindow extends Widget {
 					Tex t = qm.get().layer(Resource.imgc).tex();
 					g.image(t, c);
 					c = c.add(t.sz().x + 1, 0);
+					try {
+						Glob.CAttr attr = ui.gui.chrwdg.findattr(qm.get().basename());
+						if (attr != null) {
+							Tex txt = attr.comptex();
+							g.image(txt, c);
+							c = c.add(txt.sz().x + 8, 0);
+						}
+					} catch (Exception ignored) {
+					}
 				} catch (Loading l) {
 				}
 			}
@@ -206,10 +215,18 @@ public class Makewindow extends Widget {
 			try {
 				for (Indir<Resource> qm : qmod) {
 					Tex t = qm.get().layer(Resource.imgc).tex();
-					if (mc.isect(c, t.sz())) {
+					Coord sz = t.sz();
+					try {
+						Glob.CAttr attr = ui.gui.chrwdg.findattr(qm.get().basename());
+						if (attr != null) {
+							sz = sz.add(attr.comptex().sz().x + 8, 0);
+						}
+					} catch (Exception ignored) {
+					}
+					if (mc.isect(c, sz)) {
 						return (qm.get().layer(Resource.tooltip).t);
 					}
-					c = c.add(t.sz().x + 1, 0);
+					c = c.add(sz.x + 1, 0);
 				}
 			} catch (Loading l) {
 			}

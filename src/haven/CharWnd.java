@@ -1580,6 +1580,20 @@ public class CharWnd extends Window {
 		resize(contentsz().add(15, 10));
 	}
 
+	public Glob.CAttr findattr(String name) {
+		for (SAttr skill : this.skill) {
+			if (name.equals(skill.attr.nm)) {
+				return skill.attr;
+			}
+		}
+		for (Attr stat : base) {
+			if (name.equals(stat.attr.nm)) {
+				return stat.attr;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public void addchild(Widget child, Object... args) {
 		String place = (args[0] instanceof String) ? (((String) args[0]).intern()) : null;

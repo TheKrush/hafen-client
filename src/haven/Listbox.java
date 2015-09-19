@@ -119,6 +119,7 @@ public abstract class Listbox<T> extends ListWidget<T> {
 
 	@Override
 	public void mousemove(Coord c) {
+		super.mousemove(c);
 		if (c.isect(Coord.z, sz)) {
 			over = itemat(c);
 		} else {

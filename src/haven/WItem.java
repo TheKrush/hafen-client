@@ -316,7 +316,6 @@ public class WItem extends Widget implements DTarget {
 				}
 				break;
 			case 2: // middle
-				break;
 			case 3: // right
 				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
 					if (inv) {
