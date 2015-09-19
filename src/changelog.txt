@@ -5,6 +5,10 @@ $size[13]{$b{2015-09-19}}
  - MMB now usable to mass transfer items $i{(ender's client)}
   - MMB transfers the lowest quality items first
   - RMB transfers the highest quality items first
+ - Display growth stage / growth stage max for plants
+ - Display growth % for trees
+ - Changed object health display to object damage
+ - Centered growth / damage displays on objects
 
 $size[13]{$b{2015-09-18}}
  - Grid overlay tweaks
