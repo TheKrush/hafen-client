@@ -319,12 +319,12 @@ public class WItem extends Widget implements DTarget {
 			case 3: // right
 				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
 					if (inv) {
-						wdgmsg("transfer-same", item.resname(), button == 3);
+						wdgmsg("transfer-same", item.resname(), button == 2);
 						return (true);
 					}
 				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
 					if (inv) {
-						wdgmsg("drop-same", item.resname(), button == 3);
+						wdgmsg("drop-same", item.resname(), button == 2);
 						return (true);
 					}
 				}

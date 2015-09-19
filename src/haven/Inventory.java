@@ -40,7 +40,7 @@ public class Inventory extends Widget implements DTarget {
 			QualityList ql2 = o2.itemq.get();
 			float q2 = (ql2 != null && !ql2.isEmpty()) ? ql2.single().value : 0;
 
-			return (q1 < q2) ? 1 : ((q1 > q2) ? -1 : 0);
+			return (q1 > q2) ? 1 : ((q1 < q2) ? -1 : 0);
 		}
 	};
 	public static final Comparator<WItem> ITEM_COMPARATOR_DESC = new Comparator<WItem>() {
@@ -52,7 +52,7 @@ public class Inventory extends Widget implements DTarget {
 			QualityList ql2 = o2.itemq.get();
 			float q2 = (ql2 != null && !ql2.isEmpty()) ? ql2.single().value : 0;
 
-			return (q1 > q2) ? 1 : ((q1 < q2) ? -1 : 0);
+			return (q1 < q2) ? 1 : ((q1 > q2) ? -1 : 0);
 		}
 	};
 	public boolean locked = false;
