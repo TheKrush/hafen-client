@@ -1,11 +1,12 @@
 package haven;
 
+import haven.Window.WindowCFG;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import haven.Window.WindowCFG;
-
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +26,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.io.IOUtils;
 
 public class Globals {
 
