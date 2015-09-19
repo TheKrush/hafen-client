@@ -484,6 +484,18 @@ public class OptWnd extends Window {
 				super.destroy();
 			}
 		}, new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show object radius", CFG.DISPLAY_OBJECT_RADIUS) {
+			{
+				CFG.DISPLAY_OBJECT_RADIUS.addObserver(this);
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_OBJECT_RADIUS.remObserver(this);
+				super.destroy();
+			}
+		}, new Coord(x, y));
 
 		panel.pack();
 		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;

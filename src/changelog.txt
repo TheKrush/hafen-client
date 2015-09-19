@@ -1,6 +1,7 @@
 $size[13]{$b{2015-09-21}}
  - Fixed changelog always appearing
  - Changed the online/offline text
+ - Added option to display object radius $i{(romov's client)}
 
 $size[13]{$b{2015-09-20}}
  - Fixed player/party dots being partially cutoff
@@ -109,7 +110,7 @@ $size[13]{$b{2015-09-08}}
  - Moved a couple window starting locations
  - Added log/setting folders
  - Added option for changing transfer hotkeys
- - Change map saving code (bdew's client)
+ - Change map saving code $i{(bdew's client)}
 
 $size[13]{$b{2015-09-07}}
  - Adding error.log / output.log

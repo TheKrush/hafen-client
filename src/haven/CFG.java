@@ -21,6 +21,7 @@ public enum CFG {
 	DISPLAY_GRID("display.grid", false),
 	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_OBJECT_DAMAGE("display.object.health", false),
+	DISPLAY_OBJECT_RADIUS("display.object.radisu", false),
 	DISPLAY_PLANT_GROWTH("display.plant.growth", false),
 	DISPLAY_WEATHER("display.weather", true),
 	GENERAL_CHAT_SAVE("general.chat.save", true),
