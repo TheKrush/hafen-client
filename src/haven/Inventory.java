@@ -31,6 +31,30 @@ public class Inventory extends Widget implements DTarget {
 
 	public static final Tex invsq = Resource.loadtex("gfx/hud/invsq");
 	public static final Coord sqsz = new Coord(33, 33);
+	public static final Comparator<WItem> ITEM_COMPARATOR_ASC = new Comparator<WItem>() {
+		@Override
+		public int compare(WItem o1, WItem o2) {
+			QualityList ql1 = o1.itemq.get();
+			float q1 = (ql1 != null && !ql1.isEmpty()) ? ql1.single().value : 0;
+
+			QualityList ql2 = o2.itemq.get();
+			float q2 = (ql2 != null && !ql2.isEmpty()) ? ql2.single().value : 0;
+
+			return (q1 < q2) ? 1 : ((q1 > q2) ? -1 : 0);
+		}
+	};
+	public static final Comparator<WItem> ITEM_COMPARATOR_DESC = new Comparator<WItem>() {
+		@Override
+		public int compare(WItem o1, WItem o2) {
+			QualityList ql1 = o1.itemq.get();
+			float q1 = (ql1 != null && !ql1.isEmpty()) ? ql1.single().value : 0;
+
+			QualityList ql2 = o2.itemq.get();
+			float q2 = (ql2 != null && !ql2.isEmpty()) ? ql2.single().value : 0;
+
+			return (q1 > q2) ? 1 : ((q1 < q2) ? -1 : 0);
+		}
+	};
 	public boolean locked = false;
 	Coord isz;
 	Map<GItem, WItem> wmap = new HashMap<>();
@@ -150,6 +174,7 @@ public class Inventory extends Widget implements DTarget {
 				}
 			}
 		}
+		Collections.sort(items, ascending ? ITEM_COMPARATOR_ASC : ITEM_COMPARATOR_DESC);
 		return items;
 	}
 
