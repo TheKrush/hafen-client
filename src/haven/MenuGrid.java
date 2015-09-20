@@ -276,7 +276,7 @@ public class MenuGrid extends Widget {
 			if (prev != this) {
 				hoverstart = now;
 			}
-			boolean ttl = (now - hoverstart) > 500;
+			boolean ttl = CFG.UI_TOOLTIP_LONG.valb() || (now - hoverstart) > 500;
 			if ((pag != curttp) || (ttl != curttl)) {
 				curtt = rendertt(pag.res(), ttl);
 				curttp = pag;

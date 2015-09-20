@@ -265,7 +265,7 @@ public class Makewindow extends Widget {
 		} else if (now - hoverstart > 1000) {
 			sh = false;
 		}
-		if (sh) {
+		if (!CFG.UI_TOOLTIP_LONG.valb() && sh) {
 			if (stip == null) {
 				stip = Text.render(tt.t);
 			}

@@ -1,7 +1,7 @@
 /*
  *  This file is part of the Haven & Hearth game client.
  *  Copyright (C) 2009 Fredrik Tolf <fredrik@dolda2000.com>, and
- *                     Björn Johannessen <johannessen.bjorn@gmail.com>
+ *                     BjÃ¶rn Johannessen <johannessen.bjorn@gmail.com>
  *
  *  Redistribution and/or modification of this file is subject to the
  *  terms of the GNU Lesser General Public License, version 3, as
@@ -127,7 +127,7 @@ public class WItem extends Widget implements DTarget {
 				shorttip = longtip = null;
 				ttinfo = info;
 			}
-			if (now - hoverstart < 1000) {
+			if (!CFG.UI_TOOLTIP_LONG.valb() && now - hoverstart < 1000) {
 				if (shorttip == null) {
 					shorttip = new ShortTip(info);
 				}

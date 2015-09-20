@@ -42,11 +42,13 @@ public enum CFG {
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
-	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // Show single average
+	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // show single average
 	UI_KIN_STATUS("ui.kin.status", true),
 	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new HashMap<String, Boolean>()),
 	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", true),
-	UI_STUDYLOCK("ui.studylock", false);
+	UI_STUDYLOCK("ui.studylock", false),
+	UI_TOOLTIP_LONG("ui.item.tooltip.long", false), // force long tooltip
+	;
 
 	private static String CONFIG_JSON;
 	private static final int configVersion = 6;

@@ -123,7 +123,7 @@ public class Buff extends Widget {
 			hoverstart = now;
 		}
 		try {
-			if (now - hoverstart < 1000) {
+			if (!CFG.UI_TOOLTIP_LONG.valb() && now - hoverstart < 1000) {
 				if (shorttip == null) {
 					shorttip = Text.render(shorttip());
 				}

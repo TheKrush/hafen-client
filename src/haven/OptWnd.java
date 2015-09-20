@@ -800,6 +800,10 @@ public class OptWnd extends Window {
 		//y += 25;
 		//panel.add(new CFGCheckBox("Study lock", CFG.UI_STUDYLOCK), new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Show percentage above hourglass", CFG.UI_ACTION_PROGRESS_PERCENTAGE), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Force long tooltips", CFG.UI_TOOLTIP_LONG), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGLabel("Item qualities"), new Coord(x, y));
 		y += 15;
 		CFGRadioGroup qualityRadioGroup = new CFGRadioGroup(panel);
@@ -818,8 +822,6 @@ public class OptWnd extends Window {
 		y += 15;
 		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 6, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
-		y += 25;
-		panel.add(new CFGCheckBox("Show percentage above hourglass", CFG.UI_ACTION_PROGRESS_PERCENTAGE), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon"), new Coord(x, y));
 		y += 25;

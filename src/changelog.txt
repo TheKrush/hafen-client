@@ -17,6 +17,7 @@ $size[13]{$b{2015-09-19}}
  - Caching player/party dots, bumling dot, bush dot, and tree dot for performance
  - Caching growth stage, growth %, and object damage for performance
  - Mass transfer only identical items (fixes meat transferring) $i{(ender's client)}
+ - Option to force long tooltips
 
 $size[13]{$b{2015-09-18}}
  - Grid overlay tweaks
