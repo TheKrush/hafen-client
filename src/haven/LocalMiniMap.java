@@ -180,8 +180,6 @@ public class LocalMiniMap extends Widget {
 									}
 									Tex tex = playerTex.get(cl);
 									g.image(tex, gc.sub(tex.sz().div(2)));
-									//Tex tex = Text.renderstroked("\u2B06", kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY, Color.BLACK).tex();
-									//g.image(tex, gc.sub(tex.sz().div(2)), new Coord(0, 0), angle);
 								}
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {

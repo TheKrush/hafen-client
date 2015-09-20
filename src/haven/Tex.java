@@ -141,14 +141,14 @@ public abstract class Tex {
 	};
 
 	public static final Tex fellipse(Coord sz, Color fill, Color border, int borderWidth) {
-		BufferedImage img = TexI.mkbuf(sz);
+		BufferedImage img = TexI.mkbuf(sz.add(new Coord(2, 2)));
 		Graphics g = img.createGraphics();
-		g.setColor(fill);
-		g.fillOval(borderWidth, borderWidth, sz.x, sz.y);
 		if (borderWidth > 0) {
 			g.setColor(border);
-			g.drawOval(0, 0, sz.x, sz.y);
+			g.fillOval(0, 0, sz.x, sz.y);
 		}
+		g.setColor(fill);
+		g.fillOval(borderWidth, borderWidth, sz.x, sz.y);
 		g.dispose();
 		return (new TexI(img));
 	}
@@ -156,12 +156,12 @@ public abstract class Tex {
 	public static final Tex frect(Coord sz, Color fill, Color border, int borderWidth) {
 		BufferedImage img = TexI.mkbuf(sz);
 		Graphics g = img.createGraphics();
-		g.setColor(fill);
-		g.fillRect(borderWidth, borderWidth, sz.x, sz.y);
 		if (borderWidth > 0) {
 			g.setColor(border);
-			g.drawRect(0, 0, sz.x, sz.y);
+			g.fillRect(0, 0, sz.x, sz.y);
 		}
+		g.setColor(fill);
+		g.fillRect(borderWidth, borderWidth, sz.x, sz.y);
 		g.dispose();
 		return (new TexI(img));
 	}
