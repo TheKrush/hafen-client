@@ -54,6 +54,10 @@ public class LocalMiniMap extends Widget {
 	private Coord off = new Coord(0, 0);
 	private Coord doff = null;
 
+	private final Tex bumlingTex = Text.renderstroked("\u25C6", Color.CYAN, Color.BLACK).tex();
+	private final Tex bushTex = Text.renderstroked("\u2605", Color.CYAN, Color.BLACK).tex();
+	private final Tex treeTex = Text.renderstroked("\u25B2", Color.CYAN, Color.BLACK).tex();
+
 	public static class MapTile {
 
 		public final Tex img;
@@ -160,32 +164,35 @@ public class LocalMiniMap extends Widget {
 						Tex tex = icon.tex();
 						g.image(tex, gc.sub(tex.sz().div(2)));
 					} else if (res != null) {
+						double angle = gob.a + Math.PI / 2;
 						if ("body".equals(res.basename())) {
 							if (CFG.MINIMAP_PLAYERS.valb()) {
+								KinInfo kininfo = gob.getattr(KinInfo.class);
 								if (gob.id == mv.player().id) {
-								} else {
+								} else if (!ui.sess.glob.party.memberGobIds().contains(gob.id)) {
 									g.chcolor(Color.BLACK);
 									g.fellipse(gc, new Coord(5, 5));
-									KinInfo kininfo = gob.getattr(KinInfo.class);
 									g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY);
 									g.fellipse(gc, new Coord(4, 4));
 									g.chcolor();
+									//Tex tex = Text.renderstroked("\u2B06", kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY, Color.BLACK).tex();
+									//g.image(tex, gc.sub(tex.sz().div(2)), new Coord(0, 0), angle);
 								}
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.valo();
 							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) { // only bother with the rest if any are turned on
-								g.atextstroked("\u25C6", gc, Color.CYAN, Color.BLACK);
+								g.image(bumlingTex, gc.sub(bumlingTex.sz().div(2)));
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.valo();
 							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) {
-								g.atextstroked("\u2605", gc, Color.CYAN, Color.BLACK);
+								g.image(bushTex, gc.sub(bushTex.sz().div(2)));
 							}
 						} else if (res.name.startsWith("gfx/terobjs/trees")) {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.valo();
 							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) {
-								g.atextstroked("\u25B2", gc, Color.CYAN, Color.BLACK);
+								g.image(treeTex, gc.sub(treeTex.sz().div(2)));
 							}
 						}
 					}
@@ -279,8 +286,15 @@ public class LocalMiniMap extends Widget {
 						continue;
 					}
 					ptc = p2c(ptc);
+					/*
 					g.chcolor(m.col.getRed(), m.col.getGreen(), m.col.getBlue(), 255);
 					g.image(MiniMap.plx.layer(Resource.imgc).tex(), ptc.add(MiniMap.plx.layer(Resource.negc).cc.inv()));
+					g.chcolor();
+					*/
+					g.chcolor(Color.BLACK);
+					g.frect(ptc.sub(3, 3), new Coord(6, 6));
+					g.chcolor(m.col);
+					g.frect(ptc.sub(2, 2), new Coord(4, 4));
 					g.chcolor();
 				}
 			}

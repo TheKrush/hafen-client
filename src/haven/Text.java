@@ -200,9 +200,20 @@ public class Text {
 		}
 
 		public Line renderstroked(String text, Color c, Color stroke) {
+			return renderstroked(text, c, stroke, null);
+		}
+
+		public Line renderstroked(String text, Color c, Color stroke, Color bg) {
+			return renderstroked(text, c, stroke, bg, new Coord(0, 0));
+		}
+
+		public Line renderstroked(String text, Color c, Color stroke, Color bg, Coord bgPadding) {
 			Coord sz = strsize(text);
 			if (sz.x < 1) {
 				sz = sz.add(1, 0);
+			}
+			if (bg != null) {
+				sz = sz.add(bgPadding.mul(2));
 			}
 			sz = sz.add(2, 0);
 			BufferedImage img = TexI.mkbuf(sz);
@@ -212,13 +223,20 @@ public class Text {
 			}
 			g.setFont(font);
 			FontMetrics m = g.getFontMetrics();
+			int x = 0, y = 0;
+			if (bg != null) {
+				g.setColor(bg);
+				x = bgPadding.x;
+				y = bgPadding.y;
+				g.fillRect(0, 0, sz.x, sz.y);
+			}
 			g.setColor(stroke);
-			g.drawString(text, 0, m.getAscent());
-			g.drawString(text, 2, m.getAscent());
-			g.drawString(text, 1, m.getAscent() - 1);
-			g.drawString(text, 1, m.getAscent() + 1);
+			g.drawString(text, x + 0, y + m.getAscent());
+			g.drawString(text, x + 2, y + m.getAscent());
+			g.drawString(text, x + 1, y + m.getAscent() - 1);
+			g.drawString(text, x + 1, y + m.getAscent() + 1);
 			g.setColor(c);
-			g.drawString(text, 1, m.getAscent());
+			g.drawString(text, x + 1, y + m.getAscent());
 			g.dispose();
 			return (new Line(text, img, m));
 		}
@@ -330,6 +348,14 @@ public class Text {
 
 	public static Line renderstroked(String text, Color c, Color stroke, Foundry foundry) {
 		return (foundry.renderstroked(text, c, stroke));
+	}
+
+	public static Line renderstroked(String text, Color c, Color stroke, Color bg, Foundry foundry) {
+		return (foundry.renderstroked(text, c, stroke, bg));
+	}
+
+	public static Line renderstroked(String text, Color c, Color stroke, Color bg, Coord bgPadding, Foundry foundry) {
+		return (foundry.renderstroked(text, c, stroke, bg, bgPadding));
 	}
 
 	public Tex tex() {

@@ -246,6 +246,20 @@ public class GOut {
 		checkerr();
 	}
 
+	public void image(Tex tex, Coord c, Coord origin, double angle) {
+		if (tex == null) {
+			return;
+		}
+		st.set(cur2d);
+		origin = c.add(origin);
+		Coord ul = c.rotate(origin, angle).add(tx);
+		Coord bl = c.add(0, tex.sz().y).rotate(origin, angle).add(tx);
+		Coord br = c.add(tex.sz()).rotate(origin, angle).add(tx);
+		Coord ur = new Coord(ul.x + (br.x - bl.x), br.y - (bl.y - ul.y));
+		tex.renderquad(this, ul, bl, br, ur);
+		checkerr();
+	}
+
 	public void rimagev(Tex tex, Coord c, int h) {
 		Coord cc = new Coord(c);
 		Coord sz = new Coord(tex.sz().x, h);
@@ -370,6 +384,19 @@ public class GOut {
 			Color col = (Color) c[i + 1];
 			gl.glColor4f((col.getRed() / 255.0f), (col.getGreen() / 255.0f), (col.getBlue() / 255.0f), (col.getAlpha() / 255.0f));
 			vertex(vc);
+		}
+		gl.glEnd();
+		checkerr();
+	}
+
+	public void fpoly(Coord c, Coord r, int p) {
+		st.set(cur2d);
+		apply();
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+		vertex(c);
+		for (int i = 0; i <= p; ++i) {
+			double a = (i * 2.0f * (float) Math.PI / p);
+			vertex(c.add((int) (Math.sin(a) * r.x), (int) (Math.cos(a) * r.y)));
 		}
 		gl.glEnd();
 		checkerr();

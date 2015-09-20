@@ -27,6 +27,7 @@ package haven;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -41,6 +42,25 @@ public class Party {
 
 	public Party(Glob glob) {
 		this.glob = glob;
+	}
+
+	public List<Gob> memberGobs() {
+		List<Gob> gobs = new ArrayList<>();
+		for (Member m : memb.values()) {
+			Gob gob = m.getgob();
+			if (gob != null) {
+				gobs.add(gob);
+			}
+		}
+		return gobs;
+	}
+
+	public List<Long> memberGobIds() {
+		List<Long> ids = new ArrayList<>();
+		for (Member m : memb.values()) {
+			ids.add(m.gobid);
+		}
+		return ids;
 	}
 
 	public class Member {
@@ -62,6 +82,11 @@ public class Party {
 			} catch (Loading e) {
 			}
 			return (c);
+		}
+
+		public double getangle() {
+			Gob gob = getgob();
+			return (gob != null) ? gob.a : Math.PI / 2;
 		}
 	}
 

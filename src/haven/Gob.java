@@ -40,6 +40,8 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public final Glob glob;
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<>();
 	public Collection<Overlay> ols = new LinkedList<>();
+
+	private static final Text.Foundry textFnd = new Text.Foundry(Text.sans, 14);
 	private static final Map<String, Tex> hpTex = new HashMap<>();
 	private static final Map<String, Tex> plantTex = new HashMap<>();
 	private static final Map<String, Tex> treeTex = new HashMap<>();
@@ -212,6 +214,13 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public void draw(GOut g) {
 	}
 
+	private Tex getTextTex(Map<String, Tex> map, String text, Color cl) {
+		if (!map.containsKey(text)) {
+			map.put(text, Text.renderstroked(text, cl, Color.BLACK, new Color(0, 0, 0, 128), new Coord(2, 0), textFnd).tex());
+		}
+		return map.get(text);
+	}
+
 	@Override
 	public boolean setup(RenderList rl) {
 		loc.tick();
@@ -233,10 +242,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 						String gobhpstr = hlt.getstr();
 						if (gobhpstr != null && sc != null && hlt.hp < 4) {
 							String str = String.format("%.0f%%", (1f - hlt.hp / 4f) * 100f);
-							if (!hpTex.containsKey(str)) {
-								hpTex.put(str, Text.renderstroked(String.format("%.0f%%", (1f - hlt.hp / 4f) * 100f), Color.RED, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex());
-							}
-							Tex tex = hpTex.get(str);
+							Tex tex = getTextTex(hpTex, str, Color.RED);
 							g.image(tex, sc.sub(tex.sz().div(2)));
 						}
 					}
@@ -269,10 +275,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 										public void draw2d(GOut g) {
 											if (sc != null) {
 												String str = String.format("%d/%d", new Object[]{stage, stageMax});
-												if (!plantTex.containsKey(str)) {
-													plantTex.put(str, Text.renderstroked(str, stage >= stageMax ? Color.GREEN : Color.RED, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex());
-												}
-												Tex tex = plantTex.get(str);
+												Tex tex = getTextTex(plantTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
 												g.image(tex, sc.sub(tex.sz().div(2)));
 											}
 										}
@@ -284,10 +287,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 										public void draw2d(GOut g) {
 											if (sc != null && stage < 100) {
 												String str = String.format("%d%%", new Object[]{stage});
-												if (!treeTex.containsKey(str)) {
-													treeTex.put(str, Text.renderstroked(str, Color.YELLOW, Color.BLACK, new Text.Foundry(Text.sans, 14)).tex());
-												}
-												Tex tex = treeTex.get(str);
+												Tex tex = getTextTex(treeTex, str, Color.YELLOW);
 												g.image(tex, sc.sub(tex.sz().div(2)));
 											}
 										}
