@@ -32,6 +32,7 @@ public abstract class GSprite implements Drawn {
 
 	public final Owner owner;
 	public static final List<Factory> factories;
+	private Message msg = null;
 
 	static {
 		factories = Arrays.asList(new Factory[]{
@@ -89,12 +90,15 @@ public abstract class GSprite implements Drawn {
 		{
 			Factory f = res.getcode(Factory.class, false);
 			if (f != null) {
-				return (f.create(owner, res, sdt));
+				GSprite sprite = f.create(owner, res, sdt);
+				sprite.msg = sdt;
+				return sprite;
 			}
 		}
 		for (Factory f : factories) {
 			GSprite ret = f.create(owner, res, sdt);
 			if (ret != null) {
+				ret.msg = sdt;
 				return (ret);
 			}
 		}
@@ -107,5 +111,13 @@ public abstract class GSprite implements Drawn {
 	public abstract Coord sz();
 
 	public void tick(double dt) {
+	}
+
+	public boolean same(Object obj) {
+		if (obj instanceof GSprite) {
+			Message msg2 = ((GSprite) obj).msg;
+			return msg != null && msg.same(msg2);
+		}
+		return false;
 	}
 }
