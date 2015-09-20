@@ -4,3 +4,5 @@
 *~
 out
 /resources/compiled
+/dist
+/nbproject/private
