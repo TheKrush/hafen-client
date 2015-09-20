@@ -1159,7 +1159,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	@Override
 	public void tick(double dt) {
-		if (mouseIsDown) {
+		if (CFG.HOTKEY_MOUSE_FOLLOW.valb() && mouseIsDown) {
 			if (lastMouseWalkTick + 500 < System.currentTimeMillis()) {
 				lastMouseWalkTick = System.currentTimeMillis();
 				delay(new Click(lastMousePos, 1));
@@ -1855,6 +1855,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	}
 
 	public void togglemousefollow(boolean now) {
+		if(!CFG.HOTKEY_MOUSE_FOLLOW.valb()) {
+			return;
+		}
 		mouseIsDown = !mouseIsDown;
 		if (!mouseIsDown) {
 			return;

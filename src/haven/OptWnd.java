@@ -515,6 +515,8 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
+		panel.add(new CFGCheckBox("Mouse follow", CFG.HOTKEY_MOUSE_FOLLOW, "If enabled holding LMB or using ALT+F will make player follow mouse"), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGLabel("Show all qualities",
 						"Multiple selections means ANY key must be pressed to activate"), new Coord(x, y));
 		y += 15;

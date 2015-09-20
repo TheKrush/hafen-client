@@ -29,6 +29,7 @@ public enum CFG {
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
+	HOTKEY_MOUSE_FOLLOW("hotkey.mouse.follow", true),
 	MINIMAP_FLOATING("ui.minimap.floating", false),
 	MINIMAP_BUMLINGS("ui.minimap.bumlings", new HashMap<String, Boolean>()),
 	MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
