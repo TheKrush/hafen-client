@@ -2,6 +2,7 @@ $size[13]{$b{2015-09-19}}
  - New option General->Store game data which will gather data on individual clients in addition to what was already gathered
   - This data is used by some of the options menu widgets to give them more options
  - Display skill values in craft window $i{(ender's client)}
+ - Fixed scrollbar dragging in listboxes $i{(ender's client)}
  - MMB now usable to mass transfer items $i{(ender's client)}
   - MMB transfers the lowest quality items first
   - RMB transfers the highest quality items first
@@ -9,6 +10,13 @@ $size[13]{$b{2015-09-19}}
  - Display growth % for trees
  - Changed object health display to object damage
  - Centered growth / damage displays on objects
+ - Add semi-transparent background to object damage, growth stage, and growth %
+ - Player dots slightly smaller
+ - Party (and current player) x's are now squares
+  - The circle player dots are not drawn for party members anymore
+ - Caching player/party dots, bumling dot, bush dot, and tree dot for performance
+ - Caching growth stage, growth %, and object damage for performance
+ - Mass transfer only identical items (fixes meat transferring) $i{(ender's client)}
 
 $size[13]{$b{2015-09-18}}
  - Grid overlay tweaks
