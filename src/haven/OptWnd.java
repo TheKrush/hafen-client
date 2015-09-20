@@ -850,7 +850,7 @@ public class OptWnd extends Window {
 		x += 225;
 		y = 0;
 
-		panel.add(new CFGCheckBox("Single item CTRL choose", CFG.UI_MENU_FLOWER_CLICK_SINGLE, "If checked, will automatically select single item menus if CTRL is pressed when menu is opened"), x, y);
+		panel.add(new CFGCheckBox("Single item auto choose", CFG.UI_MENU_FLOWER_CLICK_SINGLE, "If checked, will automatically select single item menus if SHIFT is not down when menu is opened"), x, y);
 		y += 25;
 		panel.add(new CFGLabel("Choose menu items to select automatically"), new Coord(x, y));
 		y += 15;
