@@ -25,6 +25,10 @@
  */
 package haven;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 public abstract class Tex {
 
 	protected Coord dim;
@@ -135,4 +139,30 @@ public abstract class Tex {
 			return (null);
 		}
 	};
+
+	public static final Tex fellipse(Coord sz, Color fill, Color border, int borderWidth) {
+		BufferedImage img = TexI.mkbuf(sz);
+		Graphics g = img.createGraphics();
+		g.setColor(fill);
+		g.fillOval(borderWidth, borderWidth, sz.x, sz.y);
+		if (borderWidth > 0) {
+			g.setColor(border);
+			g.drawOval(0, 0, sz.x, sz.y);
+		}
+		g.dispose();
+		return (new TexI(img));
+	}
+
+	public static final Tex frect(Coord sz, Color fill, Color border, int borderWidth) {
+		BufferedImage img = TexI.mkbuf(sz);
+		Graphics g = img.createGraphics();
+		g.setColor(fill);
+		g.fillRect(borderWidth, borderWidth, sz.x, sz.y);
+		if (borderWidth > 0) {
+			g.setColor(border);
+			g.drawRect(0, 0, sz.x, sz.y);
+		}
+		g.dispose();
+		return (new TexI(img));
+	}
 }

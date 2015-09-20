@@ -30,6 +30,7 @@ import static haven.MCache.tilesz;
 import haven.resutil.Ridges;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -57,6 +58,9 @@ public class LocalMiniMap extends Widget {
 	private final Tex bumlingTex = Text.renderstroked("\u25C6", Color.CYAN, Color.BLACK).tex();
 	private final Tex bushTex = Text.renderstroked("\u2605", Color.CYAN, Color.BLACK).tex();
 	private final Tex treeTex = Text.renderstroked("\u25B2", Color.CYAN, Color.BLACK).tex();
+
+	private final Map<Color, Tex> playerTex = new HashMap<>();
+	private final Map<Color, Tex> partyTex = new HashMap<>();
 
 	public static class MapTile {
 
@@ -170,11 +174,12 @@ public class LocalMiniMap extends Widget {
 								KinInfo kininfo = gob.getattr(KinInfo.class);
 								if (gob.id == mv.player().id) {
 								} else if (!ui.sess.glob.party.memberGobIds().contains(gob.id)) {
-									g.chcolor(Color.BLACK);
-									g.fellipse(gc, new Coord(5, 5));
-									g.chcolor(kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY);
-									g.fellipse(gc, new Coord(4, 4));
-									g.chcolor();
+									Color cl = kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY;
+									if (!playerTex.containsKey(cl)) {
+										playerTex.put(cl, Tex.frect(new Coord(8, 8), cl, Color.BLACK, 1));
+									}
+									Tex tex = playerTex.get(cl);
+									g.image(tex, gc.sub(tex.sz().div(2)));
 									//Tex tex = Text.renderstroked("\u2B06", kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY, Color.BLACK).tex();
 									//g.image(tex, gc.sub(tex.sz().div(2)), new Coord(0, 0), angle);
 								}
@@ -286,16 +291,11 @@ public class LocalMiniMap extends Widget {
 						continue;
 					}
 					ptc = p2c(ptc);
-					/*
-					g.chcolor(m.col.getRed(), m.col.getGreen(), m.col.getBlue(), 255);
-					g.image(MiniMap.plx.layer(Resource.imgc).tex(), ptc.add(MiniMap.plx.layer(Resource.negc).cc.inv()));
-					g.chcolor();
-					*/
-					g.chcolor(Color.BLACK);
-					g.frect(ptc.sub(3, 3), new Coord(6, 6));
-					g.chcolor(m.col);
-					g.frect(ptc.sub(2, 2), new Coord(4, 4));
-					g.chcolor();
+					if (!partyTex.containsKey(m.col)) {
+						partyTex.put(m.col, Tex.frect(new Coord(8, 8), m.col, Color.BLACK, 1));
+					}
+					Tex tex = partyTex.get(m.col);
+					g.image(tex, ptc.sub(tex.sz().div(2)));
 				}
 			}
 		} catch (Loading ignored) {
