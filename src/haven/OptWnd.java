@@ -439,6 +439,14 @@ public class OptWnd extends Window {
 			}
 
 			@Override
+			public void set(boolean a) {
+				if (ui != null && ui.gui != null && ui.gui.map != null) {
+					ui.gui.map.initgrid(a);
+				}
+				super.set(a);
+			}
+
+			@Override
 			public void destroy() {
 				CFG.DISPLAY_GRID.remObserver(this);
 				super.destroy();

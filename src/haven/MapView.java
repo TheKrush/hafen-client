@@ -1829,22 +1829,29 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public void togglegrid() {
 		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
-		if (CFG.DISPLAY_GRID.valb()) {
-			initgrid();
+		initgrid(CFG.DISPLAY_GRID.valb());
+	}
+
+	public final void initgrid() {
+		initgrid(true);
+	}
+
+	public final void initgrid(boolean init) {
+		if (init) {
+			this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
+			this.lasttc = Coord.z;
+			updategrid();
 		} else {
 			this.gridol = null;
 		}
 	}
 
-	public final void initgrid() {
-		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
-		this.lasttc = Coord.z;
-		updategrid();
-	}
-
 	public void updategrid() {
 		if (!CFG.DISPLAY_GRID.valb()) {
 			return;
+		}
+		if (gridol == null) {
+			initgrid(true);
 		}
 		Coord tc = cc.div(MCache.tilesz);
 		if (tc.manhattan2(lasttc) > 20 || lastGridUpdate < glob.map.lastMapUpdate) {
@@ -1855,7 +1862,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	}
 
 	public void togglemousefollow(boolean now) {
-		if(!CFG.HOTKEY_MOUSE_FOLLOW.valb()) {
+		if (!CFG.HOTKEY_MOUSE_FOLLOW.valb()) {
 			return;
 		}
 		mouseIsDown = !mouseIsDown;

@@ -11,7 +11,6 @@ import haven.RenderList;
 import haven.Rendered;
 import haven.States;
 import haven.Utils;
-import java.nio.BufferOverflowException;
 import java.nio.FloatBuffer;
 import javax.media.opengl.GL2;
 
@@ -83,6 +82,9 @@ public class GridOutline implements Rendered {
 
 	@Override
 	public boolean setup(RenderList rl) {
+		if (location == null) {
+			return false;
+		}
 		rl.prepo(location);
 		rl.prepo(color);
 		return true;
