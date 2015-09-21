@@ -31,9 +31,6 @@ import java.io.*;
 import java.util.*;
 import java.lang.reflect.*;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MainFrame extends java.awt.Frame implements Runnable, Console.Directory {
 

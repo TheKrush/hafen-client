@@ -60,7 +60,7 @@ public class Config {
 	public static String prefspec = "hafen";
 
 	public static String version;
-	public static boolean isUpdate;
+	public static boolean isUpdate = false;
 
 	static {
 		String p;
@@ -76,7 +76,7 @@ public class Config {
 		if (isUpdate) {
 			return;
 		}
-		isUpdate = !CFG.VERSION.val().equals(version) || !getFile("changelog.txt").exists();
+		isUpdate = !CFG.VERSION.val().equals(version);
 		if (isUpdate) {
 			CFG.VERSION.set(version);
 		}
