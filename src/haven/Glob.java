@@ -25,6 +25,8 @@
  */
 package haven;
 
+import me.ender.timer.Timer;
+
 import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
@@ -290,6 +292,8 @@ public class Glob {
 				case GMSG_TIME:
 					time = msg.int32();
 					epoch = System.currentTimeMillis();
+					Timer.server = 1000 * time;
+					Timer.local = epoch;
 					if (!inc) {
 						lastrep = 0;
 					}
