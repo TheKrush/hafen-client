@@ -1,3 +1,7 @@
+$size[13]{$b{2015-09-20}}
+ - Fixed player/party dots being partially cutoff
+ - Fixed disabling all transfer hotkeys having undesirable results
+
 $size[13]{$b{2015-09-19}}
  - New option General->Store game data which will gather data on individual clients in addition to what was already gathered
   - This data is used by some of the options menu widgets to give them more options
