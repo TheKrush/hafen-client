@@ -25,6 +25,7 @@
  */
 package haven;
 
+import haven.resutil.BPRadSprite;
 import java.awt.Color;
 import java.util.*;
 
@@ -45,6 +46,12 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	private static final Map<String, Tex> hpTex = new HashMap<>();
 	private static final Map<String, Tex> plantTex = new HashMap<>();
 	private static final Map<String, Tex> treeTex = new HashMap<>();
+	private static final Map<String, Gob.Overlay> radmap = new HashMap<String, Gob.Overlay>(1) {
+		{
+			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 5}, 0, 2))));
+			put("gfx/terobjs/minesupport", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 3}, 0, 2))));
+		}
+	};
 
 	public static class Overlay implements Rendered {
 
@@ -227,11 +234,24 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		for (Overlay ol : ols) {
 			rl.add(ol, null);
 		}
+
+		if (CFG.DISPLAY_OBJECT_RADIUS.valb()) {
+			try {
+				Resource res = getres();
+				if (res != null && radmap.containsKey(res.name)) {
+					Gob.Overlay rovl = radmap.get(res.name);
+					rl.add(rovl, null);
+				}
+			} catch (Loading ex) {
+			}
+		}
+
 		for (Overlay ol : ols) {
 			if (ol.spr instanceof Overlay.SetupMod) {
 				((Overlay.SetupMod) ol.spr).setupmain(rl);
 			}
 		}
+
 		final GobHealth hlt = getattr(GobHealth.class);
 		if (hlt != null) {
 			rl.prepc(hlt.getfx());
