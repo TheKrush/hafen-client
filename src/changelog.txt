@@ -1,3 +1,7 @@
+$size[13]{$b{2015-09-21}}
+ - Fixed changelog always appearing
+ - Changed the online/offline text
+
 $size[13]{$b{2015-09-20}}
  - Fixed player/party dots being partially cutoff
  - Fixed disabling all transfer hotkeys having undesirable results
