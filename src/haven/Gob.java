@@ -48,6 +48,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	private static final Map<String, Tex> treeTex = new HashMap<>();
 	private static final Map<String, Gob.Overlay> radmap = new HashMap<String, Gob.Overlay>(1) {
 		{
+			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 5}, 0, 2))));
 			put("gfx/terobjs/minesupport", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 3}, 0, 2))));
 		}
 	};
@@ -250,7 +251,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 				((Overlay.SetupMod) ol.spr).setupmain(rl);
 			}
 		}
-		
+
 		final GobHealth hlt = getattr(GobHealth.class);
 		if (hlt != null) {
 			rl.prepc(hlt.getfx());
