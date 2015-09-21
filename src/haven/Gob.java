@@ -50,6 +50,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		{
 			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 5}, 0, 2))));
 			put("gfx/terobjs/minesupport", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 3}, 0, 2))));
+			put("gfx/terobjs/trough", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 7}, 0, 2))));
 		}
 	};
 

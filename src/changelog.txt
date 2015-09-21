@@ -2,8 +2,9 @@ $size[13]{$b{2015-09-21}}
  - Fixed changelog always appearing
  - Changed the online/offline text
  - Added option to display object radius $i{(romov's client)}
-  - Mining Support
   - Beehive
+  - Food trough
+  - Mining Support
 
 $size[13]{$b{2015-09-20}}
  - Fixed player/party dots being partially cutoff
