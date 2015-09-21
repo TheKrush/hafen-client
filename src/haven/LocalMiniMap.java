@@ -176,7 +176,7 @@ public class LocalMiniMap extends Widget {
 								} else if (!ui.sess.glob.party.memberGobIds().contains(gob.id)) {
 									Color cl = kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY;
 									if (!playerTex.containsKey(cl)) {
-										playerTex.put(cl, Tex.fellipse(new Coord(8, 8), cl, Color.BLACK, 1));
+										playerTex.put(cl, Tex.fellipse(new Coord(10, 10), cl, Color.BLACK, 1));
 									}
 									Tex tex = playerTex.get(cl);
 									g.image(tex, gc.sub(tex.sz().div(2)));
