@@ -25,6 +25,8 @@
  */
 package haven;
 
+import me.krush.DurationEstimate;
+
 import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +41,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 	private GSprite spr;
 	private Object[] rawinfo;
 	private List<ItemInfo> info = Collections.emptyList();
+	private DurationEstimate durationEstimate;
 
 	@RName("item")
 	public static class $_ implements Factory {
@@ -79,6 +82,12 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 	public GItem(Indir<Resource> res, Message sdt) {
 		this.res = res;
 		this.sdt = new MessageBuf(sdt);
+		this.durationEstimate = new DurationEstimate(resname(), 100) {
+			@Override
+			public void updated() {
+				ui.gui.syslog.append(durationEstimate.toString(), Color.GRAY);
+			}
+		};
 	}
 
 	public GItem(Indir<Resource> res) {
@@ -172,6 +181,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 				break;
 			case "meter":
 				meter = (Integer) args[0];
+				durationEstimate.update(meter);
 				break;
 		}
 	}
