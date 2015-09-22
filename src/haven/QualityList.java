@@ -66,7 +66,7 @@ public class QualityList {
 	}
 
 	public Quality single(boolean isAverage) {
-		return isAverage ? max : average;
+		return isAverage ? average : max;
 	}
 
 	public Quality single(QualityType qualityType) {
