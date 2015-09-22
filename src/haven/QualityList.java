@@ -62,7 +62,7 @@ public class QualityList {
 	}
 
 	public Quality single() {
-		return single(CFG.UI_ITEM_QUALITY_SHOW.vali() == 2);
+		return single(CFG.UI_ITEM_QUALITY_SHOW.vali() == 1);
 	}
 
 	public Quality single(boolean isAverage) {
