@@ -86,7 +86,7 @@ public class BGL {
 					break;
 				}
 				list[i].run(gl);
-			} catch (ArrayIndexOutOfBoundsException ex) { // FIMXE: dirty fix for ArrayIndexOutOfBoundsException
+			} catch (IndexOutOfBoundsException ex) { // FIMXE: dirty fix for IndexOutOfBoundsException
 			} catch (Exception exc) {
 				BGLException bglException = new BGLException(this, list[i], exc);
 				System.err.println("=========== BGL ERROR ===========");
