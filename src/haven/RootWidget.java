@@ -84,6 +84,10 @@ public class RootWidget extends ConsoleHost {
 				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.toggleplantgrowth();
 				}
+			} else if (ALT && code == KeyEvent.VK_R) {
+				if (ui.gui != null && ui.gui.map != null) {
+					ui.gui.map.toggleobjectradius();
+				}
 			} else if (key == ':') {
 				entercmd();
 			} else if (key != 0) {

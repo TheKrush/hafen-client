@@ -62,11 +62,11 @@ public class QualityList {
 	}
 
 	public Quality single() {
-		return single(false);
+		return single(CFG.UI_ITEM_QUALITY_SHOW.vali() == 1);
 	}
 
 	public Quality single(boolean isAverage) {
-		return CFG.UI_ITEM_QUALITY_SHOW.vali() == 2 ? max : average;
+		return isAverage ? average : max;
 	}
 
 	public Quality single(QualityType qualityType) {

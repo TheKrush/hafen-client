@@ -27,6 +27,7 @@ package haven;
 
 import haven.GLProgram.VarID;
 import static haven.MCache.tilesz;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
@@ -1895,5 +1896,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public void toggleplantgrowth() {
 		CFG.DISPLAY_PLANT_GROWTH.set(!CFG.DISPLAY_PLANT_GROWTH.valb(), true);
+	}
+
+	public void toggleobjectradius() {
+		CFG.DISPLAY_OBJECT_RADIUS.set(!CFG.DISPLAY_OBJECT_RADIUS.valb(), true);
 	}
 }
