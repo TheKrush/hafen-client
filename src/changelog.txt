@@ -5,6 +5,9 @@ $size[13]{$b{2015-09-21}}
   - Beehive
   - Food trough
   - Mining Support
+ - Chat now expands to fill left when minimap is undocked
+ - Minimap options no longer have trailing numbers
+  - dolomite0, dolomite1, etc. are now just dolomite (settings not reset so old settings may cause some to still appear)
 
 $size[13]{$b{2015-09-20}}
  - Fixed player/party dots being partially cutoff
