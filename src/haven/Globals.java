@@ -159,6 +159,14 @@ public class Globals {
 
 		@SuppressWarnings("unchecked")
 		public static synchronized List<String> get(String name, String startsWith) {
+			return get(name, startsWith, false);
+		}
+
+		public static synchronized List<String> get(String name, String startsWith, boolean trimStartsWith) {
+			return get(name, startsWith, trimStartsWith, false);
+		}
+
+		public static synchronized List<String> get(String name, String startsWith, boolean trimStartsWith, boolean trimTrailingDigits) {
 			if (data.get(name) == null) {
 				return new ArrayList<>();
 			}
@@ -168,7 +176,8 @@ public class Globals {
 			ArrayList<String> dataList = new ArrayList();
 			for (String value : data.get(name)) {
 				if (value.startsWith(startsWith)) {
-					dataList.add(value.substring(startsWith.length()));
+					String s = trimStartsWith ? value.substring(startsWith.length()) : value;
+					dataList.add(trimTrailingDigits ? s.replaceAll("\\d*$", "") : s);
 				}
 			}
 			Collections.sort(dataList);

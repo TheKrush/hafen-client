@@ -55,9 +55,13 @@ public class LocalMiniMap extends Widget {
 	private Coord off = new Coord(0, 0);
 	private Coord doff = null;
 
-	private final Tex bumlingTex = Text.renderstroked("\u25C6", Color.CYAN, Color.BLACK).tex();
-	private final Tex bushTex = Text.renderstroked("\u2605", Color.CYAN, Color.BLACK).tex();
-	private final Tex treeTex = Text.renderstroked("\u25B2", Color.CYAN, Color.BLACK).tex();
+	private static final Map<String, Tex> iconTexMap = new HashMap<String, Tex>(3) {
+		{
+			put("bumling", Text.renderstroked("\u25C6", Color.CYAN, Color.BLACK).tex());
+			put("bush", Text.renderstroked("\u2605", Color.CYAN, Color.BLACK).tex());
+			put("tree", Text.renderstroked("\u25B2", Color.CYAN, Color.BLACK).tex());
+		}
+	};
 
 	private final Map<Color, Tex> playerTex = new HashMap<>();
 	private final Map<Color, Tex> partyTex = new HashMap<>();
@@ -168,8 +172,8 @@ public class LocalMiniMap extends Widget {
 						Tex tex = icon.tex();
 						g.image(tex, gc.sub(tex.sz().div(2)));
 					} else if (res != null) {
-						double angle = gob.a + Math.PI / 2;
-						if ("body".equals(res.basename())) {
+						String basename = res.basename().replaceAll("\\d*$", "");
+						if ("body".equals(basename)) {
 							if (CFG.MINIMAP_PLAYERS.valb()) {
 								KinInfo kininfo = gob.getattr(KinInfo.class);
 								if (gob.id == mv.player().id) {
@@ -184,18 +188,21 @@ public class LocalMiniMap extends Widget {
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.valo();
-							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) { // only bother with the rest if any are turned on
-								g.image(bumlingTex, gc.sub(bumlingTex.sz().div(2)));
+							Tex tex = iconTexMap.get("bumling");
+							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
+								g.image(tex, gc.sub(tex.sz().div(2)));
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.valo();
-							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) {
-								g.image(bushTex, gc.sub(bushTex.sz().div(2)));
+							Tex tex = iconTexMap.get("bush");
+							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
+								g.image(tex, gc.sub(tex.sz().div(2)));
 							}
 						} else if (res.name.startsWith("gfx/terobjs/trees")) {
 							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.valo();
-							if (mapVal.containsValue(true) && mapVal.containsKey(res.basename()) && mapVal.get(res.basename())) {
-								g.image(treeTex, gc.sub(treeTex.sz().div(2)));
+							Tex tex = iconTexMap.get("tree");
+							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
+								g.image(tex, gc.sub(tex.sz().div(2)));
 							}
 						}
 					}
