@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
 public class GameUI extends ConsoleHost implements Console.Directory {
 
 	public static final Text.Foundry errfoundry = new Text.Foundry(Text.dfont, 14, new Color(192, 0, 0));
-	private static final int blpw = 142, brpw = 142;
+	private static int blpw = 142, brpw = 142;
 	public final String chrid;
 	public final long plid;
 	private final Hidepanel ulpanel, urpanel, blpanel, brpanel, menupanel;
@@ -707,8 +707,8 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			chrwdg = null;
 		} else if (w == mmappanel) {
 			mmappanel = null;
-			placemmap();
 			CFG.MINIMAP_FLOATING.set(false, true);
+			showmmappanel(false);
 		}
 		meters.remove(w);
 	}
@@ -735,14 +735,17 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 
 	public void showmmappanel(boolean show) {
 		if (show) {
+			blpw = 0;
 			if (mmappanel == null) {
 				mmappanel = add(new MiniMapPanel());
 			}
 		} else {
+			blpw = 142;
 			if (mmappanel != null) {
 				ui.destroy(mmappanel);
 			}
 		}
+		resize(sz);
 		placemmap();
 	}
 
