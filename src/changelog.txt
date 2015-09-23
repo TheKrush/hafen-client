@@ -2,6 +2,7 @@ $size[13]{$b{2015-10-05}}
  - Added game time display $i{(undefinedterry's client)}
  - Added dewy mantle alert $i{(undefinedterry's client)}
  - Added 8 directional camera lock option (Options->Camera Settings) $i{(bdew's client)}
+ - Added option to disable dynamic lights $i{(bdew's client)}
 
 $size[13]{$b{2015-10-04}}
  - Added option to display simple foragables $i{(romov's client)}

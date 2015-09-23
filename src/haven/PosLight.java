@@ -64,6 +64,15 @@ public class PosLight extends Light {
 	}
 
 	@Override
+	public boolean setup(RenderList rl) {
+		if (CFG.DISPLAY_LIGHTING_DYNAMIC.valb()) {
+			return super.setup(rl);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public void enable(GOut g, int idx) {
 		super.enable(g, idx);
 		BGL gl = g.gl;

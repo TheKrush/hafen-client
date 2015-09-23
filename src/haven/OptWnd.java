@@ -264,10 +264,16 @@ public class OptWnd extends Window {
 		panelMinimap = add(new Panel());
 		panelUI = add(new Panel());
 
-		int y = 0;
+		double y = 0;
+		CFGLabel vlbl = new CFGLabel("Vanilla Options");
+		panelMain.add(vlbl, getPanelButtonCoord(1, y).sub(new Coord(vlbl.sz.x / 2, 0)).sub(new Coord(10, 0)));
+		y += 0.5;
 		initAudioPanel(0, y);
 		initVideoPanel(1, y);
 		y += 2;
+		CFGLabel mlbl = new CFGLabel("Minion Options");
+		panelMain.add(mlbl, getPanelButtonCoord(1, y).sub(new Coord(mlbl.sz.x / 2, 0)).sub(new Coord(10, 0)));
+		y += 0.5;
 		initDisplayPanel(0, y);
 		initCameraPanel(1, y);
 		y += 1;
@@ -439,29 +445,7 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
-			{
-				CFG.DISPLAY_GRID.addObserver(this);
-			}
-
-			@Override
-			public void set(boolean a) {
-				if (ui != null && ui.gui != null && ui.gui.map != null) {
-					ui.gui.map.initgrid(a);
-				}
-				super.set(a);
-			}
-
-			@Override
-			public void destroy() {
-				CFG.DISPLAY_GRID.remObserver(this);
-				super.destroy();
-			}
-		}, new Coord(x, y));
-		y += 15;
-		panel.add(new CFGLabel("Grid thickness"), new Coord(x, y));
-		y += 15;
-		panel.add(new CFGHSlider(null, CFG.DISPLAY_GRID_THICKNESS, null, 200, 1, 3, 1), new Coord(x, y));
+		panel.add(new CFGCheckBox("Show dynamic lighting", CFG.DISPLAY_LIGHTING_DYNAMIC), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show weather", CFG.DISPLAY_WEATHER), new Coord(x, y));
 		y += 25;
@@ -487,6 +471,30 @@ public class OptWnd extends Window {
 		x += 225;
 		y = 0;
 
+		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
+			{
+				CFG.DISPLAY_GRID.addObserver(this);
+			}
+
+			@Override
+			public void set(boolean a) {
+				if (ui != null && ui.gui != null && ui.gui.map != null) {
+					ui.gui.map.initgrid(a);
+				}
+				super.set(a);
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_GRID.remObserver(this);
+				super.destroy();
+			}
+		}, new Coord(x, y));
+		y += 15;
+		panel.add(new CFGLabel("Grid thickness"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_GRID_THICKNESS, null, 200, 1, 3, 1), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KIN_NAMES), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show object damage", CFG.DISPLAY_OBJECT_DAMAGE) {
