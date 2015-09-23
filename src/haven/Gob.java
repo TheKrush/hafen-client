@@ -281,41 +281,38 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 					if (res != null) {
 						GAttrib rd = getattr(ResDrawable.class);
 						if (rd != null) {
-							try {
-								final int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
-								if (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis")) {
-									int maxStage = 0;
-									for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
-										if (layer.id / 10 > maxStage) {
-											maxStage = layer.id / 10;
+							final int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
+							if (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis")) {
+								int maxStage = 0;
+								for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
+									if (layer.id / 10 > maxStage) {
+										maxStage = layer.id / 10;
+									}
+								}
+								final int stageMax = maxStage;
+								PView.Draw2D staged = new PView.Draw2D() {
+									@Override
+									public void draw2d(GOut g) {
+										if (sc != null) {
+											String str = String.format("%d/%d", new Object[]{stage, stageMax});
+											Tex tex = getTextTex(plantTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
+											g.image(tex, sc.sub(tex.sz().div(2)));
 										}
 									}
-									final int stageMax = maxStage;
-									PView.Draw2D staged = new PView.Draw2D() {
-										@Override
-										public void draw2d(GOut g) {
-											if (sc != null) {
-												String str = String.format("%d/%d", new Object[]{stage, stageMax});
-												Tex tex = getTextTex(plantTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
-												g.image(tex, sc.sub(tex.sz().div(2)));
-											}
+								};
+								rl.add(staged, null);
+							} else if (res.name.startsWith("gfx/terobjs/trees/")) {
+								PView.Draw2D staged = new PView.Draw2D() {
+									@Override
+									public void draw2d(GOut g) {
+										if (sc != null && stage < 100) {
+											String str = String.format("%d%%", new Object[]{stage});
+											Tex tex = getTextTex(treeTex, str, Color.YELLOW);
+											g.image(tex, sc.sub(tex.sz().div(2)));
 										}
-									};
-									rl.add(staged, null);
-								} else if (res.name.startsWith("gfx/terobjs/trees/")) {
-									PView.Draw2D staged = new PView.Draw2D() {
-										@Override
-										public void draw2d(GOut g) {
-											if (sc != null && stage < 100) {
-												String str = String.format("%d%%", new Object[]{stage});
-												Tex tex = getTextTex(treeTex, str, Color.YELLOW);
-												g.image(tex, sc.sub(tex.sz().div(2)));
-											}
-										}
-									};
-									rl.add(staged, null);
-								}
-							} catch (ArrayIndexOutOfBoundsException e) { // ignored
+									}
+								};
+								rl.add(staged, null);
 							}
 						}
 					}

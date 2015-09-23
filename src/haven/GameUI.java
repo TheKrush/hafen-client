@@ -25,11 +25,12 @@
  */
 package haven;
 
+import static haven.Inventory.invsq;
+
 import java.util.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.image.WritableRaster;
-import static haven.Inventory.invsq;
 import java.awt.image.BufferedImage;
 
 public class GameUI extends ConsoleHost implements Console.Directory {
@@ -160,6 +161,8 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		zerg = add(new Zergwnd(), 187, 50);
 		zerg.hide();
 		showmmappanel(CFG.MINIMAP_FLOATING.valb());
+
+		add(new DebugWnd());
 	}
 
 	private void mapbuttons() {
