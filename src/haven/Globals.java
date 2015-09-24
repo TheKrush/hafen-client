@@ -157,7 +157,6 @@ public class Globals {
 			return get(name, "");
 		}
 
-		@SuppressWarnings("unchecked")
 		public static synchronized List<String> get(String name, String startsWith) {
 			return get(name, startsWith, false);
 		}
@@ -166,6 +165,7 @@ public class Globals {
 			return get(name, startsWith, trimStartsWith, false);
 		}
 
+		@SuppressWarnings("unchecked")
 		public static synchronized List<String> get(String name, String startsWith, boolean trimStartsWith, boolean trimTrailingDigits) {
 			if (data.get(name) == null) {
 				return new ArrayList<>();
