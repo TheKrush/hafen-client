@@ -51,9 +51,16 @@ public class DebugWnd extends Window {
 	public class DebugListbox extends Listbox<Gob> {
 
 		public List<Gob> items = new ArrayList<>();
+		private Coord c = Coord.z;
 
 		public DebugListbox(int w, int h) {
 			super(w, h, 18);
+		}
+
+		@Override
+		public boolean mousedown(Coord c, int button) {
+			this.c = c;
+			return super.mousedown(c, button);
 		}
 
 		@Override
@@ -62,7 +69,7 @@ public class DebugWnd extends Window {
 			if (button == 1 || button == 3) {
 				change(itm);
 			}
-			ui.gui.map.mousedown(itm.sc, button);
+			ui.gui.map.wdgmsg("click", rootpos().add(c), itm.sc, button, ui.modflags(), 0, (int) itm.id, itm.rc, 0, -1);
 		}
 
 		public void additems(List<Gob> tms) {
