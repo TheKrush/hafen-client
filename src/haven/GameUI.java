@@ -34,7 +34,7 @@ import java.awt.image.BufferedImage;
 
 public class GameUI extends ConsoleHost implements Console.Directory {
 
-	public static final Text.Foundry errfoundry = new Text.Foundry(Text.dfont, 14, new Color(192, 0, 0));
+	public static final Text.Foundry msgfoundry = new Text.Foundry(Text.dfont, 14);
 	private static int blpw = 142, brpw = 142;
 	public final String chrid;
 	public final long plid;
@@ -46,8 +46,8 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public MiniMapPanel mmappanel;
 	public Fightview fv;
 	private List<Widget> meters = new LinkedList<>();
-	private Text lasterr;
-	private long errtime;
+	private Text lastmsg;
+	private long msgtime;
 	private Window invwnd, equwnd, makewnd;
 	public CraftWnd craftwnd;
 	public TimerPanel timers;
@@ -794,14 +794,14 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 		if (cmdline != null) {
 			drawcmd(g, new Coord(blpw + 10, by -= 20));
-		} else if (lasterr != null) {
-			if ((System.currentTimeMillis() - errtime) > 3000) {
-				lasterr = null;
+		} else if (lastmsg != null) {
+			if ((System.currentTimeMillis() - msgtime) > 3000) {
+				lastmsg = null;
 			} else {
 				g.chcolor(0, 0, 0, 192);
-				g.frect(new Coord(blpw + 8, by - 22), lasterr.sz().add(4, 4));
+				g.frect(new Coord(blpw + 8, by - 22), lastmsg.sz().add(4, 4));
 				g.chcolor();
-				g.image(lasterr.tex(), new Coord(blpw + 10, by -= 20));
+				g.image(lastmsg.tex(), new Coord(blpw + 10, by -= 20));
 			}
 		}
 		if (!chat.visible) {
@@ -825,6 +825,9 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		if (msg == "err") {
 			String err = (String) args[0];
 			error(err);
+		} else if (msg == "msg") {
+			String text = (String) args[0];
+			msg(text);
 		} else if (msg == "prog") {
 			if (args.length > 0) {
 				prog = ((Number) args[0]).doubleValue() / 100.0;
@@ -1085,36 +1088,46 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		resize(parent.sz);
 	}
 
-	@Override
-	public void error(String msg) {
-		message(msg, MsgType.ERROR);
+	public void msg(String msg, Color color, Color logcol) {
+		msgtime = System.currentTimeMillis();
+		lastmsg = msgfoundry.render(msg, color);
+		syslog.append(msg, logcol);
 	}
 
-	public void message(String msg, MsgType type) {
-		message(msg, type.color);
+	public void msg(String msg, Color color) {
+		msg(msg, color, color);
+	}
+
+	@Override
+	public void error(String msg) {
+		msg(msg, MsgType.ERROR);
+	}
+
+	public void msg(String msg) {
+		msg(msg, MsgType.INFO);
+	}
+
+	public void msg(String msg, MsgType type) {
+		msg(msg, type.color, type.logcol);
 		if (type.sfx != null) {
 			Audio.play(type.sfx);
 		}
 	}
 
-	public void message(String msg, Color msgColor) {
-		errtime = System.currentTimeMillis();
-		lasterr = errfoundry.render(msg, msgColor);
-		syslog.append(msg, msgColor);
-	}
+	public enum MsgType {
 
-	public static enum MsgType {
+		INFO(Color.WHITE), GOOD(Color.GREEN), BAD(Color.RED),
+		ERROR(new Color(192, 0, 0), new Color(255, 0, 0), "sfx/error");
 
-		INFO(Color.CYAN), GOOD(Color.GREEN), BAD(Color.RED), ERROR(Color.RED, "sfx/error");
-
-		public final Color color;
+		public final Color color, logcol;
 		public final Resource sfx;
 
 		MsgType(Color color) {
-			this(color, null);
+			this(color, color, null);
 		}
 
-		MsgType(Color color, String sfx) {
+		MsgType(Color color, Color logcol, String sfx) {
+			this.logcol = logcol;
 			this.color = color;
 			this.sfx = (sfx != null) ? Resource.local().loadwait(sfx) : null;
 		}
