@@ -39,6 +39,7 @@ import java.util.Properties;
 public class Config {
 
 	public static final File HOMEDIR = new File("").getAbsoluteFile();
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	public static String authuser = getprop("haven.authuser", null);
 	public static String authserv = getprop("haven.authserv", null);
 	public static String defserv = getprop("haven.defserv", "127.0.0.1");
@@ -60,7 +61,7 @@ public class Config {
 	public static String prefspec = "hafen";
 
 	public static String version;
-	public static boolean isUpdate;
+	public static boolean isUpdate = false;
 
 	static {
 		String p;
@@ -76,7 +77,7 @@ public class Config {
 		if (isUpdate) {
 			return;
 		}
-		isUpdate = !CFG.VERSION.val().equals(version) || !getFile("changelog.txt").exists();
+		isUpdate = !CFG.VERSION.val().equals(version);
 		if (isUpdate) {
 			CFG.VERSION.set(version);
 		}

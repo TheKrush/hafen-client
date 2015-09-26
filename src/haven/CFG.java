@@ -21,6 +21,7 @@ public enum CFG {
 	DISPLAY_GRID("display.grid", false),
 	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_OBJECT_DAMAGE("display.object.health", false),
+	DISPLAY_OBJECT_RADIUS("display.object.radisu", false),
 	DISPLAY_PLANT_GROWTH("display.plant.growth", false),
 	DISPLAY_WEATHER("display.weather", true),
 	GENERAL_CHAT_SAVE("general.chat.save", true),
@@ -46,7 +47,7 @@ public enum CFG {
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // show single average
 	UI_KIN_STATUS("ui.kin.status", true),
 	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new HashMap<String, Boolean>()),
-	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", true),
+	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", false),
 	UI_STUDYLOCK("ui.studylock", false),
 	UI_TOOLTIP_LONG("ui.item.tooltip.long", false), // force long tooltip
 	;

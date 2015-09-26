@@ -82,10 +82,11 @@ public class BGL {
 	public void run(GL2 gl) {
 		for (int i = 0; i < n; i++) {
 			try {
-				if (i >= list.length) { // FIMXE: dirty fix for ArrayIndexOutOfBoundsException
+				if (i >= list.length) {
 					break;
 				}
 				list[i].run(gl);
+			} catch (IndexOutOfBoundsException ex) { // FIMXE: dirty fix for IndexOutOfBoundsException
 			} catch (Exception exc) {
 				BGLException bglException = new BGLException(this, list[i], exc);
 				System.err.println("=========== BGL ERROR ===========");

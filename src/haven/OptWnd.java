@@ -30,6 +30,7 @@ import haven.CFG.CFGObserver;
 import haven.CheckListbox.CheckListboxItem;
 import haven.Globals.Data.DataObserver;
 import static haven.UI.mapSaver;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -439,6 +440,14 @@ public class OptWnd extends Window {
 			}
 
 			@Override
+			public void set(boolean a) {
+				if (ui != null && ui.gui != null && ui.gui.map != null) {
+					ui.gui.map.initgrid(a);
+				}
+				super.set(a);
+			}
+
+			@Override
 			public void destroy() {
 				CFG.DISPLAY_GRID.remObserver(this);
 				super.destroy();
@@ -473,6 +482,18 @@ public class OptWnd extends Window {
 			@Override
 			public void destroy() {
 				CFG.DISPLAY_OBJECT_DAMAGE.remObserver(this);
+				super.destroy();
+			}
+		}, new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show object radius", CFG.DISPLAY_OBJECT_RADIUS) {
+			{
+				CFG.DISPLAY_OBJECT_RADIUS.addObserver(this);
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_OBJECT_RADIUS.remObserver(this);
 				super.destroy();
 			}
 		}, new Coord(x, y));
@@ -710,9 +731,10 @@ public class OptWnd extends Window {
 						if (!"resource".equals(name)) {
 							return;
 						}
-						additems(Globals.Data.get(name, "gfx/terobjs/bumlings/"));
+						additems(Globals.Data.get(name, "gfx/terobjs/bumlings/", true, true));
 					}
 				});
+				observer.dataUpdated("resource");
 			}
 
 			@Override
@@ -722,7 +744,6 @@ public class OptWnd extends Window {
 				super.destroy();
 			}
 		};
-		bumlingsCheckListbox.additems(Globals.Data.get("resource", "gfx/terobjs/bumlings/"));
 		panel.add(bumlingsCheckListbox, new Coord(x, y));
 		x += bumlingsCheckListbox.sz.x + 10;
 		y = curY;
@@ -739,9 +760,10 @@ public class OptWnd extends Window {
 						if (!"resource".equals(name)) {
 							return;
 						}
-						additems(Globals.Data.get(name, "gfx/terobjs/bushes/"));
+						additems(Globals.Data.get(name, "gfx/terobjs/bushes/", true, true));
 					}
 				});
+				observer.dataUpdated("resource");
 			}
 
 			@Override
@@ -751,7 +773,6 @@ public class OptWnd extends Window {
 				super.destroy();
 			}
 		};
-		bushesCheckListbox.additems(Globals.Data.get("resource", "gfx/terobjs/bushes/"));
 		panel.add(bushesCheckListbox, new Coord(x, y));
 		x += bushesCheckListbox.sz.x + 10;
 		y = curY;
@@ -768,9 +789,10 @@ public class OptWnd extends Window {
 						if (!"resource".equals(name)) {
 							return;
 						}
-						additems(Globals.Data.get(name, "gfx/terobjs/trees/"));
+						additems(Globals.Data.get(name, "gfx/terobjs/trees/", true, true));
 					}
 				});
+				observer.dataUpdated("resource");
 			}
 
 			@Override
@@ -780,7 +802,6 @@ public class OptWnd extends Window {
 				super.destroy();
 			}
 		};
-		treesCheckListbox.additems(Globals.Data.get("resource", "gfx/terobjs/trees/"));
 		panel.add(treesCheckListbox, new Coord(x, y));
 		x += treesCheckListbox.sz.x + 10;
 
@@ -842,7 +863,7 @@ public class OptWnd extends Window {
 		x += 225;
 		y = 0;
 
-		panel.add(new CFGCheckBox("Single item CTRL choose", CFG.UI_MENU_FLOWER_CLICK_SINGLE, "If checked, will automatically select single item menus if CTRL is pressed when menu is opened"), x, y);
+		panel.add(new CFGCheckBox("Single item auto choose", CFG.UI_MENU_FLOWER_CLICK_SINGLE, "If checked, will automatically select single item menus if SHIFT is not down when menu is opened"), x, y);
 		y += 25;
 		panel.add(new CFGLabel("Choose menu items to select automatically"), new Coord(x, y));
 		y += 15;

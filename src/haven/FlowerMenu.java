@@ -221,7 +221,7 @@ public class FlowerMenu extends Widget {
 			p.num = i;
 			name = name.toLowerCase();
 			boolean auto = CFG.UI_MENU_FLOWER_CLICK_AUTO.<Map<String, Boolean>>valo().containsKey(name) && CFG.UI_MENU_FLOWER_CLICK_AUTO.<Map<String, Boolean>>valo().get(name);
-			boolean single = ui.modctrl && options.length == 1 && CFG.UI_MENU_FLOWER_CLICK_SINGLE.valb();
+			boolean single = options.length == 1 && CFG.UI_MENU_FLOWER_CLICK_SINGLE.valb();
 			if (!ui.modshift && (auto || single) && autochoose == null) {
 				autochoose = p;
 			}

@@ -131,9 +131,9 @@ public class ISBox extends Widget implements DTarget {
 		}
 		switch (button) {
 			case 1: // left
-				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
+				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali() && CFG.HOTKEY_ITEM_TRANSFER_IN.vali() != 0) {
 					transfer(1, 1);
-				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
+				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali() && CFG.HOTKEY_ITEM_TRANSFER_OUT.vali() != 0) {
 					transfer(-1, 1);
 				} else {
 					wdgmsg("click");
@@ -142,10 +142,10 @@ public class ISBox extends Widget implements DTarget {
 			case 2: // middle
 				break;
 			case 3: // right
-				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali()) {
+				if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_IN.vali() && CFG.HOTKEY_ITEM_TRANSFER_IN.vali() != 0) {
 					transfer(1, rem);
 					return (true);
-				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali()) {
+				} else if (ui.modflags() == CFG.HOTKEY_ITEM_TRANSFER_OUT.vali() && CFG.HOTKEY_ITEM_TRANSFER_OUT.vali() != 0) {
 					transfer(-1, av - rem);
 					return (true);
 				}

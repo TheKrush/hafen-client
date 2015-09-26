@@ -27,6 +27,7 @@ package haven;
 
 import haven.GLProgram.VarID;
 import static haven.MCache.tilesz;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
@@ -1317,11 +1318,13 @@ public class MapView extends PView implements DTarget, Console.Directory {
 				break;
 			case "sel":
 				boolean sel = ((Integer) args[0]) != 0;
-				if (sel && (selection == null)) {
-					selection = new Selector();
-				} else if (!sel && (selection != null)) {
-					selection.destroy();
-					selection = null;
+				synchronized (this) {
+					if (sel && (selection == null)) {
+						selection = new Selector();
+					} else if (!sel && (selection != null)) {
+						selection.destroy();
+						selection = null;
+					}
 				}
 				break;
 			case "shake":
@@ -1686,30 +1689,37 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		@Override
 		public boolean mmousedown(Coord mc, int button) {
-			if (sc != null) {
-				ol.destroy();
-				mgrab.remove();
+			synchronized (MapView.this) {
+				if (selection != this) {
+					return (false);
+				}
+				if (sc != null) {
+					ol.destroy();
+					mgrab.remove();
+				}
+				sc = mc.div(tilesz);
+				modflags = ui.modflags();
+				xl.mv = true;
+				mgrab = ui.grabmouse(MapView.this);
+				ol = glob.map.new Overlay(sc, sc, 1 << 17);
+				return (true);
 			}
-			sc = mc.div(tilesz);
-			modflags = ui.modflags();
-			xl.mv = true;
-			mgrab = ui.grabmouse(MapView.this);
-			ol = glob.map.new Overlay(sc, sc, 1 << 17);
-			return (true);
 		}
 
 		@Override
 		public boolean mmouseup(Coord mc, int button) {
-			if (sc != null) {
-				Coord ec = mc.div(tilesz);
-				xl.mv = false;
-				tt = null;
-				ol.destroy();
-				mgrab.remove();
-				wdgmsg("sel", sc, ec, modflags);
-				sc = null;
+			synchronized (MapView.this) {
+				if (sc != null) {
+					Coord ec = mc.div(tilesz);
+					xl.mv = false;
+					tt = null;
+					ol.destroy();
+					mgrab.remove();
+					wdgmsg("sel", sc, ec, modflags);
+					sc = null;
+				}
+				return (true);
 			}
-			return (true);
 		}
 
 		@Override
@@ -1719,22 +1729,26 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		@Override
 		public void mmousemove(Coord mc) {
-			if (sc != null) {
-				Coord tc = mc.div(MCache.tilesz);
-				Coord c1 = new Coord(Math.min(tc.x, sc.x), Math.min(tc.y, sc.y));
-				Coord c2 = new Coord(Math.max(tc.x, sc.x), Math.max(tc.y, sc.y));
-				ol.update(c1, c2);
-				tt = Text.render(String.format("%d\u00d7%d", c2.x - c1.x + 1, c2.y - c1.y + 1));
+			synchronized (MapView.this) {
+				if (sc != null) {
+					Coord tc = mc.div(MCache.tilesz);
+					Coord c1 = new Coord(Math.min(tc.x, sc.x), Math.min(tc.y, sc.y));
+					Coord c2 = new Coord(Math.max(tc.x, sc.x), Math.max(tc.y, sc.y));
+					ol.update(c1, c2);
+					tt = Text.render(String.format("%d\u00d7%d", c2.x - c1.x + 1, c2.y - c1.y + 1));
+				}
 			}
 		}
 
 		public void destroy() {
-			if (sc != null) {
-				ol.destroy();
-				mgrab.remove();
+			synchronized (MapView.this) {
+				if (sc != null) {
+					ol.destroy();
+					mgrab.remove();
+				}
+				release(xl);
+				disol(17);
 			}
-			release(xl);
-			disol(17);
 		}
 	}
 
@@ -1829,22 +1843,29 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public void togglegrid() {
 		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
-		if (CFG.DISPLAY_GRID.valb()) {
-			initgrid();
+		initgrid(CFG.DISPLAY_GRID.valb());
+	}
+
+	public final void initgrid() {
+		initgrid(true);
+	}
+
+	public final void initgrid(boolean init) {
+		if (init) {
+			this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
+			this.lasttc = Coord.z;
+			updategrid();
 		} else {
 			this.gridol = null;
 		}
 	}
 
-	public final void initgrid() {
-		this.gridol = new GridOutline(glob.map, MCache.cutsz.mul(2 * (view + 1)));
-		this.lasttc = Coord.z;
-		updategrid();
-	}
-
 	public void updategrid() {
 		if (!CFG.DISPLAY_GRID.valb()) {
 			return;
+		}
+		if (gridol == null) {
+			initgrid(true);
 		}
 		Coord tc = cc.div(MCache.tilesz);
 		if (tc.manhattan2(lasttc) > 20 || lastGridUpdate < glob.map.lastMapUpdate) {
@@ -1855,7 +1876,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	}
 
 	public void togglemousefollow(boolean now) {
-		if(!CFG.HOTKEY_MOUSE_FOLLOW.valb()) {
+		if (!CFG.HOTKEY_MOUSE_FOLLOW.valb()) {
 			return;
 		}
 		mouseIsDown = !mouseIsDown;
@@ -1875,5 +1896,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public void toggleplantgrowth() {
 		CFG.DISPLAY_PLANT_GROWTH.set(!CFG.DISPLAY_PLANT_GROWTH.valb(), true);
+	}
+
+	public void toggleobjectradius() {
+		CFG.DISPLAY_OBJECT_RADIUS.set(!CFG.DISPLAY_OBJECT_RADIUS.valb(), true);
 	}
 }

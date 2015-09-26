@@ -89,7 +89,16 @@ public class CheckBox extends Widget {
 
 	public void changed(boolean val) {
 		if (canactivate) {
-			wdgmsg("ch", a);
+			wdgmsg("ch", a ? 1 : 0);
+		}
+	}
+
+	@Override
+	public void uimsg(String msg, Object... args) {
+		if ("ch".equals(msg)) {
+			this.a = ((Integer) args[0]) != 0;
+		} else {
+			super.uimsg(msg, args);
 		}
 	}
 }
