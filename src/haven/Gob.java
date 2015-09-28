@@ -48,9 +48,10 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	private static final Map<String, Tex> treeTex = new HashMap<>();
 	private static final Map<String, Gob.Overlay> radmap = new HashMap<String, Gob.Overlay>(1) {
 		{
-			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 5}, 0, 2))));
-			put("gfx/terobjs/minesupport", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 3}, 0, 2))));
-			put("gfx/terobjs/trough", new Gob.Overlay(new BPRadSprite(null, null, new MessageBuf(new byte[]{-24, 7}, 0, 2))));
+			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(151.0F)));
+			put("gfx/terobjs/column", new Gob.Overlay(new BPRadSprite(125.0F)));
+			put("gfx/terobjs/minesupport", new Gob.Overlay(new BPRadSprite(100.0F)));
+			put("gfx/terobjs/trough", new Gob.Overlay(new BPRadSprite(200.0F)));
 		}
 	};
 
