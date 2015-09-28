@@ -17,6 +17,8 @@ public enum CFG {
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_BRIGHTNESS("display.brightness", 0f),
 	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
+	DISPLAY_FPS_BACKGROUND("display.fps.background", 10),
+	DISPLAY_FPS_FOREGROUND("display.fps.foreground", 60),
 	DISPLAY_LIGHTING_DYNAMIC("display.lighting.dynamic", true),
 	DISPLAY_FORAGABLES_SIMPLE("display.foragables.simple", false),
 	DISPLAY_FLAVOR("display.flavor", true),
