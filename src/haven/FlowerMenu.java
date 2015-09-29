@@ -104,7 +104,7 @@ public class FlowerMenu extends Widget {
 	public class Opening extends NormAnim {
 
 		Opening() {
-			super(0.25);
+			super(0.15);
 		}
 
 		@Override
@@ -151,7 +151,7 @@ public class FlowerMenu extends Widget {
 	public class Cancel extends NormAnim {
 
 		Cancel() {
-			super(0.25);
+			super(0.20);
 		}
 
 		@Override
