@@ -1,3 +1,6 @@
+$size[13]{$b{2015-10-04}}
+ - Added option to display simple foragables $i{(romov's client)}
+
 $size[13]{$b{2015-10-02}}
  - Added option to display the values on all horizontal sliders, which makes Land Survey much easier to sync up (Options->UI Settings)
  - Added buttons for showing minimap grid and view distance $i{(ender's client)}
