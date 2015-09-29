@@ -70,7 +70,7 @@ public class GridOutline implements Rendered {
 		Buffer buf = getCurrentBuffer();
 		buf.rewind();
 		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
-		gl.glLineWidth(3F);
+		gl.glLineWidth(2F);
 		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 		gl.glVertexPointer(3, GL2.GL_FLOAT, 0, buf.vertex);

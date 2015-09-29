@@ -499,6 +499,10 @@ public class OptWnd extends Window {
 				super.destroy();
 			}
 		}, new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show critter paths", CFG.DISPLAY_PATH_CRITTER), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show player paths", CFG.DISPLAY_PATH_PLAYER), new Coord(x, y));
 
 		panel.pack();
 		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;

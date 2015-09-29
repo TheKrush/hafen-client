@@ -31,6 +31,12 @@ import java.util.*;
 
 public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
+	public static long plgob = -1;
+
+	public boolean isplayer() {
+		return plgob == id;
+	}
+
 	public Coord rc, sc;
 	public Coord3f sczu;
 	public double a;
@@ -41,6 +47,8 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public final Glob glob;
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<>();
 	public Collection<Overlay> ols = new LinkedList<>();
+
+	private Overlay gobpath = null;
 
 	private static final Text.Foundry textFnd = new Text.Foundry(Text.sans, 14);
 	private static final Map<String, Tex> hpTex = new HashMap<>();
@@ -204,6 +212,22 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public void setattr(GAttrib a) {
 		Class<? extends GAttrib> ac = attrclass(a.getClass());
 		attr.put(ac, a);
+
+		if (CFG.DISPLAY_PATH_CRITTER.valb() || CFG.DISPLAY_PATH_PLAYER.valb()) {
+			try {
+				Resource res = getres();
+				if (res != null && a.getClass() == LinMove.class) {
+					if (CFG.DISPLAY_PATH_CRITTER.valb() || ("body".equals(res.basename()) && CFG.DISPLAY_PATH_PLAYER.valb())) {
+						if (gobpath == null) {
+							gobpath = new Overlay(new GobPath(this));
+							ols.add(gobpath);
+						}
+						((GobPath) gobpath.spr).lm = (LinMove) a;
+					}
+				}
+			} catch (Exception e) { // fail silently
+			}
+		}
 	}
 
 	public <C extends GAttrib> C getattr(Class<C> c) {
@@ -216,6 +240,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
 	public void delattr(Class<? extends GAttrib> c) {
 		attr.remove(attrclass(c));
+
+		if (attrclass(c) == Moving.class) {
+			ols.remove(gobpath);
+			gobpath = null;
+		}
 	}
 
 	@Override
