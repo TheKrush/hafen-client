@@ -230,12 +230,14 @@ public class WItem extends Widget implements DTarget {
 	};
 
 	public final AttrCache<ItemInfo.Wear> wear = new AttrCache<ItemInfo.Wear>() {
+		@Override
 		protected ItemInfo.Wear find(List<ItemInfo> info) {
 			return ItemInfo.getWear(info);
 		}
 	};
 
 	public final AttrCache<Tex> armor = new AttrCache<Tex>() {
+		@Override
 		protected Tex find(List<ItemInfo> info) {
 			ItemInfo.Wear wear = ItemInfo.getArmor(info);
 			if (wear == null) {
