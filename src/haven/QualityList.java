@@ -42,15 +42,15 @@ public class QualityList {
 		if (!isEmpty) {
 			boolean equal = true;
 			Quality cmax = qualities.get(0);
-			float sum = cmax.value;
+			float sum = cmax.value * cmax.value;
 			for (int i = 1; i < size; i++) {
 				Quality current = qualities.get(i);
 				equal = equal && (current.value == cmax.value);
 				cmax = (cmax.value >= current.value) ? cmax : current;
-				sum += current.value;
+				sum += current.value * current.value;
 			}
 			max = equal ? new Quality(QualityType.Quality, cmax.value) : cmax;
-			average = new Quality(max.type, sum / size);
+			average = new Quality(max.type, (float) Math.sqrt(sum / size));
 		} else {
 			max = null;
 			average = null;

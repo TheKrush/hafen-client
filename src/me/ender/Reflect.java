@@ -9,8 +9,7 @@ public class Reflect {
 		try {
 			Field f = getField(obj, name);
 			v = f.get(obj);
-		} catch (NoSuchFieldException ignored) {
-		} catch (IllegalAccessException ignored) {
+		} catch (NoSuchFieldException | IllegalAccessException ignored) {
 		}
 		return v;
 	}
@@ -20,8 +19,7 @@ public class Reflect {
 		try {
 			Field f = getField(obj, name);
 			v = f.getInt(obj);
-		} catch (NoSuchFieldException ignored) {
-		} catch (IllegalAccessException ignored) {
+		} catch (NoSuchFieldException | IllegalAccessException ignored) {
 		}
 		return v;
 	}
@@ -31,8 +29,7 @@ public class Reflect {
 		try {
 			Field f = getField(obj, name);
 			v = f.getDouble(obj);
-		} catch (NoSuchFieldException ignored) {
-		} catch (IllegalAccessException ignored) {
+		} catch (NoSuchFieldException | IllegalAccessException ignored) {
 		}
 		return v;
 	}
@@ -45,5 +42,14 @@ public class Reflect {
 		Field f = obj.getClass().getDeclaredField(name);
 		f.setAccessible(true);
 		return f;
+	}
+
+	public static boolean hasField(Object obj, String name) {
+		try {
+			getField(obj, name);
+			return true;
+		} catch (NoSuchFieldException ignored) {
+		}
+		return false;
 	}
 }

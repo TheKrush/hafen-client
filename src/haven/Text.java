@@ -342,6 +342,10 @@ public class Text {
 		return (render(text, Color.WHITE));
 	}
 
+	public static Line renderstroked(String text, Color c) {
+		return renderstroked(text, c, Color.BLACK);
+	}
+
 	public static Line renderstroked(String text, Color c, Color stroke) {
 		return (renderstroked(text, c, stroke, std));
 	}
