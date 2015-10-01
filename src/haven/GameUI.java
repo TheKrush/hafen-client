@@ -637,7 +637,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			updhand();
 		} else if (place == "chr") {
 			Coord childcenter = new Coord(child.sz.x / 2, child.sz.y / 2);
-			chrwdg = add((CharWnd) child, new Coord(center.x - childcenter.x, 0/*center.y - childcenter.y*/)); // upper center
+			chrwdg = add((CharWnd) child, new Coord(center.x - childcenter.x, 0)); // upper center
 			chrwdg.hide();
 		} else if (place == "craft") {
 			final Widget mkwdg = child;
@@ -665,7 +665,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 				makewnd.add(mkwdg, Coord.z);
 				makewnd.pack();
 				Coord childcenter = new Coord(makewnd.sz.x / 2, makewnd.sz.y / 2);
-				add(makewnd, new Coord(center.x - childcenter.x, 0/*center.y - childcenter.y*/)); // upper center
+				add(makewnd, new Coord(center.x - childcenter.x, 0)); // upper center
 			}
 		} else if (place == "buddy") {
 			zerg.ntab(buddies = (BuddyWnd) child, zerg.kin);

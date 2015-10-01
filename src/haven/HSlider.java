@@ -25,6 +25,7 @@
  */
 package haven;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class HSlider extends Widget {
@@ -60,6 +61,14 @@ public class HSlider extends Widget {
 		}
 		int fx = ((sz.x - sflarp.sz().x) * (val - min)) / (max - min);
 		g.image(sflarp, new Coord(fx, 0));
+		drawValue(g);
+	}
+
+	public void drawValue(GOut g) {
+		if (CFG.UI_HSLIDER_VALUE_SHOW.valb()) {
+			Tex valueTex = Text.std.renderstroked(String.format("%d", val), Color.WHITE, Color.BLACK, new Color(0, 0, 0, 64), new Coord(2, 0)).tex();
+			g.image(valueTex, new Coord((sz.x / 2) - (valueTex.sz().x / 2), 0));
+		}
 	}
 
 	@Override

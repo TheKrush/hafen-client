@@ -5,6 +5,7 @@ $size[13]{$b{2015-10-01}}
  - Display heuristically obtained item quantity if no explicit count is given, like amount of water in a bucket $i{(ender's client)}
  - Added object radius for stone column
  - Added Learning Points (LP) you gain per Mental Weight to curiosity tooltip
+ - Added option to display the values on all horizontal sliders, which makes Land Survey much easier to sync up
 
 $size[13]{$b{2015-09-21}}
  - Fixed changelog always appearing

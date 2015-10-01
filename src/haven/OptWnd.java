@@ -817,6 +817,8 @@ public class OptWnd extends Window {
 		int x = 0, y = 0;
 		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
 
+		panel.add(new CFGCheckBox("Show hslider values", CFG.UI_HSLIDER_VALUE_SHOW), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show kin online/offline", CFG.UI_KIN_STATUS), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP), new Coord(x, y));
@@ -1092,6 +1094,7 @@ public class OptWnd extends Window {
 				}
 				int fx = ((szX - sflarp.sz().x) * (val - min)) / (max - min);
 				g.image(sflarp, new Coord(offset + fx, 0));
+				drawValue(g);
 			} else {
 				super.draw(g);
 			}

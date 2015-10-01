@@ -30,7 +30,7 @@ public enum CFG {
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
-	HOTKEY_MOUSE_FOLLOW("hotkey.mouse.follow", true),
+	HOTKEY_MOUSE_FOLLOW("hotkey.mouse.follow", false),
 	MINIMAP_FLOATING("ui.minimap.floating", false),
 	MINIMAP_BUMLINGS("ui.minimap.bumlings", new HashMap<String, Boolean>()),
 	MINIMAP_BUSHES("ui.minimap.bushes", new HashMap<String, Boolean>()),
@@ -48,6 +48,7 @@ public enum CFG {
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // show single average
+	UI_HSLIDER_VALUE_SHOW("ui.hslider.value.show", false),
 	UI_KIN_STATUS("ui.kin.status", true),
 	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new HashMap<String, Boolean>()),
 	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", false),
