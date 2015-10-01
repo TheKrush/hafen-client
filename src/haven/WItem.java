@@ -190,7 +190,7 @@ public class WItem extends Widget implements DTarget {
 		protected QualityList find(List<ItemInfo> info) {
 			List<ItemInfo.Contents> contents = ItemInfo.findall(ItemInfo.Contents.class, info);
 			List<ItemInfo> qualities = null;
-			if (!contents.isEmpty()) {
+			if (CFG.UI_ITEM_QUALITY_CONTENTS.valb() && !contents.isEmpty()) {
 				for (ItemInfo.Contents content : contents) {
 					List<ItemInfo> tmp = ItemInfo.findall(QualityList.classname, content.sub);
 					if (!tmp.isEmpty()) {

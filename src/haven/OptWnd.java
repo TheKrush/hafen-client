@@ -881,6 +881,8 @@ public class OptWnd extends Window {
 		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 6, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 		y += 25;
+		panel.add(new CFGCheckBox("Show content quality if available (requires restart)", CFG.UI_ITEM_QUALITY_CONTENTS, "If contents quality is available this option uses it instead of the container quality on the item"), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show item wear bar", CFG.UI_ITEM_BAR_WEAR), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show item armor", CFG.UI_ITEM_ARMOR), new Coord(x, y));

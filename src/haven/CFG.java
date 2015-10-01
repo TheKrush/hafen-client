@@ -48,6 +48,7 @@ public enum CFG {
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // show single average
+	UI_ITEM_QUALITY_CONTENTS("ui.item.quality.contents", true),
 	UI_HSLIDER_VALUE_SHOW("ui.hslider.value.show", false),
 	UI_KIN_STATUS("ui.kin.status", true),
 	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new HashMap<String, Boolean>()),
