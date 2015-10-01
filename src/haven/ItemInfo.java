@@ -25,11 +25,17 @@
  */
 package haven;
 
+import me.ender.Reflect;
+
 import java.util.*;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class ItemInfo {
+
+	static final Pattern count_patt = Pattern.compile("(?:^|[\\s])([0-9]*\\.?[0-9]+\\s*%?)");
 
 	public final Owner owner;
 
@@ -318,6 +324,16 @@ public abstract class ItemInfo {
 		return (null);
 	}
 
+	public static <T> List<T> findall(Class<T> cl, List<ItemInfo> il) {
+		List<T> ret = new LinkedList<>();
+		for (ItemInfo inf : il) {
+			if (cl.isInstance(inf)) {
+				ret.add(cl.cast(inf));
+			}
+		}
+		return ret;
+	}
+
 	public static List<ItemInfo> findall(String cl, List<ItemInfo> il) {
 		List<ItemInfo> ret = new LinkedList<>();
 		for (ItemInfo inf : il) {
@@ -347,6 +363,70 @@ public abstract class ItemInfo {
 			}
 		}
 		return (ret);
+	}
+
+	public static String getCount(List<ItemInfo> infos) {
+		String res = null;
+		for (ItemInfo info : infos) {
+			if (info instanceof Contents) {
+				Contents cnt = (Contents) info;
+				res = getCount(cnt.sub);
+			} else if (info instanceof AdHoc) {
+				AdHoc ah = (AdHoc) info;
+				try {
+					Matcher m = count_patt.matcher(ah.str.text);
+					if (m.find()) {
+						res = m.group(1);
+					}
+				} catch (Exception ignored) {
+				}
+			} else if (info instanceof Name) {
+				Name name = (Name) info;
+				try {
+					Matcher m = count_patt.matcher(name.str.text);
+					if (m.find()) {
+						res = m.group(1);
+					}
+				} catch (Exception ignored) {
+				}
+			}
+			if (res != null) {
+				return res;
+			}
+		}
+		return null;
+	}
+
+	public static Wear getWear(List<ItemInfo> infos) {
+		infos = findall("Wear", infos);
+		for (ItemInfo info : infos) {
+			if (Reflect.hasField(info, "m") && Reflect.hasField(info, "d")) {
+				return new Wear(Reflect.getFieldValueInt(info, "d"), Reflect.getFieldValueInt(info, "m"));
+			}
+		}
+		return null;
+	}
+
+	public static Wear getArmor(List<ItemInfo> infos) {
+		//loftar is wonderful sunshine and has same class name for wear and armor tooltips even though
+		//they are different classes with different fields :)
+		infos = findall("Wear", infos);
+		for (ItemInfo info : infos) {
+			if (Reflect.hasField(info, "hard") && Reflect.hasField(info, "soft")) {
+				return new Wear(Reflect.getFieldValueInt(info, "hard"), Reflect.getFieldValueInt(info, "soft"));
+			}
+		}
+		return null;
+	}
+
+	public static class Wear {
+
+		public final int a, b;
+
+		public Wear(int a, int b) {
+			this.a = a;
+			this.b = b;
+		}
 	}
 
 	private static String dump(Object arg) {

@@ -1,3 +1,11 @@
+$size[13]{$b{2015-10-01}}
+ - Added options to show item durability/wear bar/armor (Options->UI Settings) $i{(ender's client)}
+ - Use quadratic mean to calculate average quality $i{(ender's client)}
+ - Display quality of item's contents, if it has any $i{(ender's client)}
+ - Display heuristically obtained item quantity if no explicit count is given, like amount of water in a bucket $i{(ender's client)}
+ - Added object radius for stone column
+ - Added Learning Points (LP) you gain per Mental Weight to curiosity tooltip
+
 $size[13]{$b{2015-09-21}}
  - Fixed changelog always appearing
  - Changed the online/offline text

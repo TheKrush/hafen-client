@@ -35,6 +35,8 @@ public class WItem extends Widget implements DTarget {
 
 	public static final Resource missing = Resource.local().loadwait("gfx/invobjs/missing");
 	public static final Coord Q_POS = new Coord(0, -3);
+	public static final Color DURABILITY_COLOR = new Color(214, 253, 255);
+	public static final Color ARMOR_COLOR = new Color(255, 227, 191);
 	public final GItem item;
 	private Resource cspr = null;
 	private Message csdt = Message.nil;
@@ -186,8 +188,60 @@ public class WItem extends Widget implements DTarget {
 	public final AttrCache<QualityList> itemq = new AttrCache<QualityList>() {
 		@Override
 		protected QualityList find(List<ItemInfo> info) {
-			QualityList qualityList = new QualityList(ItemInfo.findall(QualityList.classname, info));
+			List<ItemInfo.Contents> contents = ItemInfo.findall(ItemInfo.Contents.class, info);
+			List<ItemInfo> qualities = null;
+			if (!contents.isEmpty()) {
+				for (ItemInfo.Contents content : contents) {
+					List<ItemInfo> tmp = ItemInfo.findall(QualityList.classname, content.sub);
+					if (!tmp.isEmpty()) {
+						qualities = tmp;
+					}
+				}
+			}
+			if (qualities == null || qualities.isEmpty()) {
+				qualities = ItemInfo.findall(QualityList.classname, info);
+			}
+
+			QualityList qualityList = new QualityList(qualities);
 			return !qualityList.isEmpty() ? qualityList : null;
+		}
+	};
+
+	public final AttrCache<Tex> heurnum = new AttrCache<Tex>() {
+		@Override
+		protected Tex find(List<ItemInfo> info) {
+			String num = ItemInfo.getCount(info);
+			if (num == null) {
+				return (null);
+			}
+			return Text.renderstroked(num, Color.WHITE, Color.BLACK).tex();
+		}
+	};
+
+	public final AttrCache<Tex> durability = new AttrCache<Tex>() {
+		@Override
+		protected Tex find(List<ItemInfo> info) {
+			ItemInfo.Wear wear = ItemInfo.getWear(info);
+			if (wear == null) {
+				return (null);
+			}
+			return Text.renderstroked(String.valueOf(wear.b - wear.a), DURABILITY_COLOR).tex();
+		}
+	};
+
+	public final AttrCache<ItemInfo.Wear> wear = new AttrCache<ItemInfo.Wear>() {
+		protected ItemInfo.Wear find(List<ItemInfo> info) {
+			return ItemInfo.getWear(info);
+		}
+	};
+
+	public final AttrCache<Tex> armor = new AttrCache<Tex>() {
+		protected Tex find(List<ItemInfo> info) {
+			ItemInfo.Wear wear = ItemInfo.getArmor(info);
+			if (wear == null) {
+				return (null);
+			}
+			return Text.renderstroked(String.format("%d/%d", wear.a, wear.b), ARMOR_COLOR).tex();
 		}
 	};
 
@@ -221,13 +275,10 @@ public class WItem extends Widget implements DTarget {
 			if (olcol.get() != null) {
 				g.usestate(new ColorMask(olcol.get()));
 			}
+			drawbars(g, sz);
 			drawmain(g, spr);
 			g.defstate();
-			if (item.num >= 0) {
-				g.atext(Integer.toString(item.num), sz, 1, 1);
-			} else if (itemnum.get() != null) {
-				g.aimage(itemnum.get(), sz, 1, 1);
-			}
+			drawnum(g, sz);
 			if (item.meter > 0) {
 				double a = ((double) item.meter) / 100.0;
 				if (CFG.UI_ITEM_METER_COUNTDOWN.valb()) {
@@ -249,6 +300,38 @@ public class WItem extends Widget implements DTarget {
 			drawq(g);
 		} else {
 			g.image(missing.layer(Resource.imgc).tex(), Coord.z, sz);
+		}
+	}
+
+	private void drawbars(GOut g, Coord sz) {
+		float bar = 0f;
+
+		if (CFG.UI_ITEM_BAR_WEAR.valb() && this.wear.get() != null) {
+			ItemInfo.Wear wear = this.wear.get();
+			if (wear.a > 0) {
+				bar = (float) (wear.b - wear.a) / wear.b;
+			}
+		}
+
+		if (bar > 0) {
+			g.chcolor(Utils.blendcol(Color.RED, Color.GREEN, bar));
+			int h = (int) (sz.y * bar);
+			g.frect(new Coord(0, sz.y - h), new Coord(4, h));
+			g.chcolor();
+		}
+	}
+
+	private void drawnum(GOut g, Coord sz) {
+		if (item.num >= 0) {
+			g.atext(Integer.toString(item.num), sz, 1, 1);
+		} else if (itemnum.get() != null) {
+			g.aimage(itemnum.get(), sz, 1, 1);
+		} else if (heurnum.get() != null) {
+			g.aimage(heurnum.get(), sz, 1, 1);
+		} else if (CFG.UI_ITEM_ARMOR.valb() && armor.get() != null) {
+			g.aimage(armor.get(), sz, 1, 1);
+		} else if (CFG.UI_ITEM_DURABILITY.valb() && durability.get() != null) {
+			g.aimage(durability.get(), sz, 1, 1);
 		}
 	}
 
