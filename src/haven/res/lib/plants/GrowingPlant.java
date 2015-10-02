@@ -1,10 +1,7 @@
 package haven.res.lib.plants;
 
-import haven.CFG;
+import haven.*;
 import haven.FastMesh.MeshRes;
-import haven.Message;
-import haven.Resource;
-import haven.Sprite;
 import haven.Sprite.Factory;
 import haven.Sprite.Owner;
 import haven.Sprite.ResourceException;
@@ -15,45 +12,43 @@ import java.util.Random;
 
 public class GrowingPlant implements Factory {
 
-	public int num;
+	public final int num;
 
-	public GrowingPlant(int var1) {
-		if (CFG.DISPLAY_CROPS_SIMPLE.valb()) {
-			this.num = 1;
-		} else {
-			this.num = var1;
-		}
+	public GrowingPlant(int num) {
+		this.num = num;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Sprite create(Owner var1, Resource var2, Message var3) {
-		int var4 = var3.uint8();
-		ArrayList var5 = new ArrayList();
-		Iterator var6 = var2.layers(MeshRes.class).iterator();
+	public Sprite create(Owner owner, Resource res, Message sdt) {
+		int stg = sdt.uint8();
+		ArrayList<MeshRes> meshes = new ArrayList<MeshRes>();
+		Iterator allmeshes = res.layers(MeshRes.class).iterator();
 
-		while (var6.hasNext()) {
-			MeshRes var7 = (MeshRes) var6.next();
-			if (var7.id / 10 == var4) {
-				var5.add(var7);
+		while (allmeshes.hasNext()) {
+			MeshRes mesh = (MeshRes) allmeshes.next();
+			if (mesh.id / 10 == stg) {
+				meshes.add(mesh);
 			}
 		}
 
-		if (var5.size() < 1) {
-			throw new ResourceException("No variants for grow stage " + var4, var2);
+		if (meshes.size() < 1) {
+			throw new ResourceException("No variants for grow stage " + stg, res);
 		} else {
-			Random var10 = var1.mkrandoom();
-			CSprite var11 = new CSprite(var1, var2);
-
-			for (int var8 = 0; var8 < this.num; ++var8) {
-				MeshRes var9 = (MeshRes) var5.get(var10.nextInt(var5.size()));
-				if (this.num > 1) {
-					var11.addpart(var10.nextFloat() * 11.0F - 5.5F, var10.nextFloat() * 11.0F - 5.5F, var9.mat.get(), var9.m);
-				} else {
-					var11.addpart(0, 0, var9.mat.get(), var9.m);
+			CSprite cs = new CSprite(owner, res);
+			if (CFG.DISPLAY_CROPS_SIMPLE.valb()) {
+				MeshRes mesh = (MeshRes) meshes.get(0);
+				cs.addpart(0, 0, mesh.mat.get(), mesh.m);
+			} else {
+				Random rnd = owner.mkrandoom();
+				for (int i = 0; i < this.num; ++i) {
+					MeshRes mesh = (MeshRes) meshes.get(rnd.nextInt(meshes.size()));
+					if (this.num > 1) {
+						cs.addpart(rnd.nextFloat() * 11.0F - 5.5F, rnd.nextFloat() * 11.0F - 5.5F, mesh.mat.get(), mesh.m);
+					} else {
+						cs.addpart(rnd.nextFloat() * 4.4F - 2.2F, rnd.nextFloat() * 4.4F - 2.2F, mesh.mat.get(), mesh.m);
+					}
 				}
 			}
-			return var11;
+			return cs;
 		}
 	}
 }

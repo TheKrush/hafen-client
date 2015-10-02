@@ -460,6 +460,8 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Show simple foragables (requires restart)", CFG.DISPLAY_FORAGABLES_SIMPLE), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show plant growth", CFG.DISPLAY_PLANT_GROWTH) {
 			{
 				CFG.DISPLAY_PLANT_GROWTH.addObserver(this);
