@@ -491,7 +491,7 @@ public class MCache {
 					}
 					g.fill(msg);
 					if (CFG.GENERAL_MAP_SAVE.valb()) {
-						UI.mapSaver.recordMapTile(this, g, c);
+						UI.mapSaver.recordMapTile(this, g);
 					}
 					req.remove(c);
 					olseq++;
@@ -581,7 +581,7 @@ public class MCache {
 		synchronized (grids) {
 			synchronized (req) {
 				if (CFG.GENERAL_MAP_SAVE.valb()) {
-					UI.mapSaver.newSession();
+					UI.mapSaver.reset();
 				}
 				for (Grid g : grids.values()) {
 					g.dispose();

@@ -37,14 +37,20 @@ import javax.imageio.ImageIO;
 public class MapSaver {
 
 	public static String SESSION_TIMESTAMP = "";
-	private UI ui;
+	private final UI ui;
 	private Coord lastCoord;
+	private Coord origin;
 
 	public MapSaver(UI ui) {
 		this.ui = ui;
 	}
 
-	public void newSession() {
+	public void reset() {
+		lastCoord = null;
+	}
+
+	public void newSession(Coord origin) {
+		this.origin = origin;
 		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
 		try {
 			FileWriter fileWriter = new FileWriter(Globals.MapFile("currentsession.js", true));
@@ -158,14 +164,16 @@ public class MapSaver {
 		}
 	}
 
-	public void doRecordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
+	public void doRecordMapTile(final MCache m, final MCache.Grid g) {
+		final Coord c = g.gc;
 		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
-			newSession();
+			newSession(c);
 		}
 		lastCoord = c;
 		try {
 			ImageAndFingerprint res = drawMapImage(m, g, c.mul(MCache.cmaps));
-			String fileName = String.format("tile_%d_%d.png", c.x, c.y);
+			Coord normc = c.sub(origin);
+			String fileName = String.format("tile_%d_%d.png", normc.x, normc.y);
 			try {
 				File file = Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true);
 				ImageIO.write(res.im, "png", file);
@@ -189,22 +197,23 @@ public class MapSaver {
 				@Override
 				public Void call() throws InterruptedException {
 					Thread.sleep(500);
-					doRecordMapTile(m, g, c);
+					doRecordMapTile(m, g);
 					return null;
 				}
 			});
 		}
 	}
 
-	public void recordMapTile(final MCache m, final MCache.Grid g, final Coord c) {
+	public void recordMapTile(final MCache m, final MCache.Grid g) {
+		final Coord c = g.gc;
 		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
-			newSession();
+			newSession(c);
 		}
 		lastCoord = c;
 		Defer.later(new Defer.Callable<Void>() {
 			@Override
 			public Void call() throws InterruptedException {
-				doRecordMapTile(m, g, c);
+				doRecordMapTile(m, g);
 				return null;
 			}
 		});
