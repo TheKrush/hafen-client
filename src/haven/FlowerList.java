@@ -187,7 +187,7 @@ public class FlowerList extends Scrollport {
 		public void wdgmsg(Widget sender, String msg, Object... args) {
 			switch (msg) {
 				case "ch":
-					wdgmsg("changed", name, args[0]);
+					wdgmsg("changed", name, (int) args[0] > 0);
 					break;
 				case "activate":
 					wdgmsg("delete", name);

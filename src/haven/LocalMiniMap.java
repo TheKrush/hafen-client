@@ -32,9 +32,13 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class LocalMiniMap extends Widget {
+
+	private static final Tex viewbox = Resource.loadtex("gfx/hud/mmap/viewbox");
+	private static final Tex mapgrid = Resource.loadtex("gfx/hud/mmap/mapgrid");
 
 	public final MapView mv;
 	private Coord cc = null;
@@ -160,6 +164,27 @@ public class LocalMiniMap extends Widget {
 	}
 
 	public void drawicons(GOut g) {
+		if (CFG.MINIMAP_RADAR.valb()) {
+			synchronized (Radar.markers) {
+				for (Radar.Marker marker : Radar.markers) {
+					if (marker.gob.id == mv.plgob) {
+						continue;
+					}
+					try {
+						Coord gc = p2c(marker.gob.rc);
+						Tex tex = marker.tex();
+						if (tex != null) {
+							g.chcolor(marker.color());
+							g.image(tex, gc.sub(tex.sz().div(2)));
+						}
+					} catch (Loading ignored) {
+					}
+				}
+			}
+			g.chcolor();
+			return;
+		}
+
 		OCache oc = ui.sess.glob.oc;
 		synchronized (oc) {
 			for (Gob gob : oc) {
@@ -212,7 +237,41 @@ public class LocalMiniMap extends Widget {
 		}
 	}
 
+	@Override
+	public Object tooltip(Coord c, Widget prev) {
+		Gob gob = findicongob(c);
+		if (gob != null) {
+			Radar.Marker icon = gob.getattr(Radar.Marker.class);
+			if (icon != null) {
+				return icon.tooltip();
+			}
+		}
+		return super.tooltip(c, prev);
+	}
+
 	public Gob findicongob(Coord c) {
+		if (CFG.MINIMAP_RADAR.valb()) {
+			synchronized (Radar.markers) {
+				ListIterator<Radar.Marker> li = Radar.markers.listIterator(Radar.markers.size());
+				while (li.hasPrevious()) {
+					Radar.Marker icon = li.previous();
+					try {
+						Gob gob = icon.gob;
+						Tex tex = icon.tex();
+						if (tex != null) {
+							Coord gc = p2c(gob.rc);
+							Coord sz = tex.sz();
+							if (c.isect(gc.sub(sz.div(2)), sz)) {
+								return (gob);
+							}
+						}
+					} catch (Loading ignored) {
+					}
+				}
+			}
+			return (null);
+		}
+
 		OCache oc = ui.sess.glob.oc;
 		synchronized (oc) {
 			for (Gob gob : oc) {
@@ -233,7 +292,8 @@ public class LocalMiniMap extends Widget {
 	}
 
 	@Override
-	public void tick(double dt) {
+	public void tick(double dt
+	) {
 		Gob pl = ui.sess.glob.oc.getgob(mv.plgob);
 		if (pl == null) {
 			this.cc = null;
@@ -243,7 +303,8 @@ public class LocalMiniMap extends Widget {
 	}
 
 	@Override
-	public void draw(GOut g) {
+	public void draw(GOut g
+	) {
 		if (cc == null) {
 			return;
 		}
@@ -279,37 +340,72 @@ public class LocalMiniMap extends Widget {
 					Coord tc = map.ul.sub(center).add(hsz);
 					//g.image(MiniMap.bg, tc);
 					g.image(map.img, tc);
+					if (CFG.MINIMAP_GRID.valb()) {
+						g.image(mapgrid, tc);
+					}
+				}
+			}
+		}
 
-				}
+		if (CFG.MINIMAP_VIEW.valb()) {
+			Gob pl = ui.sess.glob.oc.getgob(mv.plgob);
+			if (pl != null) {
+				g.aimage(viewbox, p2c(pl.rc), 0.5, 0.5);
 			}
 		}
-		try {
-			synchronized (ui.sess.glob.party.memb) {
-				for (Party.Member m : ui.sess.glob.party.memb.values()) {
-					Coord ptc;
-					try {
-						ptc = m.getc();
-					} catch (MCache.LoadingMap e) {
-						ptc = null;
-					}
-					if (ptc == null) {
-						continue;
-					}
-					ptc = p2c(ptc);
-					if (!partyTex.containsKey(m.col)) {
-						partyTex.put(m.col, Tex.frect(new Coord(8, 8), m.col, Color.BLACK, 1));
-					}
-					Tex tex = partyTex.get(m.col);
-					g.image(tex, ptc.sub(tex.sz().div(2)));
-				}
-			}
-		} catch (Loading ignored) {
-		}
+
 		drawicons(g);
+
+		if (CFG.MINIMAP_RADAR.valb()) {
+			try {
+				synchronized (ui.sess.glob.party.memb) {
+					for (Party.Member m : ui.sess.glob.party.memb.values()) {
+						Coord ptc;
+						try {
+							ptc = m.getc();
+						} catch (MCache.LoadingMap e) {
+							ptc = null;
+						}
+						if (ptc == null) {
+							continue;
+						}
+						ptc = p2c(ptc);
+						g.chcolor(m.col.getRed(), m.col.getGreen(), m.col.getBlue(), 255);
+						g.image(MiniMap.plx.layer(Resource.imgc).tex(), ptc.add(MiniMap.plx.layer(Resource.negc).cc.inv()));
+						g.chcolor();
+					}
+				}
+			} catch (Loading ignored) {
+			}
+		} else {
+			try {
+				synchronized (ui.sess.glob.party.memb) {
+					for (Party.Member m : ui.sess.glob.party.memb.values()) {
+						Coord ptc;
+						try {
+							ptc = m.getc();
+						} catch (MCache.LoadingMap e) {
+							ptc = null;
+						}
+						if (ptc == null) {
+							continue;
+						}
+						ptc = p2c(ptc);
+						if (!partyTex.containsKey(m.col)) {
+							partyTex.put(m.col, Tex.frect(new Coord(8, 8), m.col, Color.BLACK, 1));
+						}
+						Tex tex = partyTex.get(m.col);
+						g.image(tex, ptc.sub(tex.sz().div(2)));
+					}
+				}
+			} catch (Loading ignored) {
+			}
+		}
 	}
 
 	@Override
-	public boolean mousedown(Coord c, int button) {
+	public boolean mousedown(Coord c, int button
+	) {
 		if (cc == null) {
 			return (false);
 		}
@@ -328,7 +424,8 @@ public class LocalMiniMap extends Widget {
 	}
 
 	@Override
-	public void mousemove(Coord c) {
+	public void mousemove(Coord c
+	) {
 		if (doff != null) {
 			off = off.add(doff.sub(c));
 			doff = c;
@@ -337,10 +434,17 @@ public class LocalMiniMap extends Widget {
 	}
 
 	@Override
-	public boolean mouseup(Coord c, int button) {
+	public boolean mouseup(Coord c, int button
+	) {
 		if (button == 3) {
 			doff = null;
 		}
 		return super.mouseup(c, button);
+	}
+
+	public void clearcache() {
+		synchronized (cache) {
+			cache.clear();
+		}
 	}
 }

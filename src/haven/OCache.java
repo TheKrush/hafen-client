@@ -49,6 +49,7 @@ public class OCache implements Iterable<Gob> {
 		if (objs.containsKey(id)) {
 			if (!deleted.containsKey(id) || deleted.get(id) < frame) {
 				Gob old = objs.remove(id);
+				Radar.remove(old);
 				deleted.put(id, frame);
 				old.dispose();
 			}
@@ -56,13 +57,15 @@ public class OCache implements Iterable<Gob> {
 	}
 
 	public synchronized void remove(long id) {
-		objs.remove(id);
+		Gob gob = objs.remove(id);
+		Radar.remove(gob);
 	}
 
 	public synchronized void tick() {
 		for (Gob g : objs.values()) {
 			g.tick();
 		}
+		Radar.tick();
 	}
 
 	public void ctick(int dt) {
@@ -154,6 +157,7 @@ public class OCache implements Iterable<Gob> {
 			d.sdt = sdt;
 		} else if ((d == null) || (d.res != res) || !d.sdt.equals(sdt)) {
 			g.setattr(new ResDrawable(g, res, sdt));
+			Radar.add(g, res);
 		}
 	}
 
@@ -195,6 +199,7 @@ public class OCache implements Iterable<Gob> {
 		if ((cmp == null) || !cmp.base.equals(base)) {
 			cmp = new Composite(g, base);
 			g.setattr(cmp);
+			Radar.add(g, cmp.base);
 		}
 	}
 

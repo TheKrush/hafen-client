@@ -705,6 +705,8 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Use Ender's Radar", CFG.MINIMAP_RADAR, "If this is enabled all the other minimap icon options are ignored"), new Coord(x, y));
+		y += 25;
 
 		my = Math.max(my, y);
 		x += 200;

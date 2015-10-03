@@ -41,6 +41,26 @@ public class MiniMapPanel extends ResizingWindow {
 				}
 			}
 		}));
+
+		addtwdg(add(new IButton("gfx/hud/mmap/grid", "", "-d", "-h") {
+			{
+				tooltip = Text.render("Display grid");
+			}
+
+			public void click() {
+				CFG.MINIMAP_GRID.set(!CFG.MINIMAP_GRID.valb());
+			}
+		}));
+
+		addtwdg(add(new IButton("gfx/hud/mmap/view", "", "-d", "-h") {
+			{
+				tooltip = Text.render("Display view distance");
+			}
+
+			public void click() {
+				CFG.MINIMAP_VIEW.set(!CFG.MINIMAP_VIEW.valb());
+			}
+		}));
 	}
 
 	@Override
