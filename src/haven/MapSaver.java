@@ -50,6 +50,7 @@ public class MapSaver {
 	}
 
 	public void newSession(Coord origin) {
+		ui.gui.mmap.clearcache();
 		this.origin = origin;
 		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
 		try {

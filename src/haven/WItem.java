@@ -181,7 +181,7 @@ public class WItem extends Widget implements DTarget {
 			if (ninf == null) {
 				return (null);
 			}
-			return (new TexI(Utils.outline2(Text.render(Integer.toString(ninf.itemnum()), Color.WHITE).img, Utils.contrast(Color.WHITE))));
+			return (new TexI(Utils.outline2(Text.render(Integer.toString(ninf.itemnum()), Color.WHITE).img, Color.BLACK)));
 		}
 	};
 

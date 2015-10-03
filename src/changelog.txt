@@ -1,3 +1,9 @@
+$size[13]{$b{2015-10-02}}
+ - Added option to display the values on all horizontal sliders, which makes Land Survey much easier to sync up (Options->UI Settings)
+ - Added buttons for showing minimap grid and view distance $i{(ender's client)}
+ - Added option to use Ender's radar for minimap $i{(ender's client)}
+ - Normalized the map tile coords so they now work with things like 'TP Map Tool'
+
 $size[13]{$b{2015-10-01}}
  - Added options to show item durability/wear bar/armor (Options->UI Settings) $i{(ender's client)}
  - Use quadratic mean to calculate average quality $i{(ender's client)}
@@ -6,7 +12,6 @@ $size[13]{$b{2015-10-01}}
  - Display heuristically obtained item quantity if no explicit count is given, like amount of water in a bucket $i{(ender's client)}
  - Added object radius for stone column
  - Added Learning Points (LP) you gain per Mental Weight to curiosity tooltip
- - Added option to display the values on all horizontal sliders, which makes Land Survey much easier to sync up (Options->UI Settings)
 
 $size[13]{$b{2015-09-21}}
  - Fixed changelog always appearing

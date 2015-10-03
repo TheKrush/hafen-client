@@ -114,14 +114,14 @@ public class QualityList {
 	enum QualityType {
 
 		Essence(new Color(240, 140, 255)),
-		Substance(new Color(255, 240, 140)),
+		Substance(new Color(255, 236, 115)),
 		Vitality(new Color(152, 255, 140)),
 		Quality(new Color(235, 255, 255));
 		public final Color color, outline;
 
 		QualityType(Color color) {
 			this.color = color;
-			this.outline = Utils.contrast(color);
+			this.outline = Color.BLACK;
 		}
 	}
 }
