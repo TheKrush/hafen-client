@@ -120,6 +120,7 @@ public class Globals {
 				set.addAll(entry.getValue());
 				data.put(entry.getKey(), set);
 			}
+			saveConfig();
 		}
 
 		private static synchronized void saveConfig() {
