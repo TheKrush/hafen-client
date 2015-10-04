@@ -44,8 +44,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
 	private static final Text.Foundry textFnd = new Text.Foundry(Text.sans, 14);
 	private static final Map<String, Tex> hpTex = new HashMap<>();
-	private static final Map<String, Tex> plantTex = new HashMap<>();
-	private static final Map<String, Tex> treeTex = new HashMap<>();
+	private static final Map<String, Tex> growthTex = new HashMap<>();
 	private static final Map<String, Gob.Overlay> radmap = new HashMap<String, Gob.Overlay>(1) {
 		{
 			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(151.0F)));
@@ -284,33 +283,37 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 						if (rd != null) {
 							try {
 								final int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
-								if (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis")) {
-									int maxStage = 0;
-									for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
-										if (layer.id / 10 > maxStage) {
-											maxStage = layer.id / 10;
-										}
+								int maxStage = 0;
+								for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
+									if (layer.id / 10 > maxStage) {
+										maxStage = layer.id / 10;
 									}
-									final int stageMax = maxStage;
+								}
+								final int stageMax = maxStage;
+								boolean isplant = false;
+								if (res.name.startsWith("gfx/terobjs/bushes/")
+												|| (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis"))
+												|| res.name.startsWith("gfx/terobjs/trees/")) {
+									isplant = true;
+								}
+								if (isplant) {
 									PView.Draw2D staged = new PView.Draw2D() {
 										@Override
 										public void draw2d(GOut g) {
 											if (sc != null) {
-												String str = String.format("%d/%d", new Object[]{stage, stageMax});
-												Tex tex = getTextTex(plantTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
-												g.image(tex, sc.sub(tex.sz().div(2)));
-											}
-										}
-									};
-									rl.add(staged, null);
-								} else if (res.name.startsWith("gfx/terobjs/trees/")) {
-									PView.Draw2D staged = new PView.Draw2D() {
-										@Override
-										public void draw2d(GOut g) {
-											if (sc != null && stage < 100) {
-												String str = String.format("%d%%", new Object[]{stage});
-												Tex tex = getTextTex(treeTex, str, Color.YELLOW);
-												g.image(tex, sc.sub(tex.sz().div(2)));
+												Tex tex = null;
+												if (stageMax > 1) {
+													String str = String.format("%d/%d", new Object[]{stage, stageMax});
+													tex = getTextTex(growthTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
+												} else {
+													if (stage < 100) {
+														String str = String.format("%d%%", new Object[]{stage});
+														tex = getTextTex(growthTex, str, Color.YELLOW);
+													}
+												}
+												if (tex != null) {
+													g.image(tex, sc.sub(tex.sz().div(2)));
+												}
 											}
 										}
 									};
