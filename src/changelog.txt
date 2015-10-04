@@ -3,6 +3,9 @@ $size[13]{$b{2015-10-04}}
  - Added option to display critter paths $i{(romov's client)}
  - Added option to display player paths $i{(romov's client)}
  - Increased flower menu opening speed $i{{romov's client}}
+ - Added option for adjusting grid thickness
+ - Added option for adjusting path thickness
+ - Changing the values displayed on hsliders when turned on
 
 $size[13]{$b{2015-10-02}}
  - Added option to display the values on all horizontal sliders, which makes Land Survey much easier to sync up (Options->UI Settings)

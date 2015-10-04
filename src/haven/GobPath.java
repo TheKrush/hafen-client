@@ -42,7 +42,7 @@ public class GobPath extends Sprite {
 		g.apply();
 		BGL gl = g.gl;
 		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
-		gl.glLineWidth(2.0F);
+		gl.glLineWidth(CFG.DISPLAY_PATH_THICKNESS.valf());
 		gl.glEnable(GL2.GL_LINE_SMOOTH);
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(0, 0, 0);
