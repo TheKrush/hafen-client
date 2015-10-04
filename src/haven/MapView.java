@@ -529,7 +529,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		super(sz);
 		this.glob = glob;
 		this.cc = cc;
-		this.plgob = plgob;
+		this.plgob = Gob.plgob = plgob;
 		setcanfocus(true);
 		initgrid();
 	}

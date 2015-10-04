@@ -1,13 +1,11 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
 package haven.res.lib.plants;
 
-import haven.FastMesh.MeshRes;
+import haven.CFG;
+import haven.Config;
 import haven.Message;
 import haven.Resource;
 import haven.Sprite;
+import haven.FastMesh.MeshRes;
 import haven.Sprite.Factory;
 import haven.Sprite.Owner;
 import haven.resutil.CSprite;
@@ -20,25 +18,27 @@ public class GaussianPlant implements Factory {
 	public final int numh;
 	public final float r;
 
-	public GaussianPlant(int var1, int var2, float var3) {
-		this.numl = var1;
-		this.numh = var2;
-		this.r = var3;
+	public GaussianPlant(int numl, int numh, float r) {
+		this.numl = numl;
+		this.numh = numh;
+		this.r = r;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Sprite create(Owner var1, Resource var2, Message var3) {
-		ArrayList var4 = new ArrayList(var2.layers(MeshRes.class));
-		Random var5 = var1.mkrandoom();
-		CSprite var6 = new CSprite(var1, var2);
-		int var7 = var5.nextInt(this.numh - this.numl + 1) + this.numl;
-
-		for (int var8 = 0; var8 < var7; ++var8) {
-			MeshRes var9 = (MeshRes) var4.get(var5.nextInt(var4.size()));
-			var6.addpart((float) var5.nextGaussian() * this.r, (float) var5.nextGaussian() * this.r, var9.mat.get(), var9.m);
+	public Sprite create(Owner owner, Resource res, Message sdt) {
+		ArrayList<Object> allmeshes = new ArrayList<Object>(res.layers(MeshRes.class));
+		CSprite cs = new CSprite(owner, res);
+		if (CFG.DISPLAY_FORAGABLES_SIMPLE.valb()) {
+			MeshRes mesh = (MeshRes) allmeshes.get(0);
+			cs.addpart(0, 0, mesh.mat.get(), mesh.m);
+		} else {
+			Random rnd = owner.mkrandoom();
+			int scount = rnd.nextInt(this.numh - this.numl + 1) + this.numl;
+			for (int i = 0; i < scount; ++i) {
+				MeshRes var9 = (MeshRes) allmeshes.get(rnd.nextInt(allmeshes.size()));
+				cs.addpart((float) rnd.nextGaussian() * this.r, (float) rnd.nextGaussian() * this.r, var9.mat.get(), var9.m);
+			}
 		}
 
-		return var6;
+		return cs;
 	}
 }

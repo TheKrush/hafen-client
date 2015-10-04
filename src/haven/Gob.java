@@ -31,6 +31,12 @@ import java.util.*;
 
 public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
+	public static long plgob = -1;
+
+	public boolean isplayer() {
+		return plgob == id;
+	}
+
 	public Coord rc, sc;
 	public Coord3f sczu;
 	public double a;
@@ -42,10 +48,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<>();
 	public Collection<Overlay> ols = new LinkedList<>();
 
+	private Overlay gobpath = null;
+
 	private static final Text.Foundry textFnd = new Text.Foundry(Text.sans, 14);
 	private static final Map<String, Tex> hpTex = new HashMap<>();
-	private static final Map<String, Tex> plantTex = new HashMap<>();
-	private static final Map<String, Tex> treeTex = new HashMap<>();
+	private static final Map<String, Tex> growthTex = new HashMap<>();
 	private static final Map<String, Gob.Overlay> radmap = new HashMap<String, Gob.Overlay>(1) {
 		{
 			put("gfx/terobjs/beehive", new Gob.Overlay(new BPRadSprite(151.0F)));
@@ -205,6 +212,22 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	public void setattr(GAttrib a) {
 		Class<? extends GAttrib> ac = attrclass(a.getClass());
 		attr.put(ac, a);
+
+		if (CFG.DISPLAY_PATH_CRITTER.valb() || CFG.DISPLAY_PATH_PLAYER.valb()) {
+			try {
+				Resource res = getres();
+				if (res != null && a.getClass() == LinMove.class) {
+					if (CFG.DISPLAY_PATH_CRITTER.valb() || ("body".equals(res.basename()) && CFG.DISPLAY_PATH_PLAYER.valb())) {
+						if (gobpath == null) {
+							gobpath = new Overlay(new GobPath(this));
+							ols.add(gobpath);
+						}
+						((GobPath) gobpath.spr).lm = (LinMove) a;
+					}
+				}
+			} catch (Exception e) { // fail silently
+			}
+		}
 	}
 
 	public <C extends GAttrib> C getattr(Class<C> c) {
@@ -217,6 +240,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
 	public void delattr(Class<? extends GAttrib> c) {
 		attr.remove(attrclass(c));
+
+		if (attrclass(c) == Moving.class) {
+			ols.remove(gobpath);
+			gobpath = null;
+		}
 	}
 
 	@Override
@@ -284,33 +312,37 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 						if (rd != null) {
 							try {
 								final int stage = ((ResDrawable) rd).sdt.peekrbuf(0);
-								if (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis")) {
-									int maxStage = 0;
-									for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
-										if (layer.id / 10 > maxStage) {
-											maxStage = layer.id / 10;
-										}
+								int maxStage = 0;
+								for (FastMesh.MeshRes layer : getres().layers(FastMesh.MeshRes.class)) {
+									if (layer.id / 10 > maxStage) {
+										maxStage = layer.id / 10;
 									}
-									final int stageMax = maxStage;
+								}
+								final int stageMax = maxStage;
+								boolean isplant = false;
+								if (res.name.startsWith("gfx/terobjs/bushes/")
+												|| (res.name.startsWith("gfx/terobjs/plants/") && !res.name.endsWith("trellis"))
+												|| res.name.startsWith("gfx/terobjs/trees/")) {
+									isplant = true;
+								}
+								if (isplant) {
 									PView.Draw2D staged = new PView.Draw2D() {
 										@Override
 										public void draw2d(GOut g) {
 											if (sc != null) {
-												String str = String.format("%d/%d", new Object[]{stage, stageMax});
-												Tex tex = getTextTex(plantTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
-												g.image(tex, sc.sub(tex.sz().div(2)));
-											}
-										}
-									};
-									rl.add(staged, null);
-								} else if (res.name.startsWith("gfx/terobjs/trees/")) {
-									PView.Draw2D staged = new PView.Draw2D() {
-										@Override
-										public void draw2d(GOut g) {
-											if (sc != null && stage < 100) {
-												String str = String.format("%d%%", new Object[]{stage});
-												Tex tex = getTextTex(treeTex, str, Color.YELLOW);
-												g.image(tex, sc.sub(tex.sz().div(2)));
+												Tex tex = null;
+												if (stageMax > 1) {
+													String str = String.format("%d/%d", new Object[]{stage, stageMax});
+													tex = getTextTex(growthTex, str, stage >= stageMax ? Color.GREEN : Color.RED);
+												} else {
+													if (stage < 100) {
+														String str = String.format("%d%%", new Object[]{stage});
+														tex = getTextTex(growthTex, str, Color.YELLOW);
+													}
+												}
+												if (tex != null) {
+													g.image(tex, sc.sub(tex.sz().div(2)));
+												}
 											}
 										}
 									};
