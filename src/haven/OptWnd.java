@@ -404,11 +404,13 @@ public class OptWnd extends Window {
 		y += 15;
 		qualityRadioGroup.add("Default (snap to 0, 90, 180, 270)", CFG.CAMERA_TYPE, 1, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Default (no snapping)", CFG.CAMERA_TYPE, 2, new Coord(x, y));
+		qualityRadioGroup.add("Default (snap to all 8 directions)", CFG.CAMERA_TYPE, 2, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 3, new Coord(x, y));
+		qualityRadioGroup.add("Default (no snapping)", CFG.CAMERA_TYPE, 3, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Free", CFG.CAMERA_TYPE, 4, new Coord(x, y));
+		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 4, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Free", CFG.CAMERA_TYPE, 5, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 
 		panel.pack();

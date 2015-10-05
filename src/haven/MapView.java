@@ -464,7 +464,11 @@ public class MapView extends PView implements DTarget, Console.Directory {
 						break;
 					case 1: // cardinal
 						tangl = (float) (Math.PI * 0.5 * Math.floor(tangl / (Math.PI * 0.5)));
-					case 2: // no snap
+						break;
+					case 2: // 8 way
+						tangl = (float) (Math.PI * 0.25 * (Math.round(tangl / (Math.PI * 0.25))));
+						break;
+					case 3: // no snap
 						break;
 				}
 			}
@@ -487,10 +491,38 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		@Override
 		public boolean keydown(KeyEvent ev) {
 			if (ev.getKeyCode() == KeyEvent.VK_LEFT) {
-				tangl = (float) (Math.PI * 0.5 * (Math.floor((tangl / (Math.PI * 0.5)) - 0.51) + 0.5));
+				if (tfield > 100) {
+					switch (CFG.CAMERA_TYPE.vali()) {
+						case 0: // default
+							tangl = (float) (Math.PI * 0.5 * (Math.floor((tangl / (Math.PI * 0.5)) - 0.51) + 0.5));
+							break;
+						case 1: // cardinal
+							tangl = (float) (Math.PI * 0.5 * Math.floor((tangl / (Math.PI * 0.5)) - 0.51));
+							break;
+						case 2: // 8 way
+							tangl = (float) (Math.PI * 0.25 * Math.round((tangl / (Math.PI * 0.25)) - 0.26));
+							break;
+						case 3: // no snap
+							break;
+					}
+				}
 				return (true);
 			} else if (ev.getKeyCode() == KeyEvent.VK_RIGHT) {
-				tangl = (float) (Math.PI * 0.5 * (Math.floor((tangl / (Math.PI * 0.5)) + 0.51) + 0.5));
+				if (tfield > 100) {
+					switch (CFG.CAMERA_TYPE.vali()) {
+						case 0: // default
+							tangl = (float) (Math.PI * 0.5 * (Math.floor((tangl / (Math.PI * 0.5)) + 0.51) + 0.5));
+							break;
+						case 1: // cardinal
+							tangl = (float) (Math.PI * 0.5 * Math.floor((tangl / (Math.PI * 0.5)) + 0.51));
+							break;
+						case 2: // 8 way
+							tangl = (float) (Math.PI * 0.25 * Math.round((tangl / (Math.PI * 0.25)) + 0.26));
+							break;
+						case 3: // no snap
+							break;
+					}
+				}
 				return (true);
 			} else if (ev.getKeyCode() == KeyEvent.VK_UP) {
 				chfield(tfield - 50);
@@ -499,7 +531,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 				chfield(tfield + 50);
 				return (true);
 			} else if (ev.getKeyCode() == KeyEvent.VK_HOME) {
-				tangl = angl + (float) Utils.cangle(-(float) Math.PI * 0.25f - angl);
+				if (tfield > 100) {
+					tangl = angl + (float) Utils.cangle(-(float) Math.PI * 0.25f - angl);
+				}
 				chfield((float) (100 * Math.sqrt(2)));
 			}
 			return (false);
