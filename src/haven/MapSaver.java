@@ -120,10 +120,21 @@ public class MapSaver {
 					}
 				}
 				h = h * 31 + t;
-				int rgb = 0xffffffff;
+				int rgb = 0xFFFFFFFF;
 				BufferedImage tex = texes[t];
 				if (tex == null) {
-					texes[t] = tex = getTileImage(t);
+					Resource r = m.tilesetr(t);
+					if (r.name.equals("gfx/tiles/nil")) {
+						return null;
+					}
+					boolean isCave = r.name.equals("gfx/tiles/mine") || r.name.equals("gfx/tiles/cave");
+					if (isCave) {
+						return null;
+					}
+					Resource.Image ir = r.layer(Resource.imgc);
+					if (ir != null) {
+						tex = texes[t] = ir.img;
+					}
 				}
 				if (tex != null) {
 					rgb = tex.getRGB(Utils.floormod(c.x + ul.x, tex.getWidth()), Utils.floormod(c.y + ul.y, tex.getHeight()));
