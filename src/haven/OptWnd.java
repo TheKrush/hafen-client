@@ -35,6 +35,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -379,12 +380,13 @@ public class OptWnd extends Window {
 					case 0:
 					case 1:
 					case 2:
+					case 3:
 						newCam = "ortho";
 						break;
-					case 3:
+					case 4:
 						newCam = "follow";
 						break;
-					case 4:
+					case 5:
 						newCam = "bad";
 						break;
 				}
@@ -973,6 +975,37 @@ public class OptWnd extends Window {
 		super.show();
 	}
 
+	private class CFGButton extends Button implements CFGObserver {
+
+		protected final CFG cfg;
+
+		public CFGButton(String lbl, CFG cfg, int w) {
+			this(lbl, cfg, w, null);
+		}
+
+		public CFGButton(String lbl, CFG cfg, int w, String tip) {
+			super(w, lbl);
+
+			this.cfg = cfg;
+			defval();
+			if (tip != null) {
+				tooltip = Text.render(tip).tex();
+			}
+		}
+
+		@Override
+		public void click() {
+		}
+
+		protected void defval() {
+		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			defval();
+		}
+	}
+
 	private class CFGCheckBox extends CheckBox implements CFGObserver {
 
 		protected final CFG cfg;
@@ -1173,7 +1206,7 @@ public class OptWnd extends Window {
 		}
 	}
 
-	private class CFGLabel extends Label implements CFGObserver {
+	private class CFGLabel extends Label {
 
 		public CFGLabel(String lbl) {
 			this(lbl, null);
@@ -1185,11 +1218,6 @@ public class OptWnd extends Window {
 			if (tip != null) {
 				tooltip = Text.render(tip).tex();
 			}
-		}
-
-		@Override
-		public void cfgUpdated(CFG cfg) {
-			// TODO
 		}
 	}
 
