@@ -433,17 +433,13 @@ public class OptWnd extends Window {
 		int x = 0, y = 0, my = 0;
 		addPanelButton("Display Settings", 'd', panel, buttonX, buttonY);
 
-		panel.add(new CFGLabel("Brighten view"), new Coord(x, y));
+		panel.add(new CFGLabel("Foreground FPS Limit"), new Coord(x, y));
 		y += 15;
-		panel.add(new CFGHSlider(null, CFG.DISPLAY_BRIGHTNESS) {
-			@Override
-			public void changed() {
-				super.changed();
-				if (ui.sess != null && ui.sess.glob != null) {
-					ui.sess.glob.brighten();
-				}
-			}
-		}, new Coord(x, y));
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_FPS_FOREGROUND, null, 200, 1, 144, 1), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGLabel("Background FPS Limit"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_FPS_BACKGROUND, null, 200, 1, 144, 1), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show dynamic lighting", CFG.DISPLAY_LIGHTING_DYNAMIC), new Coord(x, y));
 		y += 25;
@@ -471,6 +467,18 @@ public class OptWnd extends Window {
 		x += 225;
 		y = 0;
 
+		panel.add(new CFGLabel("Brighten view"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_BRIGHTNESS) {
+			@Override
+			public void changed() {
+				super.changed();
+				if (ui.sess != null && ui.sess.glob != null) {
+					ui.sess.glob.brighten();
+				}
+			}
+		}, new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
 			{
 				CFG.DISPLAY_GRID.addObserver(this);
