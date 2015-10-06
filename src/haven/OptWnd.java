@@ -479,9 +479,9 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
+		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID_SHOW) {
 			{
-				CFG.DISPLAY_GRID.addObserver(this);
+				CFG.DISPLAY_GRID_SHOW.addObserver(this);
 			}
 
 			@Override
@@ -494,7 +494,7 @@ public class OptWnd extends Window {
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_GRID.remObserver(this);
+				CFG.DISPLAY_GRID_SHOW.remObserver(this);
 				super.destroy();
 			}
 		}, new Coord(x, y));

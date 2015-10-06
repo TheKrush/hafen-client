@@ -782,7 +782,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 			rl.add(outlines, null);
 		}
 		rl.add(map, null);
-		if (CFG.DISPLAY_GRID.valb()) {
+		if (CFG.DISPLAY_GRID_SHOW.valb()) {
 			rl.add(gridol, null);
 		}
 		rl.add(mapol, null);
@@ -1876,8 +1876,8 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	}
 
 	public void togglegrid() {
-		CFG.DISPLAY_GRID.set(!CFG.DISPLAY_GRID.valb(), true);
-		initgrid(CFG.DISPLAY_GRID.valb());
+		CFG.DISPLAY_GRID_SHOW.set(!CFG.DISPLAY_GRID_SHOW.valb(), true);
+		initgrid(CFG.DISPLAY_GRID_SHOW.valb());
 	}
 
 	public final void initgrid() {
@@ -1895,7 +1895,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 	}
 
 	public void updategrid() {
-		if (!CFG.DISPLAY_GRID.valb()) {
+		if (!CFG.DISPLAY_GRID_SHOW.valb()) {
 			return;
 		}
 		if (gridol == null) {

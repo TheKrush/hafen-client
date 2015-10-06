@@ -30,7 +30,6 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.image.WritableRaster;
 import static haven.Inventory.invsq;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 public class GameUI extends ConsoleHost implements Console.Directory {
