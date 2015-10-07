@@ -69,7 +69,7 @@ public enum CFG {
 	;
 
 	private static String CONFIG_JSON;
-	private static final int configVersion = 6;
+	private static final int configVersion = 7;
 	private static Map<String, Object> cfg = new HashMap<>();
 	private static final Map<String, Object> cache = new HashMap<>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();
