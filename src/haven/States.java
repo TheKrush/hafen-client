@@ -184,6 +184,14 @@ public abstract class States extends GLState {
 		}
 	};
 
+	@Material.ResName("maskdepth")
+	public static class $maskdepth implements Material.ResCons {
+
+		public GLState cons(Resource res, Object... args) {
+			return (presdepth);
+		}
+	}
+
 	public static final StandAlone presdepth = new StandAlone(Slot.Type.GEOM, PView.proj) {
 		@Override
 		public void apply(GOut g) {
