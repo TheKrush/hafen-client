@@ -191,7 +191,7 @@ public class MapSaver {
 				ImageIO.write(res.im, "png", file);
 				if (res.fp != 0L) {
 					FileWriter fpWriter = new FileWriter(Globals.MapFile(SESSION_TIMESTAMP + "/fingerprints.txt", true), true);
-					fpWriter.write(String.format("%s/%s:%s\n", SESSION_TIMESTAMP, fileName, Long.toHexString(res.fp)));
+					fpWriter.write(String.format("%s:%s\n", fileName, Long.toHexString(res.fp)));
 					fpWriter.flush();
 				} else {
 					System.out.println(String.format("Not saving fp for %s/%s - common tile", SESSION_TIMESTAMP, fileName));
