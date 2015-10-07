@@ -1,3 +1,19 @@
+$size[13]{$b{2015-10-05}}
+ - Added game time display $i{(undefinedterry's client)}
+ - Added dewy mantle alert $i{(undefinedterry's client)}
+ - Added 8 directional camera lock option (Options->Camera Settings) $i{(bdew's client)}
+ - Added option to disable dynamic lights $i{(bdew's client)}
+ - Added options for FPS limits $i{(bdew's client)}
+
+$size[13]{$b{2015-10-04}}
+ - Added option to display simple foragables $i{(romov's client)}
+ - Added option to display critter paths $i{(romov's client)}
+ - Added option to display player paths $i{(romov's client)}
+ - Increased flower menu opening speed $i{{romov's client}}
+ - Added option for adjusting grid thickness
+ - Added option for adjusting path thickness
+ - Changing the values displayed on hsliders when turned on
+
 $size[13]{$b{2015-10-02}}
  - Added option to display the values on all horizontal sliders, which makes Land Survey much easier to sync up (Options->UI Settings)
  - Added buttons for showing minimap grid and view distance $i{(ender's client)}
@@ -121,7 +137,7 @@ $size[13]{$b{2015-09-09}}
  - Added CTRL+1 and CTRL+2 to simulate left clicks on quick access hand slots $i{(ender's client)}
  - Client now should show error window in case of crash $i{(ender's client)}
  - You can now put custom resources into 'res' folder to replace any default ones $i{(ender's client)}
- - Added 'combiner' for map combining (bdew's client)
+ - Added 'combiner' for map combining $i{(bdew's client)}
  - Added options for changing default camera
 
 $size[13]{$b{2015-09-08}}

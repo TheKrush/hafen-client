@@ -80,6 +80,14 @@
 		</exec>
 		<jar destfile="build/client-res.jar" update="true">
 			<fileset dir="resources/compiled" />
+			<file file="etc/map.html"/>
+			<file file="etc/data.json"/>
+			<file file="etc/radar.json"/>
+		</jar>
+		<jar destfile="dist/client-res.jar" update="true">
+			<fileset dir="resources/compiled" />
+			<file file="etc/map.html"/>
+			<file file="etc/data.json"/>
 			<file file="etc/radar.json"/>
 		</jar>
 	</target>
@@ -90,7 +98,7 @@
 			<fileset dir="build/classes-lib" />
 			<manifest>
 				<attribute name="Main-Class" value="haven.MainFrame" />
-				<attribute name="Class-Path" value="jogl.jar gluegen-rt.jar client-res.jar builtin-res.jar hafen-res.jar" />
+				<attribute name="Class-Path" value="lib/jogl.jar lib/gluegen-rt.jar lib/client-res.jar lib/builtin-res.jar lib/hafen-res.jar" />
 			</manifest>
 		</jar>
 		<chmod file="build/hafen.jar" perm="a+x" />
@@ -135,6 +143,7 @@
 
 	<target name="clean">
 		<delete dir="build" />
+		<delete dir="dist" />
 	</target>
 
 	<target name="profile" depends="jars">

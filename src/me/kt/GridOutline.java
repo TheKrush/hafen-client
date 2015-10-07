@@ -1,6 +1,7 @@
 package me.kt;
 
 import haven.BGL;
+import haven.CFG;
 import haven.Coord;
 import haven.Coord3f;
 import haven.GOut;
@@ -70,7 +71,7 @@ public class GridOutline implements Rendered {
 		Buffer buf = getCurrentBuffer();
 		buf.rewind();
 		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
-		gl.glLineWidth(3F);
+		gl.glLineWidth(CFG.DISPLAY_GRID_THICKNESS.valf());
 		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 		gl.glVertexPointer(3, GL2.GL_FLOAT, 0, buf.vertex);

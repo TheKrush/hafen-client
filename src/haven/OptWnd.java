@@ -30,10 +30,12 @@ import haven.CFG.CFGObserver;
 import haven.CheckListbox.CheckListboxItem;
 import haven.Globals.Data.DataObserver;
 import static haven.UI.mapSaver;
+import java.awt.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -262,10 +264,16 @@ public class OptWnd extends Window {
 		panelMinimap = add(new Panel());
 		panelUI = add(new Panel());
 
-		int y = 0;
+		double y = 0;
+		CFGLabel vlbl = new CFGLabel("Vanilla Options");
+		panelMain.add(vlbl, getPanelButtonCoord(1, y).sub(new Coord(vlbl.sz.x / 2, 0)).sub(new Coord(10, 0)));
+		y += 0.5;
 		initAudioPanel(0, y);
 		initVideoPanel(1, y);
 		y += 2;
+		CFGLabel mlbl = new CFGLabel("Minion Options");
+		panelMain.add(mlbl, getPanelButtonCoord(1, y).sub(new Coord(mlbl.sz.x / 2, 0)).sub(new Coord(10, 0)));
+		y += 0.5;
 		initDisplayPanel(0, y);
 		initCameraPanel(1, y);
 		y += 1;
@@ -311,7 +319,7 @@ public class OptWnd extends Window {
 
 	private void initAudioPanel(double buttonX, double buttonY) {
 		Panel panel = panelAudio;
-		int x = 0, y = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("Audio Settings", 'a', panel, buttonX, buttonY);
 
 		panel.add(new Label("Master audio volume"), new Coord(x, y));
@@ -362,7 +370,7 @@ public class OptWnd extends Window {
 
 	private void initCameraPanel(double buttonX, double buttonY) {
 		Panel panel = panelCamera;
-		int x = 0, y = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("Camera Settings", 'c', panel, buttonX, buttonY);
 
 		panel.add(new CFGLabel("Camera type"), new Coord(x, y));
@@ -378,12 +386,13 @@ public class OptWnd extends Window {
 					case 0:
 					case 1:
 					case 2:
+					case 3:
 						newCam = "ortho";
 						break;
-					case 3:
+					case 4:
 						newCam = "follow";
 						break;
-					case 4:
+					case 5:
 						newCam = "bad";
 						break;
 				}
@@ -403,11 +412,13 @@ public class OptWnd extends Window {
 		y += 15;
 		qualityRadioGroup.add("Default (snap to 0, 90, 180, 270)", CFG.CAMERA_TYPE, 1, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Default (no snapping)", CFG.CAMERA_TYPE, 2, new Coord(x, y));
+		qualityRadioGroup.add("Default (snap to all 8 directions)", CFG.CAMERA_TYPE, 2, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 3, new Coord(x, y));
+		qualityRadioGroup.add("Default (no snapping)", CFG.CAMERA_TYPE, 3, new Coord(x, y));
 		y += 15;
-		qualityRadioGroup.add("Free", CFG.CAMERA_TYPE, 4, new Coord(x, y));
+		qualityRadioGroup.add("Follow", CFG.CAMERA_TYPE, 4, new Coord(x, y));
+		y += 15;
+		qualityRadioGroup.add("Free", CFG.CAMERA_TYPE, 5, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 
 		panel.pack();
@@ -419,8 +430,42 @@ public class OptWnd extends Window {
 
 	private void initDisplayPanel(double buttonX, double buttonY) {
 		Panel panel = panelDisplay;
-		int x = 0, y = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("Display Settings", 'd', panel, buttonX, buttonY);
+
+		panel.add(new CFGLabel("Foreground FPS limit"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_FPS_FOREGROUND, null, 200, 1, 144, 1), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGLabel("Background FPS limit"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_FPS_BACKGROUND, null, 200, 1, 144, 1), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show dynamic lighting", CFG.DISPLAY_LIGHTING_DYNAMIC), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show weather", CFG.DISPLAY_WEATHER), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show simple foragables (requires restart)", CFG.DISPLAY_FORAGABLES_SIMPLE), new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show plant growth", CFG.DISPLAY_PLANT_GROWTH) {
+			{
+				CFG.DISPLAY_PLANT_GROWTH.addObserver(this);
+			}
+
+			@Override
+			public void destroy() {
+				CFG.DISPLAY_PLANT_GROWTH.remObserver(this);
+				super.destroy();
+			}
+		}, new Coord(x, y));
+
+		my = Math.max(my, y);
+		x += 225;
+		y = 0;
 
 		panel.add(new CFGLabel("Brighten view"), new Coord(x, y));
 		y += 15;
@@ -434,9 +479,9 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID) {
+		panel.add(new CFGCheckBox("Display grid", CFG.DISPLAY_GRID_SHOW) {
 			{
-				CFG.DISPLAY_GRID.addObserver(this);
+				CFG.DISPLAY_GRID_SHOW.addObserver(this);
 			}
 
 			@Override
@@ -449,28 +494,14 @@ public class OptWnd extends Window {
 
 			@Override
 			public void destroy() {
-				CFG.DISPLAY_GRID.remObserver(this);
+				CFG.DISPLAY_GRID_SHOW.remObserver(this);
 				super.destroy();
 			}
 		}, new Coord(x, y));
-		y += 25;
-		panel.add(new CFGCheckBox("Show weather", CFG.DISPLAY_WEATHER), new Coord(x, y));
-		y += 25;
-		panel.add(new CFGCheckBox("Show flavor objects", CFG.DISPLAY_FLAVOR), new Coord(x, y));
-		y += 25;
-		panel.add(new CFGCheckBox("Show simple crops (requires restart)", CFG.DISPLAY_CROPS_SIMPLE), new Coord(x, y));
-		y += 25;
-		panel.add(new CFGCheckBox("Show plant growth", CFG.DISPLAY_PLANT_GROWTH) {
-			{
-				CFG.DISPLAY_PLANT_GROWTH.addObserver(this);
-			}
-
-			@Override
-			public void destroy() {
-				CFG.DISPLAY_PLANT_GROWTH.remObserver(this);
-				super.destroy();
-			}
-		}, new Coord(x, y));
+		y += 15;
+		panel.add(new CFGLabel("Grid thickness"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_GRID_THICKNESS, null, 200, 1, 3, 1), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Always show kin names", CFG.DISPLAY_KIN_NAMES), new Coord(x, y));
 		y += 25;
@@ -497,6 +528,14 @@ public class OptWnd extends Window {
 				super.destroy();
 			}
 		}, new Coord(x, y));
+		y += 25;
+		panel.add(new CFGCheckBox("Show critter paths", CFG.DISPLAY_PATH_CRITTER), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGCheckBox("Show player paths", CFG.DISPLAY_PATH_PLAYER), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGLabel("Path thickness"), new Coord(x, y));
+		y += 15;
+		panel.add(new CFGHSlider(null, CFG.DISPLAY_PATH_THICKNESS, null, 200, 1, 3, 1), new Coord(x, y));
 
 		panel.pack();
 		x = sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
@@ -507,7 +546,7 @@ public class OptWnd extends Window {
 
 	private void initGeneralPanel(double buttonX, double buttonY) {
 		Panel panel = panelGeneral;
-		int x = 0, y = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("General Settings", 'g', panel, buttonX, buttonY);
 
 		panel.add(new CFGCheckBox("Store general game data", CFG.GENERAL_DATA_SAVE, "Data is stored in 'data' folder and is used to automaticaly update options menus, but can make the game laggy"), new Coord(x, y));
@@ -533,7 +572,7 @@ public class OptWnd extends Window {
 
 	private void initHotkeyPanel(double buttonX, double buttonY) {
 		Panel panel = panelHotkey;
-		int x = 0, y = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("Hotkey Settings", 'h', panel, buttonX, buttonY);
 
 		panel.add(new CFGCheckBox("Mouse follow", CFG.HOTKEY_MOUSE_FOLLOW, "If enabled holding LMB or using ALT+F will make player follow mouse"), new Coord(x, y));
@@ -816,7 +855,7 @@ public class OptWnd extends Window {
 
 	private void initUIPanel(double buttonX, double buttonY) {
 		Panel panel = panelUI;
-		int x = 0, y = 0;
+		int x = 0, y = 0, my = 0;
 		addPanelButton("UI Settings", 'u', panel, buttonX, buttonY);
 
 		panel.add(new CFGCheckBox("Show hslider values", CFG.UI_HSLIDER_VALUE_SHOW), new Coord(x, y));
@@ -861,6 +900,7 @@ public class OptWnd extends Window {
 		actionsCheckListbox.additems(Globals.Data.get("action"));
 		panel.add(actionsCheckListbox, new Coord(x, y));
 
+		my = Math.max(my, y);
 		x += 225;
 		y = 0;
 
@@ -897,13 +937,29 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGLabel("Item meter"), new Coord(x, y));
 		y += 15;
-		panel.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED), new Coord(x, y));
+		panel.add(new CFGHSlider("R", CFG.UI_ITEM_METER_RED, null, 200, 0, 255) {
+			{
+				displayRawValue = true;
+			}
+		}, new Coord(x, y));
 		y += 15;
-		panel.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN), new Coord(x, y));
+		panel.add(new CFGHSlider("G", CFG.UI_ITEM_METER_GREEN, null, 200, 0, 255) {
+			{
+				displayRawValue = true;
+			}
+		}, new Coord(x, y));
 		y += 15;
-		panel.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE), new Coord(x, y));
+		panel.add(new CFGHSlider("B", CFG.UI_ITEM_METER_BLUE, null, 200, 0, 255) {
+			{
+				displayRawValue = true;
+			}
+		}, new Coord(x, y));
 		y += 15;
-		panel.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA), new Coord(x, y));
+		panel.add(new CFGHSlider("A", CFG.UI_ITEM_METER_ALPHA, null, 200, 0, 255) {
+			{
+				displayRawValue = true;
+			}
+		}, new Coord(x, y));
 
 		panel.pack();
 		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
@@ -933,6 +989,37 @@ public class OptWnd extends Window {
 	public void show() {
 		chpanel(panelMain);
 		super.show();
+	}
+
+	private class CFGButton extends Button implements CFGObserver {
+
+		protected final CFG cfg;
+
+		public CFGButton(String lbl, CFG cfg, int w) {
+			this(lbl, cfg, w, null);
+		}
+
+		public CFGButton(String lbl, CFG cfg, int w, String tip) {
+			super(w, lbl);
+
+			this.cfg = cfg;
+			defval();
+			if (tip != null) {
+				tooltip = Text.render(tip).tex();
+			}
+		}
+
+		@Override
+		public void click() {
+		}
+
+		protected void defval() {
+		}
+
+		@Override
+		public void cfgUpdated(CFG cfg) {
+			defval();
+		}
 	}
 
 	private class CFGCheckBox extends CheckBox implements CFGObserver {
@@ -1049,23 +1136,34 @@ public class OptWnd extends Window {
 
 		protected final CFG cfg;
 		Text lbl;
+		protected final float valuePer;
+		public boolean displayRawValue = false;
 
 		public CFGHSlider(String lbl, CFG cfg) {
 			this(lbl, cfg, null);
 		}
 
 		public CFGHSlider(String lbl, CFG cfg, String tip) {
-			this(lbl, cfg, tip, 200, 0, 1000, 0);
+			this(lbl, cfg, tip, 200);
 		}
 
 		public CFGHSlider(String lbl, CFG cfg, String tip, int w) {
-			this(lbl, cfg, tip, w, 0, 1000, 0);
+			this(lbl, cfg, tip, w, 0, 1000);
 		}
 
-		public CFGHSlider(String lbl, CFG cfg, String tip, int w, int min, int max, int val) {
+		public CFGHSlider(String lbl, CFG cfg, String tip, int w, int min, int max) {
+			this(lbl, cfg, tip, w, min, max, max);
+		}
+
+		public CFGHSlider(String lbl, CFG cfg, String tip, int w, int min, int max, int valuePer) {
+			this(lbl, cfg, tip, w, min, max, valuePer, min);
+		}
+
+		public CFGHSlider(String lbl, CFG cfg, String tip, int w, int min, int max, int valuepPer, int val) {
 			super(w, min, max, val);
 
 			this.cfg = cfg;
+			this.valuePer = valuepPer;
 			defval();
 			if (lbl != null) {
 				this.lbl = Text.std.render(lbl, java.awt.Color.WHITE);
@@ -1076,13 +1174,13 @@ public class OptWnd extends Window {
 		}
 
 		protected void defval() {
-			val = (int) (1000 * cfg.valf());
+			val = (int) (this.valuePer * cfg.valf());
 		}
 
 		@Override
 		public void changed() {
 			super.changed();
-			cfg.set(val / 1000.0f);
+			cfg.set(val / this.valuePer);
 		}
 
 		@Override
@@ -1105,12 +1203,26 @@ public class OptWnd extends Window {
 		}
 
 		@Override
+		public void drawValue(GOut g) {
+			if (displayRawValue) {
+				super.drawValue(g);
+			} else {
+				if (CFG.UI_HSLIDER_VALUE_SHOW.valb()) {
+					float v = val / this.valuePer;
+					String str = v == (long) v ? String.format("%d", (long) v) : String.format("%.2f", v);
+					Tex valueTex = Text.std.renderstroked(str, Color.WHITE, Color.BLACK, new Color(0, 0, 0, 64), new Coord(2, 0)).tex();
+					g.image(valueTex, new Coord((sz.x / 2) - (valueTex.sz().x / 2), 0));
+				}
+			}
+		}
+
+		@Override
 		public void cfgUpdated(CFG cfg) {
-			val = (int) (1000 * cfg.valf());
+			val = (int) (this.valuePer * cfg.valf());
 		}
 	}
 
-	private class CFGLabel extends Label implements CFGObserver {
+	private class CFGLabel extends Label {
 
 		public CFGLabel(String lbl) {
 			this(lbl, null);
@@ -1122,11 +1234,6 @@ public class OptWnd extends Window {
 			if (tip != null) {
 				tooltip = Text.render(tip).tex();
 			}
-		}
-
-		@Override
-		public void cfgUpdated(CFG cfg) {
-			// TODO
 		}
 	}
 

@@ -17,11 +17,19 @@ public enum CFG {
 	CONFIG_VERSION("config.version", 0),
 	DISPLAY_BRIGHTNESS("display.brightness", 0f),
 	DISPLAY_CROPS_SIMPLE("display.crops.simple", false),
+	DISPLAY_FPS_BACKGROUND("display.fps.background", 10),
+	DISPLAY_FPS_FOREGROUND("display.fps.foreground", 60),
+	DISPLAY_LIGHTING_DYNAMIC("display.lighting.dynamic", true),
+	DISPLAY_FORAGABLES_SIMPLE("display.foragables.simple", false),
 	DISPLAY_FLAVOR("display.flavor", true),
-	DISPLAY_GRID("display.grid", false),
+	DISPLAY_GRID_SHOW("display.grid.show", false),
+	DISPLAY_GRID_THICKNESS("display.grid.thickness", 2f),
 	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_OBJECT_DAMAGE("display.object.health", false),
-	DISPLAY_OBJECT_RADIUS("display.object.radisu", false),
+	DISPLAY_OBJECT_RADIUS("display.object.radius", false),
+	DISPLAY_PATH_CRITTER("display.path.critter", false),
+	DISPLAY_PATH_PLAYER("display.path.player", false),
+	DISPLAY_PATH_THICKNESS("display.path.thickness", 2f),
 	DISPLAY_PLANT_GROWTH("display.plant.growth", false),
 	DISPLAY_WEATHER("display.weather", true),
 	GENERAL_CHAT_SAVE("general.chat.save", true),
@@ -61,7 +69,7 @@ public enum CFG {
 	;
 
 	private static String CONFIG_JSON;
-	private static final int configVersion = 6;
+	private static final int configVersion = 7;
 	private static Map<String, Object> cfg = new HashMap<>();
 	private static final Map<String, Object> cache = new HashMap<>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();

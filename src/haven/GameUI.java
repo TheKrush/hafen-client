@@ -71,6 +71,9 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public String polowner;
 	public Bufflist buffs;
 
+	private final Label timelbl;
+	public boolean dewyTime = false;
+
 	public abstract class Belt extends Widget {
 
 		public Belt(Coord sz) {
@@ -118,6 +121,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		setcanfocus(true);
 		setfocusctl(true);
 		chat = add(new ChatUI(0, 0));
+		timelbl = add(new Label("", 20, new Text.Foundry(Text.mono, 15)));
 		if (Utils.getprefb("chatvis", true)) {
 			chat.resize(0, chat.savedh);
 			chat.show();
@@ -817,6 +821,21 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		} else if (afk && (System.currentTimeMillis() - ui.lastevent < 300000)) {
 			afk = false;
 		}
+
+		timelbl.settext(Utils.formatGameTime(ui.sess.glob.globtime()));
+		if (((ui.sess.glob.globtime() / 1000) / 3600 % 24) < 8 && ((ui.sess.glob.globtime() / 1000) / 3600 % 24) > 4) {
+			timelbl.setcolor(new Color(50, 255, 50));
+			if (!dewyTime) {
+				ui.message(String.format("It's Dewy Mantle Time!"), GameUI.MsgType.GOOD);
+				dewyTime = true;
+			}
+		} else {
+			timelbl.setcolor(new Color(200, 200, 200));
+			if (dewyTime) {
+				dewyTime = false;
+			}
+		}
+		timelbl.c = new Coord(c.x + (sz.x / 2) - (timelbl.sz.x / 2), 0);
 	}
 
 	@Override
