@@ -132,6 +132,10 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			wdgmsg("inv", id);
 		}
 
+		public void describe() {
+			wdgmsg("desc", id);
+		}
+
 		public void chname(String name) {
 			wdgmsg("nick", id, name);
 		}
@@ -292,6 +296,9 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 			} else {
 				opts.add("Forget");
 			}
+			if (b.seen) {
+				opts.add("Describe");
+			}
 			if (menu == null) {
 				menu = new FlowerMenu(opts.toArray(new String[opts.size()])) {
 					@Override
@@ -311,6 +318,8 @@ public class BuddyWnd extends Widget implements Iterable<BuddyWnd.Buddy> {
 								b.invite();
 							} else if (opt.name.equals("Forget")) {
 								b.forget();
+							} else if (opt.name.equals("Describe")) {
+								b.describe();
 							}
 							uimsg("act", opt.num);
 						} else {
