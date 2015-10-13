@@ -507,7 +507,17 @@ public class Widget {
 			if (w != focused) {
 				Widget last = focused;
 				focused = w;
-				if (last != null) {
+				if (hasfocus) {
+					if (last != null) {
+						last.hasfocus = false;
+					}
+					w.hasfocus = true;
+					if (last != null) {
+						last.lostfocus();
+					}
+					w.gotfocus();
+				} else if ((last != null) && last.hasfocus) {
+					/* Bug, but ah well. */
 					last.hasfocus = false;
 				}
 				w.hasfocus = true;
@@ -564,8 +574,10 @@ public class Widget {
 		for (Widget w = lchild; w != null; w = w.prev) {
 			if (w.visible && w.autofocus) {
 				focused = w;
-				focused.hasfocus = true;
-				w.gotfocus();
+				if (hasfocus) {
+					focused.hasfocus = true;
+					w.gotfocus();
+				}
 				break;
 			}
 		}
