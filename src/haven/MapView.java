@@ -1392,10 +1392,12 @@ public class MapView extends PView implements DTarget, Console.Directory {
 				checkmapclick(g, pc, new Callback<Coord>() {
 					@Override
 					public void done(Coord mc) {
-						if (mc != null) {
-							hit(pc, mc);
-						} else {
-							nohit(pc);
+						synchronized (ui) {
+							if (mc != null) {
+								hit(pc, mc);
+							} else {
+								nohit(pc);
+							}
 						}
 					}
 				});
@@ -1454,15 +1456,17 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 		private void ckdone(int fl) {
 			synchronized (this) {
-				if ((dfl |= fl) == 3) {
-					if (mapcl != null) {
-						if (gobcl == null) {
-							hit(clickc, mapcl, null);
+				synchronized (ui) {
+					if ((dfl |= fl) == 3) {
+						if (mapcl != null) {
+							if (gobcl == null) {
+								hit(clickc, mapcl, null);
+							} else {
+								hit(clickc, mapcl, gobcl);
+							}
 						} else {
-							hit(clickc, mapcl, gobcl);
+							nohit(clickc);
 						}
-					} else {
-						nohit(clickc);
 					}
 				}
 			}
