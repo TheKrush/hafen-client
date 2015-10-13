@@ -32,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import javax.imageio.ImageIO;
 
 public class MapSaver {
@@ -40,6 +42,8 @@ public class MapSaver {
 	private final UI ui;
 	private Coord lastCoord;
 	private Coord origin;
+
+	private Map<String, Coord> mapTiles = new HashMap<>();
 
 	public MapSaver(UI ui) {
 		this.ui = ui;
@@ -52,6 +56,7 @@ public class MapSaver {
 	public void newSession(Coord origin) {
 		//ui.gui.mmap.clearcache();
 		this.origin = origin;
+		this.mapTiles.clear();
 		SESSION_TIMESTAMP = Utils.timestamp(true).replace(" ", "_").replace(":", "."); //ex. 2015-09-08_14.22.15
 		try {
 			FileWriter fileWriter = new FileWriter(Globals.MapFile("currentsession.js", true));
@@ -190,8 +195,10 @@ public class MapSaver {
 				File file = Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true);
 				ImageIO.write(res.im, "png", file);
 				if (res.fp != 0L) {
+					String fingerprint = Long.toHexString(res.fp);
+					mapTiles.put(fingerprint, normc);
 					FileWriter fpWriter = new FileWriter(Globals.MapFile(SESSION_TIMESTAMP + "/fingerprints.txt", true), true);
-					fpWriter.write(String.format("%s:%s\n", fileName, Long.toHexString(res.fp)));
+					fpWriter.write(String.format("%1$-25s %2$4d %3$4d %4$s\n", fingerprint, normc.x, normc.y, file.getPath()));
 					fpWriter.flush();
 				} else {
 					System.out.println(String.format("Not saving fp for %s/%s - common tile", SESSION_TIMESTAMP, fileName));
