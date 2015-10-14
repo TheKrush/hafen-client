@@ -1,14 +1,25 @@
 <icons>
-    <group name="Animals" icon="$diamond">
+    <group name="Kritters" icon="$diamond">
+        <marker startsWith="gfx/kritter/ants/anthill" name="Ant Hill" show="true" />
+        <marker startsWith="gfx/kritter/ants/ants" name="Ants" show="true" />
 		<marker startsWith="gfx/kritter/bear" name="Bear" show="true" priority="510" color="AE250D"/>
 		<marker startsWith="gfx/kritter/boar" name="Boar" show="true" priority="509" color="8A4B08"/>
 		<marker startsWith="gfx/kritter/badger" name="Badger" show="true" priority="508" color="A4A4A4"/>
         <marker startsWith="gfx/kritter/bat" name="Bat" show="true" priority="508" color="848484"/>
+        <marker startsWith="gfx/kritter/cattle" name="Cattle" show="true" />
 	    <marker startsWith="gfx/kritter/chicken" name="Chicken" show="true" priority="-5" />
+        <marker startsWith="gfx/kritter/reddeer" name="Deer" show="true" />
+        <marker startsWith="gfx/kritter/dragonfly" name="Dragonfly" show="true" />
+        <marker startsWith="gfx/kritter/dryad" name="Dryad" show="true" />
+        <marker startsWith="gfx/kritter/fox" name="Fox" show="true" />
         <marker startsWith="gfx/kritter/frog" name="Frog" icon="gfx/invobjs/frog" show="false" priority="-5" />
+        <marker startsWith="gfx/kritter/horse" name="Horse" show="true" />
+        <marker startsWith="gfx/kritter/ladybug" name="Ladybug" show="true" />
         <marker startsWith="gfx/kritter/toad" name="Toad" icon="gfx/invobjs/toad" show="false" priority="-5" />
         <marker startsWith="gfx/kritter/rabbit" name="Rabbit" show="true" />
         <marker startsWith="gfx/kritter/rat" name="Rat" show="true" priority="-5" />
+        <marker startsWith="gfx/kritter/sheep" name="Sheep" show="true" />
+        <marker startsWith="gfx/kritter/silkmoth" name="Silkmoth" show="true" />
 	</group>
     <group name="Bushes" icon="$up" color="44bb00" show="false">
         <marker exact="gfx/terobjs/bushes/arrowwood" name="Arrowwood" show="false" icon="gfx/invobjs/seed-arrowwood" />
@@ -114,9 +125,12 @@
     </group>
     <group name="Misc" show="true" icon="$pentagon">
         <marker exact="gfx/terobjs/items/arrow" name="Arrow" icon="gfx/invobjs/arrow-bone" show="true" priority="100" />
-        <marker startsWith="gfx/terobjs/road/milestone" name="Milestone" icon="paginae/bld/woodendstone" show="false" />
-        <marker exact="gfx/terobjs/vehicle/rowboat" name="Boat" icon="gfx/invobjs/barkboat" show="true" priority="10" />
+        <marker exact="gfx/terobjs/vehicle/rowboat" name="Boat" icon="paginae/bld/rowboat" show="true" priority="10" />
         <marker exact="gfx/terobjs/vehicle/bram" name="Battering Ram" icon="paginae/bld/bram" show="true"  priority="400"/>
+        <marker exact="gfx/terobjs/vehicle/cart" name="Cart" icon="paginae/bld/cart" show="true" priority="10" />
+        <marker startsWith="gfx/terobjs/road/milestone" name="Milestone" icon="paginae/bld/woodendstone" show="false" />
 	    <marker contains="gfx/borka/body" name="Player" icon="gfx/hud/mmap/symbols/circle" show="true" priority="1000" />
+        <marker exact="gfx/terobjs/vehicle/plow" name="Plow" icon="paginae/bld/woodenplow" show="true" priority="10" />
+        <marker exact="gfx/terobjs/vehicle/wagon" name="Wagon" icon="paginae/bld/wagon" show="true" priority="10" />
     </group>
 </icons>
