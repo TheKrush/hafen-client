@@ -195,7 +195,7 @@ public class ISBox extends Widget implements DTarget {
 	@Override
 	public void wdgmsg(Widget sender, String msg, Object... args) {
 		if (sender == value || sender == take) {
-			int amount = 0;
+			int amount = rem;
 			try {
 				amount = Integer.parseInt(value.text);
 			} catch (Exception ignored) {

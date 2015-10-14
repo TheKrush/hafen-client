@@ -35,7 +35,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +50,7 @@ public class OptWnd extends Window {
 	public final Panel panelGeneral;
 	public final Panel panelHotkey;
 	public final Panel panelMinimap;
+	public final Panel panelRadar;
 	public final Panel panelUI;
 	public final Panel panelVideo;
 	public Panel current;
@@ -262,6 +262,7 @@ public class OptWnd extends Window {
 		panelGeneral = add(new Panel());
 		panelHotkey = add(new Panel());
 		panelMinimap = add(new Panel());
+		panelRadar = add(new Panel());
 		panelUI = add(new Panel());
 
 		double y = 0;
@@ -281,7 +282,9 @@ public class OptWnd extends Window {
 		initHotkeyPanel(1, y);
 		y += 1;
 		initMinimapPanel(0, y);
-		initUIPanel(1, y);
+		initRadarPanel(1, y);
+		y += 1;
+		initUIPanel(0.5, y);
 		y += 2;
 		if (gopts) {
 			panelMain.add(new Button(200, "Switch character") {
@@ -853,6 +856,49 @@ public class OptWnd extends Window {
 		panel.pack();
 	}
 
+	private void initRadarPanel(double buttonX, double buttonY) {
+		Panel panel = panelRadar;
+		int x = 0, y = 0, my = 0;
+		addPanelButton("Radar Settings", 'm', panel, buttonX, buttonY);
+
+		final WidgetList<RadarCFG.MarkerCheck> markers = new WidgetList<RadarCFG.MarkerCheck>(new Coord(200, 16), 20) {
+			@Override
+			protected void itemclick(RadarCFG.MarkerCheck item, int button) {
+				if (button == 1) {
+					item.set(!item.a);
+				}
+			}
+		};
+		markers.canselect = false;
+		panel.add(markers, 225, 0);
+
+		WidgetList<RadarCFG.GroupCheck> groups = panel.add(new WidgetList<RadarCFG.GroupCheck>(new Coord(200, 16), 20) {
+			@Override
+			public void selected(RadarCFG.GroupCheck item) {
+				markers.clear(true);
+				for (RadarCFG.MarkerCFG marker : item.group.markerCFGs) {
+					markers.additem(new RadarCFG.MarkerCheck(marker));
+				}
+			}
+		});
+		for (RadarCFG.Group group : RadarCFG.groups) {
+			groups.additem(new RadarCFG.GroupCheck(group)).hitbox = true;
+		}
+
+		panel.add(new Button(60, "Save") {
+			@Override
+			public void click() {
+				RadarCFG.save();
+			}
+		}, 183, groups.sz.y + 10);
+
+		panel.pack();
+		x = panel.sz.x > BUTTON_WIDTH ? (panel.sz.x / 2) - (BUTTON_WIDTH / 2) : 0;
+		y = panel.sz.y + 35;
+		panel.add(new PButton(BUTTON_WIDTH, "Back", 27, panelMain), new Coord(x, y));
+		panel.pack();
+	}
+
 	private void initUIPanel(double buttonX, double buttonY) {
 		Panel panel = panelUI;
 		int x = 0, y = 0, my = 0;
@@ -923,6 +969,8 @@ public class OptWnd extends Window {
 		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 6, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 		y += 25;
+		panel.add(new CFGCheckBox("Swap item quality and number locations", CFG.UI_ITEM_QUALITY_SWAP), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show content quality if available (requires restart)", CFG.UI_ITEM_QUALITY_CONTENTS, "If contents quality is available this option uses it instead of the container quality on the item"), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show item wear bar", CFG.UI_ITEM_BAR_WEAR), new Coord(x, y));
@@ -931,7 +979,18 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show item durability", CFG.UI_ITEM_DURABILITY), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon"), new Coord(x, y));
+		panel.add(new CFGLabel("Item meter"), new Coord(x, y));
+		y += 15;
+		CFGRadioGroup meterRadioGroup = new CFGRadioGroup(panel);
+		int meterRadioGroupCheckedIndex = CFG.UI_ITEM_METER_SHOW.vali();
+		meterRadioGroup.add("Do not show meter", CFG.UI_ITEM_METER_SHOW, 0, new Coord(x, y));
+		y += 15;
+		meterRadioGroup.add("Show default meter", CFG.UI_ITEM_METER_SHOW, 1, new Coord(x, y));
+		y += 15;
+		meterRadioGroup.add("Show meter as progress bar", CFG.UI_ITEM_METER_SHOW, 2, "If checked all item progress meters be shown as bars at the top of the item icon", new Coord(x, y));
+		y += 15;
+		meterRadioGroup.add("Show meter as number", CFG.UI_ITEM_METER_SHOW, 3, "If checked all item progress meters show number values", new Coord(x, y));
+		meterRadioGroup.check(meterRadioGroupCheckedIndex);
 		y += 25;
 		panel.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time"), new Coord(x, y));
 		y += 25;
@@ -1125,7 +1184,7 @@ public class OptWnd extends Window {
 			Map<String, Boolean> mapVal = cfg.valo();
 			additems(mapVal.keySet().toArray(new String[mapVal.keySet().size()]));
 
-			for (Widget wdg = cont.lchild; wdg != null; wdg = wdg.prev) {
+			for (Widget wdg : list) {
 				FlowerListItem item = ((FlowerListItem) wdg);
 				item.set(cfgVal(item.name));
 			}
@@ -1247,18 +1306,18 @@ public class OptWnd extends Window {
 			this.cfg = cfg;
 			this.keys = new ArrayList<>();
 
-			Map<String, Boolean> mapVal = cfg.valo();
+			Map<String, Boolean> mapVal = cfg.<Map<String, Boolean>>valo();
 			Set<String> mapValKeys = mapVal.keySet();
 			additems(mapValKeys.toArray(new String[mapValKeys.size()]));
 		}
 
 		private boolean cfgVal(String name) {
-			Map<String, Boolean> mapVal = cfg.valo();
+			Map<String, Boolean> mapVal = cfg.<Map<String, Boolean>>valo();
 			return mapVal.containsKey(name) ? mapVal.get(name) : false;
 		}
 
 		private void cfgVal(String name, boolean val) {
-			Map<String, Boolean> mapVal = cfg.valo();
+			Map<String, Boolean> mapVal = cfg.<Map<String, Boolean>>valo();
 			mapVal.put(name, val);
 			cfg.set(mapVal);
 		}
