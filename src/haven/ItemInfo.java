@@ -391,7 +391,7 @@ public abstract class ItemInfo {
 				}
 			}
 			if (res != null) {
-				return res;
+				return res.trim();
 			}
 		}
 		return null;

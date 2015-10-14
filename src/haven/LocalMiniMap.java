@@ -175,7 +175,7 @@ public class LocalMiniMap extends Widget {
 						Tex tex = marker.tex();
 						if (tex != null) {
 							g.chcolor(marker.color());
-							g.image(tex, gc.sub(tex.sz().div(2)));
+							g.aimage(tex, gc, 0.5, 0.5);
 						}
 					} catch (Loading ignored) {
 					}
@@ -257,6 +257,9 @@ public class LocalMiniMap extends Widget {
 					Radar.Marker icon = li.previous();
 					try {
 						Gob gob = icon.gob;
+						if (gob.id == mv.plgob) {
+							continue;
+						}
 						Tex tex = icon.tex();
 						if (tex != null) {
 							Coord gc = p2c(gob.rc);

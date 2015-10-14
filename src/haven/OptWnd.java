@@ -969,6 +969,8 @@ public class OptWnd extends Window {
 		qualityRadioGroup.add("Show all qualities", CFG.UI_ITEM_QUALITY_SHOW, 6, new Coord(x, y));
 		qualityRadioGroup.check(qualityRadioGroupCheckedIndex);
 		y += 25;
+		panel.add(new CFGCheckBox("Swap item quality and number locations", CFG.UI_ITEM_QUALITY_SWAP), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Show content quality if available (requires restart)", CFG.UI_ITEM_QUALITY_CONTENTS, "If contents quality is available this option uses it instead of the container quality on the item"), new Coord(x, y));
 		y += 25;
 		panel.add(new CFGCheckBox("Show item wear bar", CFG.UI_ITEM_BAR_WEAR), new Coord(x, y));
@@ -977,7 +979,18 @@ public class OptWnd extends Window {
 		y += 25;
 		panel.add(new CFGCheckBox("Show item durability", CFG.UI_ITEM_DURABILITY), new Coord(x, y));
 		y += 25;
-		panel.add(new CFGCheckBox("Item meter as progress bar", CFG.UI_ITEM_METER_PROGRESSBAR, "If checked all item progress meters be shown as bars at the top of the item icon"), new Coord(x, y));
+		panel.add(new CFGLabel("Item meter"), new Coord(x, y));
+		y += 15;
+		CFGRadioGroup meterRadioGroup = new CFGRadioGroup(panel);
+		int meterRadioGroupCheckedIndex = CFG.UI_ITEM_METER_SHOW.vali();
+		meterRadioGroup.add("Do not show meter", CFG.UI_ITEM_METER_SHOW, 0, new Coord(x, y));
+		y += 15;
+		meterRadioGroup.add("Show default meter", CFG.UI_ITEM_METER_SHOW, 1, new Coord(x, y));
+		y += 15;
+		meterRadioGroup.add("Show meter as progress bar", CFG.UI_ITEM_METER_SHOW, 2, "If checked all item progress meters be shown as bars at the top of the item icon", new Coord(x, y));
+		y += 15;
+		meterRadioGroup.add("Show meter as number", CFG.UI_ITEM_METER_SHOW, 3, "If checked all item progress meters show number values", new Coord(x, y));
+		meterRadioGroup.check(meterRadioGroupCheckedIndex);
 		y += 25;
 		panel.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time"), new Coord(x, y));
 		y += 25;
