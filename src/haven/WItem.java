@@ -27,6 +27,7 @@ package haven;
 
 import static haven.Inventory.sqsz;
 import haven.QualityList.QualityType;
+import haven.QualityList.SingleType;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -347,23 +348,11 @@ public class WItem extends Widget implements DTarget {
 				switch (CFG.UI_ITEM_QUALITY_SHOW.vali()) {
 					case 0:
 						break;
-					case 1:
-						tex = quality.single(true).tex();
-						break;
-					case 2:
-						tex = quality.single(false).tex();
-						break;
-					case 3:
-						tex = quality.single(QualityType.Essence).tex();
-						break;
-					case 4:
-						tex = quality.single(QualityType.Substance).tex();
-						break;
-					case 5:
-						tex = quality.single(QualityType.Vitality).tex();
-						break;
 					case 6:
 						tex = quality.tex();
+						break;
+					default:
+						tex = quality.tex(quality.single());
 						break;
 				}
 			}
