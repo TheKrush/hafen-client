@@ -987,9 +987,9 @@ public class OptWnd extends Window {
 		y += 15;
 		meterRadioGroup.add("Show default meter", CFG.UI_ITEM_METER_SHOW, 1, new Coord(x, y));
 		y += 15;
-		meterRadioGroup.add("Show meter as progress bar", CFG.UI_ITEM_METER_SHOW, 2, "If checked all item progress meters be shown as bars at the top of the item icon", new Coord(x, y));
+		meterRadioGroup.add("Show meter as progress bar", CFG.UI_ITEM_METER_SHOW, 2, new Coord(x, y));
 		y += 15;
-		meterRadioGroup.add("Show meter as number", CFG.UI_ITEM_METER_SHOW, 3, "If checked all item progress meters show number values", new Coord(x, y));
+		meterRadioGroup.add("Show meter as number", CFG.UI_ITEM_METER_SHOW, 3, new Coord(x, y));
 		meterRadioGroup.check(meterRadioGroupCheckedIndex);
 		y += 25;
 		panel.add(new CFGCheckBox("Item meter countdown", CFG.UI_ITEM_METER_COUNTDOWN, "If checked all item progress meters will start full and empty over time"), new Coord(x, y));
