@@ -45,6 +45,40 @@ public class MapSaver {
 
 	private Map<String, Coord> mapTiles = new HashMap<>();
 
+	enum Type {
+
+		NORMAL("map"), CAVE("cave"), HOUSE(null);
+
+		public final String folder;
+
+		Type(String folder) {
+			this.folder = folder;
+		}
+	}
+
+	private static Type gettype(MCache m, MCache.Grid g) {
+		Coord c = new Coord(), sz = MCache.cmaps;
+		for (c.y = 0; c.y < sz.y; c.y++) {
+			for (c.x = 0; c.x < sz.x; c.x++) {
+				int t = g.gettile(c);
+				try {
+					Resource rq = m.tilesetr(t);
+					if (rq != null) {
+						switch (rq.name) {
+							case "gfx/tiles/nil":
+								return Type.HOUSE;
+							case "gfx/tiles/cave":
+							case "gfx/tiles/mine":
+								return Type.CAVE;
+						}
+					}
+				} catch (Loading ignored) {
+				}
+			}
+		}
+		return Type.NORMAL;
+	}
+
 	public MapSaver(UI ui) {
 		this.ui = ui;
 	}
@@ -90,18 +124,6 @@ public class MapSaver {
 		}
 	}
 
-	private BufferedImage getTileImage(int t) {
-		Resource r = ui.sess.glob.map.tilesetr(t);
-		if (r == null) {
-			return null;
-		}
-		Resource.Image ir = r.layer(Resource.imgc);
-		if (ir == null) {
-			return null;
-		}
-		return ir.img;
-	}
-
 	// Modified version of LocalMinimap.drawmap
 	private ImageAndFingerprint drawMapImage(MCache m, MCache.Grid g, Coord ul) {
 		BufferedImage[] texes = new BufferedImage[256];
@@ -130,10 +152,6 @@ public class MapSaver {
 				if (tex == null) {
 					Resource r = m.tilesetr(t);
 					if (r.name.equals("gfx/tiles/nil")) {
-						return null;
-					}
-					boolean isCave = r.name.equals("gfx/tiles/mine") || r.name.equals("gfx/tiles/cave");
-					if (isCave) {
 						return null;
 					}
 					Resource.Image ir = r.layer(Resource.imgc);
@@ -192,12 +210,16 @@ public class MapSaver {
 			Coord normc = c.sub(origin);
 			String fileName = String.format("tile_%d_%d.png", normc.x, normc.y);
 			try {
-				File file = Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true);
+				Type type = gettype(m, g);
+				if (type == Type.HOUSE) {
+					return;
+				}
+				File file = type == Type.NORMAL ? Globals.MapFile(SESSION_TIMESTAMP + "/" + fileName, true) : Globals.CaveFile(SESSION_TIMESTAMP + "/" + fileName, true);
 				ImageIO.write(res.im, "png", file);
 				if (res.fp != 0L) {
 					String fingerprint = Long.toHexString(res.fp);
 					mapTiles.put(fingerprint, normc);
-					FileWriter fpWriter = new FileWriter(Globals.MapFile(SESSION_TIMESTAMP + "/fingerprints.txt", true), true);
+					FileWriter fpWriter = new FileWriter(type == Type.NORMAL ? Globals.MapFile(SESSION_TIMESTAMP + "/fingerprints.txt", true) : Globals.CaveFile(SESSION_TIMESTAMP + "/fingerprints.txt", true), true);
 					fpWriter.write(String.format("%1$-25s %2$4d %3$4d %4$s\n", fingerprint, normc.x, normc.y, file.getPath()));
 					fpWriter.flush();
 				} else {
@@ -224,11 +246,6 @@ public class MapSaver {
 	}
 
 	public void recordMapTile(final MCache m, final MCache.Grid g) {
-		final Coord c = g.gc;
-		if (lastCoord == null || Math.abs(lastCoord.sub(c).x) > 5 || Math.abs(lastCoord.sub(c).y) > 5) {
-			newSession(c);
-		}
-		lastCoord = c;
 		Defer.later(new Defer.Callable<Void>() {
 			@Override
 			public Void call() throws InterruptedException {

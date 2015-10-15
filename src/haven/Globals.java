@@ -204,6 +204,7 @@ public class Globals {
 		}
 	}
 
+	private final static String caveFolder = "cave";
 	private final static String chatFolder = "chat";
 	private final static String dataFolder = "data";
 	private final static String logFolder = "log";
@@ -277,6 +278,39 @@ public class Globals {
 		String folderStr = CustomFolderString(folderName, useDefault, sessionTimestamp);
 		String fileStr = Paths.get(folderStr, fileName).toString();
 		return fileStr;
+	}
+
+	// Cave functions
+	public static File CaveFolder() {
+		return CaveFolder(false);
+	}
+
+	public static File CaveFolder(boolean useDefault) {
+		return CustomFolder(caveFolder, useDefault);
+	}
+
+	public static String CaveFolderString() {
+		return CaveFolderString(false);
+	}
+
+	public static String CaveFolderString(boolean useDefault) {
+		return CustomFolderString(caveFolder, useDefault);
+	}
+
+	public static File CaveFile(String fileName) {
+		return CaveFile(fileName, false);
+	}
+
+	public static File CaveFile(String fileName, boolean useDefault) {
+		return CustomFile(caveFolder, fileName, useDefault);
+	}
+
+	public static String CaveFileString(String fileName) {
+		return CaveFileString(fileName, false);
+	}
+
+	public static String CaveFileString(String fileName, boolean useDefault) {
+		return CustomFileString(caveFolder, fileName, useDefault);
 	}
 
 	// Chat functions
