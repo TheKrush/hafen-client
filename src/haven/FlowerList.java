@@ -1,12 +1,18 @@
 package haven;
 
-import java.awt.*;
+import haven.FlowerList.FlowerListItem;
+
 import java.util.*;
 
-public class FlowerList extends Scrollport {
+public class FlowerList extends WidgetList<FlowerListItem> {
 
-	public static final Color BGCOLOR = new Color(0, 0, 0, 64);
-	private final IBox box;
+	public static final Comparator<FlowerListItem> ITEM_COMPARATOR = new Comparator<FlowerListItem>() {
+		@Override
+		public int compare(FlowerListItem o1, FlowerListItem o2) {
+			return o1.name.compareTo(o2.name);
+		}
+	};
+
 	private Map<String, Boolean> items = null;
 
 	public FlowerList() {
@@ -14,22 +20,24 @@ public class FlowerList extends Scrollport {
 	}
 
 	public FlowerList(Coord sz) {
-		this(new HashMap<String, Boolean>(), sz);
+		this(new HashMap<String, Boolean>(), sz, 10);
 	}
 
 	public FlowerList(Map<String, Boolean> items) {
-		this(items, new Coord(200, 250));
+		this(items, new Coord(200, 25), 10);
 	}
 
 	public FlowerList(Map<String, Boolean> items, Coord sz) {
-		super(sz);
-		this.items = items;
-		box = new IBox("gfx/hud/box", "tl", "tr", "bl", "br", "extvl", "extvr", "extht", "exthb");
+		this(items, sz, 10);
+	}
 
-		int i = 0;
+	public FlowerList(Map<String, Boolean> items, Coord sz, int h) {
+		super(sz, h);
+		this.items = items;
+
 		if (this.items != null) {
 			for (Map.Entry<String, Boolean> entry : this.items.entrySet()) {
-				cont.add(new FlowerListItem(entry.getKey(), entry.getValue()), 0, 25 * i++);
+				additem(new FlowerListItem(entry.getKey(), entry.getValue()));
 			}
 		}
 
@@ -55,6 +63,7 @@ public class FlowerList extends Scrollport {
 					items.remove(name);
 				}
 				remove(name);
+				removeitem((FlowerListItem) sender, true);
 				ui.destroy(sender);
 				update();
 				break;
@@ -76,7 +85,7 @@ public class FlowerList extends Scrollport {
 				items.put(name, true);
 			}
 			change(name, checked);
-			cont.add(new FlowerListItem(name, checked), new Coord());
+			additem(new FlowerListItem(name, checked));
 			update();
 		}
 	}
@@ -88,29 +97,17 @@ public class FlowerList extends Scrollport {
 	}
 
 	private void update() {
-		LinkedList<String> order = new LinkedList<>(items.keySet());
-		Collections.sort(order);
-		for (Widget wdg = cont.lchild; wdg != null; wdg = wdg.prev) {
-			int i = order.indexOf(((FlowerListItem) wdg).name);
-			wdg.c.y = 25 * i;
+		Collections.sort(list, ITEM_COMPARATOR);
+		int n = listitems();
+		for (int i = 0; i < n; i++) {
+			listitem(i).c = itempos(i);
 		}
-		cont.update();
-	}
-
-	@Override
-	public void draw(GOut g) {
-		g.chcolor(BGCOLOR);
-		g.frect(Coord.z, sz);
-		g.chcolor();
-		super.draw(g);
-		box.draw(g, Coord.z, sz);
 	}
 
 	protected static class FlowerListItem extends Widget {
 
 		public final String name;
 		private final CheckBox cb;
-		private boolean highlight = false;
 		private boolean a = false;
 		private UI.Grab grab;
 
@@ -126,23 +123,7 @@ public class FlowerList extends Scrollport {
 			cb.a = checked;
 			cb.canactivate = true;
 
-			add(new Button(24, "X"), 165, 0);
-		}
-
-		@Override
-		public void draw(GOut g) {
-			if (highlight) {
-				g.chcolor(Listbox.overc);
-				g.frect(Coord.z, sz);
-				g.chcolor();
-			}
-			super.draw(g);
-		}
-
-		@Override
-		public void mousemove(Coord c) {
-			highlight = c.isect(Coord.z, sz);
-			super.mousemove(c);
+			add(new Button(24, "X"), 175, 0);
 		}
 
 		@Override

@@ -175,7 +175,7 @@ public class LocalMiniMap extends Widget {
 						Tex tex = marker.tex();
 						if (tex != null) {
 							g.chcolor(marker.color());
-							g.image(tex, gc.sub(tex.sz().div(2)));
+							g.aimage(tex, gc, 0.5, 0.5);
 						}
 					} catch (Loading ignored) {
 					}
@@ -212,19 +212,19 @@ public class LocalMiniMap extends Widget {
 								}
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
-							Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.valo();
+							Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.<Map<String, Boolean>>valo();
 							Tex tex = iconTexMap.get("bumling");
 							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
 								g.image(tex, gc.sub(tex.sz().div(2)));
 							}
 						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
-							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.valo();
+							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.<Map<String, Boolean>>valo();
 							Tex tex = iconTexMap.get("bush");
 							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
 								g.image(tex, gc.sub(tex.sz().div(2)));
 							}
 						} else if (res.name.startsWith("gfx/terobjs/trees")) {
-							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.valo();
+							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.<Map<String, Boolean>>valo();
 							Tex tex = iconTexMap.get("tree");
 							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
 								g.image(tex, gc.sub(tex.sz().div(2)));
@@ -243,7 +243,7 @@ public class LocalMiniMap extends Widget {
 		if (gob != null) {
 			Radar.Marker icon = gob.getattr(Radar.Marker.class);
 			if (icon != null) {
-				return icon.tooltip();
+				return icon.tooltip(ui.modshift);
 			}
 		}
 		return super.tooltip(c, prev);
@@ -257,6 +257,9 @@ public class LocalMiniMap extends Widget {
 					Radar.Marker icon = li.previous();
 					try {
 						Gob gob = icon.gob;
+						if (gob.id == mv.plgob) {
+							continue;
+						}
 						Tex tex = icon.tex();
 						if (tex != null) {
 							Coord gc = p2c(gob.rc);
@@ -370,8 +373,8 @@ public class LocalMiniMap extends Widget {
 							continue;
 						}
 						ptc = p2c(ptc);
-						g.chcolor(m.col.getRed(), m.col.getGreen(), m.col.getBlue(), 255);
-						g.image(MiniMap.plx.layer(Resource.imgc).tex(), ptc.add(MiniMap.plx.layer(Resource.negc).cc.inv()));
+						g.chcolor(m.col);
+						g.aimage(MiniMap.plx.layer(Resource.imgc).tex(), ptc, 0.5, 0.5);
 						g.chcolor();
 					}
 				}

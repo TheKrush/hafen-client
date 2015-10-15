@@ -1086,7 +1086,7 @@ public class ChatUI extends Widget {
 			chan.c = chansel.c.add(chansel.sz.x, 0);
 			chan.resize(sz.x - marg.x - chan.c.x, sz.y - chan.c.y);
 			super.add(w);
-			select(chan);
+			select(chan, false);
 			chansel.add(chan);
 			return (w);
 		} else {
@@ -1249,7 +1249,7 @@ public class ChatUI extends Widget {
 		}
 	}
 
-	public void select(Channel chan) {
+	public void select(Channel chan, boolean focus) {
 		Channel prev = sel;
 		sel = chan;
 		if (prev != null) {
@@ -1257,6 +1257,13 @@ public class ChatUI extends Widget {
 		}
 		sel.show();
 		resize(sz);
+		if (focus || hasfocus) {
+			setfocus(chan);
+		}
+	}
+
+	public void select(Channel chan) {
+		select(chan, true);
 		setfocus(chan);
 	}
 
@@ -1373,6 +1380,11 @@ public class ChatUI extends Widget {
 	public void sresize(int h) {
 		clearanims(Spring.class);
 		new Spring(targeth = h);
+	}
+
+	public void hresize(int h) {
+		clearanims(Spring.class);
+		resize(sz.x, targeth = h);
 	}
 
 	public void resize(int w) {

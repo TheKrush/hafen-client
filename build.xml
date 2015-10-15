@@ -82,13 +82,13 @@
 			<fileset dir="resources/compiled" />
 			<file file="etc/map.html"/>
 			<file file="etc/data.json"/>
-			<file file="etc/radar.json"/>
+			<file file="etc/radar.xml"/>
 		</jar>
 		<jar destfile="dist/client-res.jar" update="true">
 			<fileset dir="resources/compiled" />
 			<file file="etc/map.html"/>
 			<file file="etc/data.json"/>
-			<file file="etc/radar.json"/>
+			<file file="etc/radar.xml"/>
 		</jar>
 	</target>
 

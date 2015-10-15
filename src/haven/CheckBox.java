@@ -32,6 +32,7 @@ public class CheckBox extends Widget {
 	public final Tex box, mark;
 	public final Coord loff;
 	public boolean a = false;
+	public boolean hitbox = false;
 	Text lbl;
 
 	@RName("chk")
@@ -67,6 +68,9 @@ public class CheckBox extends Widget {
 	public boolean mousedown(Coord c, int button) {
 		if (button != 1) {
 			return (false);
+		}
+		if (hitbox && !c.isect(Coord.z, box.sz())) {
+			return false;
 		}
 		set(!a);
 		return (true);
