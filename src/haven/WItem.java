@@ -26,7 +26,6 @@
 package haven;
 
 import static haven.Inventory.sqsz;
-import haven.QualityList.QualityType;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -34,7 +33,7 @@ import java.util.List;
 public class WItem extends Widget implements DTarget {
 
 	public static final Resource missing = Resource.local().loadwait("gfx/invobjs/missing");
-	public static final Coord Q_POS = new Coord(0, -3);
+	public static final Coord TEXT_PADD_TOP = new Coord(0, -3), TEXT_PADD_BOT = new Coord(0, 2);
 	public static final Color DURABILITY_COLOR = new Color(214, 253, 255);
 	public static final Color ARMOR_COLOR = new Color(255, 227, 191);
 	public final GItem item;
@@ -220,6 +219,11 @@ public class WItem extends Widget implements DTarget {
 
 	public final AttrCache<Tex> durability = new AttrCache<Tex>() {
 		@Override
+		public Tex get() {
+			return CFG.UI_ITEM_DURABILITY.valb() ? super.get() : null;
+		}
+
+		@Override
 		protected Tex find(List<ItemInfo> info) {
 			ItemInfo.Wear wear = ItemInfo.getWear(info);
 			if (wear == null) {
@@ -237,6 +241,11 @@ public class WItem extends Widget implements DTarget {
 	};
 
 	public final AttrCache<Tex> armor = new AttrCache<Tex>() {
+		@Override
+		public Tex get() {
+			return CFG.UI_ITEM_ARMOR.valb() ? super.get() : null;
+		}
+
 		@Override
 		protected Tex find(List<ItemInfo> info) {
 			ItemInfo.Wear wear = ItemInfo.getArmor(info);
@@ -281,27 +290,45 @@ public class WItem extends Widget implements DTarget {
 			drawmain(g, spr);
 			g.defstate();
 			drawnum(g, sz);
-			if (item.meter > 0) {
-				double a = ((double) item.meter) / 100.0;
-				if (CFG.UI_ITEM_METER_COUNTDOWN.valb()) {
-					a = 1 - a;
-				}
-				g.chcolor(
-								Math.round(255 * CFG.UI_ITEM_METER_RED.valf()),
-								Math.round(255 * CFG.UI_ITEM_METER_GREEN.valf()),
-								Math.round(255 * CFG.UI_ITEM_METER_BLUE.valf()),
-								Math.round(255 * CFG.UI_ITEM_METER_ALPHA.valf()));
-				if (CFG.UI_ITEM_METER_PROGRESSBAR.valb()) {
-					g.frect(Coord.z, new Coord((int) (sz.x / (100 / (double) (a * 100))), 4));
-				} else {
-					Coord half = sz.div(2);
-					g.prect(half, half.inv(), half, a * Math.PI * 2);
-				}
-				g.chcolor();
-			}
+			drawmeter(g, sz);
 			drawq(g);
 		} else {
 			g.image(missing.layer(Resource.imgc).tex(), Coord.z, sz);
+		}
+	}
+
+	private void drawmeter(GOut g, Coord sz) {
+		if (item.meter > 0) {
+			int meter = item.meter;
+			if (CFG.UI_ITEM_METER_COUNTDOWN.valb()) {
+				meter = 100 - meter;
+			}
+			double a = ((double) meter) / 100.0;
+
+			Color color = new Color(
+							Math.round(255 * CFG.UI_ITEM_METER_RED.valf()),
+							Math.round(255 * CFG.UI_ITEM_METER_GREEN.valf()),
+							Math.round(255 * CFG.UI_ITEM_METER_BLUE.valf()),
+							Math.round(255 * CFG.UI_ITEM_METER_ALPHA.valf()));
+
+			g.chcolor(color);
+			switch (CFG.UI_ITEM_METER_SHOW.vali()) {
+				case 0:
+					break;
+				case 1:
+					Coord half = sz.div(2);
+					g.prect(half, half.inv(), half, a * Math.PI * 2);
+					break;
+				case 2:
+					g.frect(Coord.z, new Coord((int) (sz.x / (100 / (double) (a * 100))), 4));
+					break;
+				case 3:
+					Tex tex = Text.renderstroked(String.format("%d%%", meter), color).tex();
+					g.aimage(tex, sz.div(2), 0.5, 0.5);
+					tex.dispose();
+					break;
+			}
+			g.chcolor();
 		}
 	}
 
@@ -324,17 +351,30 @@ public class WItem extends Widget implements DTarget {
 	}
 
 	private void drawnum(GOut g, Coord sz) {
+		Tex tex;
 		if (item.num >= 0) {
-			g.atext(Integer.toString(item.num), sz, 1, 1);
-		} else if (itemnum.get() != null) {
-			g.aimage(itemnum.get(), sz, 1, 1);
-		} else if (heurnum.get() != null) {
-			g.aimage(heurnum.get(), sz, 1, 1);
-		} else if (CFG.UI_ITEM_ARMOR.valb() && armor.get() != null) {
-			g.aimage(armor.get(), sz, 1, 1);
-		} else if (CFG.UI_ITEM_DURABILITY.valb() && durability.get() != null) {
-			g.aimage(durability.get(), sz, 1, 1);
+			tex = Text.render(Integer.toString(item.num)).tex();
+		} else {
+			tex = chainattr(itemnum, heurnum, armor, durability);
 		}
+		if (tex != null) {
+			if (CFG.UI_ITEM_QUALITY_SWAP.valb()) {
+				g.aimage(tex, TEXT_PADD_TOP.add(sz.x, 0), 1, 0);
+			} else {
+				g.aimage(tex, TEXT_PADD_BOT.add(sz), 1, 1);
+			}
+		}
+	}
+
+	@SafeVarargs //actually, method just assumes you'll feed it correctly typed var args
+	private static Tex chainattr(AttrCache<Tex>... attrs) {
+		for (AttrCache<Tex> attr : attrs) {
+			Tex tex = attr.get();
+			if (tex != null) {
+				return tex;
+			}
+		}
+		return null;
 	}
 
 	private void drawq(GOut g) {
@@ -347,29 +387,21 @@ public class WItem extends Widget implements DTarget {
 				switch (CFG.UI_ITEM_QUALITY_SHOW.vali()) {
 					case 0:
 						break;
-					case 1:
-						tex = quality.single(true).tex();
-						break;
-					case 2:
-						tex = quality.single(false).tex();
-						break;
-					case 3:
-						tex = quality.single(QualityType.Essence).tex();
-						break;
-					case 4:
-						tex = quality.single(QualityType.Substance).tex();
-						break;
-					case 5:
-						tex = quality.single(QualityType.Vitality).tex();
-						break;
 					case 6:
 						tex = quality.tex();
+						break;
+					default:
+						tex = quality.tex(quality.single());
 						break;
 				}
 			}
 
 			if (tex != null) {
-				g.aimage(tex, Q_POS.add(sz.x, 0), 1, 0);
+				if (CFG.UI_ITEM_QUALITY_SWAP.valb()) {
+					g.aimage(tex, TEXT_PADD_BOT.add(sz), 1, 1);
+				} else {
+					g.aimage(tex, TEXT_PADD_TOP.add(sz.x, 0), 1, 0);
+				}
 			}
 		}
 	}

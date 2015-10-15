@@ -53,12 +53,13 @@ public enum CFG {
 	UI_ITEM_BAR_WEAR("ui.item.bar.wear", false),
 	UI_ITEM_DURABILITY("ui.item.durability", false),
 	UI_ITEM_METER_COUNTDOWN("ui.item.meter.countdown", false),
-	UI_ITEM_METER_PROGRESSBAR("ui.item.meter.progressbar", false),
+	UI_ITEM_METER_SHOW("ui.item.meter.show", 1), // show default
 	UI_ITEM_METER_RED("ui.item.meter.red", 1f),
 	UI_ITEM_METER_GREEN("ui.item.meter.green", 1f),
 	UI_ITEM_METER_BLUE("ui.item.meter.blue", 1f),
 	UI_ITEM_METER_ALPHA("ui.item.meter.alpha", 0.25f),
 	UI_ITEM_QUALITY_SHOW("ui.item.quality.show", 1), // show single average
+	UI_ITEM_QUALITY_SWAP("ui.item.quality.swap", false),
 	UI_ITEM_QUALITY_CONTENTS("ui.item.quality.contents", true),
 	UI_HSLIDER_VALUE_SHOW("ui.hslider.value.show", false),
 	UI_KIN_STATUS("ui.kin.status", true),

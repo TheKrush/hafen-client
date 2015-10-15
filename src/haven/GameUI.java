@@ -123,7 +123,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		chat = add(new ChatUI(0, 0));
 		timelbl = add(new Label("", 20, new Text.Foundry(Text.mono, 15)));
 		if (Utils.getprefb("chatvis", true)) {
-			chat.resize(0, chat.savedh);
+			chat.hresize(chat.savedh);
 			chat.show();
 		}
 		beltwdg.raise();
