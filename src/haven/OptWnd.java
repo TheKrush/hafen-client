@@ -747,6 +747,8 @@ public class OptWnd extends Window {
 			}
 		}, new Coord(x, y));
 		y += 25;
+		panel.add(new CFGCheckBox("Show biomes on minimap", CFG.MINIMAP_BIOME_SHOW, "If mouse is over minimap it shows name of biome it is over, otherwise it shows biome player is in"), new Coord(x, y));
+		y += 25;
 		panel.add(new CFGCheckBox("Use Ender's Radar", CFG.MINIMAP_RADAR, "If this is enabled all the other minimap icon options are ignored"), new Coord(x, y));
 		y += 25;
 
