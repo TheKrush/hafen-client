@@ -1129,7 +1129,11 @@ public class CharWnd extends Window {
 		private final Comparator<Wound> wcomp = new Comparator<Wound>() {
 			@Override
 			public int compare(Wound a, Wound b) {
-				return (a.sortkey.compareTo(b.sortkey));
+				int c = a.sortkey.compareTo(b.sortkey);
+				if (c == 0 && a.qdata instanceof Integer && b.qdata instanceof Integer) {
+					c = Integer.compare((Integer) b.qdata, (Integer) a.qdata);
+				}
+				return c;
 			}
 		};
 

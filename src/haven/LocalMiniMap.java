@@ -58,6 +58,8 @@ public class LocalMiniMap extends Widget {
 	};
 	private Coord off = new Coord(0, 0);
 	private Coord doff = null;
+	private String biome;
+	private Tex biometex = null;
 
 	private static final Map<String, Tex> iconTexMap = new HashMap<String, Tex>(3) {
 		{
@@ -295,19 +297,42 @@ public class LocalMiniMap extends Widget {
 	}
 
 	@Override
-	public void tick(double dt
-	) {
+	public void tick(double dt) {
 		Gob pl = ui.sess.glob.oc.getgob(mv.plgob);
 		if (pl == null) {
 			this.cc = null;
 			return;
 		}
 		this.cc = pl.rc.div(tilesz);
+
+		Coord mc = rootxlate(ui.mc);
+		if (mc.isect(Coord.z, sz)) {
+			setBiome(c2p(mc).div(tilesz));
+		} else {
+			setBiome(cc);
+		}
+	}
+
+	private void setBiome(Coord c) {
+		try {
+			int t = mv.ui.sess.glob.map.gettile(c);
+			Resource r = ui.sess.glob.map.tilesetr(t);
+			String newbiome;
+			if (r != null) {
+				newbiome = (r.name);
+			} else {
+				newbiome = "Void";
+			}
+			if (!newbiome.equals(biome)) {
+				biome = newbiome;
+				biometex = Text.renderstroked(prettybiome(biome)).tex();
+			}
+		} catch (Loading ignored) {
+		}
 	}
 
 	@Override
-	public void draw(GOut g
-	) {
+	public void draw(GOut g) {
 		if (cc == null) {
 			return;
 		}
@@ -404,11 +429,22 @@ public class LocalMiniMap extends Widget {
 			} catch (Loading ignored) {
 			}
 		}
+
+		if (CFG.MINIMAP_BIOME_SHOW.valb()) {
+			Coord mc = rootxlate(ui.mc);
+			if (mc.isect(Coord.z, sz)) {
+				setBiome(c2p(mc).div(tilesz));
+			} else {
+				setBiome(cc);
+			}
+			if (biometex != null) {
+				g.image(biometex, Coord.z);
+			}
+		}
 	}
 
 	@Override
-	public boolean mousedown(Coord c, int button
-	) {
+	public boolean mousedown(Coord c, int button) {
 		if (cc == null) {
 			return (false);
 		}
@@ -449,5 +485,12 @@ public class LocalMiniMap extends Widget {
 		synchronized (cache) {
 			cache.clear();
 		}
+	}
+
+	private static String prettybiome(String biome) {
+		int k = biome.lastIndexOf("/");
+		biome = biome.substring(k + 1);
+		biome = biome.substring(0, 1).toUpperCase() + biome.substring(1);
+		return biome;
 	}
 }

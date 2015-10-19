@@ -39,6 +39,7 @@ public enum CFG {
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
 	HOTKEY_MOUSE_FOLLOW("hotkey.mouse.follow", false),
+	MINIMAP_BIOME_SHOW("minimap.biome.show", false),
 	MINIMAP_FLOATING("minimap.floating", false),
 	MINIMAP_GRID("minimap.grid", false),
 	MINIMAP_BUMLINGS("minimap.bumlings", new HashMap<String, Boolean>()),
