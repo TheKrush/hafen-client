@@ -30,15 +30,7 @@ public class Radar {
 	}
 
 	public static void add(Gob gob) {
-		Drawable drawable = gob.getattr(Drawable.class);
-		Indir<Resource> res = null;
-		if (drawable != null) {
-			if (drawable instanceof Composite) {
-				res = ((Composite) drawable).base;
-			} else if (drawable instanceof ResDrawable) {
-				res = ((ResDrawable) drawable).res;
-			}
-		}
+		Indir<Resource> res = gob.getires();
 		if (res != null) {
 			add(gob, res);
 		}

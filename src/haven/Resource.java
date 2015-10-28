@@ -514,6 +514,10 @@ public class Resource implements Serializable {
 			return (load(name, -1));
 		}
 
+		public Indir<Resource> dynres(long id) {
+			return (load(String.format("dyn/%x", id), 1));
+		}
+
 		private void ckld() {
 			int qsz;
 			synchronized (queue) {
@@ -1132,7 +1136,7 @@ public class Resource implements Serializable {
 				}
 
 				@Override
-				protected BufferedImage fill() {
+				public BufferedImage fill() {
 					BufferedImage buf = TexI.mkbuf(dim);
 					Graphics g = buf.createGraphics();
 					for (int i = 0; i < nt; i++) {

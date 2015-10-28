@@ -32,7 +32,7 @@ import java.lang.ref.*;
 
 public class Session {
 
-	public static final int PVER = 2;
+	public static final int PVER = 3;
 
 	public static final int MSG_SESS = 0;
 	public static final int MSG_REL = 1;
@@ -203,10 +203,6 @@ public class Session {
 		return (cachedres(id).get());
 	}
 
-	public Indir<Resource> dynres(long id) {
-		return (Resource.remote().load(String.format("dyn/%x", id), 1));
-	}
-
 	private class ObjAck {
 
 		long id;
@@ -372,13 +368,18 @@ public class Session {
 									break;
 								}
 								Indir<Resource> modr = getres(modid);
-								List<Indir<Resource>> tex = new LinkedList<>();
+								List<ResData> tex = new LinkedList<ResData>();
 								while (true) {
 									int resid = msg.uint16();
 									if (resid == 65535) {
 										break;
 									}
-									tex.add(getres(resid));
+									Message sdt = Message.nil;
+									if ((resid & 0x8000) != 0) {
+										resid &= ~0x8000;
+										sdt = new MessageBuf(msg.bytes(msg.uint8()));
+									}
+									tex.add(new ResData(getres(resid), sdt));
 								}
 								mod.add(new Composited.MD(modr, tex));
 							}

@@ -166,76 +166,78 @@ public class LocalMiniMap extends Widget {
 	}
 
 	public void drawicons(GOut g) {
-		if (CFG.MINIMAP_RADAR.valb()) {
-			synchronized (Radar.markers) {
-				for (Radar.Marker marker : Radar.markers) {
-					if (marker.gob.id == mv.plgob) {
-						continue;
-					}
-					try {
-						Coord gc = p2c(marker.gob.rc);
-						Tex tex = marker.tex();
-						if (tex != null) {
-							g.chcolor(marker.color());
-							g.aimage(tex, gc, 0.5, 0.5);
-						}
-					} catch (Loading ignored) {
-					}
-				}
-			}
-			g.chcolor();
-			return;
-		}
+		switch (CFG.MINIMAP_RADAR.vali()) {
+			case 0: // romov
+				OCache oc = ui.sess.glob.oc;
+				synchronized (oc) {
+					for (Gob gob : oc) {
+						try {
+							Resource res = gob.getres();
 
-		OCache oc = ui.sess.glob.oc;
-		synchronized (oc) {
-			for (Gob gob : oc) {
-				try {
-					Resource res = gob.getres();
-
-					GobIcon icon = gob.getattr(GobIcon.class);
-					Coord gc = p2c(gob.rc);
-					if (icon != null) {
-						Tex tex = icon.tex();
-						g.image(tex, gc.sub(tex.sz().div(2)));
-					} else if (res != null) {
-						String basename = res.basename().replaceAll("\\d*$", "");
-						if ("body".equals(basename)) {
-							if (CFG.MINIMAP_PLAYERS.valb()) {
-								KinInfo kininfo = gob.getattr(KinInfo.class);
-								if (gob.id == mv.player().id) {
-								} else if (!ui.sess.glob.party.memberGobIds().contains(gob.id)) {
-									Color cl = kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY;
-									if (!playerTex.containsKey(cl)) {
-										playerTex.put(cl, Tex.fellipse(new Coord(10, 10), cl, Color.BLACK, 1));
+							GobIcon icon = gob.getattr(GobIcon.class);
+							Coord gc = p2c(gob.rc);
+							if (icon != null) {
+								Tex tex = icon.tex();
+								g.image(tex, gc.sub(tex.sz().div(2)));
+							} else if (res != null) {
+								String basename = res.basename().replaceAll("\\d*$", "");
+								if ("body".equals(basename)) {
+									if (CFG.MINIMAP_PLAYERS.valb()) {
+										KinInfo kininfo = gob.getattr(KinInfo.class);
+										if (gob.id == mv.player().id) {
+										} else if (!ui.sess.glob.party.memberGobIds().contains(gob.id)) {
+											Color cl = kininfo != null ? BuddyWnd.gc[kininfo.group] : Color.DARK_GRAY;
+											if (!playerTex.containsKey(cl)) {
+												playerTex.put(cl, Tex.fellipse(new Coord(10, 10), cl, Color.BLACK, 1));
+											}
+											Tex tex = playerTex.get(cl);
+											g.image(tex, gc.sub(tex.sz().div(2)));
+										}
 									}
-									Tex tex = playerTex.get(cl);
-									g.image(tex, gc.sub(tex.sz().div(2)));
+								} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
+									Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.<Map<String, Boolean>>valo();
+									Tex tex = iconTexMap.get("bumling");
+									if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
+										g.image(tex, gc.sub(tex.sz().div(2)));
+									}
+								} else if (res.name.startsWith("gfx/terobjs/bushes")) {
+									Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.<Map<String, Boolean>>valo();
+									Tex tex = iconTexMap.get("bush");
+									if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
+										g.image(tex, gc.sub(tex.sz().div(2)));
+									}
+								} else if (res.name.startsWith("gfx/terobjs/trees")) {
+									Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.<Map<String, Boolean>>valo();
+									Tex tex = iconTexMap.get("tree");
+									if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
+										g.image(tex, gc.sub(tex.sz().div(2)));
+									}
 								}
 							}
-						} else if (res.name.startsWith("gfx/terobjs/bumlings")) {
-							Map<String, Boolean> mapVal = CFG.MINIMAP_BUMLINGS.<Map<String, Boolean>>valo();
-							Tex tex = iconTexMap.get("bumling");
-							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
-								g.image(tex, gc.sub(tex.sz().div(2)));
-							}
-						} else if (res.name.startsWith("gfx/terobjs/bushes")) {
-							Map<String, Boolean> mapVal = CFG.MINIMAP_BUSHES.<Map<String, Boolean>>valo();
-							Tex tex = iconTexMap.get("bush");
-							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
-								g.image(tex, gc.sub(tex.sz().div(2)));
-							}
-						} else if (res.name.startsWith("gfx/terobjs/trees")) {
-							Map<String, Boolean> mapVal = CFG.MINIMAP_TREES.<Map<String, Boolean>>valo();
-							Tex tex = iconTexMap.get("tree");
-							if (mapVal.containsValue(true) && mapVal.containsKey(basename) && mapVal.get(basename)) {
-								g.image(tex, gc.sub(tex.sz().div(2)));
-							}
+						} catch (Loading l) {
 						}
 					}
-				} catch (Loading l) {
 				}
-			}
+				break;
+			case 1: // ender
+				synchronized (Radar.markers) {
+					for (Radar.Marker marker : Radar.markers) {
+						if (marker.gob.id == mv.plgob) {
+							continue;
+						}
+						try {
+							Coord gc = p2c(marker.gob.rc);
+							Tex tex = marker.tex();
+							if (tex != null) {
+								g.chcolor(marker.color());
+								g.aimage(tex, gc, 0.5, 0.5);
+							}
+						} catch (Loading ignored) {
+						}
+					}
+				}
+				g.chcolor();
+				break;
 		}
 	}
 
@@ -252,47 +254,50 @@ public class LocalMiniMap extends Widget {
 	}
 
 	public Gob findicongob(Coord c) {
-		if (CFG.MINIMAP_RADAR.valb()) {
-			synchronized (Radar.markers) {
-				ListIterator<Radar.Marker> li = Radar.markers.listIterator(Radar.markers.size());
-				while (li.hasPrevious()) {
-					Radar.Marker icon = li.previous();
-					try {
-						Gob gob = icon.gob;
-						if (gob.id == mv.plgob) {
-							continue;
-						}
-						Tex tex = icon.tex();
-						if (tex != null) {
-							Coord gc = p2c(gob.rc);
-							Coord sz = tex.sz();
-							if (c.isect(gc.sub(sz.div(2)), sz)) {
-								return (gob);
+		switch (CFG.MINIMAP_RADAR.vali()) {
+			case 0: // romov
+				OCache oc = ui.sess.glob.oc;
+				synchronized (oc) {
+					for (Gob gob : oc) {
+						try {
+							GobIcon icon = gob.getattr(GobIcon.class);
+							if (icon != null) {
+								Coord gc = p2c(gob.rc);
+								Coord sz = icon.tex().sz();
+								if (c.isect(gc.sub(sz.div(2)), sz)) {
+									return (gob);
+								}
 							}
+						} catch (Loading l) {
 						}
-					} catch (Loading ignored) {
 					}
 				}
-			}
-			return (null);
+				break;
+			case 1: // ender
+				synchronized (Radar.markers) {
+					ListIterator<Radar.Marker> li = Radar.markers.listIterator(Radar.markers.size());
+					while (li.hasPrevious()) {
+						Radar.Marker icon = li.previous();
+						try {
+							Gob gob = icon.gob;
+							if (gob.id == mv.plgob) {
+								continue;
+							}
+							Tex tex = icon.tex();
+							if (tex != null) {
+								Coord gc = p2c(gob.rc);
+								Coord sz = tex.sz();
+								if (c.isect(gc.sub(sz.div(2)), sz)) {
+									return (gob);
+								}
+							}
+						} catch (Loading ignored) {
+						}
+					}
+				}
+				break;
 		}
 
-		OCache oc = ui.sess.glob.oc;
-		synchronized (oc) {
-			for (Gob gob : oc) {
-				try {
-					GobIcon icon = gob.getattr(GobIcon.class);
-					if (icon != null) {
-						Coord gc = p2c(gob.rc);
-						Coord sz = icon.tex().sz();
-						if (c.isect(gc.sub(sz.div(2)), sz)) {
-							return (gob);
-						}
-					}
-				} catch (Loading l) {
-				}
-			}
-		}
 		return (null);
 	}
 
@@ -384,50 +389,36 @@ public class LocalMiniMap extends Widget {
 
 		drawicons(g);
 
-		if (CFG.MINIMAP_RADAR.valb()) {
-			try {
-				synchronized (ui.sess.glob.party.memb) {
-					for (Party.Member m : ui.sess.glob.party.memb.values()) {
-						Coord ptc;
-						try {
-							ptc = m.getc();
-						} catch (MCache.LoadingMap e) {
-							ptc = null;
-						}
-						if (ptc == null) {
-							continue;
-						}
-						ptc = p2c(ptc);
-						g.chcolor(m.col);
-						g.aimage(MiniMap.plx.layer(Resource.imgc).tex(), ptc, 0.5, 0.5);
-						g.chcolor();
+		try {
+			synchronized (ui.sess.glob.party.memb) {
+				for (Party.Member m : ui.sess.glob.party.memb.values()) {
+					Coord ptc;
+					try {
+						ptc = m.getc();
+					} catch (MCache.LoadingMap e) {
+						ptc = null;
+					}
+					if (ptc == null) {
+						continue;
+					}
+					ptc = p2c(ptc);
+					switch (CFG.MINIMAP_RADAR.vali()) {
+						case 0: // romov
+							if (!partyTex.containsKey(m.col)) {
+								partyTex.put(m.col, Tex.frect(new Coord(8, 8), m.col, Color.BLACK, 1));
+							}
+							Tex tex = partyTex.get(m.col);
+							g.image(tex, ptc.sub(tex.sz().div(2)));
+							break;
+						case 1: // ender
+							g.chcolor(m.col);
+							g.aimage(MiniMap.plx.layer(Resource.imgc).tex(), ptc, 0.5, 0.5);
+							g.chcolor();
+							break;
 					}
 				}
-			} catch (Loading ignored) {
 			}
-		} else {
-			try {
-				synchronized (ui.sess.glob.party.memb) {
-					for (Party.Member m : ui.sess.glob.party.memb.values()) {
-						Coord ptc;
-						try {
-							ptc = m.getc();
-						} catch (MCache.LoadingMap e) {
-							ptc = null;
-						}
-						if (ptc == null) {
-							continue;
-						}
-						ptc = p2c(ptc);
-						if (!partyTex.containsKey(m.col)) {
-							partyTex.put(m.col, Tex.frect(new Coord(8, 8), m.col, Color.BLACK, 1));
-						}
-						Tex tex = partyTex.get(m.col);
-						g.image(tex, ptc.sub(tex.sz().div(2)));
-					}
-				}
-			} catch (Loading ignored) {
-			}
+		} catch (Loading ignored) {
 		}
 
 		if (CFG.MINIMAP_BIOME_SHOW.valb()) {

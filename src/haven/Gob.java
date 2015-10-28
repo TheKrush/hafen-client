@@ -48,7 +48,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	Map<Class<? extends GAttrib>, GAttrib> attr = new HashMap<>();
 	public Collection<Overlay> ols = new LinkedList<>();
 
-	private Overlay gobpath = null;
+	private GobPath path;
 
 	private static final Text.Foundry textFnd = new Text.Foundry(Text.sans, 14);
 	private static final Map<String, Tex> hpTex = new HashMap<>();
@@ -211,23 +211,16 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
 	public void setattr(GAttrib a) {
 		Class<? extends GAttrib> ac = attrclass(a.getClass());
-		attr.put(ac, a);
-
-		if (CFG.DISPLAY_PATH_CRITTER.valb() || CFG.DISPLAY_PATH_PLAYER.valb()) {
-			try {
-				Resource res = getres();
-				if (res != null && a.getClass() == LinMove.class) {
-					if (CFG.DISPLAY_PATH_CRITTER.valb() || ("body".equals(res.basename()) && CFG.DISPLAY_PATH_PLAYER.valb())) {
-						if (gobpath == null) {
-							gobpath = new Overlay(new GobPath(this));
-							ols.add(gobpath);
-						}
-						((GobPath) gobpath.spr).lm = (LinMove) a;
-					}
+		if (CFG.DISPLAY_PATH_GOB.valb()) {
+			if (ac == Moving.class) {
+				if (path == null) {
+					path = new GobPath(this);
+					ols.add(new Overlay(path));
 				}
-			} catch (Exception e) { // fail silently
+				path.move((Moving) a);
 			}
 		}
+		attr.put(ac, a);
 	}
 
 	public <C extends GAttrib> C getattr(Class<C> c) {
@@ -239,11 +232,10 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 	}
 
 	public void delattr(Class<? extends GAttrib> c) {
-		attr.remove(attrclass(c));
-
-		if (attrclass(c) == Moving.class) {
-			ols.remove(gobpath);
-			gobpath = null;
+		Class<? extends GAttrib> aClass = attrclass(c);
+		attr.remove(aClass);
+		if (aClass == Moving.class && path != null) {
+			path.stop();
 		}
 	}
 
@@ -381,6 +373,14 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 		return (null);
 	}
 
+	public Indir<Resource> getires() {
+		Drawable d = getattr(Drawable.class);
+		if (d != null) {
+			return (d.getires());
+		}
+		return (null);
+	}
+
 	@Override
 	public Glob glob() {
 		return (glob);
@@ -438,7 +438,7 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
 	public class GobLocation extends GLState.Abstract {
 
-		private Coord3f c = null;
+		public  Coord3f c = null;
 		private double a = 0.0;
 		private Matrix4f update = null;
 		private final Location xl = new Location(Matrix4f.id, "gobx"), rot = new Location(Matrix4f.id, "gob");

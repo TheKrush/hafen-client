@@ -86,6 +86,11 @@ public class ResDrawable extends Drawable {
 	}
 
 	@Override
+	public Indir<Resource> getires() {
+		return res;
+	}
+
+	@Override
 	public Skeleton.Pose getpose() {
 		init();
 		if (spr instanceof SkelSprite) {

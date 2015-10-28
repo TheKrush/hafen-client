@@ -56,6 +56,10 @@ public class Homing extends Moving {
 		return (new Coord3f(rx, ry, gob.glob.map.getcz(rx, ry)));
 	}
 
+	public Gob tgt() {
+		return (gob.glob.oc.getgob(this.tgt));
+	}
+
 	@Override
 	public double getv() {
 		return ((v / 100.0) / 0.06);

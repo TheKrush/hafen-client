@@ -32,6 +32,7 @@ import haven.PUtils.TexFurn;
 import static haven.PUtils.convolvedown;
 import static haven.PUtils.imgblur;
 import static haven.Window.wbox;
+import haven.cfg.CFGCheckBox;
 import haven.resutil.FoodInfo;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -737,15 +738,8 @@ public class CharWnd extends Window {
 			study.locked = CFG.UI_STUDYLOCK.valb();
 			add(new Label("Attention:"), 2, 2);
 			add(new Label("Experience cost:"), 2, 32);
-			add(new Label("Learning points:"), 2, sz.y - 32);
-			add(new Button(82, study.locked ? "Unlock study" : "Lock study") {
-				@Override
-				public void click() {
-					study.locked = !study.locked;
-					change(study.locked ? "Unlock study" : "Lock study");
-					CFG.UI_STUDYLOCK.set(study.locked);
-				}
-			}, 2, 70);
+			add(new Label("Learning points:"), 2, 62);
+			add(new CFGCheckBox("Lock study", CFG.UI_STUDYLOCK), 5, sz.y - 15);
 		}
 
 		private void upd() {
@@ -775,7 +769,7 @@ public class CharWnd extends Window {
 			g.chcolor(255, 255, 192, 255);
 			g.aimage(tenct.get().tex(), new Coord(sz.x - 4, 47), 1.0, 0.0);
 			g.chcolor(192, 192, 255, 255);
-			g.aimage(texpt.get().tex(), sz.add(-4, -15), 1.0, 0.0);
+			g.aimage(texpt.get().tex(), new Coord(sz.x - 4, 77), 1.0, 0.0);
 		}
 	}
 
