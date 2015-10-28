@@ -388,7 +388,7 @@ public class Utils {
 	public static long int64d(byte[] buf, int off) {
 		long b = 0;
 		for (int i = 0; i < 8; i++) {
-			b |= ((long) ub(buf[i])) << (i * 8);
+			b |= ((long) ub(buf[off + i])) << (i * 8);
 		}
 		return (b);
 	}
@@ -549,7 +549,7 @@ public class Utils {
 		}
 	}
 
-	static String byte2hex(byte[] in) {
+	public static String byte2hex(byte[] in) {
 		StringBuilder buf = new StringBuilder();
 		for (byte b : in) {
 			buf.append(num2hex((b & 0xf0) >> 4));
@@ -558,7 +558,7 @@ public class Utils {
 		return (buf.toString());
 	}
 
-	static byte[] hex2byte(String hex) {
+	public static byte[] hex2byte(String hex) {
 		if (hex.length() % 2 != 0) {
 			throw (new IllegalArgumentException("Invalid hex-encoded string"));
 		}

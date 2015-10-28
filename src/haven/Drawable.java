@@ -35,6 +35,8 @@ public abstract class Drawable extends GAttrib {
 
 	public abstract Resource getres();
 
+	public abstract Indir<Resource> getires();
+
 	public Skeleton.Pose getpose() {
 		return (null);
 	}

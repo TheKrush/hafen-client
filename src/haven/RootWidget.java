@@ -89,6 +89,10 @@ public class RootWidget extends ConsoleHost {
 				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.toggleobjectradius();
 				}
+			} else if (CTRL && code == KeyEvent.VK_Z) {
+				if (ui.gui != null && ui.gui.map != null) {
+					ui.gui.map.togglemousecentertile();
+				}
 			} else if (key == ':') {
 				entercmd();
 			} else if (key != 0) {

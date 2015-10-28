@@ -1497,6 +1497,7 @@ public class MapView extends PView implements DTarget, Console.Directory {
 		@Override
 		protected void hit(Coord pc, Coord mc, ClickInfo inf) {
 			if (inf == null) {
+				mc = mc.div(11).mul(11).add(5, 5);
 				wdgmsg("click", pc, mc, clickb, ui.modflags());
 			} else {
 				if (inf.ol == null) {
@@ -1938,5 +1939,9 @@ public class MapView extends PView implements DTarget, Console.Directory {
 
 	public void toggleobjectradius() {
 		CFG.DISPLAY_OBJECT_RADIUS.set(!CFG.DISPLAY_OBJECT_RADIUS.valb(), true);
+	}
+
+	public void togglemousecentertile() {
+		CFG.HOTKEY_MOUSE_CENTERTILE.set(!CFG.HOTKEY_MOUSE_CENTERTILE.valb(), true);
 	}
 }

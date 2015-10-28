@@ -1,7 +1,12 @@
 $size[13]{$b{2015-10-19}}
- - Added option to show biome name on minimap
+ - Added CTRL+Z to toggle tile centering $i{(ender's client)}
+ - Added option to display gob paths $i{(ender's client)}
+ - Study lock now a checkbox $i{(ender's client)}
+
+$size[13]{$b{2015-10-19}}
+ - Added option to show biome name on minimap $i{(ender's client)}
   -  If mouse is over minimap it shows name of biome it is over, otherwise it shows biome player is in
- - Sort wounds by size if names are equal
+ - Sort wounds by size if names are equal $i{(ender's client)}
 
 $size[13]{$b{2015-10-14}}
  - Reworked radar and added ui to configure it $i{(ender's client)}

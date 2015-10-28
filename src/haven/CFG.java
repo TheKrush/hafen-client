@@ -3,12 +3,17 @@ package haven;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import static haven.HSlider.sflarp;
+import java.awt.Color;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public enum CFG {
 
@@ -27,8 +32,7 @@ public enum CFG {
 	DISPLAY_KIN_NAMES("display.kin.names", true),
 	DISPLAY_OBJECT_DAMAGE("display.object.health", false),
 	DISPLAY_OBJECT_RADIUS("display.object.radius", false),
-	DISPLAY_PATH_CRITTER("display.path.critter", false),
-	DISPLAY_PATH_PLAYER("display.path.player", false),
+	DISPLAY_PATH_GOB("display.path.gob", false),
 	DISPLAY_PATH_THICKNESS("display.path.thickness", 2f),
 	DISPLAY_PLANT_GROWTH("display.plant.growth", false),
 	DISPLAY_WEATHER("display.weather", true),
@@ -38,6 +42,7 @@ public enum CFG {
 	HOTKEY_ITEM_QUALITY("hotkey.item.quality", 1), // SHIFT
 	HOTKEY_ITEM_TRANSFER_IN("hotkey.item.transfer.in", 4), // ALT
 	HOTKEY_ITEM_TRANSFER_OUT("hotkey.item.transfer.out", 2), // CTRL
+	HOTKEY_MOUSE_CENTERTILE("hotkey.mouse.centertile", false),
 	HOTKEY_MOUSE_FOLLOW("hotkey.mouse.follow", false),
 	MINIMAP_BIOME_SHOW("minimap.biome.show", false),
 	MINIMAP_FLOATING("minimap.floating", false),
@@ -46,7 +51,7 @@ public enum CFG {
 	MINIMAP_BUSHES("minimap.bushes", new HashMap<String, Boolean>()),
 	MINIMAP_TREES("minimap.trees", new HashMap<String, Boolean>()),
 	MINIMAP_PLAYERS("minimap.players", true),
-	MINIMAP_RADAR("minimap.radar", false),
+	MINIMAP_RADAR("minimap.radar", 0), // romov
 	MINIMAP_VIEW("minimap.view", false),
 	UI_ACTION_PROGRESS_PERCENTAGE("ui.action.progress.percentage", true),
 	UI_CHAT_TIMESTAMP("ui.chat.timestamp", true),
@@ -71,7 +76,7 @@ public enum CFG {
 	;
 
 	private static String CONFIG_JSON;
-	private static final int configVersion = 7;
+	private static final int configVersion = 8;
 	private static Map<String, Object> cfg = new HashMap<>();
 	private static final Map<String, Object> cache = new HashMap<>();
 	private static final Gson gson = (new GsonBuilder()).setPrettyPrinting().create();

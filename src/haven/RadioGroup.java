@@ -44,7 +44,7 @@ public class RadioGroup {
 
 	public class RadioButton extends CheckBox {
 
-		RadioButton(String lbl) {
+		protected RadioButton(String lbl) {
 			super(lbl);
 		}
 

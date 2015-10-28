@@ -30,8 +30,8 @@ import java.awt.image.BufferedImage;
 
 public class HSlider extends Widget {
 
-	static final Tex sflarp = Resource.loadtex("gfx/hud/sflarp");
-	static final Tex schain;
+	protected static final Tex sflarp = Resource.loadtex("gfx/hud/sflarp");
+	protected static final Tex schain;
 	public int val, min, max;
 	private UI.Grab drag = null;
 
