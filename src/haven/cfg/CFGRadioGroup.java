@@ -4,15 +4,14 @@ import haven.CFG;
 import haven.Coord;
 import haven.RadioGroup;
 import haven.Text;
-import haven.Widget;
 
 public class CFGRadioGroup extends RadioGroup {
 
-	public CFGRadioGroup(Widget parent) {
-		super(parent);
+	public CFGRadioGroup() {
+		super();
 	}
 
-	public class CFGRadioButton extends RadioGroup.RadioButton implements CFG.CFGObserver {
+	public class CFGRadioButton extends RadioGroup.RadioButton implements CFGObserver {
 
 		protected final CFG cfg;
 		public final int cfgVal;
@@ -39,20 +38,12 @@ public class CFGRadioGroup extends RadioGroup {
 		}
 	}
 
-	public CFGRadioButton add(String lbl, CFG cfg, int val, Coord c) {
-		return add(lbl, cfg, val, null, c);
+	public CFGRadioButton add(String lbl, CFG cfg, int val) {
+		return add(new CFGRadioButton(lbl, cfg, val));
 	}
 
-	public CFGRadioButton add(String lbl, CFG cfg, int val, String tip, Coord c) {
-		CFGRadioButton rb = new CFGRadioButton(lbl, cfg, val, tip);
-		parent.add(rb, c);
-		btns.add(rb);
-		map.put(lbl, rb);
-		rmap.put(rb, lbl);
-		if (checked == null) {
-			check(rb);
-		}
-		return (rb);
+	public CFGRadioButton add(String lbl, CFG cfg, int val, String tip) {
+		return add(new CFGRadioButton(lbl, cfg, val, tip));
 	}
 
 	@Override

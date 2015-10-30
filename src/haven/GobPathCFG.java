@@ -1,6 +1,5 @@
 package haven;
 
-import haven.cfg.CFGObserver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,24 +14,75 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RadarCFG {
+public class GobPathCFG {
+
+	static final String XML_FILE = "gob_path.xml";
+	private static String CONFIG_XML;
 
 	public static final List<Group> groups = new LinkedList<>();
 	private static DocumentBuilder builder;
 
-	private static List<RadarCFGObserver> observers;
+	private static List<GobPathCFG.GobPathCFGObserver> observers;
 
 	static {
 		observers = new ArrayList<>();
 
-		String xml = Config.loadFile("radar.xml");
-		if (xml != null) {
+		loadConfig();
+	}
+
+	public static synchronized void loadConfig() {
+		loadConfig(true);
+	}
+
+	public static synchronized void loadConfig(boolean observe) {
+		String configXml = Globals.SettingFileString(Globals.USERNAME + "/" + XML_FILE, true);
+		try {
+			// first check if we have username config
+			if (Globals.USERNAME.isEmpty() || !xmlFromString(Config.loadFile(configXml))) {
+				// now check for default config
+				configXml = Globals.SettingFileString("/" + XML_FILE, true);
+				if (!xmlFromString(configXml)) {
+					// use the internal one
+					xmlFromString(Config.loadFile(XML_FILE));
+				}
+			}
+		} catch (Exception e) {
+		}
+		CONFIG_XML = configXml;
+		System.out.println("Using setting file: " + CONFIG_XML);
+
+		if (observe) {
+			for (GobPathCFG.GobPathCFGObserver observer : observers) {
+				observer.cfgUpdated();
+			}
+		}
+	}
+
+	public static synchronized void saveConfig() {
+		saveConfig(true);
+	}
+
+	public static synchronized void saveConfig(boolean observe) {
+		try {
+			Config.saveFile(CONFIG_XML, xmlToString());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		if (observe) {
+			for (GobPathCFG.GobPathCFGObserver observer : observers) {
+				observer.cfgUpdated();
+			}
+		}
+	}
+
+	private static synchronized boolean xmlFromString(String xml) {
+		if (xml != null && !xml.isEmpty()) {
 			try {
 				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 				builder = documentBuilderFactory.newDocumentBuilder();
@@ -42,22 +92,20 @@ public class RadarCFG {
 				for (int i = 0; i < groupNodes.getLength(); i++) {
 					groups.add(new Group((Element) groupNodes.item(i)));
 				}
+				return true;
 			} catch (ParserConfigurationException | IOException | SAXException ignored) {
 				ignored.printStackTrace();
 			}
 		}
+		return false;
 	}
 
-	public static synchronized void save() {
-		saveConfig(true);
-	}
-
-	public static synchronized void saveConfig(boolean observe) {
+	private static synchronized String xmlToString() {
 		try {
 			Document doc = builder.newDocument();
 
 			// construct XML
-			Element root = doc.createElement("icons");
+			Element root = doc.createElement("paths");
 			doc.appendChild(root);
 			for (Group group : groups) {
 				Element el = doc.createElement("group");
@@ -73,81 +121,53 @@ public class RadarCFG {
 			DOMSource source = new DOMSource(doc);
 			StreamResult console = new StreamResult(out);
 			transformer.transform(source, console);
-			Config.saveFile("radar.xml", out.toString());
-
+			return out.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		if (observe) {
-			for (RadarCFGObserver observer : observers) {
-				observer.cfgUpdated();
-			}
-		}
+		return null;
 	}
 
-	public static interface RadarCFGObserver {
+	public GobPathCFG() {
+		observers = new ArrayList<>();
+	}
+
+	public static interface GobPathCFGObserver {
 
 		void cfgUpdated();
 	}
 
-	private static Resource loadres(String name) {
-		return Resource.remote().load(name).get();
+	public static synchronized void addObserver(GobPathCFGObserver observer) {
+		if (observer == null) {
+			return;
+		}
+		observers.add(observer);
 	}
 
-	private static Tex makeicon(String icon) {
-		Tex tex = null;
-		if (icon.charAt(0) == '$') {
-			try {
-				tex = Symbols.valueOf(icon).tex;
-			} catch (IllegalArgumentException e) {
-				tex = Symbols.DEFAULT.tex;
-			}
+	public static synchronized void remObserver(GobPathCFGObserver observer) {
+		if (observer == null) {
+			return;
 		}
-		try {
-			Resource.Image img = loadres(icon).layer(Resource.imgc);
-
-			tex = img.tex();
-			if ((tex.sz().x > 20) || (tex.sz().y > 20)) {
-				BufferedImage buf = img.img;
-				buf = PUtils.rasterimg(PUtils.blurmask2(buf.getRaster(), 1, 1, Color.BLACK));
-				buf = PUtils.convolvedown(buf, new Coord(20, 20), GobIcon.filter);
-				tex = new TexI(buf);
-			}
-
-		} catch (Loading ignored) {
-		}
-		return tex;
+		observers.remove(observer);
 	}
 
 	public static class Group {
 
 		private final Color color;
-		public String name, icon;
+		public String name;
 		public Boolean show = null;
-		public Integer priority = null;
-		public List<MarkerCFG> markerCFGs;
-		private Tex tex = null;
+		public List<PathCFG> pathCFGs;
 
 		public Group(Element config) {
 			name = config.getAttribute("name");
 			color = Utils.hex2color(config.getAttribute("color"), null);
-			if (config.hasAttribute("icon")) {
-				icon = config.getAttribute("icon");
-			}
 			if (config.hasAttribute("show")) {
 				show = config.getAttribute("show").toLowerCase().equals("true");
 			}
-			if (config.hasAttribute("priority")) {
-				try {
-					priority = Integer.parseInt(config.getAttribute("priority"));
-				} catch (NumberFormatException ignored) {
-				}
-			}
-			NodeList children = config.getElementsByTagName("marker");
-			markerCFGs = new LinkedList<>();
+			NodeList children = config.getElementsByTagName("path");
+			pathCFGs = new LinkedList<>();
 			for (int i = 0; i < children.getLength(); i++) {
-				markerCFGs.add(MarkerCFG.parse((Element) children.item(i), this));
+				pathCFGs.add(PathCFG.parse((Element) children.item(i), this));
 			}
 
 		}
@@ -155,34 +175,17 @@ public class RadarCFG {
 		public void write(Element el) {
 			Document doc = el.getOwnerDocument();
 			el.setAttribute("name", name);
-			if (icon != null) {
-				el.setAttribute("icon", icon);
-			}
 			if (color != null) {
 				el.setAttribute("color", Utils.color2hex(color));
 			}
 			if (show != null) {
 				el.setAttribute("show", show.toString());
 			}
-			if (priority != null) {
-				el.setAttribute("priority", priority.toString());
-			}
-			for (MarkerCFG marker : markerCFGs) {
-				Element mel = doc.createElement("marker");
+			for (PathCFG marker : pathCFGs) {
+				Element mel = doc.createElement("path");
 				marker.write(mel);
 				el.appendChild(mel);
 			}
-		}
-
-		public Tex tex() {
-			if (tex == null) {
-				if (icon != null) {
-					tex = makeicon(icon);
-				} else {
-					tex = Symbols.DEFAULT.tex;
-				}
-			}
-			return tex;
 		}
 
 		public Color color() {
@@ -190,20 +193,17 @@ public class RadarCFG {
 		}
 	}
 
-	public static class MarkerCFG {
+	public static class PathCFG {
 
 		public Group parent;
 		private Match type;
 		private String pattern;
 		private Boolean show = null;
-		private Integer priority = null;
-		public String icon = null;
 		public String name = null;
-		private Tex tex;
 		private Color color;
 
-		public static MarkerCFG parse(Element config, Group parent) {
-			MarkerCFG cfg = new MarkerCFG();
+		public static PathCFG parse(Element config, Group parent) {
+			PathCFG cfg = new PathCFG();
 
 			cfg.parent = parent;
 			Match[] types = Match.values();
@@ -226,24 +226,8 @@ public class RadarCFG {
 			if (config.hasAttribute("show")) {
 				cfg.show = config.getAttribute("show").toLowerCase().equals("true");
 			}
-			if (config.hasAttribute("icon")) {
-				cfg.icon = config.getAttribute("icon");
-			}
-			if (config.hasAttribute("priority")) {
-				try {
-					cfg.priority = Integer.parseInt(config.getAttribute("priority"));
-				} catch (NumberFormatException ignored) {
-				}
-			}
 
 			return cfg;
-		}
-
-		public Tex tex() {
-			if (tex == null && icon != null) {
-				tex = makeicon(icon);
-			}
-			return tex;
 		}
 
 		public boolean match(String target) {
@@ -260,15 +244,8 @@ public class RadarCFG {
 			}
 		}
 
-		public int priority() {
-			return (priority != null) ? priority : ((parent != null && parent.priority != null) ? parent.priority : 0);
-		}
-
 		public void write(Element el) {
 			el.setAttribute(type.name(), pattern);
-			if (icon != null) {
-				el.setAttribute("icon", icon);
-			}
 			if (color != null) {
 				el.setAttribute("color", Utils.color2hex(color));
 			}
@@ -277,9 +254,6 @@ public class RadarCFG {
 			}
 			if (show != null) {
 				el.setAttribute("show", show.toString());
-			}
-			if (priority != null) {
-				el.setAttribute("priority", priority.toString());
 			}
 		}
 
@@ -305,11 +279,11 @@ public class RadarCFG {
 		}
 	}
 
-	public static class MarkerCheck extends CheckBox {
+	public static class PathCheck extends CheckBox {
 
-		public final MarkerCFG marker;
+		public final PathCFG marker;
 
-		public MarkerCheck(MarkerCFG marker) {
+		public PathCheck(PathCFG marker) {
 			super(marker.name != null ? marker.name : marker.pattern);
 			this.marker = marker;
 			this.a = marker.show == null || marker.show;
@@ -349,23 +323,5 @@ public class RadarCFG {
 						};
 
 		public abstract boolean match(String pattern, String target);
-	}
-
-	enum Symbols {
-
-		$circle("gfx/hud/mmap/symbols/circle"),
-		$diamond("gfx/hud/mmap/symbols/diamond"),
-		$dot("gfx/hud/mmap/symbols/dot"),
-		$down("gfx/hud/mmap/symbols/down"),
-		$pentagon("gfx/hud/mmap/symbols/pentagon"),
-		$square("gfx/hud/mmap/symbols/square"),
-		$up("gfx/hud/mmap/symbols/up");
-
-		public final Tex tex;
-		public static final Symbols DEFAULT = $circle;
-
-		Symbols(String res) {
-			tex = Resource.loadtex(res);
-		}
 	}
 }

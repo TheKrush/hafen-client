@@ -49,6 +49,7 @@ public class Globals {
 		}
 		CFG.loadConfig();
 		WindowCFG.loadConfig();
+		GobPathCFG.loadConfig();
 		Config.loadConfig();
 	}
 

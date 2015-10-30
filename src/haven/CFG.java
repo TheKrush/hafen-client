@@ -3,17 +3,13 @@ package haven;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import static haven.HSlider.sflarp;
-import java.awt.Color;
+import haven.cfg.CFGObserver;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public enum CFG {
 
@@ -88,11 +84,6 @@ public enum CFG {
 		loadConfig();
 	}
 
-	public static interface CFGObserver {
-
-		void cfgUpdated(CFG cfg);
-	}
-
 	public static void loadConfig() {
 		String configJson = Globals.SettingFileString(Globals.USERNAME + "/config.json", true);
 		Map<String, Object> tmp = new HashMap<>();
@@ -101,7 +92,7 @@ public enum CFG {
 			}.getType();
 			// first check if we have username config
 			String json = Config.loadFile(configJson);
-			if (json != null) {
+			if (!Globals.USERNAME.isEmpty() && json != null) {
 				tmp = gson.fromJson(json, type);
 			} else {
 				// now check for default config
