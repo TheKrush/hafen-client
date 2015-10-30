@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CFGFlowerList extends FlowerList implements CFG.CFGObserver {
+public class CFGFlowerList extends FlowerList implements CFGObserver {
 
 	protected final CFG cfg;
 
@@ -76,6 +76,9 @@ public class CFGFlowerList extends FlowerList implements CFG.CFGObserver {
 	@Override
 	public void cfgUpdated(CFG cfg) {
 		Map<String, Boolean> mapVal = cfg.valo();
+		for (Map.Entry<String, Boolean> entry : mapVal.entrySet()) {
+			this.cfg.set(entry.getKey(), entry.getValue());
+		}
 		additems(mapVal.keySet().toArray(new String[mapVal.keySet().size()]));
 
 		for (Widget wdg : list) {

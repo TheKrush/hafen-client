@@ -40,6 +40,7 @@ public class Text {
 	public static final Font fraktur;
 	public static final Font dfont = sans;
 	public static final Foundry std;
+	public static final Foundry std_big;
 	public final BufferedImage img;
 	public final String text;
 	private Tex tex;
@@ -48,6 +49,7 @@ public class Text {
 
 	static {
 		std = new Foundry(sans, 10);
+		std_big = new Foundry(sans, 13);
 
 		Font fnt = serif;
 		try {

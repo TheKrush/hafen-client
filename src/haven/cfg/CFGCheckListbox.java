@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CFGCheckListbox extends CheckListbox implements CFG.CFGObserver {
+public class CFGCheckListbox extends CheckListbox implements CFGObserver {
 
 	protected final CFG cfg;
 	protected final List<String> keys;
@@ -70,7 +70,11 @@ public class CFGCheckListbox extends CheckListbox implements CFG.CFGObserver {
 	@Override
 	public void cfgUpdated(CFG cfg) {
 		Map<String, Boolean> mapVal = cfg.valo();
+		for (Map.Entry<String, Boolean> entry : mapVal.entrySet()) {
+			this.cfg.set(entry.getKey(), entry.getValue());
+		}
 		additems(mapVal.keySet().toArray(new String[mapVal.keySet().size()]));
+
 		for (CheckListbox.CheckListboxItem item : items) {
 			item.selected = cfgVal(item.name);
 		}

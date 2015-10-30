@@ -44,6 +44,10 @@ public class WidgetList<T extends Widget> extends ListWidget<T> {
 		return removed;
 	}
 
+	public void clear() {
+		clear(true);
+	}
+
 	public void clear(boolean destroy) {
 		for (T item : list) {
 			if (destroy) {

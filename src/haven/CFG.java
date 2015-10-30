@@ -1,5 +1,7 @@
 package haven;
 
+import haven.cfg.CFGObserver;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -83,11 +85,6 @@ public enum CFG {
 		loadConfig();
 	}
 
-	public static interface CFGObserver {
-
-		void cfgUpdated(CFG cfg);
-	}
-
 	public static void loadConfig() {
 		String configJson = Globals.SettingFileString(Globals.USERNAME + "/config.json", true);
 		Map<String, Object> tmp = new HashMap<>();
@@ -96,7 +93,7 @@ public enum CFG {
 			}.getType();
 			// first check if we have username config
 			String json = Config.loadFile(configJson);
-			if (json != null) {
+			if (!Globals.USERNAME.isEmpty() && json != null) {
 				tmp = gson.fromJson(json, type);
 			} else {
 				// now check for default config

@@ -1,0 +1,34 @@
+<paths>
+    <group name="Aggressive">
+        <path startsWith="gfx/kritter/badger" name="Badger" show="false" color="FF6091EA" />
+        <path startsWith="gfx/kritter/bat" name="Bat" show="false" color="FFFF8888" />
+        <path startsWith="gfx/kritter/bear" name="Bear" show="false" color="FFE34444" />
+        <path startsWith="gfx/kritter/boar" name="Boar" show="false" color="FFFF8888" />
+    </group>
+    <group name="Passive">
+        <path startsWith="gfx/kritter/ants/ants" name="Ants" show="false" color="FFFFFFEE" />
+        <path startsWith="gfx/kritter/cattle" name="Cattle" show="false" />
+        <path startsWith="gfx/kritter/chicken" name="Chicken" show="false" color="FFFFFFEE" />
+        <path startsWith="gfx/kritter/reddeer" name="Deer" show="false" color="FFE59363" />
+        <path startsWith="gfx/kritter/dragonfly" name="Dragonfly" show="false" />
+        <path startsWith="gfx/kritter/dryad" name="Dryad" show="false" />
+        <path startsWith="gfx/kritter/fox" name="Fox" show="false" color="FFFAAC58" />
+        <path startsWith="gfx/kritter/frog" name="Frog" show="false" color="FFFAAC58" />
+        <path startsWith="gfx/kritter/horse" name="Horse" show="false" color="FFDFB460" />
+        <path startsWith="gfx/kritter/ladybug" name="Ladybug" show="false" />
+        <path startsWith="gfx/kritter/lynx" name="Lynx" show="true" color="FFBFB938" />
+        <path startsWith="gfx/kritter/toad" name="Toad" show="false" />
+        <path startsWith="gfx/kritter/rabbit" name="Rabbit" show="false" color="FFFFFFEE" />
+        <path startsWith="gfx/kritter/rat" name="Rat" show="false" />
+        <path startsWith="gfx/kritter/sheep" name="Sheep" show="false" />
+        <path startsWith="gfx/kritter/silkmoth" name="Silkmoth" show="false" />
+    </group>
+    <group name="Other">
+        <path exact="gfx/terobjs/vehicle/rowboat" name="Boat" show="true" />
+        <path exact="gfx/terobjs/vehicle/bram" name="Battering Ram" show="true" />
+        <path exact="gfx/terobjs/vehicle/cart" name="Cart" show="true" />
+        <path contains="gfx/borka/body" name="Player" show="false" />
+        <path exact="gfx/terobjs/vehicle/plow" name="Plow" show="true" />
+        <path exact="gfx/terobjs/vehicle/wagon" name="Wagon" show="true" />
+    </group>
+</paths>

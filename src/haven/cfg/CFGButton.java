@@ -4,7 +4,7 @@ import haven.Button;
 import haven.CFG;
 import haven.Text;
 
-public class CFGButton extends Button implements CFG.CFGObserver {
+public class CFGButton extends Button implements CFGObserver {
 
 	protected final CFG cfg;
 

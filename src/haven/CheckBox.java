@@ -33,7 +33,7 @@ public class CheckBox extends Widget {
 	public final Coord loff;
 	public boolean a = false;
 	public boolean hitbox = false;
-	Text lbl;
+	public Text lbl;
 
 	@RName("chk")
 	public static class $_ implements Factory {

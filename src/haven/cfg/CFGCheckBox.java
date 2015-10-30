@@ -4,7 +4,7 @@ import haven.CFG;
 import haven.CheckBox;
 import haven.Text;
 
-public class CFGCheckBox extends CheckBox implements CFG.CFGObserver {
+public class CFGCheckBox extends CheckBox implements CFGObserver {
 
 	protected final CFG cfg;
 

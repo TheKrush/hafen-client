@@ -29,14 +29,12 @@ import java.util.*;
 
 public class RadioGroup {
 
-	protected Widget parent;
 	protected ArrayList<RadioButton> btns;
 	protected HashMap<String, RadioButton> map;
 	protected HashMap<RadioButton, String> rmap;
 	protected RadioButton checked;
 
-	public RadioGroup(Widget parent) {
-		this.parent = parent;
+	public RadioGroup() {
 		btns = new ArrayList<>();
 		map = new HashMap<>();
 		rmap = new HashMap<>();
@@ -44,7 +42,7 @@ public class RadioGroup {
 
 	public class RadioButton extends CheckBox {
 
-		protected RadioButton(String lbl) {
+		public RadioButton(String lbl) {
 			super(lbl);
 		}
 
@@ -65,12 +63,14 @@ public class RadioGroup {
 		}
 	}
 
-	public RadioButton add(String lbl, Coord c) {
-		RadioButton rb = new RadioButton(lbl);
-		parent.add(rb, c);
+	public RadioButton add(String lbl) {
+		return add(new RadioButton(lbl));
+	}
+
+	public <T extends RadioButton> T add(T rb) {
 		btns.add(rb);
-		map.put(lbl, rb);
-		rmap.put(rb, lbl);
+		map.put(rb.lbl.text, rb);
+		rmap.put(rb, rb.lbl.text);
 		if (checked == null) {
 			checked = rb;
 		}

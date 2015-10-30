@@ -167,7 +167,26 @@ public class LocalMiniMap extends Widget {
 
 	public void drawicons(GOut g) {
 		switch (CFG.MINIMAP_RADAR.vali()) {
-			case 0: // romov
+			case 0: // default
+			{
+				OCache oc = ui.sess.glob.oc;
+				synchronized (oc) {
+					for (Gob gob : oc) {
+						try {
+							GobIcon icon = gob.getattr(GobIcon.class);
+							Coord gc = p2c(gob.rc);
+							if (icon != null) {
+								Tex tex = icon.tex();
+								g.image(tex, gc.sub(tex.sz().div(2)));
+							}
+						} catch (Loading l) {
+						}
+					}
+				}
+				break;
+			}
+			case 1: // romov
+			{
 				OCache oc = ui.sess.glob.oc;
 				synchronized (oc) {
 					for (Gob gob : oc) {
@@ -219,7 +238,8 @@ public class LocalMiniMap extends Widget {
 					}
 				}
 				break;
-			case 1: // ender
+			}
+			case 2: // ender
 				synchronized (Radar.markers) {
 					for (Radar.Marker marker : Radar.markers) {
 						if (marker.gob.id == mv.plgob) {
@@ -255,7 +275,8 @@ public class LocalMiniMap extends Widget {
 
 	public Gob findicongob(Coord c) {
 		switch (CFG.MINIMAP_RADAR.vali()) {
-			case 0: // romov
+			case 0: // default
+			case 1: // romov
 				OCache oc = ui.sess.glob.oc;
 				synchronized (oc) {
 					for (Gob gob : oc) {
@@ -273,7 +294,7 @@ public class LocalMiniMap extends Widget {
 					}
 				}
 				break;
-			case 1: // ender
+			case 2: // ender
 				synchronized (Radar.markers) {
 					ListIterator<Radar.Marker> li = Radar.markers.listIterator(Radar.markers.size());
 					while (li.hasPrevious()) {
@@ -403,14 +424,15 @@ public class LocalMiniMap extends Widget {
 					}
 					ptc = p2c(ptc);
 					switch (CFG.MINIMAP_RADAR.vali()) {
-						case 0: // romov
+						case 0: // default
+						case 1: // romov
 							if (!partyTex.containsKey(m.col)) {
 								partyTex.put(m.col, Tex.frect(new Coord(8, 8), m.col, Color.BLACK, 1));
 							}
 							Tex tex = partyTex.get(m.col);
 							g.image(tex, ptc.sub(tex.sz().div(2)));
 							break;
-						case 1: // ender
+						case 2: // ender
 							g.chcolor(m.col);
 							g.aimage(MiniMap.plx.layer(Resource.imgc).tex(), ptc, 0.5, 0.5);
 							g.chcolor();

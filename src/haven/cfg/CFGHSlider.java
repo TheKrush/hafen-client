@@ -8,7 +8,7 @@ import haven.Tex;
 import haven.Text;
 import java.awt.Color;
 
-public class CFGHSlider extends HSlider implements CFG.CFGObserver {
+public class CFGHSlider extends HSlider implements CFGObserver {
 
 	protected final CFG cfg;
 	Text lbl;
