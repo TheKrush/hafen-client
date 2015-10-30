@@ -1,9 +1,10 @@
 package haven;
 
+import haven.cfg.CFGObserver;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import haven.cfg.CFGObserver;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
