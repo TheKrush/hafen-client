@@ -1,6 +1,5 @@
 package haven;
 
-import haven.cfg.CFGObserver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -23,6 +22,9 @@ import java.util.List;
 
 public class RadarCFG {
 
+	static final String XML_FILE = "radar.xml";
+	private static String CONFIG_XML;
+
 	public static final List<Group> groups = new LinkedList<>();
 	private static DocumentBuilder builder;
 
@@ -31,8 +33,57 @@ public class RadarCFG {
 	static {
 		observers = new ArrayList<>();
 
-		String xml = Config.loadFile("radar.xml");
-		if (xml != null) {
+		loadConfig();
+	}
+
+	public static synchronized void loadConfig() {
+		loadConfig(true);
+	}
+
+	public static synchronized void loadConfig(boolean observe) {
+		String configXml = Globals.SettingFileString(Globals.USERNAME + "/" + XML_FILE, true);
+		try {
+			// first check if we have username config
+			if (Globals.USERNAME.isEmpty() || !xmlFromString(Config.loadFile(configXml))) {
+				// now check for default config
+				configXml = Globals.SettingFileString("/" + XML_FILE, true);
+				if (!xmlFromString(configXml)) {
+					// use the internal one
+					xmlFromString(Config.loadFile(XML_FILE));
+				}
+			}
+		} catch (Exception e) {
+		}
+		CONFIG_XML = configXml;
+		System.out.println("Using setting file: " + CONFIG_XML);
+
+		if (observe) {
+			for (RadarCFG.RadarCFGObserver observer : observers) {
+				observer.cfgUpdated();
+			}
+		}
+	}
+
+	public static synchronized void saveConfig() {
+		saveConfig(true);
+	}
+
+	public static synchronized void saveConfig(boolean observe) {
+		try {
+			Config.saveFile(CONFIG_XML, xmlToString());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		if (observe) {
+			for (RadarCFG.RadarCFGObserver observer : observers) {
+				observer.cfgUpdated();
+			}
+		}
+	}
+
+	private static synchronized boolean xmlFromString(String xml) {
+		if (xml != null && !xml.isEmpty()) {
 			try {
 				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 				builder = documentBuilderFactory.newDocumentBuilder();
@@ -42,22 +93,20 @@ public class RadarCFG {
 				for (int i = 0; i < groupNodes.getLength(); i++) {
 					groups.add(new Group((Element) groupNodes.item(i)));
 				}
+				return true;
 			} catch (ParserConfigurationException | IOException | SAXException ignored) {
 				ignored.printStackTrace();
 			}
 		}
+		return false;
 	}
 
-	public static synchronized void save() {
-		saveConfig(true);
-	}
-
-	public static synchronized void saveConfig(boolean observe) {
+	private static synchronized String xmlToString() {
 		try {
 			Document doc = builder.newDocument();
 
 			// construct XML
-			Element root = doc.createElement("icons");
+			Element root = doc.createElement("paths");
 			doc.appendChild(root);
 			for (Group group : groups) {
 				Element el = doc.createElement("group");
@@ -73,22 +122,34 @@ public class RadarCFG {
 			DOMSource source = new DOMSource(doc);
 			StreamResult console = new StreamResult(out);
 			transformer.transform(source, console);
-			Config.saveFile("radar.xml", out.toString());
-
+			return out.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
 
-		if (observe) {
-			for (RadarCFGObserver observer : observers) {
-				observer.cfgUpdated();
-			}
-		}
+	public RadarCFG() {
+		observers = new ArrayList<>();
 	}
 
 	public static interface RadarCFGObserver {
 
 		void cfgUpdated();
+	}
+
+	public static synchronized void addObserver(RadarCFGObserver observer) {
+		if (observer == null) {
+			return;
+		}
+		observers.add(observer);
+	}
+
+	public static synchronized void remObserver(RadarCFGObserver observer) {
+		if (observer == null) {
+			return;
+		}
+		observers.remove(observer);
 	}
 
 	private static Resource loadres(String name) {

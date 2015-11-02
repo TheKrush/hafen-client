@@ -1,3 +1,7 @@
+$size[13]{$b{2015-11-02}}
+ - Gob Paths saved to settings/gob_path.xml
+ - Radar saved to settings/radar.xml
+
 $size[13]{$b{2015-10-19}}
  - Added CTRL+Z to toggle tile centering $i{(ender's client)}
  - Added option to display gob paths $i{(ender's client)}

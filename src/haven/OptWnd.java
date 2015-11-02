@@ -944,7 +944,7 @@ public class OptWnd extends Window {
 		panel.adda(new Button(60, "Save") {
 			@Override
 			public void click() {
-				RadarCFG.save();
+				RadarCFG.saveConfig();
 			}
 		}, new Coord(panel.sz.x / 2, panel.sz.y + 15), 0.5, 0);
 
