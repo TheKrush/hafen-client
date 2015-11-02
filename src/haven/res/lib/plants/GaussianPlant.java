@@ -24,6 +24,7 @@ public class GaussianPlant implements Factory {
 		this.r = r;
 	}
 
+	@Override
 	public Sprite create(Owner owner, Resource res, Message sdt) {
 		ArrayList<Object> allmeshes = new ArrayList<Object>(res.layers(MeshRes.class));
 		CSprite cs = new CSprite(owner, res);

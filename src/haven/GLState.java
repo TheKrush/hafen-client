@@ -85,7 +85,7 @@ public abstract class GLState {
 
 	public static class Slot<T extends GLState> {
 
-		private static boolean dirty = false;
+		private volatile static boolean dirty = false;
 		private static Collection<Slot<?>> all = new LinkedList<>();
 		public final Type type;
 		public final int id;
@@ -196,16 +196,17 @@ public abstract class GLState {
 		}
 
 		public static void update() {
-			synchronized (Slot.class) {
-				if (!dirty) {
-					return;
+			if (dirty) {
+				synchronized (Slot.class) {
+					if (dirty) {
+						makedeps(all);
+						deplist = new Slot<?>[all.size()];
+						for (Slot s : all) {
+							deplist[s.depid] = s;
+						}
+						dirty = false;
+					}
 				}
-				makedeps(all);
-				deplist = new Slot<?>[all.size()];
-				for (Slot s : all) {
-					deplist[s.depid] = s;
-				}
-				dirty = false;
 			}
 		}
 
@@ -346,7 +347,6 @@ public abstract class GLState {
 	}
 
 	public static int bufdiff(Buffer f, Buffer t, boolean[] trans, boolean[] repl) {
-		Slot.update();
 		int cost = 0;
 		f.adjust();
 		t.adjust();
@@ -530,20 +530,21 @@ public abstract class GLState {
 		}
 
 		public void apply(GOut g) {
+			Slot.update();
 			long st = 0;
 			if (Config.profile) {
 				st = System.nanoTime();
 			}
-			if (trans.length < slotnum) {
+			Slot<?>[] deplist = GLState.deplist;
+			if (trans.length < deplist.length) {
 				synchronized (Slot.class) {
-					trans = new boolean[slotnum];
-					repl = new boolean[slotnum];
-					shaders = Utils.extend(shaders, slotnum);
-					nshaders = Utils.extend(shaders, slotnum);
+					trans = new boolean[deplist.length];
+					repl = new boolean[deplist.length];
+					shaders = Utils.extend(shaders, deplist.length);
+					nshaders = Utils.extend(shaders, deplist.length);
 				}
 			}
 			bufdiff(cur, next, trans, repl);
-			Slot<?>[] deplist = GLState.deplist;
 			nproghash = proghash;
 			for (int i = trans.length - 1; i >= 0; i--) {
 				nshaders[i] = shaders[i];
@@ -592,9 +593,6 @@ public abstract class GLState {
 			 * been altered, future results are undefined. */
 			for (int i = 0; i < deplist.length; i++) {
 				int id = deplist[i].id;
-				if (id >= repl.length) { // FIMXE: dirty fix for ArrayIndexOutOfBoundsException
-					break;
-				}
 				if (repl[id]) {
 					if (next.states[id] != null) {
 						next.states[id].apply(g);

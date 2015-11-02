@@ -47,6 +47,7 @@ public class MiniMapPanel extends ResizingWindow {
 				tooltip = Text.render("Display grid");
 			}
 
+			@Override
 			public void click() {
 				CFG.MINIMAP_GRID.set(!CFG.MINIMAP_GRID.valb());
 			}
@@ -57,6 +58,7 @@ public class MiniMapPanel extends ResizingWindow {
 				tooltip = Text.render("Display view distance");
 			}
 
+			@Override
 			public void click() {
 				CFG.MINIMAP_VIEW.set(!CFG.MINIMAP_VIEW.valb());
 			}

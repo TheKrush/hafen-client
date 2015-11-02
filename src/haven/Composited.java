@@ -317,7 +317,7 @@ public class Composited implements Rendered {
 		public MD clone() {
 			try {
 				MD ret = (MD) super.clone();
-				ret.tex = new ArrayList<ResData>(tex);
+				ret.tex = new ArrayList<>(tex);
 				return (ret);
 			} catch (CloneNotSupportedException e) {
 				/* This is ridiculous. */

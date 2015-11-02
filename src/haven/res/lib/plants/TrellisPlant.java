@@ -22,9 +22,10 @@ public class TrellisPlant implements Factory {
 		this(2);
 	}
 
+	@Override
 	public Sprite create(Owner owner, Resource res, Message std) {
 		int stg = std.uint8();
-		ArrayList<MeshRes> meshes = new ArrayList<MeshRes>();
+		ArrayList<MeshRes> meshes = new ArrayList<>();
 		Iterator allmeshes = res.layers(MeshRes.class).iterator();
 
 		while (allmeshes.hasNext()) {

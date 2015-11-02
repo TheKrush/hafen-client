@@ -84,14 +84,17 @@ public class Avaview extends PView {
 
 	private class AvaOwner implements Sprite.Owner {
 
+		@Override
 		public Random mkrandoom() {
 			return (new Random());
 		}
 
+		@Override
 		public Resource getres() {
 			return (null);
 		}
 
+		@Override
 		public Glob glob() {
 			return (ui.sess.glob);
 		}

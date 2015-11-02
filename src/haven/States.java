@@ -187,6 +187,7 @@ public abstract class States extends GLState {
 	@Material.ResName("maskdepth")
 	public static class $maskdepth implements Material.ResCons {
 
+		@Override
 		public GLState cons(Resource res, Object... args) {
 			return (presdepth);
 		}

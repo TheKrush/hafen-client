@@ -258,8 +258,7 @@ public class VertexBuf {
 				gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0);
 				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, null);
 			} else {
-				data.rewind();
-				gl.glVertexPointer(3, GL.GL_FLOAT, 0, direct());
+				gl.glVertexPointer(3, GL.GL_FLOAT, 0, direct(), 0);
 			}
 			gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 		}
@@ -307,8 +306,7 @@ public class VertexBuf {
 				gl.glNormalPointer(GL.GL_FLOAT, 0, 0);
 				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, null);
 			} else {
-				data.rewind();
-				gl.glNormalPointer(GL.GL_FLOAT, 0, direct());
+				gl.glNormalPointer(GL.GL_FLOAT, 0, direct(), 0);
 			}
 			gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
 		}
@@ -352,8 +350,7 @@ public class VertexBuf {
 				gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
 				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, null);
 			} else {
-				data.rewind();
-				gl.glColorPointer(4, GL.GL_FLOAT, 0, direct());
+				gl.glColorPointer(4, GL.GL_FLOAT, 0, direct(), 0);
 			}
 			gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 		}
@@ -392,8 +389,7 @@ public class VertexBuf {
 				gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, 0);
 				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, null);
 			} else {
-				data.rewind();
-				gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, direct());
+				gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, direct(), 0);
 			}
 			gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 		}
@@ -428,8 +424,7 @@ public class VertexBuf {
 					gl.glVertexAttribPointer(bound, n, GL2.GL_FLOAT, false, 0, 0);
 					gl.glBindBuffer(GL.GL_ARRAY_BUFFER, null);
 				} else {
-					data.rewind();
-					gl.glVertexAttribPointer(bound, n, GL2.GL_FLOAT, false, 0, direct());
+					gl.glVertexAttribPointer(bound, n, GL2.GL_FLOAT, false, 0, direct(), 0);
 				}
 				gl.glEnableVertexAttribArray(bound);
 			}
@@ -560,7 +555,7 @@ public class VertexBuf {
 				}
 				cons.cons(bufs, res, buf, num);
 			}
-			this.b = new VertexBuf(bufs.toArray(new AttribArray[bufs.size()]));
+			this.b = new VertexBuf(bufs.toArray(new AttribArray[0]));
 		}
 
 		@Override
@@ -632,11 +627,11 @@ public class VertexBuf {
 						}
 					}
 					PoseMorph.normweights(bw, ba, mba);
-					bufs.add(new PoseMorph.BoneArray(mba, ba, bones.toArray(new String[bones.size()])));
+					bufs.add(new PoseMorph.BoneArray(mba, ba, bones.toArray(new String[0])));
 					bufs.add(new PoseMorph.WeightArray(mba, bw));
 				}
 			}
-			return (new VertexRes(res, new VertexBuf(bufs.toArray(new AttribArray[bufs.size()]))));
+			return (new VertexRes(res, new VertexBuf(bufs.toArray(new AttribArray[0]))));
 		}
 	}
 }
