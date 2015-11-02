@@ -18,9 +18,10 @@ public class GrowingPlant implements Factory {
 		this.num = num;
 	}
 
+	@Override
 	public Sprite create(Owner owner, Resource res, Message sdt) {
 		int stg = sdt.uint8();
-		ArrayList<MeshRes> meshes = new ArrayList<MeshRes>();
+		ArrayList<MeshRes> meshes = new ArrayList<>();
 		Iterator allmeshes = res.layers(MeshRes.class).iterator();
 
 		while (allmeshes.hasNext()) {

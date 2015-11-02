@@ -133,7 +133,7 @@ public class AvaRender {
 			for (int i = 0; i < amod.length; i += 2) {
 				Indir<Resource> mr = Resource.local().load((String) amod[i]);
 				Object[] atex = (Object[]) amod[i + 1];
-				List<ResData> tex = new LinkedList<ResData>();
+				List<ResData> tex = new LinkedList<>();
 				for (int o = 0; o < atex.length; o++) {
 					tex.add(new ResData(Resource.local().load((String) atex[o]), Message.nil));
 				}

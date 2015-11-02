@@ -24,7 +24,7 @@ public class QualityList {
 	private final boolean isEmpty;
 
 	public QualityList(List<ItemInfo> list) {
-		qualities = new LinkedList<Quality>();
+		qualities = new LinkedList<>();
 		for (ItemInfo inf : list) {
 			if (inf.getClass().getName().equals(classname)) {
 				String name = Reflect.getFieldValueString(inf, "name");

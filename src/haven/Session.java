@@ -368,7 +368,7 @@ public class Session {
 									break;
 								}
 								Indir<Resource> modr = getres(modid);
-								List<ResData> tex = new LinkedList<ResData>();
+								List<ResData> tex = new LinkedList<>();
 								while (true) {
 									int resid = msg.uint16();
 									if (resid == 65535) {
