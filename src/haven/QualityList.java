@@ -28,7 +28,7 @@ public class QualityList {
 		for (ItemInfo inf : list) {
 			if (inf.getClass().getName().equals(classname)) {
 				String name = Reflect.getFieldValueString(inf, "name");
-				int q = Reflect.getFieldValueInt(inf, "q");
+				double q = Reflect.getFieldValueDouble(inf, "q");
 				try {
 					qualities.add(new Quality(QualityType.valueOf(name), q));
 				} catch (IllegalArgumentException ignored) {
@@ -92,10 +92,10 @@ public class QualityList {
 
 		public static final DecimalFormat format = new DecimalFormat("#.#");
 		private final QualityType type;
-		public final float value;
+		public final double value;
 		private TexI tex;
 
-		public Quality(QualityType type, float value) {
+		public Quality(QualityType type, double value) {
 			this.type = type;
 			this.value = value;
 		}
@@ -112,7 +112,7 @@ public class QualityList {
 		@SuppressWarnings("NullableProblems")
 		@Override
 		public int compareTo(Quality o) {
-			return Float.compare(value, o != null ? o.value : 0);
+			return Double.compare(value, o != null ? o.value : 0);
 		}
 	}
 
