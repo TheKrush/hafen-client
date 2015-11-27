@@ -554,7 +554,9 @@ public class Widget {
 				setfocus(w);
 			}
 		} else {
-			parent.newfocusable(w);
+			if (parent != null) {
+				parent.newfocusable(w);
+			}
 		}
 	}
 
@@ -564,7 +566,9 @@ public class Widget {
 				findfocus();
 			}
 		} else {
-			parent.delfocusable(w);
+			if (parent != null) {
+				parent.delfocusable(w);
+			}
 		}
 	}
 
@@ -870,6 +874,21 @@ public class Widget {
 					if (wdg.keyup(ev)) {
 						return (true);
 					}
+				}
+			}
+		}
+		return (false);
+	}
+
+	public boolean mouseclick(Coord c, int button, int count) {
+		for (Widget wdg = lchild; wdg != null; wdg = wdg.prev) {
+			if (!wdg.visible) {
+				continue;
+			}
+			Coord cc = xlate(wdg.c, true);
+			if (c.isect(cc, wdg.sz)) {
+				if (wdg.mouseclick(c.add(cc.inv()), button, count)) {
+					return (true);
 				}
 			}
 		}

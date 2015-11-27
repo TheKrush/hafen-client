@@ -1060,6 +1060,32 @@ public class OptWnd extends Window {
 			new CFGLabel(title, Text.std_big),
 			new StackPane(new Widget[]{
 				new StackPane(new Widget[]{
+					new CFGCheckBox("Show hunger meter", CFG.UI_METER_HUNGER) {
+						@Override
+						public void set(boolean a) {
+							super.set(a);
+							if (ui.gui != null && ui.gui.chrwdg != null) {
+								if (a) {
+									ui.gui.addcmeter(new HungerMeter(ui.gui.chrwdg.glut));
+								} else {
+									ui.gui.delcmeter(HungerMeter.class);
+								}
+							}
+						}
+					},
+					new CFGCheckBox("Show FEP meter", CFG.UI_METER_FEP) {
+						@Override
+						public void set(boolean a) {
+							super.set(a);
+							if (ui.gui != null && ui.gui.chrwdg != null) {
+								if (a) {
+									ui.gui.addcmeter(new FEPMeter(ui.gui.chrwdg.feps));
+								} else {
+									ui.gui.delcmeter(FEPMeter.class);
+								}
+							}
+						}
+					},
 					new CFGCheckBox("Show hslider values", CFG.UI_HSLIDER_VALUE_SHOW),
 					new CFGCheckBox("Show kin online/offline", CFG.UI_KIN_STATUS),
 					new CFGCheckBox("Show timestamps in chat", CFG.UI_CHAT_TIMESTAMP),

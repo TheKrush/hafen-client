@@ -1,3 +1,15 @@
+$size[13]{$b{2015-11-27}}
+ - Display dynamic name for input resource, if available (fixes tooltips for meat) $i{(ender's client)}
+ - Ported recent recipes from k-t client $i{(ender's client)}
+ - Fixed long tooltips on study window $i{(ender's client)}
+
+$size[13]{$b{2015-11-26}}
+ - Use precise view range display (ported from k-t client, based on XCom's research) $i{(ender's client)}
+ - Ported quick craft (ALT+C) and build (ALT+B) windows from k-t client $i{(ender's client)}
+ - Ported ALT+H to hide item on cursor from k-t client $i{(ender's client)}
+ - Ported study window (ALT+S) from k-t client $i{(ender's client)}
+ - Ported hunger and fep meters from k-t client (can be toggled in Options->UI) $i{(ender's client)}
+
 $size[13]{$b{2015-11-02}}
  - Gob Paths saved to settings/gob_path.xml
  - Radar saved to settings/radar.xml

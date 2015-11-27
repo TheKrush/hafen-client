@@ -49,6 +49,7 @@ public class MenuGrid extends Widget {
 	private int pagseq = 0;
 	private boolean loading = true;
 	private Map<Character, Pagina> hotmap = new TreeMap<>();
+	public Pagina lastCraft = null;
 
 	@RName("scm")
 	public static class $_ implements Factory {
@@ -124,8 +125,10 @@ public class MenuGrid extends Widget {
 	protected void attach(UI ui) {
 		super.attach(ui);
 		Glob glob = ui.sess.glob;
-		Collection<Pagina> p = glob.paginae;
-		p.add(glob.paginafor(Resource.local().load("paginae/add/timer")));
+		synchronized (glob.paginae) {
+			Collection<Pagina> p = glob.paginae;
+			p.add(glob.paginafor(Resource.local().load("paginae/add/timer")));
+		}
 	}
 
 	public static Comparator<Pagina> sorter = new Comparator<Pagina>() {
@@ -343,6 +346,9 @@ public class MenuGrid extends Widget {
 			}
 		} else {
 			r.newp = 0;
+			if (isCrafting(r)) {
+				lastCraft = r;
+			}
 			senduse(r);
 			if (reset) {
 				this.cur = null;

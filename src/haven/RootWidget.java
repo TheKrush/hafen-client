@@ -65,9 +65,13 @@ public class RootWidget extends ConsoleHost {
 				if (ui.gui != null && ui.gui.eqproxy != null) {
 					ui.gui.eqproxy.activate(1);
 				}
+			} else if (ALT && code == KeyEvent.VK_B) {
+				if (ui.gui != null) {
+					ui.gui.toggleBuildList();
+				}
 			} else if (ALT && code == KeyEvent.VK_C) {
 				if (ui.gui != null) {
-					ui.gui.toggleCraftWnd();
+					ui.gui.toggleCraftList();
 				}
 			} else if (ALT && code == KeyEvent.VK_F) {
 				if (ui.gui != null && ui.gui.map != null) {
@@ -76,6 +80,10 @@ public class RootWidget extends ConsoleHost {
 			} else if (ALT && code == KeyEvent.VK_G) {
 				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.togglegrid();
+				}
+			} else if (ALT && code == KeyEvent.VK_H) {
+				if (ui.gui != null) {
+					ui.gui.toggleHand();
 				}
 			} else if (ALT && code == KeyEvent.VK_O) {
 				if (ui.gui != null && ui.gui.map != null) {
@@ -88,6 +96,10 @@ public class RootWidget extends ConsoleHost {
 			} else if (ALT && code == KeyEvent.VK_R) {
 				if (ui.gui != null && ui.gui.map != null) {
 					ui.gui.map.toggleobjectradius();
+				}
+			} else if (ALT && code == KeyEvent.VK_S) {
+				if (ui.gui != null) {
+					ui.gui.toggleStudy();
 				}
 			} else if (CTRL && code == KeyEvent.VK_Z) {
 				if (ui.gui != null && ui.gui.map != null) {

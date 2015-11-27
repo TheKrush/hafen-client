@@ -32,6 +32,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import me.ender.Reflect;
+
 public class Makewindow extends Widget {
 
 	Widget obtn, cbtn;
@@ -209,6 +211,7 @@ public class Makewindow extends Widget {
 	@Override
 	public Object tooltip(Coord mc, Widget prev) {
 		Resource tres = null;
+		String name = null;
 		Coord c;
 		if (qmod != null) {
 			c = new Coord(xoff, qmy);
@@ -236,7 +239,10 @@ public class Makewindow extends Widget {
 			c = new Coord(xoff, 0);
 			for (Spec s : inputs) {
 				if (mc.isect(c, Inventory.invsq.sz())) {
-					tres = s.res.get();
+					name = getDynamicName(s.spr);
+					if (name == null) {
+						tres = s.res.get();
+					}
 					break find;
 				}
 				c = c.add(31, 0);
@@ -252,7 +258,7 @@ public class Makewindow extends Widget {
 		}
 		Resource.Tooltip tt;
 		if ((tres == null) || ((tt = tres.layer(Resource.tooltip)) == null)) {
-			return (null);
+			return (name);
 		}
 		if (lasttip != tres) {
 			lasttip = tres;
@@ -281,6 +287,14 @@ public class Makewindow extends Widget {
 			}
 			return (ltip);
 		}
+	}
+	
+	private static String getDynamicName(GSprite spr) {
+		Class<? extends GSprite> aSsprClass = spr.getClass();
+		if (Reflect.hasInterface("haven.res.ui.tt.defn.DynName", aSsprClass)) {
+			return (String) Reflect.invoke(spr, "name");
+		}
+		return null;
 	}
 
 	@Override

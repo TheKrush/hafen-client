@@ -27,6 +27,7 @@ package haven;
 
 import static haven.MCache.cmaps;
 import static haven.MCache.tilesz;
+import haven.MCache.Grid;
 import haven.resutil.Ridges;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -37,19 +38,20 @@ import java.util.Map;
 
 public class LocalMiniMap extends Widget {
 
-	private static final Tex viewbox = Resource.loadtex("gfx/hud/mmap/viewbox");
 	private static final Tex mapgrid = Resource.loadtex("gfx/hud/mmap/mapgrid");
+	public static final Coord VIEW_SZ = MCache.sgridsz.mul(9).div(tilesz);// view radius is 9x9 "server" grids
+	public static final Color VIEW_BG_COLOR = new Color(255, 255, 255, 60);
+	public static final Color VIEW_BORDER_COLOR = new Color(0, 0, 0, 128);
 
 	public final MapView mv;
 	private Coord cc = null;
 	private final Map<Coord, Defer.Future<MapTile>> cache = new LinkedHashMap<Coord, Defer.Future<MapTile>>(5, 0.75f, true) {
-		@Override
 		protected boolean removeEldestEntry(Map.Entry<Coord, Defer.Future<MapTile>> eldest) {
 			if (size() > 100) {
 				try {
 					MapTile t = eldest.getValue().get();
 					t.img.dispose();
-				} catch (RuntimeException e) {
+				} catch (RuntimeException ignored) {
 				}
 				return (true);
 			}
@@ -76,11 +78,15 @@ public class LocalMiniMap extends Widget {
 
 		public final Tex img;
 		public final Coord ul, c;
+		public final Grid grid;
+		public final int seq;
 
-		public MapTile(Tex img, Coord ul, Coord c) {
+		public MapTile(Tex img, Coord ul, Coord c, Grid grid, int seq) {
 			this.img = img;
 			this.ul = ul;
 			this.c = c;
+			this.grid = grid;
+			this.seq = seq;
 		}
 	}
 
@@ -341,6 +347,9 @@ public class LocalMiniMap extends Widget {
 
 	private void setBiome(Coord c) {
 		try {
+			if (c.div(cmaps).manhattan2(cc.div(cmaps)) > 1) {
+				return;
+			}
 			int t = mv.ui.sess.glob.map.gettile(c);
 			Resource r = ui.sess.glob.map.tilesetr(t);
 			String newbiome;
@@ -376,17 +385,25 @@ public class LocalMiniMap extends Widget {
 				Defer.Future<MapTile> f;
 				synchronized (cache) {
 					f = cache.get(cur);
-					if (f == null && cur.manhattan2(plg) <= 1) {
-						final Coord tmp = new Coord(cur);
-						f = Defer.later(new Defer.Callable<MapTile>() {
-							@Override
-							public MapTile call() {
-								Coord ul = tmp.mul(cmaps);
-								BufferedImage drawmap = drawmap(ul, cmaps);
-								return (new MapTile(new TexI(drawmap), ul, tmp));
-							}
-						});
-						cache.put(new Coord(cur), f);
+					if (cur.manhattan2(plg) <= 1) {
+						final Grid grid;
+						try {
+							grid = ui.sess.glob.map.getgrid(new Coord(cur));
+						} catch (Loading e) {
+							continue;
+						}
+						final int seq = grid.seq;
+						if (f == null || (f.done() && (f.get().grid.id != grid.id || f.get().seq != seq))) {
+							final Coord tmp = new Coord(cur);
+							f = Defer.later(new Defer.Callable<MapTile>() {
+								public MapTile call() {
+									Coord ul = tmp.mul(cmaps);
+									BufferedImage drawmap = drawmap(ul, cmaps);
+									return (new MapTile(new TexI(drawmap), ul, tmp, grid, seq));
+								}
+							});
+							cache.put(tmp, f);
+						}
 					}
 				}
 				if (f != null && f.done()) {
@@ -404,7 +421,12 @@ public class LocalMiniMap extends Widget {
 		if (CFG.MINIMAP_VIEW.valb()) {
 			Gob pl = ui.sess.glob.oc.getgob(mv.plgob);
 			if (pl != null) {
-				g.aimage(viewbox, p2c(pl.rc), 0.5, 0.5);
+				Coord rc = p2c(pl.rc.div(MCache.sgridsz).sub(4, 4).mul(MCache.sgridsz));
+				g.chcolor(VIEW_BG_COLOR);
+				g.frect(rc, VIEW_SZ);
+				g.chcolor(VIEW_BORDER_COLOR);
+				g.rect(rc, VIEW_SZ);
+				g.chcolor();
 			}
 		}
 

@@ -46,11 +46,15 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public MiniMapPanel mmappanel;
 	public Fightview fv;
 	private List<Widget> meters = new LinkedList<>();
+	private List<Widget> cmeters = new LinkedList<Widget>();
 	private Text lastmsg;
 	private long msgtime;
-	private Window invwnd, equwnd, makewnd;
-	public CraftWnd craftwnd;
+	private Window invwnd, equwnd;
+	private CraftWindow makewnd;
+	public CraftDBWnd craftwnd = null;
+	public ActWindow craftlist, buildlist;
 	public TimerPanel timers;
+	public StudyWnd studywnd;
 	public Inventory maininv;
 	public CharWnd chrwdg;
 	public BuddyWnd buddies;
@@ -60,6 +64,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public HelpWnd help;
 	public OptWnd opts;
 	public Collection<DraggedItem> hand = new LinkedList<>();
+	private Collection<DraggedItem> handSave = new LinkedList<DraggedItem>();
 	private WItem vhand;
 	public ChatUI chat;
 	public ChatUI.Channel syslog;
@@ -376,17 +381,23 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		opts.c = sz.sub(opts.sz).div(2);
 	}
 
-	public void showCraftWnd() {
-		if (craftwnd == null) {
-			craftwnd = add(new CraftWnd());
+	public void toggleCraftList() {
+		if (craftlist == null) {
+			add(new ActWindow("Craft...", "paginae/craft/"));
+		} else if (craftlist.visible) {
+			craftlist.hide();
+		} else {
+			craftlist.show();
 		}
 	}
 
-	public void toggleCraftWnd() {
-		if (craftwnd == null) {
-			showCraftWnd();
+	public void toggleBuildList() {
+		if (buildlist == null) {
+			add(new ActWindow("Build...", "paginae/bld/"));
+		} else if (buildlist.visible) {
+			buildlist.hide();
 		} else {
-			craftwnd.wdgmsg(craftwnd, "close");
+			buildlist.show();
 		}
 	}
 
@@ -600,6 +611,53 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 		}
 	}
 
+	public void toggleHand() {
+		if (hand.isEmpty()) {
+			hand.addAll(handSave);
+			handSave.clear();
+			updhand();
+		} else {
+			handSave.addAll(hand);
+			hand.clear();
+			updhand();
+		}
+	}
+
+	public void toggleStudy() {
+		studywnd.show(!studywnd.visible);
+	}
+
+	public void addcmeter(Widget meter) {
+		ulpanel.add(meter);
+		cmeters.add(meter);
+		updcmeters();
+	}
+
+	public <T extends Widget> void delcmeter(Class<T> cl) {
+		Widget widget = null;
+		for (Widget meter : cmeters) {
+			if (cl.isAssignableFrom(meter.getClass())) {
+				widget = meter;
+				break;
+			}
+		}
+		if (widget != null) {
+			cmeters.remove(widget);
+			widget.destroy();
+			updcmeters();
+		}
+	}
+
+	private void updcmeters() {
+		int i = meters.size();
+		for (Widget meter : cmeters) {
+			int x = (i % 3) * (IMeter.fsz.x + 5);
+			int y = (i / 3) * (IMeter.fsz.y + 2);
+			meter.c = new Coord(portrait.c.x + portrait.sz.x + 10 + x, portrait.c.y + y);
+			i++;
+		}
+	}
+
 	@Override
 	public void addchild(Widget child, Object... args) {
 		String place = ((String) args[0]).intern();
@@ -641,35 +699,32 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			updhand();
 		} else if (place == "chr") {
 			Coord childcenter = new Coord(child.sz.x / 2, child.sz.y / 2);
+			studywnd = add(new StudyWnd());
+			studywnd.hide();
 			chrwdg = add((CharWnd) child, new Coord(center.x - childcenter.x, 0)); // upper center
 			chrwdg.hide();
+			if (CFG.UI_METER_HUNGER.valb()) {
+				addcmeter(new HungerMeter(chrwdg.glut));
+			}
+			if (CFG.UI_METER_FEP.valb()) {
+				addcmeter(new FEPMeter(chrwdg.feps));
+			}
 		} else if (place == "craft") {
 			final Widget mkwdg = child;
 			if (craftwnd != null) {
 				craftwnd.setMakewindow(mkwdg);
 			} else {
-				makewnd = new Window(Coord.z, "Crafting", true) {
-					@Override
-					public void wdgmsg(Widget sender, String msg, Object... args) {
-						if ((sender == this) && msg.equals("close")) {
-							mkwdg.wdgmsg("close");
-							return;
-						}
-						super.wdgmsg(sender, msg, args);
-					}
+				if (makewnd == null) {
+					makewnd = new CraftWindow();
 
-					@Override
-					public void cdestroy(Widget w) {
-						if (w == mkwdg) {
-							ui.destroy(this);
-							makewnd = null;
-						}
-					}
-				};
-				makewnd.add(mkwdg, Coord.z);
+					makewnd = add(new CraftWindow(), new Coord(400, 200));
+				}
+				makewnd.add(child);
 				makewnd.pack();
 				Coord childcenter = new Coord(makewnd.sz.x / 2, makewnd.sz.y / 2);
 				add(makewnd, new Coord(center.x - childcenter.x, 0)); // upper center
+				makewnd.raise();
+				makewnd.show();
 			}
 		} else if (place == "buddy") {
 			zerg.ntab(buddies = (BuddyWnd) child, zerg.kin);
@@ -685,6 +740,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			int y = (meters.size() / 3) * (IMeter.fsz.y + 2);
 			ulpanel.add(child, portrait.c.x + portrait.sz.x + 10 + x, portrait.c.y + y);
 			meters.add(child);
+			updcmeters();
 		} else if (place == "buff") {
 			buffs.addchild(child);
 		} else if (place == "misc") {
@@ -715,6 +771,8 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 			showmmappanel(false);
 		}
 		meters.remove(w);
+		cmeters.remove(w);
+		updcmeters();
 	}
 
 	public void placemmap() {

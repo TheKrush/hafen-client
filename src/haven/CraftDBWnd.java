@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CraftWnd extends Window {
+public class CraftDBWnd extends Window {
 
 	private static final int SZ = 20;
 	private static final int PANEL_H = 24;
@@ -24,7 +24,7 @@ public class CraftWnd extends Window {
 	private Resource resd;
 	private Pagina senduse = null;
 
-	public CraftWnd() {
+	public CraftDBWnd() {
 		super(WND_SZ.add(0, 5), "Craft window");
 	}
 
@@ -170,7 +170,7 @@ public class CraftWnd extends Window {
 	}
 
 	private void setCurrent(Pagina current) {
-		CraftWnd.current = current;
+		CraftDBWnd.current = current;
 		updateBreadcrumbs(current);
 		updateDescription(current);
 	}
