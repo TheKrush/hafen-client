@@ -386,6 +386,17 @@ public class UI {
 		root.mousewheel(c, amount);
 	}
 
+	public void mouseclick(MouseEvent ev, Coord c, int button, int count) {
+		setmods(ev);
+		lcc = mc = c;
+		for (Grab g : c(mousegrab)) {
+			if (g.wdg.mouseclick(wdgxlate(c, g.wdg), button, count)) {
+				return;
+			}
+		}
+		root.mouseclick(c, button, count);
+	}
+
 	public void message(String str, GameUI.MsgType type) {
 		if ((cons != null) && (gui != null)) {
 			gui.msg(str, type);

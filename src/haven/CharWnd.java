@@ -366,7 +366,12 @@ public class CharWnd extends Window {
 				for (El el : els) {
 					el.hl = false;
 				}
-				FoodInfo finf = (tip == null) ? null : ItemInfo.find(FoodInfo.class, tip.item().info());
+				FoodInfo finf;
+				try {
+					finf = (tip == null) ? null : ItemInfo.find(FoodInfo.class, tip.item().info());
+				} catch (Loading l) {
+					finf = null;
+				}
 				if (finf != null) {
 					for (int i = 0; i < els.size(); i++) {
 						El el = els.get(i);
@@ -739,7 +744,13 @@ public class CharWnd extends Window {
 			add(new Label("Attention:"), 2, 2);
 			add(new Label("Experience cost:"), 2, 32);
 			add(new Label("Learning points:"), 2, 62);
-			add(new CFGCheckBox("Lock study", CFG.UI_STUDYLOCK), 5, sz.y - 15);
+			add(new CFGCheckBox("Lock study", CFG.UI_STUDYLOCK) {
+				@Override
+				public void set(boolean a) {
+					super.set(a);
+					study.locked = a;
+				}
+			}, 5, sz.y - 15);
 		}
 
 		private void upd() {
@@ -1603,6 +1614,7 @@ public class CharWnd extends Window {
 			Frame.around(sattr, Collections.singletonList(child));
 			Widget inf = sattr.add(new StudyInfo(new Coord(attrw - 150, child.sz.y), (Inventory) child), new Coord(260 + 150, child.c.y).add(wbox.btloff().x, 0));
 			Frame.around(sattr, Collections.singletonList(inf));
+			getparent(GameUI.class).studywnd.setStudy((Inventory)child);
 		} else if (place == "fmg") {
 			fgt.add(child, 0, 0);
 		} else if (place == "wound") {

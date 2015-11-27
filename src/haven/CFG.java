@@ -68,6 +68,8 @@ public enum CFG {
 	UI_KIN_STATUS("ui.kin.status", true),
 	UI_MENU_FLOWER_CLICK_AUTO("ui.menu.flower.click.auto", new HashMap<String, Boolean>()),
 	UI_MENU_FLOWER_CLICK_SINGLE("ui.menu.flower.click.single", false),
+	UI_METER_FEP("ui.meter.fep", false),
+	UI_METER_HUNGER("ui.meter.hunger", false),
 	UI_STUDYLOCK("ui.studylock", false),
 	UI_TOOLTIP_LONG("ui.item.tooltip.long", false), // force long tooltip
 	;

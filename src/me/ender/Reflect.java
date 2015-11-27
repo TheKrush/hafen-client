@@ -52,4 +52,42 @@ public class Reflect {
 		}
 		return false;
 	}
+
+	public static Class getEnumSuperclass(Class c) {
+		while (c != null && !c.isEnum()) {
+			c = c.getSuperclass();
+		}
+		return c;
+	}
+
+	public static Class[] interfaces(Class c) {
+		try {
+			return c.getInterfaces();
+		} catch (Exception ignored) {
+		}
+		return new Class[0];
+	}
+
+	public static boolean hasInterface(String name, Class c) {
+		Class[] interfaces = interfaces(c);
+		for (Class in : interfaces) {
+			if (in.getCanonicalName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static Object invoke(Object o, String method, Object... args) {
+		Class[] types = new Class[args.length];
+		for (int i = 0; i < args.length; i++) {
+			Object arg = args[i];
+			types[i] = arg.getClass();
+		}
+		try {
+			return o.getClass().getDeclaredMethod(method, types).invoke(o, args);
+		} catch (Exception ignored) {
+		}
+		return null;
+	}
 }

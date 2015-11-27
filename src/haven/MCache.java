@@ -35,6 +35,7 @@ public class MCache {
 	public static final Coord cmaps = new Coord(100, 100);
 	public static final Coord cutsz = new Coord(25, 25);
 	public static final Coord cutn = cmaps.div(cutsz);
+	public static final Coord sgridsz = new Coord(100, 100);
 	private final Resource.Spec[] nsets = new Resource.Spec[256];
 	@SuppressWarnings("unchecked")
 	private final Reference<Resource>[] sets = new Reference[256];
@@ -100,12 +101,13 @@ public class MCache {
 		public final int tiles[] = new int[cmaps.x * cmaps.y];
 		public final int z[] = new int[cmaps.x * cmaps.y];
 		public final int ol[] = new int[cmaps.x * cmaps.y];
-		private final Cut cuts[];
-		int olseq = -1;
-		private Collection<Gob>[] fo = null;
 		public final Coord gc, ul;
 		public long id;
-		String mnm;
+		public int seq = -1;
+		public String mnm;
+		private int olseq = -1;
+		private final Cut cuts[];
+		private Collection<Gob>[] fo = null;
 
 		private class Cut {
 
@@ -378,6 +380,7 @@ public class MCache {
 				}
 			}
 			invalidate();
+			seq++;
 		}
 	}
 
@@ -468,15 +471,21 @@ public class MCache {
 	}
 
 	public MapMesh getcut(Coord cc) {
-		return (getgrid(cc.div(cutn)).getcut(cc.mod(cutn)));
+		synchronized (grids) {
+			return (getgrid(cc.div(cutn)).getcut(cc.mod(cutn)));
+		}
 	}
 
 	public Collection<Gob> getfo(Coord cc) {
-		return (getgrid(cc.div(cutn)).getfo(cc.mod(cutn)));
+		synchronized (grids) {
+			return (getgrid(cc.div(cutn)).getfo(cc.mod(cutn)));
+		}
 	}
 
 	public Rendered getolcut(int ol, Coord cc) {
-		return (getgrid(cc.div(cutn)).getolcut(ol, cc.mod(cutn)));
+		synchronized (grids) {
+			return (getgrid(cc.div(cutn)).getolcut(ol, cc.mod(cutn)));
+		}
 	}
 
 	public void mapdata2(Message msg) {
@@ -618,7 +627,7 @@ public class MCache {
 	public void request(Coord gc) {
 		synchronized (req) {
 			if (!req.containsKey(gc)) {
-				req.put(gc, new Request());
+				req.put(new Coord(gc), new Request());
 			}
 		}
 	}

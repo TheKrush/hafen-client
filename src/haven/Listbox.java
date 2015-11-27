@@ -95,6 +95,9 @@ public abstract class Listbox<T> extends ListWidget<T> {
 		}
 	}
 
+	protected void itemactivate(T item) {
+	}
+
 	public T itemat(Coord c) {
 		int idx = (c.y / itemh) + sb.val;
 		if (idx >= listitems()) {
@@ -124,6 +127,28 @@ public abstract class Listbox<T> extends ListWidget<T> {
 			over = itemat(c);
 		} else {
 			over = null;
+		}
+	}
+
+	@Override
+	public boolean mouseclick(Coord c, int button, int count) {
+		if (super.mouseclick(c, button, count)) {
+			return (true);
+		}
+		T item = itemat(c);
+		if (item != null && button == 1 && count >= 2) {
+			itemactivate(item);
+		}
+		return (true);
+	}
+
+	// ensures that selected element is visible
+	public void showsel() {
+		if (sb.val + h - 1 < selindex) {
+			sb.val = Math.max(0, selindex - h + 1);
+		}
+		if (sb.val > selindex) {
+			sb.val = Math.max(0, selindex);
 		}
 	}
 }
