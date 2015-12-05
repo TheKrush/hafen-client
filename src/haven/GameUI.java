@@ -46,7 +46,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public MiniMapPanel mmappanel;
 	public Fightview fv;
 	private List<Widget> meters = new LinkedList<>();
-	private List<Widget> cmeters = new LinkedList<Widget>();
+	private List<Widget> cmeters = new LinkedList<>();
 	private Text lastmsg;
 	private long msgtime;
 	private Window invwnd, equwnd;
@@ -64,7 +64,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
 	public HelpWnd help;
 	public OptWnd opts;
 	public Collection<DraggedItem> hand = new LinkedList<>();
-	private Collection<DraggedItem> handSave = new LinkedList<DraggedItem>();
+	private Collection<DraggedItem> handSave = new LinkedList<>();
 	private WItem vhand;
 	public ChatUI chat;
 	public ChatUI.Channel syslog;

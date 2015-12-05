@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 public abstract class ItemInfo {
 
 	static final Pattern count_patt = Pattern.compile("(?:^|[\\s])([0-9]*\\.?[0-9]+\\s*%?)");
-
 	public final Owner owner;
 
 	public interface Owner {
@@ -417,7 +416,7 @@ public abstract class ItemInfo {
 	}
 
 	public static Wear getArmor(List<ItemInfo> infos) {
-		//loftar is wonderful sunshine and has same class name for wear and armor tooltips even though
+	//loftar is wonderful sunshine and has same class name for wear and armor tooltips even though
 		//they are different classes with different fields :)
 		infos = findall("Wear", infos);
 		for (ItemInfo info : infos) {

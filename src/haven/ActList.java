@@ -5,8 +5,8 @@ import java.util.*;
 public class ActList extends Listbox<ActList.ActItem> {
 
 	private static final Text.Foundry font = new Text.Foundry(Text.sans, 15).aa(true);
-	private final List<ActItem> items = new ArrayList<ActItem>();
-	private final Map<Glob.Pagina, ActItem> map = new HashMap<Glob.Pagina, ActItem>();
+	private final List<ActItem> items = new ArrayList<>();
+	private final Map<Glob.Pagina, ActItem> map = new HashMap<>();
 
 	public ActList(int w, int h) {
 		super(w, h, font.height() + 2);

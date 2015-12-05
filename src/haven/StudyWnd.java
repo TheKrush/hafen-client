@@ -24,24 +24,29 @@ public class StudyWnd extends GameUI.Hidewnd {
 		public Widget study;
 		public int texp, tw, tenc;
 		private final Text.UText<?> texpt = new Text.UText<Integer>(Text.std) {
+			@Override
 			public Integer value() {
 				return (texp);
 			}
 
+			@Override
 			public String text(Integer v) {
 				return (Utils.thformat(v));
 			}
 		};
 		private final Text.UText<?> twt = new Text.UText<String>(Text.std) {
+			@Override
 			public String value() {
 				return (tw + "/" + ui.sess.glob.cattr.get("int").comp);
 			}
 		};
 		private final Text.UText<?> tenct = new Text.UText<Integer>(Text.std) {
+			@Override
 			public Integer value() {
 				return (tenc);
 			}
 
+			@Override
 			public String text(Integer v) {
 				return (Integer.toString(tenc));
 			}
@@ -73,6 +78,7 @@ public class StudyWnd extends GameUI.Hidewnd {
 			this.tenc = tenc;
 		}
 
+		@Override
 		public void draw(GOut g) {
 			upd();
 			super.draw(g);

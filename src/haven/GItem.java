@@ -155,24 +155,19 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
 
 	@Override
 	public void uimsg(String name, Object... args) {
-		switch (name) {
-			case "num":
-				num = (Integer) args[0];
-				break;
-			case "chres":
-				synchronized (this) {
-					res = ui.sess.getres((Integer) args[0]);
-					sdt = (args.length > 1) ? new MessageBuf((byte[]) args[1]) : MessageBuf.nil;
-					spr = null;
-				}
-				break;
-			case "tt":
-				info = null;
-				rawinfo = args;
-				break;
-			case "meter":
-				meter = (Integer) args[0];
-				break;
+		if (name == "num") {
+			num = (Integer) args[0];
+		} else if (name == "chres") {
+			synchronized (this) {
+				res = ui.sess.getres((Integer) args[0]);
+				sdt = (args.length > 1) ? new MessageBuf((byte[]) args[1]) : MessageBuf.nil;
+				spr = null;
+			}
+		} else if (name == "tt") {
+			info = null;
+			rawinfo = args;
+		} else if (name == "meter") {
+			meter = (Integer) args[0];
 		}
 	}
 }

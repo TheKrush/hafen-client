@@ -46,6 +46,7 @@ public class LocalMiniMap extends Widget {
 	public final MapView mv;
 	private Coord cc = null;
 	private final Map<Coord, Defer.Future<MapTile>> cache = new LinkedHashMap<Coord, Defer.Future<MapTile>>(5, 0.75f, true) {
+		@Override
 		protected boolean removeEldestEntry(Map.Entry<Coord, Defer.Future<MapTile>> eldest) {
 			if (size() > 100) {
 				try {
@@ -396,6 +397,7 @@ public class LocalMiniMap extends Widget {
 						if (f == null || (f.done() && (f.get().grid.id != grid.id || f.get().seq != seq))) {
 							final Coord tmp = new Coord(cur);
 							f = Defer.later(new Defer.Callable<MapTile>() {
+								@Override
 								public MapTile call() {
 									Coord ul = tmp.mul(cmaps);
 									BufferedImage drawmap = drawmap(ul, cmaps);

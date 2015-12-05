@@ -1,7 +1,7 @@
 /*
  *  This file is part of the Haven & Hearth game client.
  *  Copyright (C) 2009 Fredrik Tolf <fredrik@dolda2000.com>, and
- *                     BjÃ¶rn Johannessen <johannessen.bjorn@gmail.com>
+ *                     Björn Johannessen <johannessen.bjorn@gmail.com>
  *
  *  Redistribution and/or modification of this file is subject to the
  *  terms of the GNU Lesser General Public License, version 3, as
@@ -348,6 +348,7 @@ public class WItem extends Widget implements DTarget {
 			g.frect(new Coord(0, sz.y - h), new Coord(4, h));
 			g.chcolor();
 		}
+
 	}
 
 	private void drawnum(GOut g, Coord sz) {
@@ -409,7 +410,7 @@ public class WItem extends Widget implements DTarget {
 	@Override
 	public boolean mousedown(Coord c, int btn) {
 		if (checkXfer(btn)) {
-			return true;
+			return (true);
 		} else if (btn == 1) {
 			item.wdgmsg("take", c);
 			return (true);

@@ -7,7 +7,7 @@ import java.util.List;
 public class TabStrip<T> extends Widget {
 
 	public static final IBox frame = new IBox("gfx/hud/tab", "tl", "tr", "bl", "br", "extvl", "extvr", "extht", "exthb");
-	private final List<Button<T>> buttons = new ArrayList<Button<T>>();
+	private final List<Button<T>> buttons = new ArrayList<>();
 	private Button<T> selected;
 	private Orientation orientation = Orientation.Horizontal;
 	private int minWidth;
@@ -25,6 +25,7 @@ public class TabStrip<T> extends Widget {
 
 	public Button<T> insert(int index, Tex image, String text, String tooltip) {
 		final Button<T> button = add(new Button<T>(image, text) {
+			@Override
 			public void click() {
 				select(this);
 			}

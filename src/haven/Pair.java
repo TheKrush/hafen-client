@@ -35,10 +35,12 @@ public class Pair<A, B> {
 		this.b = b;
 	}
 
+	@Override
 	public int hashCode() {
 		return ((((a == null) ? 0 : a.hashCode()) * 31) + ((b == null) ? 0 : b.hashCode()));
 	}
 
+	@Override
 	public boolean equals(Object O) {
 		if (!(O instanceof Pair)) {
 			return (false);

@@ -140,6 +140,7 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 						h.lsetprop("gl.conf", glconf);
 					}
 					gstate = new GLState() {
+						@Override
 						public void apply(GOut g) {
 							BGL gl = g.gl;
 							gl.glColor3f(1, 1, 1);
@@ -161,9 +162,11 @@ public class HavenPanel extends GLCanvas implements Runnable, Console.Directory 
 							GOut.checkerr(gl);
 						}
 
+						@Override
 						public void unapply(GOut g) {
 						}
 
+						@Override
 						public void prep(Buffer buf) {
 							buf.put(global, this);
 						}
